@@ -1,0 +1,44 @@
+{
+  "name": "esday",
+  "type": "module",
+  "version": "0.3.0",
+  "description": "A simple date library fully written in TypeScript",
+  "license": "MIT",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./*": {
+      "types": "./*/index.d.ts",
+      "default": "./*/index.js"
+    }
+  },
+  "main": "index.js",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "typesVersions": {},
+  "files": ["*"],
+  "scripts": {
+    "build": "tsup --dts",
+    "test": "vitest",
+    "test:ui": "vitest --ui --api 9527",
+    "test:run": "vitest run",
+    "copypkg": "node scripts/copy-pkg.mjs",
+    "pub": "pnpm build && pnpm copypkg && cd dist && pnpm publish"
+  },
+  "dependencies": {
+    "radash": "^12.1.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^3",
+    "@types/node": "^22.5.2",
+    "@vitest/ui": "latest",
+    "eslint": "^9",
+    "tsup": "^8.2.4",
+    "typescript": "^5.5.4",
+    "vite": "latest",
+    "vitest": "latest"
+  }
+}
