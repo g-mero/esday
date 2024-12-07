@@ -1,4 +1,5 @@
 /* eslint-disable dot-notation */
+import type { EsDay } from 'esday'
 import type { DateType, EsDayPlugin } from '~/types'
 
 const formattingTokens
@@ -183,7 +184,7 @@ declare module 'esday' {
   }
 }
 
-export const customParseFormatPlugin: EsDayPlugin<{}> = (_, dayTsClass) => {
+export const customParseFormatPlugin: EsDayPlugin<{}> = (_, dayTsClass: typeof EsDay) => {
   const oldParse = dayTsClass.prototype['parse']
   dayTsClass.prototype['parse'] = function (cfg: { d: DateType, utc: boolean, format: string }) {
     const format = cfg.format
