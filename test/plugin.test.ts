@@ -6,4 +6,5 @@ esday.extend(isTodayPlugin)
 
 it('isToday', () => {
   expect(esday().isToday()).toBe(true)
+  expect(esday('2021-01-01').isToday()).toBe(false)
 })
