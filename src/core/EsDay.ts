@@ -2,9 +2,10 @@
 import type { DateType, UnitType } from '~/types'
 import { esday } from '.'
 import * as C from './constant'
-import { startOf } from './funcs/startOf'
 import { addImpl } from './Impl/add'
 import { formatImpl } from './Impl/format'
+import { startOfImpl } from './Impl/startOf'
+import { parseDate } from './parseDate'
 import { callDateGetOrSet, getAllFieldsInDate, prettyUnit } from './utils'
 
 export declare interface EsDay {
@@ -19,11 +20,15 @@ export declare interface EsDay {
 }
 
 export class EsDay {
-  private $d: Date
+  private $d!: Date
   // utc mode
   private $u = false
-  constructor(cfg: { d: Date, utc: boolean }) {
-    this.$d = cfg.d
+  constructor(cfg: { d?: DateType, utc: boolean }) {
+    this.parse(cfg)
+  }
+
+  private parse(cfg: { d?: DateType, utc: boolean }) {
+    this.$d = parseDate(cfg.d)
     this.$u = cfg.utc
   }
 
@@ -74,19 +79,19 @@ export class EsDay {
   }
 
   startOf(units: UnitType) {
-    const newInst = this.clone()
-    startOf(newInst.$d, units, newInst.$u)
-    return newInst
+    return startOfImpl(this, units)
   }
 
   endOf(units: UnitType) {
-    const newInst = this.clone()
-    startOf(newInst.$d, units, newInst.$u, true)
-    return newInst
+    return startOfImpl(this, units, true)
   }
 
   add(number: number, units: UnitType) {
     return addImpl(this, number, units)
+  }
+
+  subtract(number: number, units: UnitType) {
+    return this.add(-number, units)
   }
 
   get(units: Exclude<UnitType, 'week' | 'w'>) {

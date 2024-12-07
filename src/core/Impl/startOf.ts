@@ -1,9 +1,13 @@
+/* eslint-disable dot-notation */
+import type { EsDay } from 'esday'
 import type { UnitType } from '~/types'
 import * as C from '../constant'
-import { callDateGetOrSet, prettyUnit } from '../utils'
+import { callDateGetOrSet, prettyUnit, wrapperInst } from '../utils'
 
-export function startOf(date: Date, unit: UnitType, utc: boolean, reverse = false) {
-  const result = date
+export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
+  const result = that.toDate()
+
+  const utc = that['$u']
 
   const instanceFactorySet = (method: string, slice: number) => {
     const argumentStart = [0, 0, 0, 0]
@@ -49,4 +53,6 @@ export function startOf(date: Date, unit: UnitType, utc: boolean, reverse = fals
       instanceFactorySet('Milliseconds', 3)
       break
   }
+
+  return wrapperInst(result, that)
 }

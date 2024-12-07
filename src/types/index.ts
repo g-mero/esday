@@ -27,7 +27,9 @@ export interface AllDateFields {
   millisecond: number
 }
 export interface EsDayFactory {
-  (d?: DateType): EsDay
-  extend: (plugin: EsDayPlugin, option?: any) => EsDayFactory
+  (d?: DateType, conf?: {
+    utc?: boolean
+  }): EsDay
+  extend: <T extends {}>(plugin: EsDayPlugin<T>, option?: T) => EsDayFactory
 }
-export type EsDayPlugin = (option: any, dayTsClass: typeof EsDay, esday: EsDayFactory) => void
+export type EsDayPlugin<T extends {}> = (option: T, dayTsClass: typeof EsDay, esday: EsDayFactory) => void

@@ -26,15 +26,15 @@ export function formatImpl(that: EsDay, formatStr: string) {
       case 'YY':
         return String(dates.year).slice(-2)
       case 'YYYY':
-        return padStart(`${dates.year}`, 4, '0')
+        return padStart(dates.year, 4, '0')
       case 'M':
         return dates.month + 1
       case 'MM':
-        return padStart(`${dates.month + 1}`, 2, '0')
+        return padStart(dates.month + 1, 2, '0')
       case 'D':
         return dates.date
       case 'DD':
-        return padStart(`${dates.date}`, 2, '0')
+        return padStart(dates.date, 2, '0')
       case 'd':
         return String(dates.day)
       case 'H':

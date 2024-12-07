@@ -6,7 +6,7 @@ declare module 'esday' {
   }
 }
 
-export const isTodayPlugin: EsDayPlugin = (_, dayClass) => {
+export const isTodayPlugin: EsDayPlugin<{}> = (_, dayClass) => {
   dayClass.prototype.isToday = function () {
     return this.isSame(new Date(), 'day')
   }
