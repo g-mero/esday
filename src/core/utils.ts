@@ -46,3 +46,10 @@ export function getAllFieldsInDate(date: Date, utc: boolean): AllDateFields {
     millisecond: callDateGetOrSet(date, 'Milliseconds', utc),
   }
 }
+
+export function padStart(str: string | number, length: number, pad: string) {
+  str = String(str)
+  if (!str || str.length >= length)
+    return str
+  return `${Array.from({ length: (length + 1) - str.length }).join(pad)}${str}`
+}

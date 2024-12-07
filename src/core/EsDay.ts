@@ -1,8 +1,10 @@
 /* eslint-disable ts/no-unsafe-declaration-merging */
-import type { UnitType } from '~/types'
+import type { DateType, UnitType } from '~/types'
+import { esday } from '.'
 import * as C from './constant'
-import { formatDate } from './funcs/formatDate'
 import { startOf } from './funcs/startOf'
+import { addImpl } from './Impl/add'
+import { formatImpl } from './Impl/format'
 import { callDateGetOrSet, getAllFieldsInDate, prettyUnit } from './utils'
 
 export declare interface EsDay {
@@ -28,9 +30,22 @@ export class EsDay {
   // return utc instance
   utc() {
     return new EsDay({
-      d: this.$d,
+      d: this.toDate(),
       utc: true,
     })
+  }
+
+  isSame(that: DateType, units: UnitType) {
+    const other = esday(that)
+    return this.startOf(units) <= other && other <= this.endOf(units)
+  }
+
+  isAfter(that: DateType, units: UnitType) {
+    return esday(that) < this.startOf(units)
+  }
+
+  isBefore(that: DateType, units: UnitType) {
+    return this.endOf(units) < esday(that)
   }
 
   // return this milliseconds
@@ -43,6 +58,10 @@ export class EsDay {
     return Math.floor(this.valueOf() / 1000)
   }
 
+  isValid() {
+    return !(this.$d.toString() === C.INVALID_DATE_STRING)
+  }
+
   clone() {
     return new EsDay({
       d: new Date(this.$d),
@@ -51,7 +70,7 @@ export class EsDay {
   }
 
   format(formatStr: string) {
-    return formatDate(getAllFieldsInDate(this.$d, this.$u), formatStr)
+    return formatImpl(this, formatStr)
   }
 
   startOf(units: UnitType) {
@@ -66,7 +85,11 @@ export class EsDay {
     return newInst
   }
 
-  get(units: Exclude<UnitType, 'week' | 'W'>) {
+  add(number: number, units: UnitType) {
+    return addImpl(this, number, units)
+  }
+
+  get(units: Exclude<UnitType, 'week' | 'w'>) {
     return getAllFieldsInDate(this.$d, this.$u)[prettyUnit(units)]
   }
 
@@ -75,7 +98,22 @@ export class EsDay {
   }
 
   toDate() {
-    return new Date(this.$d)
+    return new Date(this.valueOf())
+  }
+
+  toJSON() {
+    return this.isValid() ? this.toISOString() : null
+  }
+
+  toISOString() {
+    // ie 8 return
+    // new Dayjs(this.valueOf() + this.$d.getTimezoneOffset() * 60000)
+    // .format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
+    return this.$d.toISOString()
+  }
+
+  toString() {
+    return this.$d.toUTCString()
   }
 
   private $set(units: UnitType, value: number) {

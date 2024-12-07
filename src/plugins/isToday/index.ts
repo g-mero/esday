@@ -8,6 +8,7 @@ declare module 'esday' {
 
 export const isTodayPlugin: EsDayPlugin = (_, dayClass) => {
   dayClass.prototype.isToday = function () {
+    
     return true
   }
 }

@@ -4,10 +4,10 @@ export type DateType = Date | string | number | EsDay
 export type PrettyUnitType = 'date' | 'day' | 'week' | 'month' | 'year'
   | 'hour' | 'minute' | 'second' | 'millisecond'
 export type PrettyUnit<T extends UnitType> = T extends 'D' ? 'date' :
-  T extends 'W' ? 'week' : T extends 'M' ? 'month' : T extends 'y' ? 'year' :
+  T extends 'w' ? 'week' : T extends 'M' ? 'month' : T extends 'y' ? 'year' :
     T extends 'H' ? 'hour' : T extends 'm' ? 'minute' : T extends 's' ? 'second' : T extends 'ms' ? 'millisecond' : T
 
-export type UnitType = 'y' | 'M' | 'D' | 'W' | 'H' | 'm' | 's' | 'ms' | PrettyUnitType
+export type UnitType = 'y' | 'M' | 'D' | 'w' | 'H' | 'm' | 's' | 'ms' | PrettyUnitType
 export interface AllDateFields {
   year: number
   month: number
