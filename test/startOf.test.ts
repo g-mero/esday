@@ -1,5 +1,5 @@
+import { esday } from 'esday'
 import { expect, it } from 'vitest'
-import { esday } from '~/core'
 
 it('start of', () => {
   expect(esday('2024-01-05 12:34:56').startOf('year').format('YYYY-MM-DD')).toBe('2024-01-01')

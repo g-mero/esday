@@ -1,9 +1,8 @@
 /* eslint-disable dot-notation */
 import type { EsDay } from './EsDay'
-import type { AllDateFields, DateType, PrettyUnit, UnitType } from '~/types'
+import type { AllDateFields, PrettyUnit, UnitType } from '~/types'
 import { isArray } from 'radash'
 import * as C from './constant'
-import { esday } from './factory'
 
 export function prettyUnit<T extends UnitType>(u: T): PrettyUnit<T> {
   const special = {
@@ -57,8 +56,13 @@ export function padStart(str: string | number, length: number, pad: string) {
   return `${Array.from({ length: (length + 1) - str.length }).join(pad)}${str}`
 }
 
-export function wrapperInst(date: DateType, instance: EsDay) {
-  return esday(date, {
-    utc: instance['$u'],
-  })
+export function wrapperInst(date: Date, instance: EsDay) {
+  const newInst = instance.clone()
+  newInst['$d'] = new Date(date)
+
+  return newInst
+}
+
+export function undefinedOr<T, U>(v: T | undefined, or: U): T | U {
+  return isUndefined(v) ? or : v
 }

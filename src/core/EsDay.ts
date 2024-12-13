@@ -23,21 +23,18 @@ export class EsDay {
   private $d!: Date
   // utc mode
   private $u = false
-  constructor(cfg: { d?: DateType, utc: boolean }) {
-    this.parse(cfg)
+  constructor(d: Exclude<DateType, EsDay>, utc: boolean, ...others: any[]) {
+    this.parse(d, utc, ...others)
   }
 
-  private parse(cfg: { d?: DateType, utc: boolean }) {
-    this.$d = parseDate(cfg.d)
-    this.$u = cfg.utc
+  private parse(d: Exclude<DateType, EsDay>, utc: boolean, ..._others: any[]) {
+    this.$d = parseDate(d)
+    this.$u = utc
   }
 
   // return utc instance
   utc() {
-    return new EsDay({
-      d: this.toDate(),
-      utc: true,
-    })
+    return new EsDay(this.toDate(), true)
   }
 
   isSame(that: DateType, units: UnitType) {
@@ -68,10 +65,7 @@ export class EsDay {
   }
 
   clone() {
-    return new EsDay({
-      d: new Date(this.$d),
-      utc: this.$u,
-    })
+    return new EsDay(this.toDate(), this.$u)
   }
 
   format(formatStr: string) {

@@ -1,18 +1,23 @@
 import type { DateType, EsDayFactory } from '~/types'
 import { EsDay } from './EsDay'
 
-const esday: EsDayFactory = (d?: DateType, config?: {
-  utc?: boolean
-}) => {
+const esday: EsDayFactory = (d?: DateType, ...others: any[]) => {
   if (d instanceof EsDay) {
-    return d
+    return d.clone()
   }
+
   else {
-    return new EsDay({
-      d,
-      utc: false,
-      ...config,
-    })
+    return new EsDay(d, false, ...others)
+  }
+}
+
+esday.utc = (d?: DateType, ...others: any[]) => {
+  if (d instanceof EsDay) {
+    return d.clone().utc()
+  }
+
+  else {
+    return new EsDay(d, true, ...others)
   }
 }
 

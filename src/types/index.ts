@@ -1,6 +1,6 @@
 import type { EsDay } from '~/core/EsDay'
 
-export type DateType = Date | string | number | EsDay
+export type DateType = Date | string | number | EsDay | undefined
 export type PrettyUnitType = 'date' | 'day' | 'week' | 'month' | 'year'
   | 'hour' | 'minute' | 'second' | 'millisecond'
 export type PrettyUnit<T extends UnitType> = T extends 'D' ? 'date' :
@@ -26,10 +26,11 @@ export interface AllDateFields {
   second: number
   millisecond: number
 }
+
+export type EsDayFactoryParserFn = (d?: DateType, ...others: any[]) => EsDay
 export interface EsDayFactory {
-  (d?: DateType, conf?: {
-    utc?: boolean
-  }): EsDay
+  (...args: Parameters<EsDayFactoryParserFn>): ReturnType<EsDayFactoryParserFn>
+  utc: EsDayFactoryParserFn
   extend: <T extends {}>(plugin: EsDayPlugin<T>, option?: T) => EsDayFactory
 }
 export type EsDayPlugin<T extends {}> = (option: T, dayTsClass: typeof EsDay, esday: EsDayFactory) => void

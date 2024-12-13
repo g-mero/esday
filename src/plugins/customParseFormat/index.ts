@@ -175,29 +175,25 @@ function parseFormattedInput(input: string, format: string, utc: boolean): Date 
   }
 }
 
-declare module 'esday' {
-  interface EsDayFactory {
-    (d?: DateType, conf?: {
-      utc?: boolean
-      format?: string
-    }): EsDay
-  }
-}
 
 export const customParseFormatPlugin: EsDayPlugin<{}> = (_, dayTsClass: typeof EsDay) => {
   const oldParse = dayTsClass.prototype['parse']
-  dayTsClass.prototype['parse'] = function (cfg: { d: DateType, utc: boolean, format: string }) {
-    const format = cfg.format
-    if (typeof cfg.d === 'string' && format) {
-      const date = parseFormattedInput(cfg.d, format, cfg.utc)
+  dayTsClass.prototype['parse'] = function (d?: Exclude<DateType, EsDay>, ...others: any[]) {
+    const utc: boolean = others[0]
+    const format: string = others[1]
+    if (typeof d === 'string' && typeof format === 'string') {
+      const date = parseFormattedInput(d, format, utc)
 
-      if (Number.isNaN(date.getTime()))
+      if (Number.isNaN(date.getTime())) {
         this['$d'] = new Date('')
-      else
+      }
+      else {
         this['$d'] = date
+        this['$u'] = utc
+      }
     }
     else {
-      oldParse.call(this, cfg)
+      oldParse.call(this, d, utc)
     }
   }
 }

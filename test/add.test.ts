@@ -3,9 +3,6 @@ import { esday } from '~/core'
 
 it('add', () => {
   const inst = esday('2021-01-01')
-  // eslint-disable-next-line dot-notation
-  console.log(inst['$d'])
-
   expect(inst.add(1, 'day').format('YYYY-MM-DD')).toBe('2021-01-02')
   expect(inst.add(1, 'hour').format('YYYY-MM-DD HH')).toBe('2021-01-01 01')
   expect(inst.add(1, 'minute').format('YYYY-MM-DD HH:mm')).toBe('2021-01-01 00:01')

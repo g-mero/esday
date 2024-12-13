@@ -1,8 +1,9 @@
+import type { EsDay } from './EsDay'
 import type { DateType } from '~/types'
 import * as C from './constant'
 import { isUndefined } from './utils'
 
-export function parseDate(date?: Omit<DateType, 'EsDay'>, utc = false): Date {
+export function parseDate(date?: Exclude<DateType, EsDay>, utc = false): Date {
   if (isUndefined(date))
     return new Date()
   if (date instanceof Date)

@@ -1,8 +1,8 @@
 /* eslint-disable dot-notation */
+import type { EsDay } from '~/core'
 import type { UnitType } from '~/types'
-import { EsDay } from '~/core'
 import * as C from '../constant'
-import { prettyUnit } from '../utils'
+import { prettyUnit, wrapperInst } from '../utils'
 
 export function addImpl(that: EsDay, number: number, units: UnitType) {
   const $d = that['$d']
@@ -35,5 +35,5 @@ export function addImpl(that: EsDay, number: number, units: UnitType) {
   }[unit] || 1 // 毫秒
 
   const nextTimeStamp = $d.getTime() + number * step
-  return new EsDay({ d: new Date(nextTimeStamp), utc: that['$u'] })
+  return wrapperInst(new Date(nextTimeStamp), that)
 }
