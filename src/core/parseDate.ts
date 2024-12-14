@@ -1,13 +1,37 @@
 import type { EsDay } from './EsDay'
 import type { DateType } from '~/types'
 import * as C from './constant'
-import { isUndefined } from './utils'
+import { isEmptyObject, isUndefined } from './utils'
+
+export function parseArrayToDate(dateArray: number[]) {
+  const dateArrayTuple: [
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+  ] = [0, 0, 1, 0, 0, 0, 0]
+  dateArray.forEach((value, index) => {
+    if (value !== undefined) {
+      dateArrayTuple[index] = value
+    }
+  })
+  return new Date(...dateArrayTuple)
+}
 
 export function parseDate(date?: Exclude<DateType, EsDay>, utc = false): Date {
-  if (isUndefined(date))
-    return new Date()
   if (date instanceof Date)
     return new Date(date)
+  if (date === null)
+    return new Date(Number.NaN)
+  if (isUndefined(date))
+    return new Date()
+  if (isEmptyObject(date))
+    return new Date()
+  if (Array.isArray(date))
+    return parseArrayToDate(date)
   if (typeof date === 'string' && !/Z$/i.test(date)) {
     const d = date.match(C.REGEX_PARSE)
     if (d) {
