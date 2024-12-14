@@ -7,6 +7,7 @@ import { formatImpl } from './Impl/format'
 import { startOfImpl } from './Impl/startOf'
 import { parseDate } from './parseDate'
 import { callDateGetOrSet, getAllFieldsInDate, prettyUnit } from './utils'
+import { MS } from './constant';
 
 export declare interface EsDay {
   year: (() => number) & ((value: number) => EsDay)
@@ -37,16 +38,16 @@ export class EsDay {
     return new EsDay(this.toDate(), true)
   }
 
-  isSame(that: DateType, units: UnitType) {
+  isSame(that?: DateType, units: UnitType = MS) {
     const other = esday(that)
     return this.startOf(units) <= other && other <= this.endOf(units)
   }
 
-  isAfter(that: DateType, units: UnitType) {
+  isAfter(that?: DateType, units: UnitType = MS) {
     return esday(that) < this.startOf(units)
   }
 
-  isBefore(that: DateType, units: UnitType) {
+  isBefore(that?: DateType, units: UnitType = MS) {
     return this.endOf(units) < esday(that)
   }
 
