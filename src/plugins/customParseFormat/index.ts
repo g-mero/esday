@@ -175,7 +175,6 @@ function parseFormattedInput(input: string, format: string, utc: boolean): Date 
   }
 }
 
-
 export const customParseFormatPlugin: EsDayPlugin<{}> = (_, dayTsClass: typeof EsDay) => {
   const oldParse = dayTsClass.prototype['parse']
   dayTsClass.prototype['parse'] = function (d?: Exclude<DateType, EsDay>, ...others: any[]) {
