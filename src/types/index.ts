@@ -1,6 +1,6 @@
 import type { EsDay } from '~/core/EsDay'
 
-export type DateType = Date | string | number | EsDay | undefined
+export type DateType = EsDay | Date | string | number | number[] | null | undefined | object
 export type PrettyUnitType = 'date' | 'day' | 'week' | 'month' | 'year'
   | 'hour' | 'minute' | 'second' | 'millisecond'
 export type PrettyUnit<T extends UnitType> = T extends 'D' ? 'date' :

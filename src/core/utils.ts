@@ -66,3 +66,7 @@ export function wrapperInst(date: Date, instance: EsDay) {
 export function undefinedOr<T, U>(v: T | undefined, or: U): T | U {
   return isUndefined(v) ? or : v
 }
+
+export function isEmptyObject(value: unknown): value is object {
+  return typeof value === 'object' && value !== null && Object.keys(value).length === 0
+}
