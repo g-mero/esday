@@ -1,6 +1,6 @@
 ## esday
 
-![npm](https://img.shields.io/npm/v/esday)
+![npm](https://img.shields.io/npm/v/esday) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 
 > 🚧 working in progress
 
@@ -19,3 +19,15 @@ esday('2024-12-10').set('year', 2025).add(1, 'month').isToday()
 
 - **Modern API**: Provides the same API as Day.js, with some features moved to plugins for a simpler core.
 - **Immutable**: esday is immutable, which means that all operations will return a new instance of esday.
+
+## Differences with Day.js
+
+- **locale**: esday core does not support locales, localizied formats are provided by plugins.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+This project also partially contains code derived or copied from the following projects:
+
+- [Day.js](https://github.com/iamkun/dayjs)
