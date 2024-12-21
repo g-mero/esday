@@ -37,16 +37,16 @@ export class EsDay {
     return new EsDay(this.toDate(), true)
   }
 
-  isSame(that?: DateType, units: UnitType = C.MS) {
+  isSame(that: DateType, units: UnitType = C.MS) {
     const other = esday(that)
     return this.startOf(units) <= other && other <= this.endOf(units)
   }
 
-  isAfter(that?: DateType, units: UnitType = C.MS) {
+  isAfter(that: DateType, units: UnitType = C.MS) {
     return esday(that) < this.startOf(units)
   }
 
-  isBefore(that?: DateType, units: UnitType = C.MS) {
+  isBefore(that: DateType, units: UnitType = C.MS) {
     return this.endOf(units) < esday(that)
   }
 
