@@ -10,16 +10,17 @@ export const MILLISECONDS_A_DAY = SECONDS_A_DAY * MILLISECONDS_A_SECOND
 export const MILLISECONDS_A_WEEK = SECONDS_A_WEEK * MILLISECONDS_A_SECOND
 
 // English locales
-export const MS = 'millisecond'
-export const S = 'second'
-export const MIN = 'minute'
-export const H = 'hour'
-export const D = 'day'
-export const W = 'week'
-export const M = 'month'
-export const Q = 'quarter'
-export const Y = 'year'
-export const DATE = 'date'
+// 'as const' is required to make these values usable as units
+export const MS = 'millisecond' as const
+export const S = 'second' as const
+export const MIN = 'minute' as const
+export const H = 'hour' as const
+export const D = 'day' as const
+export const W = 'week' as const
+export const M = 'month' as const
+export const Q = 'quarter' as const
+export const Y = 'year' as const
+export const DATE = 'date' as const
 
 export const FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ'
 
