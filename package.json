@@ -19,13 +19,15 @@
   "module": "index.js",
   "types": "index.d.ts",
   "typesVersions": {},
-  "files": ["*"],
+  "files": [
+    "*"
+  ],
   "scripts": {
     "build": "tsup --dts",
     "test": "vitest",
     "test:ui": "vitest --ui --api 9527",
     "test:run": "vitest run",
-    "copypkg": "node scripts/copy-pkg.mjs",
+    "copypkg": "cpy package.json dist/ && cpy README.md dist/ ",
     "pub": "pnpm build && pnpm copypkg && cd dist && pnpm publish"
   },
   "dependencies": {
@@ -35,6 +37,7 @@
     "@antfu/eslint-config": "^3",
     "@types/node": "^22.5.2",
     "@vitest/ui": "latest",
+    "cpy-cli": "^5.0.0",
     "eslint": "^9",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
