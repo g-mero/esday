@@ -21,6 +21,8 @@
   "typesVersions": {},
   "files": ["*"],
   "scripts": {
+    "lint": "pnpm exec eslint .",
+    "lint:fix": "pnpm exec eslint . --fix",
     "build": "tsup --dts",
     "test": "vitest",
     "test:ui": "vitest --ui --api 9527",
