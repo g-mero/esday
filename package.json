@@ -4,6 +4,7 @@
   "version": "0.3.0",
   "description": "A simple date library fully written in TypeScript",
   "license": "MIT",
+  "homepage": "https://github.com/g-mero/esday",
   "repository": {
     "type": "git",
     "url": "https://github.com/g-mero/esday"
@@ -11,7 +12,6 @@
   "bugs": {
     "url": "https://github.com/g-mero/esday/issues"
   },
-  "homepage": "https://github.com/g-mero/esday",
   "sideEffects": false,
   "exports": {
     ".": {
@@ -32,6 +32,7 @@
   ],
   "scripts": {
     "build": "tsup --dts",
+    "type-check": "tsc --noEmit --skipLibCheck",
     "test": "vitest",
     "test:ui": "vitest --ui --api 9527",
     "test:run": "vitest run",
