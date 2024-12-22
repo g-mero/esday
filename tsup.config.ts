@@ -8,7 +8,7 @@ function generateConfig(jsx: boolean): Options {
     format: 'esm',
     clean: true,
     dts: !jsx,
-    entry: ['src/index.ts', 'src/plugins/*/index.ts'],
+    entry: ['src/index.ts', 'src/plugins/*/index.ts', 'src/locale/*.ts'],
     outDir: 'dist/',
     treeshake: { preset: 'smallest' },
     replaceNodeEnv: true,
