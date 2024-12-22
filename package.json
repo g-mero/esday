@@ -4,6 +4,14 @@
   "version": "0.3.0",
   "description": "A simple date library fully written in TypeScript",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/g-mero/esday"
+  },
+  "bugs": {
+    "url": "https://github.com/g-mero/esday/issues"
+  },
+  "homepage": "https://github.com/g-mero/esday",
   "sideEffects": false,
   "exports": {
     ".": {
