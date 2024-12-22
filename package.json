@@ -1,7 +1,7 @@
 {
   "name": "esday",
   "type": "module",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A simple date library fully written in TypeScript",
   "license": "MIT",
   "homepage": "https://github.com/g-mero/esday",
@@ -38,21 +38,42 @@
     "test": "vitest",
     "test:ui": "vitest --ui --api 9527",
     "test:run": "vitest run",
+    "release": "commit-and-tag-version -i CHANGELOG.md --same-file",
+    "lint-commits": "commitlint --from b4c0a8614dd7d9997 --to HEAD --verbose",
     "copypkg": "cpy package.json dist/ && cpy README.md dist/ ",
-    "pub": "pnpm build && pnpm copypkg && cd dist && pnpm publish"
+    "pub": "pnpm build && pnpm copypkg && cd dist && pnpm publish",
+    "prepare": "husky"
   },
   "dependencies": {
     "radash": "^12.1.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3",
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
     "@types/node": "^22.5.2",
     "@vitest/ui": "latest",
+    "commit-and-tag-version": "^12.5.0",
     "cpy-cli": "^5.0.0",
     "eslint": "^9",
+    "husky": "^9.1.7",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
     "vite": "latest",
     "vitest": "latest"
+  },
+  "commit-and-tag-version": {
+    "packageFiles": [
+      {
+        "filename": "package.json",
+        "type": "json"
+      }
+    ],
+    "bumpFiles": [
+      {
+        "filename": "package.json",
+        "type": "json"
+      }
+    ]
   }
 }
