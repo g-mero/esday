@@ -31,6 +31,8 @@
     "*"
   ],
   "scripts": {
+    "lint": "pnpm exec eslint .",
+    "lint:fix": "pnpm exec eslint . --fix",
     "build": "tsup --dts",
     "type-check": "tsc --noEmit --skipLibCheck",
     "test": "vitest",
