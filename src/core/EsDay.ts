@@ -5,6 +5,7 @@ import * as C from './constant'
 import { addImpl } from './Impl/add'
 import { formatImpl } from './Impl/format'
 import { startOfImpl } from './Impl/startOf'
+import { getLocale } from './locale'
 import { parseDate } from './parseDate'
 import { callDateGetOrSet, getAllFieldsInDate, prettyUnit } from './utils'
 
@@ -23,6 +24,7 @@ export class EsDay {
   private $d!: Date
   // utc mode
   private $u = false
+  private $l = 'en'
   constructor(d: Exclude<DateType, EsDay>, utc: boolean, ...others: any[]) {
     this.parse(d, utc, ...others)
   }
@@ -30,6 +32,10 @@ export class EsDay {
   private parse(d: Exclude<DateType, EsDay>, utc: boolean, ..._others: any[]) {
     this.$d = parseDate(d)
     this.$u = utc
+  }
+
+  private $locale() {
+    return getLocale(this.$l)
   }
 
   // return utc instance

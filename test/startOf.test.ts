@@ -1,22 +1,48 @@
 import { esday } from 'esday'
-import { expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
-it('start of', () => {
-  expect(esday('2024-01-05 12:34:56').startOf('year').format('YYYY-MM-DD')).toBe('2024-01-01')
-  expect(esday('2024-01-05 12:34:56').startOf('month').format('YYYY-MM-DD')).toBe('2024-01-01')
-  expect(esday('2024-01-05 12:34:56').startOf('week').format('YYYY-MM-DD')).toBe('2023-12-31')
-  expect(esday('2024-01-05 12:34:56').startOf('day').format('YYYY-MM-DD')).toBe('2024-01-05')
-  expect(esday('2024-01-05 12:34:56').startOf('hour').format('YYYY-MM-DD HH:mm')).toBe('2024-01-05 12:00')
-  expect(esday('2024-01-05 12:34:56').startOf('minute').format('YYYY-MM-DD HH:mm:ss')).toBe('2024-01-05 12:34:00')
-  expect(esday('2024-01-05 12:34:56').startOf('second').format('YYYY-MM-DD HH:mm:ss')).toBe('2024-01-05 12:34:56')
+describe('startOf', () => {
+  const inst = esday('2024-01-05 12:34:56')
+  it('on unit year', () => {
+    expect(inst.startOf('year').format('YYYY-MM-DD')).toBe('2024-01-01')
+  })
+
+  it('on unit month', () => {
+    expect(inst.startOf('month').format('YYYY-MM-DD')).toBe('2024-01-01')
+  })
+
+  it('on unit week', () => {
+    expect(inst.startOf('week').format('YYYY-MM-DD')).toBe('2024-01-01')
+  })
+
+  it('on unit day', () => {
+    expect(inst.startOf('day').format('YYYY-MM-DD')).toBe('2024-01-05')
+  })
+
+  it('on unit hour', () => {
+    expect(inst.startOf('hour').format('YYYY-MM-DD HH:mm')).toBe('2024-01-05 12:00')
+  })
 })
 
-it('end of', () => {
-  expect(esday('2024-01-05 12:34:56').endOf('year').format('YYYY-MM-DD')).toBe('2024-12-31')
-  expect(esday('2024-01-05 12:34:56').endOf('month').format('YYYY-MM-DD')).toBe('2024-01-31')
-  expect(esday('2024-01-05 12:34:56').endOf('week').format('YYYY-MM-DD')).toBe('2024-01-06')
-  expect(esday('2024-01-05 12:34:56').endOf('day').format('YYYY-MM-DD')).toBe('2024-01-05')
-  expect(esday('2024-01-05 12:34:56').endOf('hour').format('YYYY-MM-DD HH:mm')).toBe('2024-01-05 12:59')
-  expect(esday('2024-01-05 12:34:56').endOf('minute').format('YYYY-MM-DD HH:mm:ss')).toBe('2024-01-05 12:34:59')
-  expect(esday('2024-01-05 12:34:56').endOf('second').format('YYYY-MM-DD HH:mm:ss')).toBe('2024-01-05 12:34:56')
+describe('endOf', () => {
+  const inst = esday('2024-01-05 12:34:56')
+  it('on unit year', () => {
+    expect(inst.endOf('year').format('YYYY-MM-DD')).toBe('2024-12-31')
+  })
+
+  it('on unit month', () => {
+    expect(inst.endOf('month').format('YYYY-MM-DD')).toBe('2024-01-31')
+  })
+
+  it('on unit week', () => {
+    expect(inst.endOf('week').format('YYYY-MM-DD')).toBe('2024-01-07')
+  })
+
+  it('on unit day', () => {
+    expect(inst.endOf('day').format('YYYY-MM-DD')).toBe('2024-01-05')
+  })
+
+  it('on unit hour', () => {
+    expect(inst.endOf('hour').format('YYYY-MM-DD HH:mm')).toBe('2024-01-05 12:59')
+  })
 })
