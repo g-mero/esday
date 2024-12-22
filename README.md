@@ -22,7 +22,7 @@ esday('2024-12-10').set('year', 2025).add(1, 'month').isToday()
 
 ## Differences with Day.js
 
-- **locale**: esday core does not support locales, localizied formats are provided by plugins.
+- **default start of week**: esday uses Monday as the default week start day (accroding to [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html)).
 
 ## License
 
