@@ -7,5 +7,8 @@ export default defineConfig({
       '~/': `${path.resolve(__dirname, 'src')}/`,
       'esday': `${path.resolve(__dirname, 'src')}`,
     },
+    coverage: {
+      reporter: ['text', 'json', 'html'],
+    },
   },
 })
