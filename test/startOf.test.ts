@@ -17,14 +17,14 @@ describe('startOf', () => {
 
   // First day of the week is calculated for the locales starting a week on Monday
   it.each([
-    { unit: Y, expected: 1672527600000, expectedAsString: '2023-01-01T00:00:00.000' },
-    { unit: M, expected: 1698793200000, expectedAsString: '2023-11-01T00:00:00.000' },
-    { unit: D, expected: 1700175600000, expectedAsString: '2023-11-17T00:00:00.000' },
-    { unit: DATE, expected: 1700175600000, expectedAsString: '2023-11-17T00:00:00.000' },
-    { unit: W, expected: 1699743600000, expectedAsString: '2023-11-13T00:00:00.000' },
-    { unit: H, expected: 1700186400000, expectedAsString: '2023-11-17T03:00:00.000' },
-    { unit: MIN, expected: 1700187840000, expectedAsString: '2023-11-17T03:24:00.000' },
-    { unit: S, expected: 1700187886000, expectedAsString: '2023-11-17T03:24:46.000' },
+    { unit: Y, expectedAsString: '2023-01-01T00:00:00.000' },
+    { unit: M, expectedAsString: '2023-11-01T00:00:00.000' },
+    { unit: D, expectedAsString: '2023-11-17T00:00:00.000' },
+    { unit: DATE, expectedAsString: '2023-11-17T00:00:00.000' },
+    { unit: W, expectedAsString: '2023-11-13T00:00:00.000' },
+    { unit: H, expectedAsString: '2023-11-17T03:00:00.000' },
+    { unit: MIN, expectedAsString: '2023-11-17T03:24:00.000' },
+    { unit: S, expectedAsString: '2023-11-17T03:24:46.000' },
   ])('for "$unit"', ({ unit, expectedAsString }) => {
     const resultDate = esday().startOf(unit)
 
@@ -45,14 +45,14 @@ describe('endOf', () => {
   })
 
   it.each([
-    { unit: Y, expected: 1704063599999, expectedAsString: '2023-12-31T23:59:59.999' },
-    { unit: M, expected: 1701385199999, expectedAsString: '2023-11-30T23:59:59.999' },
-    { unit: D, expected: 1700261999999, expectedAsString: '2023-11-17T23:59:59.999' },
-    { unit: DATE, expected: 1700261999999, expectedAsString: '2023-11-17T23:59:59.999' },
-    { unit: W, expected: 1700348399999, expectedAsString: '2023-11-19T23:59:59.999' },
-    { unit: H, expected: 1700189999999, expectedAsString: '2023-11-17T03:59:59.999' },
-    { unit: MIN, expected: 1700187899999, expectedAsString: '2023-11-17T03:24:59.999' },
-    { unit: S, expected: 1700187886999, expectedAsString: '2023-11-17T03:24:46.999' },
+    { unit: Y, expectedAsString: '2023-12-31T23:59:59.999' },
+    { unit: M, expectedAsString: '2023-11-30T23:59:59.999' },
+    { unit: D, expectedAsString: '2023-11-17T23:59:59.999' },
+    { unit: DATE, expectedAsString: '2023-11-17T23:59:59.999' },
+    { unit: W, expectedAsString: '2023-11-19T23:59:59.999' },
+    { unit: H, expectedAsString: '2023-11-17T03:59:59.999' },
+    { unit: MIN, expectedAsString: '2023-11-17T03:24:59.999' },
+    { unit: S, expectedAsString: '2023-11-17T03:24:46.999' },
   ])('for "$unit"', ({ unit, expectedAsString }) => {
     const resultDate = esday().endOf(unit)
 
