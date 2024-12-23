@@ -68,7 +68,7 @@ export class EsDay {
     return new EsDay(this.toDate(), this.$u)
   }
 
-  format(formatStr: string) {
+  format(formatStr?: string) {
     return formatImpl(this, formatStr)
   }
 

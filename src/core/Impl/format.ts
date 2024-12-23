@@ -3,7 +3,7 @@ import type { EsDay } from 'esday'
 import * as C from '../constant'
 import { getAllFieldsInDate, padStart } from '../utils'
 
-export function formatImpl(that: EsDay, formatStr: string) {
+export function formatImpl(that: EsDay, formatStr?: string) {
   if (!that.isValid())
     return C.INVALID_DATE_STRING
 
