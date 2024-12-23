@@ -1,5 +1,5 @@
 /* eslint-disable dot-notation */
-import type { EsDayPlugin, Locale, UnitType } from 'esday'
+import type { EsDay, EsDayPlugin, Locale, UnitType } from 'esday'
 import * as C from '~/core/constant'
 import { prettyUnit, undefinedOr } from '~/core/utils'
 import en from '~/locales/en'
@@ -37,11 +37,14 @@ declare module 'esday' {
   }
 }
 
-function getSetPrivateLocaleName(inst: any, v?: string): string {
-  if (v) {
-    inst['$locale_name'] = v
+function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
+  if (newLocaleName) {
+    // @ts-expect-error $locale_name is private property
+    inst['$locale_name'] = newLocaleName
   }
-  return inst['$locale_name'] || 'en'
+
+  // @ts-expect-error $locale_name is private property
+  return inst['$locale_name'] || $localeGlobal
 }
 
 export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
