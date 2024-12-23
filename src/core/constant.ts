@@ -24,7 +24,7 @@ export const Q = 'quarter' as const
 export const Y = 'year' as const
 export const DATE = 'date' as const
 
-export const FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ'
+export const FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ss'
 
 export const INVALID_DATE_STRING = 'Invalid Date'
 
