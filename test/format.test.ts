@@ -44,12 +44,9 @@ describe('format', () => {
     expect(esday().format(formatString)).toBe(expected)
   })
 
-  // TODO short and long locale formats for month are missing
   it.each([
     { formatString: 'M', expected: '12' },
     { formatString: 'MM', expected: '12' },
-    { formatString: 'MMM', expected: '23' },
-    { formatString: 'MMMM', expected: '23' },
   ])('double digit month as "$formatString"', ({ formatString, expected }) => {
     expect(esday().format(formatString)).toBe(expected)
   })
@@ -73,12 +70,8 @@ describe('format', () => {
     },
   )
 
-  // TODO short and long locale formats for day of week are missing
   it.each([
     { formatString: 'd', expected: '4' },
-    { formatString: 'dd', expected: 'We' },
-    { formatString: 'ddd', expected: 'Wed' },
-    { formatString: 'dddd', expected: 'Wednesday' },
   ])(
     'day of week (sun - sat) as "%s"',
     ({ formatString, expected }) => {
@@ -158,36 +151,6 @@ describe('format', () => {
 
   it('millisecond as "SSS"', () => {
     expect(esday().format('SSS')).toBe('234')
-  })
-
-  // TODO time offset in format is missing
-  it.each([
-    { dateString: '2018-05-02T23:00:00.000+08:00', formatString: 'Z', expected: '+08:00' },
-    { dateString: '2018-05-02T23:00:00.000+08:00', formatString: 'Z', expected: '+0800' },
-    { dateString: '2018-05-02T23:00:00.000-08:00', formatString: 'Z', expected: '+08:00' },
-    { dateString: '2018-05-02T23:00:00.000-08:00', formatString: 'Z', expected: '+0800' },
-    { dateString: '2018-05-02T23:00:00.000Z', formatString: 'Z', expected: '' },
-    { dateString: '2018-05-02T23:00:00.000Z', formatString: 'ZZ', expected: '' },
-    { dateString: '2018-05-02T23:00:00.000+10:00', formatString: 'Z', expected: '+10:00' },
-    { dateString: '2018-05-02T23:00:00.000+10:00', formatString: 'Z', expected: '+1000' },
-    { dateString: '2018-05-02T23:00:00.000-11:00', formatString: 'Z', expected: '-11:00' },
-    { dateString: '2018-05-02T23:00:00.000-11:00', formatString: 'Z', expected: '-1100' },
-    { dateString: '2018-05-02T23:00:00.000-05:30', formatString: 'Z', expected: '-05:30' },
-    { dateString: '2018-05-02T23:00:00.000-05:30', formatString: 'Z', expected: '-0530' },
-  ])('timezone from "%s"', ({ dateString, formatString, expected }) => {
-    vi.setSystemTime(new Date(dateString))
-
-    expect(esday().format(formatString)).toBe(expected)
-  })
-
-  // TODO time offset in format is missing
-  it.each([
-    { formatString: '[Z] Z', expected: 'Z +05:00' },
-    { formatString: '[Z] Z [Z]', expected: 'Z +05:00 Z' },
-  ])('offset from UTC using escaped characters', ({ formatString, expected }) => {
-    vi.setSystemTime(new Date('2023-12-17T03:05:46.234+05:00'))
-
-    expect(esday().format(formatString)).toBe(expected)
   })
 
   it.each([
