@@ -21,6 +21,8 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
   }
 
   const $M = callDateGetOrSet(result, 'Month', utc)
+  const $D = callDateGetOrSet(result, 'Date', utc)
+  const $W = callDateGetOrSet(result, 'Day', utc)
 
   switch (prettyUnit(unit)) {
     case C.Y:
@@ -33,9 +35,12 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
       break
     case C.W:
     {
-      const dayOfWeek = callDateGetOrSet(result, 'Day', utc)
-      const diff = (dayOfWeek < 1 ? 7 : 0) + dayOfWeek - (reverse ? 6 : 0)
-      callDateGetOrSet(result, 'Date', utc, callDateGetOrSet(result, 'Date', utc) - diff)
+      // default start of week is Monday
+      // according to ISO 8601
+      const dayOfWeekMonday = 1
+      const weekStart = dayOfWeekMonday
+      const diff = ($W < weekStart ? $W + 7 : $W) - weekStart
+      instanceFactory(reverse ? $D + (6 - diff) : $D - diff, $M)
       instanceFactorySet('Hours', 0)
       break
     }
