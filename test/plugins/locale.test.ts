@@ -49,5 +49,6 @@ describe('esDay locale methods', () => {
     // @ts-expect-error $locale is private method
     expect(dayTest.$locale().weekStart).toBe(0)
     expect(dayTest.startOf('week').format('YYYY-MM-DD')).toBe('2020-12-27')
+    expect(dayTest.endOf('week').format('YYYY-MM-DD')).toBe('2021-01-02')
   })
 })
