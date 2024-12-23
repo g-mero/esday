@@ -1,7 +1,6 @@
 /* eslint-disable dot-notation */
 import type { EsDay } from './EsDay'
 import type { AllDateFields, PrettyUnit, UnitType } from '~/types'
-import { isArray } from 'radash'
 import * as C from './constant'
 
 export function prettyUnit<T extends UnitType>(u: T): PrettyUnit<T> {
@@ -30,7 +29,7 @@ export function callDateGetOrSet(date: Date, field: Exclude<DateField, 'Day'>, u
 export function callDateGetOrSet(date: Date, field: Exclude<DateField, 'Day'>, utc: boolean, value: number[]): void
 export function callDateGetOrSet(date: Date, field: DateField | Exclude<DateField, 'Day'>, utc: boolean, value?: number | number[]): number | void {
   if (!isUndefined(value) && field !== 'Day') {
-    date[`set${utc ? 'UTC' : ''}${field}`](...(isArray(value) ? value : [value]) as [number])
+    date[`set${utc ? 'UTC' : ''}${field}`](...(Array.isArray(value) ? value : [value]) as [number])
     return
   }
   return date[`get${utc ? 'UTC' : ''}${field}`]()
