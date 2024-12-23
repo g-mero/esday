@@ -9,6 +9,8 @@ export const MILLISECONDS_A_HOUR = SECONDS_A_HOUR * MILLISECONDS_A_SECOND
 export const MILLISECONDS_A_DAY = SECONDS_A_DAY * MILLISECONDS_A_SECOND
 export const MILLISECONDS_A_WEEK = SECONDS_A_WEEK * MILLISECONDS_A_SECOND
 
+export const INDEX_MONDAY = 1
+
 // English locales
 // 'as const' is required to make these values usable as units
 export const MS = 'millisecond' as const

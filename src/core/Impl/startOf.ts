@@ -37,8 +37,7 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
     {
       // default start of week is Monday
       // according to ISO 8601
-      const dayOfWeekMonday = 1
-      const weekStart = dayOfWeekMonday
+      const weekStart = C.INDEX_MONDAY
       const diff = ($W < weekStart ? $W + 7 : $W) - weekStart
       instanceFactory(reverse ? $D + (6 - diff) : $D - diff, $M)
       instanceFactorySet('Hours', 0)
