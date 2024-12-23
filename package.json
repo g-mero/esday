@@ -44,9 +44,6 @@
     "pub": "pnpm build && pnpm copypkg && cd dist && pnpm publish",
     "prepare": "husky"
   },
-  "dependencies": {
-    "radash": "^12.1.0"
-  },
   "devDependencies": {
     "@antfu/eslint-config": "^3",
     "@commitlint/cli": "^19.6.1",
