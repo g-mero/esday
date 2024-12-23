@@ -1,7 +1,7 @@
 import type { DateType, EsDayFactory } from '~/types'
 import { EsDay } from './EsDay'
 
-// @ts-expect-error plugin declare may cause ts-type-check error, but it's ok
+// @ts-ignore plugin declare may cause ts-type-checke error, but it's ok
 const esday: EsDayFactory = (d?: DateType, ...others: any[]) => {
   if (d instanceof EsDay) {
     return d.clone()
