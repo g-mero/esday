@@ -9,12 +9,12 @@ esday.extend(localePlugin)
 describe('factory locale methods', () => {
   it('set locale', () => {
     esday.locale('zh')
-    // @ts-expect-error $l is private property
-    expect(esday()['$l']).toBe('zh')
+    // @ts-expect-error $locale_name is private property
+    expect(esday()['$locale_name']).toBe('zh')
 
     esday.locale('non-exist')
-    // @ts-expect-error $l is private property
-    expect(esday()['$l']).toBe('non-exist')
+    // @ts-expect-error $locale_name is private property
+    expect(esday()['$locale_name']).toBe('non-exist')
   })
 
   it('register locale', () => {
@@ -32,12 +32,12 @@ describe('factory locale methods', () => {
 
 describe('esDay locale methods', () => {
   const day = esday('2021-01-01')
-  it('set locale', () => {
-    // @ts-expect-error $l is private property
-    expect(day['$l']).toBe('en')
+  it('set locale for instance', () => {
+    // @ts-expect-error $locale_name is private property
+    expect(day['$locale_name']).toBe('en')
     const dayZh = day.locale('zh')
-    // @ts-expect-error $l is private property
-    expect(dayZh['$l']).toBe('zh')
+    // @ts-expect-error $locale_name is private property
+    expect(dayZh['$locale_name']).toBe('zh')
   })
 
   it('start of', () => {

@@ -33,22 +33,27 @@ declare module 'esday' {
     /**
      * register locale
      */
-    registerLocale: (locale: Locale, rename?: string) => EsDayFactory
+    registerLocale: (locale: Locale, newName?: string) => EsDayFactory
   }
+}
+
+function getSetPrivateLocaleName(inst: any, v?: string): string {
+  if (v) {
+    inst['$locale_name'] = v
+  }
+  return inst['$locale_name'] || 'en'
 }
 
 export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   // @ts-expect-error $locale is private method
   dayClass.prototype.$locale = function () {
-    // @ts-expect-error $l is private property
-    return getLocale(this['$l'] || 'en')
+    return getLocale(getSetPrivateLocaleName(this))
   }
 
   // add locale method
   dayClass.prototype.locale = function (localeName: string) {
     const inst = this.clone()
-    // @ts-expect-error $l is private property
-    inst['$l'] = localeName
+    getSetPrivateLocaleName(inst, localeName)
 
     return inst
   }
@@ -57,17 +62,17 @@ export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const oldClone = dayClass.prototype['clone']
   dayClass.prototype['clone'] = function () {
     const inst = oldClone.call(this)
-    // @ts-expect-error $l is private property
-    inst['$l'] = this['$l']
+    getSetPrivateLocaleName(inst, getSetPrivateLocaleName(this))
     return inst
   }
 
-  // set $l in parse method
+  // set $locale_name in parse method
   const oldParse = dayClass.prototype['parse']
   dayClass.prototype['parse'] = function (d: any, utc: boolean, ...others: any[]) {
     oldParse.call(this, d, utc, ...others)
-    // @ts-expect-error $l is private property
-    this['$l'] = $localeGlobal
+
+    // set locale name
+    getSetPrivateLocaleName(this, $localeGlobal)
   }
 
   // change startOf/endOf method
@@ -76,7 +81,7 @@ export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const fixDiff = (inst: any, unit: UnitType) => {
     if (prettyUnit(unit) === C.W) {
       // default start of week is Monday
-      const defaultStartOfWeek = 1
+      const defaultStartOfWeek = C.INDEX_MONDAY
       const weekStart = undefinedOr(inst.$locale().weekStart, defaultStartOfWeek)
       const diffToDefault = weekStart - defaultStartOfWeek
 
@@ -101,8 +106,8 @@ export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return dayFactory
   }
 
-  dayFactory.registerLocale = function (locale: Locale, rename?: string) {
-    registerLocale(locale, rename)
+  dayFactory.registerLocale = function (locale: Locale, newName?: string) {
+    registerLocale(locale, newName)
     return dayFactory
   }
 }
