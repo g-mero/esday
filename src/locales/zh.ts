@@ -1,6 +1,6 @@
 import type { Locale } from '~/plugins/locale'
 
-const localeZh: Locale = {
+const localeZh: Readonly<Locale> = {
   name: 'zh',
   weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
   weekdaysShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
