@@ -1,18 +1,11 @@
 import type { EsDay } from './EsDay'
 import type { DateType } from '~/types'
+import type { Tuple } from '~/types/util-types'
+import { isEmptyObject, isUndefined } from '~/utils'
 import * as C from './constant'
-import { isEmptyObject, isUndefined } from './utils'
 
 export function parseArrayToDate(dateArray: number[]) {
-  const dateArrayTuple: [
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-    number,
-  ] = [0, 0, 1, 0, 0, 0, 0]
+  const dateArrayTuple: Tuple<number, 7> = [0, 0, 1, 0, 0, 0, 0]
   dateArray.forEach((value, index) => {
     if (value !== undefined) {
       dateArrayTuple[index] = value
@@ -21,7 +14,7 @@ export function parseArrayToDate(dateArray: number[]) {
   return new Date(...dateArrayTuple)
 }
 
-export function parseDate(date?: Exclude<DateType, EsDay>, utc = false): Date {
+export function parseDate(date?: Exclude<DateType, EsDay>): Date {
   if (date instanceof Date)
     return new Date(date)
   if (date === null)
@@ -42,9 +35,6 @@ export function parseDate(date?: Exclude<DateType, EsDay>, utc = false): Date {
       const m = Number(d[5] || 0)
       const s = Number(d[6] || 0)
       const ms = Number((d[7] || '0').substring(0, 3))
-      if (utc) {
-        return new Date(Date.UTC(Y, M, D, h, m, s, ms))
-      }
       return new Date(Y, M, D, h, m, s, ms)
     }
   }

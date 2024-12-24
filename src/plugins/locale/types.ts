@@ -1,12 +1,33 @@
 // From https://stackoverflow.com/questions/41139763/how-to-declare-a-fixed-length-array-in-typescript
-type Tuple<
-  T,
-  N extends number,
-  R extends readonly T[] = [],
-> = R['length'] extends N ? R : Tuple<T, N, readonly [T, ...R]>
+ type ReadonlyTuple<
+   T,
+   N extends number,
+   R extends readonly T[] = [],
+ > = R['length'] extends N ? R : ReadonlyTuple<T, N, readonly [T, ...R]>
 
-export type DayNames<T = string> = Tuple<T, 7>
-export type MonthNames<T = string> = Tuple<T, 12>
+declare module 'esday' {
+/*   interface EsDay {
+    $locale: () => Locale
+  } */
+
+  interface EsDay {
+    locale: (localeName: string) => EsDay
+  }
+
+  interface EsDayFactory {
+    /**
+     * use locale as global
+     */
+    locale: (localeName: string) => EsDayFactory
+    /**
+     * register locale
+     */
+    registerLocale: (locale: Locale, newName?: string) => EsDayFactory
+  }
+}
+
+export type DayNames<T = string> = ReadonlyTuple<T, 7>
+export type MonthNames<T = string> = ReadonlyTuple<T, 12>
 export interface MonthNamesFunction<T = MonthNames<string>> {
   (format: string): string
   standalone: T

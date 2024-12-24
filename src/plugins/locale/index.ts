@@ -1,8 +1,9 @@
 /* eslint-disable dot-notation */
-import type { EsDay, EsDayPlugin, Locale, UnitType } from 'esday'
+import type { EsDay, EsDayPlugin, UnitType } from 'esday'
+import type { Locale } from './types'
 import * as C from '~/core/constant'
-import { prettyUnit, undefinedOr } from '~/core/utils'
 import en from '~/locales/en'
+import { prettyUnit, undefinedOr } from '~/utils'
 
 const LocaleStore: Map<string, Locale> = new Map()
 
@@ -82,14 +83,14 @@ export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const oldStartOf = dayClass.prototype['startOf']
   const oldEndOf = dayClass.prototype['endOf']
   const fixDiff = (inst: any, unit: UnitType) => {
-    if (prettyUnit(unit) === C.W) {
+    if (prettyUnit(unit) === C.WEEK) {
       // default start of week is Monday
       const defaultStartOfWeek = C.INDEX_MONDAY
       const weekStart = undefinedOr(inst.$locale().weekStart, defaultStartOfWeek)
       const diffToDefault = weekStart - defaultStartOfWeek
 
       if (diffToDefault !== 0) {
-        return inst.add(diffToDefault, C.D)
+        return inst.add(diffToDefault, C.DAY)
       }
     }
 
@@ -114,3 +115,5 @@ export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return dayFactory
   }
 }
+
+export * from './types'

@@ -178,21 +178,19 @@ function parseFormattedInput(input: string, format: string, utc: boolean): Date 
 export const customParseFormatPlugin: EsDayPlugin<{}> = (_, dayTsClass: typeof EsDay) => {
   const oldParse = dayTsClass.prototype['parse']
   dayTsClass.prototype['parse'] = function (d?: Exclude<DateType, EsDay>, ...others: any[]) {
-    const utc: boolean = others[0]
-    const format: string = others[1]
+    const format: string = others[0]
     if (typeof d === 'string' && typeof format === 'string') {
-      const date = parseFormattedInput(d, format, utc)
+      const date = parseFormattedInput(d, format, !!this['$conf'].utc)
 
       if (Number.isNaN(date.getTime())) {
         this['$d'] = new Date('')
       }
       else {
         this['$d'] = date
-        this['$u'] = utc
       }
     }
     else {
-      oldParse.call(this, d, utc)
+      oldParse.call(this, d)
     }
   }
 }

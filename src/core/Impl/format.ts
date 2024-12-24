@@ -1,19 +1,15 @@
-/* eslint-disable dot-notation */
 import type { EsDay } from 'esday'
+import { padStart } from '~/utils'
 import * as C from '../constant'
-import { getAllFieldsInDate, padStart } from '../utils'
 
 export function formatImpl(that: EsDay, formatStr?: string) {
   if (!that.isValid())
     return C.INVALID_DATE_STRING
 
-  const $d = that['$d']
-  const dates = getAllFieldsInDate($d, that['$u'])
-
   const str = formatStr || C.FORMAT_DEFAULT
 
   const get$H = (num: number) => (
-    padStart(dates.hour % 12 || 12, num, '0')
+    padStart(that.hour() % 12 || 12, num, '0')
   )
 
   const meridiemFunc = (hour: number, _minute: number, isLowercase: boolean) => {
@@ -21,44 +17,53 @@ export function formatImpl(that: EsDay, formatStr?: string) {
     return isLowercase ? m.toLowerCase() : m
   }
 
+  const $year = that.year()
+  const $month = that.month()
+  const $date = that.date()
+  const $day = that.day()
+  const $hour = that.hour()
+  const $minute = that.minute()
+  const $second = that.second()
+  const $millisecond = that.millisecond()
+
   const matches = (match: string) => {
     switch (match) {
       case 'YY':
-        return String(dates.year).slice(-2)
+        return String($year).slice(-2)
       case 'YYYY':
-        return padStart(dates.year, 4, '0')
+        return padStart($year, 4, '0')
       case 'M':
-        return dates.month + 1
+        return $month + 1
       case 'MM':
-        return padStart(dates.month + 1, 2, '0')
+        return padStart($month + 1, 2, '0')
       case 'D':
-        return dates.date
+        return $date
       case 'DD':
-        return padStart(dates.date, 2, '0')
+        return padStart($date, 2, '0')
       case 'd':
-        return String(dates.day)
+        return String($day)
       case 'H':
-        return String(dates.hour)
+        return String($hour)
       case 'HH':
-        return padStart(dates.hour, 2, '0')
+        return padStart($hour, 2, '0')
       case 'h':
         return get$H(1)
       case 'hh':
         return get$H(2)
       case 'a':
-        return meridiemFunc(dates.hour, dates.minute, true)
+        return meridiemFunc($hour, $minute, true)
       case 'A':
-        return meridiemFunc(dates.hour, dates.minute, false)
+        return meridiemFunc($hour, $minute, false)
       case 'm':
-        return String(dates.minute)
+        return String($minute)
       case 'mm':
-        return padStart(dates.minute, 2, '0')
+        return padStart($minute, 2, '0')
       case 's':
-        return String(dates.second)
+        return String($second)
       case 'ss':
-        return padStart(dates.second, 2, '0')
+        return padStart($second, 2, '0')
       case 'SSS':
-        return padStart(dates.millisecond, 3, '0')
+        return padStart($millisecond, 3, '0')
       default:
         break
     }
