@@ -70,25 +70,28 @@ export interface Locale {
   /**
    * Name of the locale
    */
-  name: string
+  readonly name: string
   /**
    * Array of full day names
    * @example ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
    */
-  weekdays: DayNames
+  readonly weekdays: DayNames
   /**
    * Array of short versions of day names
    * @example ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
    */
-  weekdaysShort?: DayNames
-  weekdaysMin?: DayNames
-  months: MonthNames | MonthNamesFunction
-  monthsShort?: MonthNames | MonthNamesFunction
-  ordinal?: (number: number, period?: 'W') => string
-  weekStart?: number
-  yearStart?: number
-  formats?: Partial<Record<Format, string>>
-  relativeTime?: Record<Relative, string | RelativeTimeElementFunction>
-  meridiem?: (hour: number, minute: number, isLowercase: boolean) => string
-  invalidDate?: string
+  readonly weekdaysShort: DayNames
+  /**
+   * Array of minimal versions of day names
+   * @example ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+   */
+  readonly weekdaysMin: DayNames
+  readonly months: MonthNames | MonthNamesFunction
+  readonly monthsShort: MonthNames | MonthNamesFunction
+  readonly ordinal: (number: number, period?: 'W') => string
+  readonly weekStart: number
+  readonly yearStart: number
+  readonly formats: Partial<Record<Format, string>>
+  readonly relativeTime: Record<Relative, string | RelativeTimeElementFunction>
+  readonly meridiem: (hour: number, minute: number, isLowercase: boolean) => string
 }

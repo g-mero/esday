@@ -2,7 +2,7 @@
 
 import type { Locale } from '~/plugins/locale'
 
-const localeEn: Locale = {
+const localeEn: Readonly<Locale> = {
   name: 'en',
   weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -56,7 +56,6 @@ const localeEn: Locale = {
     const v = n % 100
     return `[${n}${(s[(v - 20) % 10] || s[v] || s[0])}]`
   },
-  invalidDate: 'Invalid date',
 }
 
 export default localeEn
