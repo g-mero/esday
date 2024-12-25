@@ -1,6 +1,6 @@
 // English [en]
 
-import type { Locale } from '~/types'
+import type { Locale } from '~/plugins/locale'
 
 const localeEn: Locale = {
   name: 'en',

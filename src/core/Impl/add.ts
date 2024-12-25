@@ -1,8 +1,7 @@
 /* eslint-disable dot-notation */
 import type { EsDay } from '~/core'
 import type { UnitType } from '~/types'
-import * as C from '../constant'
-import { prettyUnit, wrapperInst } from '../utils'
+import { C, createInstanceFromExist, prettyUnit } from '~/common'
 
 export function addImpl(that: EsDay, number: number, units: UnitType) {
   const $d = that['$d']
@@ -14,16 +13,16 @@ export function addImpl(that: EsDay, number: number, units: UnitType) {
     return newInstance
   }
 
-  if (unit === C.M) {
+  if (unit === C.MONTH) {
     return that.set('month', that.get('month') + number)
   }
-  if (unit === C.Y) {
+  if (unit === C.YEAR) {
     return that.set('year', that.get('year') + number)
   }
-  if (unit === C.DATE || unit === C.D) {
+  if (unit === C.DATE || unit === C.DAY) {
     return instanceFactorySet(1)
   }
-  if (unit === C.W) {
+  if (unit === C.WEEK) {
     return instanceFactorySet(7)
   }
 
@@ -35,5 +34,5 @@ export function addImpl(that: EsDay, number: number, units: UnitType) {
   }[unit] || 1 // 毫秒
 
   const nextTimeStamp = $d.getTime() + number * step
-  return wrapperInst(new Date(nextTimeStamp), that)
+  return createInstanceFromExist(new Date(nextTimeStamp), that)
 }

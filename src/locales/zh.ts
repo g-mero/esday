@@ -1,4 +1,4 @@
-import type { Locale } from '~/types'
+import type { Locale } from '~/plugins/locale'
 
 const localeZh: Locale = {
   name: 'zh',
