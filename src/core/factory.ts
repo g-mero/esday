@@ -8,17 +8,7 @@ const esday: EsDayFactory = (d?: DateType, ...others: any[]) => {
   }
 
   else {
-    return new EsDay(d, false, ...others)
-  }
-}
-
-esday.utc = (d?: DateType, ...others: any[]) => {
-  if (d instanceof EsDay) {
-    return d.clone().utc()
-  }
-
-  else {
-    return new EsDay(d, true, ...others)
+    return new EsDay(d, ...others)
   }
 }
 

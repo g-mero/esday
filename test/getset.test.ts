@@ -216,7 +216,7 @@ describe('set', () => {
     })
 
     it('using setter - long form', () => {
-      const modifiedDate = testDate.set('second', 54)
+      const modifiedDate = testDate.set('s', 54)
 
       expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
     })
