@@ -27,3 +27,11 @@ export function padStart(origin: string | number, length: number, pad: string) {
     return originStr
   return `${Array.from({ length: (length + 1) - originStr.length }).join(pad)}${originStr}`
 }
+
+export function padZoneStr(utcOffset: number) {
+  const negMinutes = -utcOffset
+  const minutes = Math.abs(negMinutes)
+  const hourOffset = Math.floor(minutes / 60)
+  const minuteOffset = minutes % 60
+  return `${negMinutes <= 0 ? '+' : '-'}${padStart(hourOffset, 2, '0')}:${padStart(minuteOffset, 2, '0')}`
+}

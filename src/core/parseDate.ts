@@ -13,7 +13,7 @@ export function parseArrayToDate(dateArray: number[]) {
   return new Date(...dateArrayTuple)
 }
 
-export function parseDate(date?: Exclude<DateType, EsDay>): Date {
+export function parseDate(date?: Exclude<DateType, EsDay>, utc = false): Date {
   if (date instanceof Date)
     return new Date(date)
   if (date === null)
@@ -34,9 +34,12 @@ export function parseDate(date?: Exclude<DateType, EsDay>): Date {
       const m = Number(d[5] || 0)
       const s = Number(d[6] || 0)
       const ms = Number((d[7] || '0').substring(0, 3))
+      if (utc) {
+        return new Date(Date.UTC(Y, M, D, h, m, s, ms))
+      }
       return new Date(Y, M, D, h, m, s, ms)
     }
   }
 
-  return new Date(date as number)
+  return new Date(date)
 }
