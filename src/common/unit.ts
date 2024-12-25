@@ -1,4 +1,4 @@
-import { DATE, DAY, HOUR, MIN, MONTH, MS, SECOND, WEEK, YEAR } from '~/core/constant'
+import { DATE, DAY, HOUR, MIN, MONTH, MS, SECOND, WEEK, YEAR } from './constant'
 
 const UNIT_MAP = {
   y: YEAR,

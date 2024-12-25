@@ -1,4 +1,4 @@
-import type { PrettyUnit, UnitType } from './unit'
+import type { PrettyUnit, UnitDay, UnitType, UnitWeek } from './unit'
 import { isArray } from './is'
 import { prettyUnit } from './unit'
 
@@ -16,18 +16,18 @@ const UNIT_FIELD_MAP = {
 type DateUnit = keyof typeof UNIT_FIELD_MAP
 type DateField<T extends DateUnit > = typeof UNIT_FIELD_MAP[T]
 
-export function unitToField<T extends Exclude<UnitType, 'week' | 'w'>>(unit: T): DateField<PrettyUnit<T>> {
+export function unitToField<T extends Exclude<UnitType, UnitWeek>>(unit: T): DateField<PrettyUnit<T>> {
   const p = prettyUnit(unit)
   return UNIT_FIELD_MAP[p]
 }
 
-export function getUnitInDate(date: Date, unit: Exclude<UnitType, 'week' | 'w'>, utc?: boolean): number {
+export function getUnitInDate(date: Date, unit: Exclude<UnitType, UnitWeek>, utc?: boolean): number {
   const field = unitToField(unit)
   const method = `get${utc ? 'UTC' : ''}${field}` as (`get${typeof field}` | `getUTC${typeof field}`)
   return date[method]()
 }
 
-export function setUnitInDate(date: Date, unit: Exclude<UnitType, 'week' | 'w' | 'd' | 'day'>, value: number | number[], utc?: boolean): Date {
+export function setUnitInDate(date: Date, unit: Exclude<UnitType, UnitWeek | UnitDay>, value: number | number[], utc?: boolean): Date {
   const field = unitToField(unit)
   const method = `set${utc ? 'UTC' : ''}${field}` as (`set${typeof field}` | `setUTC${typeof field}`)
   date[method](...(isArray(value) ? value : [value]) as [number])
