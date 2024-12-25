@@ -1,7 +1,7 @@
 {
   "name": "esday",
   "type": "module",
-  "version": "0.3.1",
+  "version": "0.4.1",
   "description": "A simple date library fully written in TypeScript",
   "license": "MIT",
   "homepage": "https://github.com/g-mero/esday",
