@@ -1,6 +1,7 @@
 /* eslint-disable dot-notation */
 import type { EsDay } from 'esday'
 import type { DateType, EsDayPlugin } from '~/types'
+import { isString } from '~/common'
 
 const formattingTokens
   = /(\[[^[]*\])|([-_:/.,()\s]+)|([AaQz]|YYYY|YY?|ww?|MM?|Do|DD?|hh?|HH?|mm?|ss?|S{1,3}|ZZ?)/g
@@ -177,9 +178,11 @@ function parseFormattedInput(input: string, format: string, utc: boolean): Date 
 
 export const customParseFormatPlugin: EsDayPlugin<{}> = (_, dayTsClass: typeof EsDay) => {
   const oldParse = dayTsClass.prototype['parse']
-  dayTsClass.prototype['parse'] = function (d?: Exclude<DateType, EsDay>, ...others: any[]) {
-    const format: string = others[0]
-    if (typeof d === 'string' && typeof format === 'string') {
+  dayTsClass.prototype['parse'] = function (d?: Exclude<DateType, EsDay>) {
+    const format = this['$conf'].args_1
+
+    if (isString(d) && isString(format)) {
+      // utc plugin compatibility
       const date = parseFormattedInput(d, format, !!this['$conf'].utc)
 
       if (Number.isNaN(date.getTime())) {

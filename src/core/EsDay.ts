@@ -28,17 +28,17 @@ export class EsDay {
    * store data such as locale name, utc mode, etc.
    */
   private $conf: SimpleObject = {}
-  constructor(d: Exclude<DateType, EsDay>, ...others: any[]) {
-    this.parse(d, ...others)
+  constructor(d: Exclude<DateType, EsDay>, conf?: SimpleObject) {
+    this.$conf = { ...conf }
+    this.parse(d)
   }
 
-  private parse(d: Exclude<DateType, EsDay>, ..._others: any[]) {
-    this.$d = parseDate(d)
+  private parse(d: Exclude<DateType, EsDay>) {
+    this.$d = this.$parseDate(d)
   }
 
-  // return utc instance
-  utc() {
-    return new EsDay(this.toDate(), true)
+  private $parseDate(d: DateType, utc = false) {
+    return parseDate(d, utc)
   }
 
   isSame(that: DateType, units: UnitType = C.MS) {
@@ -76,6 +76,12 @@ export class EsDay {
 
   format(formatStr?: string) {
     return formatImpl(this, formatStr)
+  }
+
+  utcOffset() {
+    // Because a bug at FF24, we're rounding the timezone offset around 15 minutes
+    // https://github.com/moment/moment/pull/1871
+    return -Math.round(this.$d.getTimezoneOffset() / 15) * 15
   }
 
   startOf(units: UnitType) {

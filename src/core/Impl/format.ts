@@ -1,5 +1,5 @@
 import type { EsDay } from 'esday'
-import { C, padStart } from '~/common'
+import { C, padStart, padZoneStr } from '~/common'
 
 export function formatImpl(that: EsDay, formatStr?: string) {
   if (!that.isValid())
@@ -16,6 +16,7 @@ export function formatImpl(that: EsDay, formatStr?: string) {
     return isLowercase ? m.toLowerCase() : m
   }
 
+  const zoneStr = padZoneStr(that.utcOffset())
   const $year = that.year()
   const $month = that.month()
   const $date = that.date()
@@ -63,6 +64,8 @@ export function formatImpl(that: EsDay, formatStr?: string) {
         return padStart($second, 2, '0')
       case 'SSS':
         return padStart($millisecond, 3, '0')
+      case 'Z':
+        return zoneStr
       default:
         break
     }

@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { padZoneStr } from '~/common'
 import { esday } from '~/core'
 
 describe('format', () => {
@@ -13,9 +14,8 @@ describe('format', () => {
     vi.useRealTimers()
   })
 
-  // TODO time offset is missing; check with regex?
   it('without parameters', () => {
-    expect(esday().format()).toBe('2023-12-17T03:24:46')
+    expect(esday().format()).toBe(`2023-12-17T03:24:46${padZoneStr(esday().utcOffset())}`)
   })
 
   it.each([

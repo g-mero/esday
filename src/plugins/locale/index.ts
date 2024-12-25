@@ -71,8 +71,8 @@ export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
   // set $locale_name in parse method
   const oldParse = dayClass.prototype['parse']
-  dayClass.prototype['parse'] = function (d: any, utc: boolean, ...others: any[]) {
-    oldParse.call(this, d, utc, ...others)
+  dayClass.prototype['parse'] = function (d: any) {
+    oldParse.call(this, d)
 
     // set locale name
     getSetPrivateLocaleName(this, $localeGlobal)

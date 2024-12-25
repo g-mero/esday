@@ -22,7 +22,7 @@ export const MONTH = 'month' as const
 export const YEAR = 'year' as const
 export const DATE = 'date' as const
 
-export const FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ss'
+export const FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ'
 
 export const INVALID_DATE_STRING = 'Invalid Date'
 
