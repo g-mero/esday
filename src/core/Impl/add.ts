@@ -1,8 +1,7 @@
 /* eslint-disable dot-notation */
 import type { EsDay } from '~/core'
 import type { UnitType } from '~/types'
-import { createInstanceFromExist, prettyUnit } from '~/utils'
-import * as C from '../constant'
+import { C, createInstanceFromExist, prettyUnit } from '~/common'
 
 export function addImpl(that: EsDay, number: number, units: UnitType) {
   const $d = that['$d']

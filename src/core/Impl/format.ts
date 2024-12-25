@@ -1,6 +1,5 @@
 import type { EsDay } from 'esday'
-import { padStart } from '~/utils'
-import * as C from '../constant'
+import { C, padStart } from '~/common'
 
 export function formatImpl(that: EsDay, formatStr?: string) {
   if (!that.isValid())

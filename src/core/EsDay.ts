@@ -1,11 +1,10 @@
 /* eslint-disable ts/no-unsafe-declaration-merging */
+import type { UnitDate, UnitDay, UnitHour, UnitMin, UnitMonth, UnitMs, UnitSecond, UnitWeek, UnitYear } from '~/common'
 import type { DateType, UnitType } from '~/types'
 import type { SimpleObject } from '~/types/util-types'
-import type { UnitDate, UnitDay, UnitHour, UnitMin, UnitMonth, UnitMs, UnitSecond, UnitWeek, UnitYear } from '~/utils'
-import { prettyUnit } from '~/utils'
-import { getUnitInDate, setUnitInDate } from '~/utils/date-fields'
+import { C, prettyUnit } from '~/common'
+import { getUnitInDate, setUnitInDate } from '~/common/date-fields'
 import { esday } from '.'
-import * as C from './constant'
 import { addImpl } from './Impl/add'
 import { formatImpl } from './Impl/format'
 import { startOfImpl } from './Impl/startOf'
@@ -95,7 +94,7 @@ export class EsDay {
     return this.add(-number, units)
   }
 
-  get(units: Exclude<UnitType, 'week' | 'w'>) {
+  get(units: Exclude<UnitType, UnitWeek>) {
     return getUnitInDate(this.$d, units)
   }
 
@@ -107,7 +106,7 @@ export class EsDay {
   set(unit: UnitMin, min: number, sec?: number, ms?: number): EsDay
   set(unit: UnitSecond, sec: number, ms?: number): EsDay
   set(unit: UnitMs, ms: number): EsDay
-  set(unit: Exclude<UnitType, 'week' | 'w'>, ...values: number[]) {
+  set(unit: Exclude<UnitType, UnitWeek>, ...values: number[]) {
     return this.clone().$set(unit, values)
   }
 
@@ -130,12 +129,12 @@ export class EsDay {
     return this.$d.toUTCString()
   }
 
-  private $set(unit: Exclude<UnitType, UnitWeek>, values: number[]) {
+  private $set(unit: Exclude<UnitType, UnitWeek>, values: number[], utc = false) {
     if (prettyUnit(unit) === C.DAY) {
-      setUnitInDate(this.$d, C.DATE, this.date() + (values[0] - this.day()))
+      setUnitInDate(this.$d, C.DATE, this.date() + (values[0] - this.day()), utc)
     }
     else {
-      setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values)
+      setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values, utc)
     }
 
     return this

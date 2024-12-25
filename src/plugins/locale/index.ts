@@ -1,9 +1,8 @@
 /* eslint-disable dot-notation */
 import type { EsDay, EsDayPlugin, UnitType } from 'esday'
 import type { Locale } from './types'
-import * as C from '~/core/constant'
+import { C, prettyUnit, undefinedOr } from '~/common'
 import en from '~/locales/en'
-import { prettyUnit, undefinedOr } from '~/utils'
 
 const LocaleStore: Map<string, Locale> = new Map()
 
