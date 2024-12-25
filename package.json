@@ -54,6 +54,7 @@
     "@vitest/ui": "latest",
     "commit-and-tag-version": "^12.5.0",
     "cpy-cli": "^5.0.0",
+    "dayjs": "^1.11.13",
     "eslint": "^9",
     "husky": "^9.1.7",
     "tsup": "^8.2.4",
