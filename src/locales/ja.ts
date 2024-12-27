@@ -2,7 +2,7 @@
  * Japanese [ja]
  */
 
-import type { Locale } from '~/types'
+import type { Locale } from '~/plugins/locale'
 
 const localeJa: Readonly<Locale> = {
   name: 'ja',
