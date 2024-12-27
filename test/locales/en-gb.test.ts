@@ -1,4 +1,4 @@
-// This is a minimal test for a locale.
+// Test for locale 'en-GB'.
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/en-gb'
