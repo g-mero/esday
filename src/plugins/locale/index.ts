@@ -16,6 +16,70 @@ export function registerLocale(locale: Locale, rename?: string): void {
   LocaleStore.set(rename || locale.name, locale)
 }
 
+/**
+ * Same as 'setLocaleProperty', but for arbitrary objects to enable use
+ * e.g. for cloning the 'relativeTime' property.
+ * @param target - object whose property to create or set
+ * @param propName - name of the property to create or set
+ * @param newValue - new value of the property
+ */
+function setObjectProperty(target: object, propName: string, newValue: any) {
+  Object.defineProperty(target, propName, {
+    enumerable: true,
+    configurable: true,
+    writable: false,
+    value: newValue,
+  })
+}
+
+/**
+ * Set a property in a literal object avoiding a typescript error TS2322.
+ * @param targetLocale - object whose property to create or set
+ * @param propName - name of the property to create or set
+ * @param newValue - new value of the property
+ */
+export function setLocaleProperty(targetLocale: Locale, propName: string, newValue: any) {
+  setObjectProperty(targetLocale, propName, newValue)
+}
+
+/**
+ * Clone an object. Used for cloning a Locale, but with a generic
+ * name, as we call it recursively.
+ * @param sourceObject - object to clone
+ * @returns cloned object with all properties set to 'readonly'.
+ */
+function cloneObject(sourceObject: object): object {
+  const result = {}
+
+  for (const [key, sourceValue] of Object.entries(sourceObject)) {
+    if ((typeof sourceValue === 'string') || (sourceValue instanceof String)
+      || (typeof sourceValue === 'number') || (sourceValue instanceof Number)
+      || (sourceValue instanceof Function)) {
+      setObjectProperty(result, key, sourceValue)
+    }
+    else if (Array.isArray(sourceValue)) {
+      setObjectProperty(result, key, structuredClone(sourceValue))
+    }
+    else if (typeof sourceValue === 'object') {
+      setObjectProperty(result, key, cloneObject(sourceValue))
+    }
+  }
+
+  return result
+}
+
+/**
+ * Clone a Locale. Used to create a locale for a territory based
+ * on the locale of the corresponding language.
+ * All properties of the cloned locale are 'readonly' and can only
+ * be set by using the function 'setProperty'.
+ * @param source - locale to clone
+ * @returns cloned locale with all all properties set to 'readonly'.
+ */
+export function cloneLocale(source: Locale): Locale {
+  return (cloneObject(source) as Locale)
+}
+
 declare module 'esday' {
 /*   interface EsDay {
     $locale: () => Locale
