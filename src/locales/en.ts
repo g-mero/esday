@@ -1,4 +1,6 @@
-// English [en]
+/**
+ * English [en]
+ */
 
 import type { Locale } from '~/plugins/locale'
 
