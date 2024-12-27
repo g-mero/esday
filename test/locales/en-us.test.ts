@@ -1,6 +1,4 @@
-// This is a minimal test for a locale.
-// This file should aso be used as a template for tests for
-// other locales.
+// Test for locale 'en-US'.
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/en-us'
