@@ -1,6 +1,7 @@
 /**
  * Chinese [zh]
  */
+
 import type { Locale } from '~/plugins/locale'
 
 const localeZh: Readonly<Locale> = {

@@ -2,7 +2,7 @@
  * German [de]
  */
 
-import type { Locale } from '~/types'
+import type { Locale } from '~/plugins/locale'
 
 const relativeTimeFormatStrings = {
   s: 'ein paar Sekunden',

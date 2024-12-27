@@ -2,7 +2,7 @@
  * Kirundi [rn]
  */
 
-import type { Locale } from '~/types'
+import type { Locale } from '~/plugins/locale'
 
 const localeRn: Readonly<Locale> = {
   name: 'rn',
