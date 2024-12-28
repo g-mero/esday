@@ -1,3 +1,5 @@
+import type { EsDay } from 'esday'
+
 // From https://stackoverflow.com/questions/41139763/how-to-declare-a-fixed-length-array-in-typescript
  type ReadonlyTuple<
    T,
@@ -28,10 +30,15 @@ declare module 'esday' {
 
 export type DayNames<T = string> = ReadonlyTuple<T, 7>
 export type MonthNames<T = string> = ReadonlyTuple<T, 12>
+export interface MonthNamesStandaloneFormat<T = MonthNames<string>> {
+  format: T // for use as standalone month name
+  standalone: T // for use in a format method
+  isFormat?: RegExp
+}
 export interface MonthNamesFunction<T = MonthNames<string>> {
-  (format: string): string
-  standalone: T
-  format: T
+  (esdayInstance: EsDay, format: string): string
+  format: T // for use in a format method
+  standalone: T // for use as standalone month name
 }
 export type RelativeTimeElementFunction = (
   timeValue: string | number,
@@ -86,8 +93,8 @@ export interface Locale {
    * @example ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
    */
   readonly weekdaysMin: DayNames
-  readonly months: MonthNames | MonthNamesFunction
-  readonly monthsShort: MonthNames | MonthNamesFunction
+  readonly months: MonthNames | MonthNamesStandaloneFormat | MonthNamesFunction
+  readonly monthsShort: MonthNames | MonthNamesStandaloneFormat | MonthNamesFunction
   readonly ordinal: (number: number, period?: 'W') => string
   readonly weekStart: number
   readonly yearStart: number
