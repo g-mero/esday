@@ -60,10 +60,10 @@ describe('locale de', () => {
     expect(locale.yearStart).toSatisfy((value: number) => (value >= 1) && (value <= 7))
   })
 
-  it('should have have an object named "formats"', () => {
+  it('should have have an object named "formats" with 10 properties', () => {
     expect(locale.formats).toBeDefined()
     expect(locale.formats).toBeTypeOf('object')
-    expect(Object.keys(locale.formats ?? {}).length).toBeGreaterThan(0)
+    expect(Object.keys(locale.formats ?? {})).toHaveLength(10)
   })
 
   it('should have an object named "relativeTime"', () => {
