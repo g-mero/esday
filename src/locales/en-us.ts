@@ -15,6 +15,10 @@ const localeEnUsFormats = {
   LL: 'MMMM D, YYYY',
   LLL: 'MMMM D, YYYY h:mm a',
   LLLL: 'dddd, MMMM D, YYYY h:mm a',
+  l: 'MM/DD/YYYY',
+  ll: 'MMMM D, YYYY',
+  lll: 'MMMM D, YYYY h:mm a',
+  llll: 'dddd, MMMM D, YYYY h:mm a',
 
 }
 
