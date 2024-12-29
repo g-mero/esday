@@ -1,4 +1,4 @@
-import C from './constant'
+import C from './constants'
 
 export { C }
 export * from './date-fields'
