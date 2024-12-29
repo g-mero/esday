@@ -1,6 +1,6 @@
-import type { PrettyUnit, UnitDay, UnitType, UnitWeek } from './unit'
+import type { PrettyUnit, UnitDay, UnitType, UnitWeek } from './units'
 import { isArray } from './is'
-import { prettyUnit } from './unit'
+import { prettyUnit } from './units'
 
 const UNIT_FIELD_MAP = {
   year: 'FullYear',
