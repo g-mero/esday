@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { DATE, DAY, HOUR, MIN, MONTH, SECOND, WEEK, YEAR } from '~/common/constant'
+import { DATE, DAY, HOUR, MIN, MONTH, SECOND, WEEK, YEAR } from '~/common/constants'
 import { esday } from '~/core'
 
 describe('startOf', () => {
