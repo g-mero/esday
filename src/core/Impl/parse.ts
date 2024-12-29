@@ -1,4 +1,4 @@
-import type { EsDay } from './EsDay'
+import type { EsDay } from 'esday'
 import type { DateType } from '~/types'
 import type { Tuple } from '~/types/util-types'
 import { C, isEmptyObject, isUndefined } from '~/common'
@@ -13,7 +13,7 @@ export function parseArrayToDate(dateArray: number[]) {
   return new Date(...dateArrayTuple)
 }
 
-export function parseDate(date?: Exclude<DateType, EsDay>, utc = false): Date {
+export function parseImpl(date?: Exclude<DateType, EsDay>, utc = false): Date {
   if (date instanceof Date)
     return new Date(date)
   if (date === null)

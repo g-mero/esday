@@ -7,8 +7,8 @@ import { getUnitInDate, setUnitInDate } from '~/common/date-fields'
 import { esday } from '.'
 import { addImpl } from './Impl/add'
 import { formatImpl } from './Impl/format'
+import { parseImpl } from './Impl/parse'
 import { startOfImpl } from './Impl/startOf'
-import { parseDate } from './parseDate'
 
 export declare interface EsDay {
   year: (() => number) & ((year: number, month?: number, date?: number) => EsDay)
@@ -38,7 +38,7 @@ export class EsDay {
   }
 
   private $parseDate(d: DateType, utc = false) {
-    return parseDate(d, utc)
+    return parseImpl(d, utc)
   }
 
   isSame(that: DateType, units: UnitType = C.MS) {
