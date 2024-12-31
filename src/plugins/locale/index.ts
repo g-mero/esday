@@ -16,35 +16,12 @@ export function registerLocale(locale: Locale, rename?: string): void {
   LocaleStore.set(rename || locale.name, locale)
 }
 
-declare module 'esday' {
-/*   interface EsDay {
-    $locale: () => Locale
-  } */
-
-  interface EsDay {
-    locale: (localeName: string) => EsDay
-  }
-
-  interface EsDayFactory {
-    /**
-     * use locale as global
-     */
-    locale: (localeName: string) => EsDayFactory
-    /**
-     * register locale
-     */
-    registerLocale: (locale: Locale, newName?: string) => EsDayFactory
-  }
-}
-
 function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
   if (newLocaleName) {
-    // @ts-expect-error $locale_name is private property
-    inst['$locale_name'] = newLocaleName
+    inst['$conf']['$locale_name'] = newLocaleName
   }
 
-  // @ts-expect-error $locale_name is private property
-  return inst['$locale_name'] || $localeGlobal
+  return inst['$conf']['$locale_name'] as string || $localeGlobal
 }
 
 export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
@@ -69,7 +46,6 @@ export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return inst
   }
 
-  // set $locale_name in parse method
   const oldParse = dayClass.prototype['parse']
   dayClass.prototype['parse'] = function (d: any) {
     oldParse.call(this, d)
