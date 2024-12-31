@@ -6,13 +6,13 @@ import type { UnitDay } from '~/common'
  * when utc mode is enabled, get and set methods will use UTC time
  *
  */
+
 import type { DateType, EsDayPlugin } from '~/types'
 import { C, getUnitInDate, getUnitInDateUTC, isUndefined, prettyUnit, setUnitInDateUTC } from '~/common'
 import { MILLISECONDS_A_MINUTE, MIN } from '~/common/constants'
 
 const REGEX_VALID_OFFSET_FORMAT = /[+-]\d\d(?::?\d\d)?/g
-// eslint-disable-next-line regexp/no-unused-capturing-group
-const REGEX_OFFSET_HOURS_MINUTES_FORMAT = /([+-]|\d\d)/g
+const REGEX_OFFSET_HOURS_MINUTES_FORMAT = /[+-]|\d\d/g
 function offsetFromString(value = '') {
   const offset = value.match(REGEX_VALID_OFFSET_FORMAT)
 
@@ -54,12 +54,12 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   const proto = dayClass.prototype
-
-  proto.utc = function (keepLocalTime) {
+  proto.utc = function (keepLocalTime?: boolean) {
     const inst = this.clone()
     inst['$d'] = this.toDate()
     inst['$conf'].utc = true
     if (keepLocalTime) {
+      // TODO maybe the generated time does not exits in the current timezone
       return inst.add(this.utcOffset(), MIN)
     }
     return inst
