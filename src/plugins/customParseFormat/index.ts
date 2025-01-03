@@ -1,6 +1,5 @@
 /* eslint-disable dot-notation */
-import type { EsDay } from 'esday'
-import type { DateType, EsDayPlugin } from '~/types'
+import type { DateType, EsDay, EsDayPlugin } from 'esday'
 import { isString } from '~/common'
 
 const formattingTokens
