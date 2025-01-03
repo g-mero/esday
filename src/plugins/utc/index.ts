@@ -31,11 +31,14 @@ function offsetFromString(value = '') {
 }
 
 declare module 'esday' {
+  interface utcOffsetFunction {
+    (): number
+    (offset: number | string, keepLocalTime?: boolean): EsDay;
+  }
   interface EsDay {
     utc: (keepLocalTime?: boolean) => EsDay
     local: () => EsDay
     isUTC: () => boolean
-    // @ts-expect-error it's compatible with its overload
     // eslint-disable-next-line ts/method-signature-style
     utcOffset(offset: number | string, keepLocalTime?: boolean): EsDay
     // eslint-disable-next-line ts/method-signature-style
@@ -48,12 +51,14 @@ declare module 'esday' {
 }
 
 const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
+  // parse a date as utc
   dayFactory.utc = (d?: DateType, ...others: any[]) => {
     const inst = dayFactory(d, ...others, { utc: true })
     return inst
   }
 
   const proto = dayClass.prototype
+  // convert a date to utc
   proto.utc = function (keepLocalTime?: boolean) {
     const inst = this.clone()
     inst['$d'] = this.toDate()
@@ -75,7 +80,11 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return !!this['$conf'].utc
   }
 
-  const oldFormat = dayClass.prototype.format
+  proto.utcOffset = function () {
+    return -Math.round(this['$d'].getTimezoneOffset())
+  }
+
+  const oldFormat = proto.format
   proto.format = function (formatStr) {
     const UTC_FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ss[Z]'
     const str = formatStr || (this['$conf'].utc ? UTC_FORMAT_DEFAULT : '')
@@ -92,7 +101,7 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return utc ? getUnitInDateUTC(this['$d'], unit) : getUnitInDate(this['$d'], unit)
   }
 
-  const old$set = dayClass.prototype['$set']
+  const old$set = proto['$set']
   proto['$set'] = function (unit, values) {
     const utc = !!this['$conf'].utc
     if (utc) {
