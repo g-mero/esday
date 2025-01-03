@@ -11,7 +11,7 @@
         "src/*"
       ],
       "esday": [
-        "src/index.ts"
+        "src/index"
       ]
     },
     "types": ["node"],
