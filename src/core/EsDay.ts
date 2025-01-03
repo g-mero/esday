@@ -22,7 +22,7 @@ export declare interface EsDay {
 }
 
 export class EsDay {
-  private $d!: Date
+  protected $d!: Date
   /**
    * mainly for plugin compatibility
    * store data such as locale name, utc mode, etc.
@@ -76,12 +76,6 @@ export class EsDay {
 
   format(formatStr?: string) {
     return formatImpl(this, formatStr)
-  }
-
-  utcOffset() {
-    // Because a bug at FF24, we're rounding the timezone offset around 15 minutes
-    // https://github.com/moment/moment/pull/1871
-    return -Math.round(this.$d.getTimezoneOffset() / 15) * 15
   }
 
   startOf(units: UnitType) {
