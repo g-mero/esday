@@ -1,0 +1,63 @@
+name: Test (vitest & playwright - Windows)
+
+concurrency:
+  group: windows-test-${{ github.head_ref }}
+  cancel-in-progress: true
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on pull request events but only for the main branch
+  pull_request:
+    branches: [main]
+
+  merge_group:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  test-on-windows:
+    # The type of runner that the job will run on
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [22.x]
+        os: [windows-latest] # windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Git config
+        shell: bash
+        run: |
+          git config --system core.longpaths true
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install Pnpm
+        run: corepack enable
+
+      - name: Check skip CI
+        shell: bash
+        run: echo "RESULT=$(node ./scripts/skipCI.cjs)" >> "$GITHUB_OUTPUT"
+        id: skip-ci
+
+      - name: Log skip CI result
+        run: echo "${{steps.skip-ci.outputs.RESULT}}"
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        if: ${{steps.skip-ci.outputs.RESULT != 'true'}}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        if: ${{steps.skip-ci.outputs.RESULT != 'true'}}
+        run: pnpm install
+
+      - name: Unit Test
+        if: ${{steps.skip-ci.outputs.RESULT != 'true'}}
+        run: npx playwright install && pnpm run test:run-browser

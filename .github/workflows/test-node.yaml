@@ -1,4 +1,4 @@
-name: Test
+name: Test (Vitest)
 
 # Controls when the action will run.
 on:
@@ -16,7 +16,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  test:
+  test-on-node:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -39,4 +39,4 @@ jobs:
         run: pnpm install
 
       - name: Vitest
-        run: pnpm run test
+        run: pnpm run test:run

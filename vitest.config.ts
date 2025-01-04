@@ -10,5 +10,15 @@ export default defineConfig({
     coverage: {
       reporter: ['text', 'json', 'html'],
     },
+    browser: {
+      headless: true,
+      enabled: false,
+      provider: 'playwright',
+      instances: [
+        { browser: 'firefox' },
+        { browser: 'chromium' },
+        { browser: 'webkit' },
+      ],
+    },
   },
 })
