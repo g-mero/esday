@@ -142,27 +142,29 @@ export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   // change startOf/endOf method
   const oldStartOf = dayClass.prototype['startOf']
   const oldEndOf = dayClass.prototype['endOf']
-  const fixDiff = (inst: any, unit: UnitType) => {
+  const fixDiff = (inst: EsDay, origin: EsDay, unit: UnitType, reverse = false) => {
     if (prettyUnit(unit) === C.WEEK) {
       // default start of week is Monday
       const defaultStartOfWeek = C.INDEX_MONDAY
+      // @ts-expect-error $locale is private method
       const weekStart = undefinedOr(inst.$locale().weekStart, defaultStartOfWeek)
-      const diffToDefault = weekStart - defaultStartOfWeek
+      const $day = origin.day()
+      const $date = origin.date()
+      const diff = ($day < weekStart ? $day + 7 : $day) - weekStart
 
-      if (diffToDefault !== 0) {
-        return inst.add(diffToDefault, C.DAY)
-      }
+      return origin.month(origin.month(), reverse ? $date + (6 - diff) : $date - diff)
+        .hour(inst.hour(), inst.minute(), inst.second(), inst.millisecond())
     }
 
     return inst
   }
   dayClass.prototype['startOf'] = function (unit: UnitType) {
     const inst = oldStartOf.call(this, unit)
-    return fixDiff(inst, unit)
+    return fixDiff(inst, this, unit)
   }
   dayClass.prototype['endOf'] = function (unit: UnitType) {
     const inst = oldEndOf.call(this, unit)
-    return fixDiff(inst, unit)
+    return fixDiff(inst, this, unit, true)
   }
 
   dayFactory.locale = function (localeName: string) {
