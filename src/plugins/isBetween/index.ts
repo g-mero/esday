@@ -5,6 +5,14 @@ declare module 'esday' {
   interface EsDay {
     /**
      * returns a boolean indicating if a date is between two other dates
+     *
+     * @example
+     * const date = new EsDay('2021-01-01')
+     * date.isBetween('2020-01-01', '2022-01-01') // true
+     * date.isBetween('2021-01-01', '2022-01-01') // false
+     * date.isBetween('2020-01-01', '2022-01-01', 'date') // true
+     * date.isBetween('2020-01-01', '2022-01-01', 'date', '[]') // true
+     * date.isBetween('2020-01-01', '2022-01-01', 'date', '()') // false
      */
     isBetween: (
       from: DateType,
