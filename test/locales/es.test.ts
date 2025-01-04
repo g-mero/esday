@@ -25,24 +25,23 @@ describe('locale es', () => {
 
   it('should have 12 month names', () => {
     expect(locale.months).toBeDefined()
-    if (typeof locale.months === 'function') {
-      expect(locale.months).toBeTypeOf('function')
+    if (Array.isArray(locale.months)) {
+      expect(locale.months.length).toBe(12)
     }
     else {
-      expect(locale.months?.length).toBe(12)
+      expect(locale.months).toBeTypeOf('function')
     }
   })
 
   it('should have 12 short month names', () => {
     expect(locale.monthsShort).toBeDefined()
-    if (typeof locale.monthsShort === 'function') {
-      expect(locale.monthsShort).toBeTypeOf('function')
+    if (Array.isArray(locale.monthsShort)) {
+      expect(locale.monthsShort.length).toBe(12)
     }
     else {
-      expect(locale.monthsShort?.length).toBe(12)
+      expect(locale.monthsShort).toBeTypeOf('function')
     }
   })
-
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')

@@ -1,79 +1,79 @@
 // Test for locale 'uk'.
 
 import { describe, expect, it } from 'vitest'
-import localeFr from '~/locales/uk'
+import locale from '~/locales/uk'
 
 describe('locale fr', () => {
   it('should have the correct name', () => {
-    expect(localeFr.name).toBe('uk')
+    expect(locale.name).toBe('uk')
   })
 
   it('should have 7 weekday names', () => {
-    expect(localeFr.weekdays).toBeDefined()
-    expect(localeFr.weekdays?.length).toBe(7)
+    expect(locale.weekdays).toBeDefined()
+    expect(locale.weekdays?.length).toBe(7)
   })
 
   it('should have 7 short weekday names', () => {
-    expect(localeFr.weekdaysShort).toBeDefined()
-    expect(localeFr.weekdaysShort?.length).toBe(7)
+    expect(locale.weekdaysShort).toBeDefined()
+    expect(locale.weekdaysShort?.length).toBe(7)
   })
 
   it('should have 7 minimal weekday names', () => {
-    expect(localeFr.weekdaysMin).toBeDefined()
-    expect(localeFr.weekdaysMin?.length).toBe(7)
+    expect(locale.weekdaysMin).toBeDefined()
+    expect(locale.weekdaysMin?.length).toBe(7)
   })
 
   it('should have 12 month names', () => {
-    expect(localeFr.months).toBeDefined()
-    if (typeof localeFr.months === 'function') {
-      expect(localeFr.months).toBeTypeOf('function')
+    expect(locale.months).toBeDefined()
+    if (Array.isArray(locale.months)) {
+      expect(locale.months.length).toBe(12)
     }
     else {
-      expect(localeFr.months?.length).toBe(12)
+      expect(locale.months).toBeTypeOf('function')
     }
   })
 
   it('should have 12 short month names', () => {
-    expect(localeFr.monthsShort).toBeDefined()
-    if (typeof localeFr.monthsShort === 'function') {
-      expect(localeFr.monthsShort).toBeTypeOf('function')
+    expect(locale.monthsShort).toBeDefined()
+    if (Array.isArray(locale.monthsShort)) {
+      expect(locale.monthsShort.length).toBe(12)
     }
     else {
-      expect(localeFr.monthsShort?.length).toBe(12)
+      expect(locale.monthsShort).toBeTypeOf('function')
     }
   })
 
   it('should have a method named "ordinal"', () => {
-    expect(localeFr.ordinal).toBeDefined()
-    expect(localeFr.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal).toBeDefined()
+    expect(locale.ordinal).toBeTypeOf('function')
   })
 
   it('should have numeric property named weekStart', () => {
-    expect(localeFr.weekStart).toBeDefined()
-    expect(localeFr.weekStart).toBeTypeOf('number')
-    expect(localeFr.weekStart).toSatisfy((value: number) => (value >= 0) && (value <= 6))
+    expect(locale.weekStart).toBeDefined()
+    expect(locale.weekStart).toBeTypeOf('number')
+    expect(locale.weekStart).toSatisfy((value: number) => (value >= 0) && (value <= 6))
   })
 
   it('should have numeric property named yearStart', () => {
-    expect(localeFr.yearStart).toBeDefined()
-    expect(localeFr.yearStart).toBeTypeOf('number')
-    expect(localeFr.yearStart).toSatisfy((value: number) => (value >= 1) && (value <= 7))
+    expect(locale.yearStart).toBeDefined()
+    expect(locale.yearStart).toBeTypeOf('number')
+    expect(locale.yearStart).toSatisfy((value: number) => (value >= 1) && (value <= 7))
   })
 
   it('should have have an object named "formats" with 10 properties', () => {
-    expect(localeFr.formats).toBeDefined()
-    expect(localeFr.formats).toBeTypeOf('object')
-    expect(Object.keys(localeFr.formats ?? {})).toHaveLength(10)
+    expect(locale.formats).toBeDefined()
+    expect(locale.formats).toBeTypeOf('object')
+    expect(Object.keys(locale.formats ?? {})).toHaveLength(10)
   })
 
   it('should have an object named "relativeTime"', () => {
-    expect(localeFr.relativeTime).toBeDefined()
-    expect(localeFr.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(localeFr.relativeTime ?? {}).length).toBeGreaterThan(0)
+    expect(locale.relativeTime).toBeDefined()
+    expect(locale.relativeTime).toBeTypeOf('object')
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBeGreaterThan(0)
   })
 
   it('should have a method named "meridiem"', () => {
-    expect(localeFr.meridiem).toBeDefined()
-    expect(localeFr.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem).toBeDefined()
+    expect(locale.meridiem).toBeTypeOf('function')
   })
 })
