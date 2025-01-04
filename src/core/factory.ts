@@ -1,6 +1,6 @@
 import type { DateType, EsDayFactory } from '~/types'
 import type { SimpleObject, SimpleType } from '~/types/util-types'
-import { isObject } from '~/common'
+import { defaultVal, isObject } from '~/common'
 import { EsDay } from './EsDay'
 
 // @ts-ignore plugin declare may cause ts-type-checke error, but it's ok
@@ -32,5 +32,7 @@ esday.extend = (plugin, option) => {
   }
   return esday
 }
+
+esday.defaultVal = defaultVal
 
 export { esday }

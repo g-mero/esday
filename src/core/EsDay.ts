@@ -2,7 +2,7 @@
 import type { UnitDate, UnitDay, UnitHour, UnitMin, UnitMonth, UnitMs, UnitSecond, UnitWeek, UnitYear } from '~/common'
 import type { DateType, UnitType } from '~/types'
 import type { SimpleObject } from '~/types/util-types'
-import { C, prettyUnit } from '~/common'
+import { C, defaultVal, prettyUnit } from '~/common'
 import { getUnitInDate, setUnitInDate } from '~/common/date-fields'
 import { esday } from '.'
 import { addImpl } from './Impl/add'
@@ -161,3 +161,5 @@ helperNames.forEach((key) => {
     }
   }
 })
+
+defaultVal('weekStart', 1)

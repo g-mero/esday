@@ -1,7 +1,7 @@
 /* eslint-disable dot-notation */
 import type { EsDay, EsDayPlugin, UnitType } from 'esday'
 import type { Locale } from './types'
-import { C, prettyUnit, undefinedOr } from '~/common'
+import { C, defaultVal, prettyUnit, undefinedOr } from '~/common'
 import en from '~/locales/en'
 
 const LocaleStore: Map<string, Locale> = new Map()
@@ -80,27 +80,6 @@ export function cloneLocale(source: Locale): Locale {
   return (cloneObject(source) as Locale)
 }
 
-declare module 'esday' {
-/*   interface EsDay {
-    $locale: () => Locale
-  } */
-
-  interface EsDay {
-    locale: (localeName: string) => EsDay
-  }
-
-  interface EsDayFactory {
-    /**
-     * use locale as global
-     */
-    locale: (localeName: string) => EsDayFactory
-    /**
-     * register locale
-     */
-    registerLocale: (locale: Locale, newName?: string) => EsDayFactory
-  }
-}
-
 function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
   if (newLocaleName) {
     inst['$conf']['$locale_name'] = newLocaleName
@@ -144,8 +123,7 @@ export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const oldEndOf = dayClass.prototype['endOf']
   const fixDiff = (inst: EsDay, origin: EsDay, unit: UnitType, reverse = false) => {
     if (prettyUnit(unit) === C.WEEK) {
-      // default start of week is Monday
-      const defaultStartOfWeek = C.INDEX_MONDAY
+      const defaultStartOfWeek = defaultVal('weekStart')
       // @ts-expect-error $locale is private method
       const weekStart = undefinedOr(inst.$locale().weekStart, defaultStartOfWeek)
       const $day = origin.day()

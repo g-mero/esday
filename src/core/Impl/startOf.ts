@@ -1,7 +1,7 @@
 import type { EsDay } from 'esday'
 import type { UnitWeek } from '~/common'
 import type { UnitType } from '~/types'
-import { C, prettyUnit } from '~/common'
+import { C, defaultVal, prettyUnit } from '~/common'
 
 export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
   const result = that.clone()
@@ -36,9 +36,7 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
       break
     case C.WEEK:
     {
-      // default start of week is Monday
-      // according to ISO 8601
-      const weekStart = C.INDEX_MONDAY
+      const weekStart = defaultVal('weekStart')
       const diff = ($day < weekStart ? $day + 7 : $day) - weekStart
       instanceFactory(reverse ? $date + (6 - diff) : $date - diff, $month)
       instanceFactorySet(C.HOUR, 0)
