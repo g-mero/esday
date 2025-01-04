@@ -2,16 +2,15 @@
 import { esday } from 'esday'
 import moment from 'moment'
 import { describe, expect, it } from 'vitest'
-import localeZhCn from '~/locales/zh-cn'
+import localeEnUs from '~/locales/en-us'
 import { localePlugin } from '~/plugins/locale'
 import { weekOfYearPlugin } from '~/plugins/weekOfYear'
 
-// because moment.js's default week start is Sunday (esday's default is Monday),
-// so we need to set both esday and moment.js to use the same locale
+// set to 'en-US' to match moment's default locale
+// ! note that change moment's default locale will break browser tests
 esday.extend(localePlugin).extend(weekOfYearPlugin)
-esday.registerLocale(localeZhCn)
-esday.locale('zh-cn')
-moment.locale('zh-cn')
+esday.registerLocale(localeEnUs)
+esday.locale('en-US')
 
 describe('week plugin', () => {
   it('should return the correct week number for a date', () => {
@@ -32,7 +31,7 @@ describe('week plugin', () => {
     const customDay = esday('2023-01-01') // Sunday
     // @ts-expect-error Mock `$locale` method to return custom `yearStart`
     customDay['$locale'] = () => ({ yearStart: customYearStart })
-    expect(customDay.week()).toBe(1)
+    expect(customDay.weeks()).toBe(1)
   })
 
   it('should set the correct week number and adjust the date', () => {
