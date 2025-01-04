@@ -2,15 +2,13 @@
 import { esday } from 'esday'
 import moment from 'moment'
 import { describe, expect, it } from 'vitest'
-import localeEnUs from '~/locales/en-us'
-import { localePlugin } from '~/plugins/locale'
 import { weekOfYearPlugin } from '~/plugins/weekOfYear'
 
 // set to 'en-US' to match moment's default locale
 // ! note that change moment's default locale will break browser tests
-esday.extend(localePlugin).extend(weekOfYearPlugin)
-esday.registerLocale(localeEnUs)
-esday.locale('en-US')
+esday.extend(weekOfYearPlugin)
+esday.defaultVal('weekStart', 0)
+esday.defaultVal('yearStart', 1)
 
 describe('week plugin', () => {
   it('should return the correct week number for a date', () => {
