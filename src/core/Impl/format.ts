@@ -5,7 +5,9 @@ export function formatImpl(that: EsDay, formatStr?: string) {
   if (!that.isValid())
     return C.INVALID_DATE_STRING
 
-  const str = formatStr || C.FORMAT_DEFAULT
+  const activeFormatString = formatStr || C.FORMAT_DEFAULT
+  const unknownTokenOutput = '??'
+  const offset = ('utcOffset' in that) ? that.utcOffset() : 0
 
   const get$H = (num: number) => (
     padStart(that.hour() % 12 || 12, num, '0')
@@ -16,7 +18,7 @@ export function formatImpl(that: EsDay, formatStr?: string) {
     return isLowercase ? m.toLowerCase() : m
   }
 
-  const zoneStr = padZoneStr(that.utcOffset())
+  const zoneStr = padZoneStr(offset)
   const $year = that.year()
   const $month = that.month()
   const $date = that.date()
@@ -66,11 +68,17 @@ export function formatImpl(that: EsDay, formatStr?: string) {
         return padStart($millisecond, 3, '0')
       case 'Z':
         return zoneStr
+      case 'ZZ':
+        return zoneStr.replace(':', '')
       default:
         break
     }
     return null
   }
 
-  return str.replace(C.REGEX_FORMAT, (match, $1) => $1 || matches(match))
+  // replace format tokens with corresponding values
+  return activeFormatString.replace(
+    C.REGEX_FORMAT,
+    (match, $1) => $1 || matches(match) || unknownTokenOutput,
+  )
 }

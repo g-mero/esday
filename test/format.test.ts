@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { padZoneStr } from '~/common'
 import { esday } from '~/core'
 
 describe('format', () => {
@@ -15,7 +14,8 @@ describe('format', () => {
   })
 
   it('without parameters', () => {
-    expect(esday().format()).toBe(`2023-12-17T03:24:46${padZoneStr(esday().utcOffset())}`)
+    const formattedOffset = esday().format('Z')
+    expect(esday().format()).toBe(`2023-12-17T03:24:46${formattedOffset}`)
   })
 
   it.each([
@@ -165,11 +165,25 @@ describe('format', () => {
     expect(esday().format(formatString)).toBe(expected)
   })
 
-  it('"2000-01-02" as "d H m s" to "0 0 0 0"', () => {
+  it('"2000-01-02" using "d H m s" to "0 0 0 0"', () => {
     const sundayDate = '2000-01-02'
     const sundayStr = 'd H m s'
 
     expect(esday(sundayDate).format(sundayStr)).toBe('0 0 0 0')
+  })
+
+  it('current date and time using "Z" to "??"', () => {
+    const esdayDate = esday()
+    const format = 'Z'
+
+    expect(esdayDate.format(format)).toMatch(/[+-]\d{2}:\d{2}/)
+  })
+
+  it('current date and time using "ZZ" to "??"', () => {
+    const esdayDate = esday()
+    const format = 'ZZ'
+
+    expect(esdayDate.format(format)).toMatch(/[+-]\d{4}/)
   })
 })
 
