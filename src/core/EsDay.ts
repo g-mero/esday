@@ -135,12 +135,12 @@ export class EsDay {
     return this.$d.toUTCString()
   }
 
-  private $set(unit: Exclude<UnitType, UnitWeek>, values: number[], utc = false) {
+  private $set(unit: Exclude<UnitType, UnitWeek>, values: number[]) {
     if (prettyUnit(unit) === C.DAY) {
-      setUnitInDate(this.$d, C.DATE, this.date() + (values[0] - this.day()), utc)
+      setUnitInDate(this.$d, C.DATE, this.date() + (values[0] - this.day()))
     }
     else {
-      setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values, utc)
+      setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values)
     }
 
     return this

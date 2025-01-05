@@ -21,15 +21,27 @@ export function unitToField<T extends Exclude<UnitType, UnitWeek>>(unit: T): Dat
   return UNIT_FIELD_MAP[p]
 }
 
-export function getUnitInDate(date: Date, unit: Exclude<UnitType, UnitWeek>, utc?: boolean): number {
+export function getUnitInDate(date: Date, unit: Exclude<UnitType, UnitWeek>): number {
   const field = unitToField(unit)
-  const method = `get${utc ? 'UTC' : ''}${field}` as (`get${typeof field}` | `getUTC${typeof field}`)
+  const method = `get${field}` as `get${typeof field}`
   return date[method]()
 }
 
-export function setUnitInDate(date: Date, unit: Exclude<UnitType, UnitWeek | UnitDay>, value: number | number[], utc?: boolean): Date {
+export function getUnitInDateUTC(date: Date, unit: Exclude<UnitType, UnitWeek>): number {
   const field = unitToField(unit)
-  const method = `set${utc ? 'UTC' : ''}${field}` as (`set${typeof field}` | `setUTC${typeof field}`)
+  return date[`getUTC${field}` as `getUTC${typeof field}`]()
+}
+
+export function setUnitInDate(date: Date, unit: Exclude<UnitType, UnitWeek | UnitDay>, value: number | number[]): Date {
+  const field = unitToField(unit)
+  const method = `set${field}` as `set${typeof field}`
+  date[method](...(isArray(value) ? value : [value]) as [number])
+  return date
+}
+
+export function setUnitInDateUTC(date: Date, unit: Exclude<UnitType, UnitWeek | UnitDay>, value: number | number[]): Date {
+  const field = unitToField(unit)
+  const method = `setUTC${field}` as `setUTC${typeof field}`
   date[method](...(isArray(value) ? value : [value]) as [number])
   return date
 }

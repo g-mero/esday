@@ -1,4 +1,5 @@
 /* eslint-disable dot-notation */
+import type { UnitDay } from '~/common'
 /**
  * utc plugin
  *
@@ -6,13 +7,39 @@
  *
  */
 import type { DateType, EsDayPlugin } from '~/types'
-import { getUnitInDate, undefinedOr } from '~/common'
+import { C, getUnitInDate, getUnitInDateUTC, isUndefined, prettyUnit, setUnitInDateUTC } from '~/common'
+import { MILLISECONDS_A_MINUTE, MIN } from '~/common/constants'
+
+const REGEX_VALID_OFFSET_FORMAT = /[+-]\d\d(?::?\d\d)?/g
+// eslint-disable-next-line regexp/no-unused-capturing-group
+const REGEX_OFFSET_HOURS_MINUTES_FORMAT = /([+-]|\d\d)/g
+function offsetFromString(value = '') {
+  const offset = value.match(REGEX_VALID_OFFSET_FORMAT)
+
+  if (!offset) {
+    return null
+  }
+
+  const [indicator, hoursOffset, minutesOffset] = `${offset[0]}`.match(REGEX_OFFSET_HOURS_MINUTES_FORMAT) || ['-', 0, 0]
+  const totalOffsetInMinutes = (+hoursOffset * 60) + (+minutesOffset)
+
+  if (totalOffsetInMinutes === 0) {
+    return 0
+  }
+
+  return indicator === '+' ? totalOffsetInMinutes : -totalOffsetInMinutes
+}
 
 declare module 'esday' {
   interface EsDay {
-    utc: () => EsDay
+    utc: (keepLocalTime?: boolean) => EsDay
     local: () => EsDay
     isUTC: () => boolean
+    // @ts-expect-error it's compatible with its overload
+    // eslint-disable-next-line ts/method-signature-style
+    utcOffset(offset: number | string, keepLocalTime?: boolean): EsDay
+    // eslint-disable-next-line ts/method-signature-style
+    toDate(type?: string): Date
   }
 
   interface EsDayFactory {
@@ -26,42 +53,130 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return inst
   }
 
-  dayClass.prototype.utc = function () {
+  const proto = dayClass.prototype
+
+  proto.utc = function (keepLocalTime) {
     const inst = this.clone()
+    inst['$d'] = this.toDate()
     inst['$conf'].utc = true
+    if (keepLocalTime) {
+      return inst.add(this.utcOffset(), MIN)
+    }
     return inst
   }
 
-  dayClass.prototype.local = function () {
+  proto.local = function () {
     const inst = this.clone()
     inst['$conf'].utc = false
     return inst
   }
 
-  dayClass.prototype.isUTC = function () {
+  proto.isUTC = function () {
     return !!this['$conf'].utc
   }
 
   const oldFormat = dayClass.prototype.format
-  dayClass.prototype.format = function (formatStr) {
+  proto.format = function (formatStr) {
     const UTC_FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ss[Z]'
     const str = formatStr || (this['$conf'].utc ? UTC_FORMAT_DEFAULT : '')
     return oldFormat.call(this, str)
   }
 
   // change method 'parse'
-  dayClass.prototype['parse'] = function (date?: DateType) {
+  proto['parse'] = function (date?: DateType) {
     this['$d'] = this['$parseDate'](date, !!this['$conf'].utc)
   }
 
-  // change method '$get' and '$set' to support utc
-  dayClass.prototype['get'] = function (unit) {
-    return getUnitInDate(this['$d'], unit, !!this['$conf'].utc)
+  proto.get = function (unit) {
+    const utc = !!this['$conf'].utc
+    return utc ? getUnitInDateUTC(this['$d'], unit) : getUnitInDate(this['$d'], unit)
   }
 
   const old$set = dayClass.prototype['$set']
-  dayClass.prototype['$set'] = function (unit, value, utc) {
-    return old$set.call(this, unit, value, undefinedOr(utc, !!this['$conf'].utc))
+  proto['$set'] = function (unit, values) {
+    const utc = !!this['$conf'].utc
+    if (utc) {
+      const $date = this['$d']
+      if (prettyUnit(unit) === C.DAY) {
+        setUnitInDateUTC($date, C.DATE, this.date() + (values[0] - this.day()))
+      }
+      else {
+        setUnitInDateUTC($date, unit as Exclude<typeof unit, UnitDay>, values)
+      }
+
+      return this
+    }
+    return old$set.call(this, unit, values)
+  }
+
+  proto.valueOf = function () {
+    const offset = this['$conf'].offset as number
+    const localOffset = this['$conf'].localOffset as number
+    const addedOffset = !isUndefined(offset)
+      ? offset + (localOffset || this['$d'].getTimezoneOffset())
+      : 0
+    return this['$d'].valueOf() - (addedOffset * MILLISECONDS_A_MINUTE)
+  }
+
+  proto.toISOString = function () {
+    return this.toDate().toISOString()
+  }
+
+  proto.toString = function () {
+    return this.toDate().toUTCString()
+  }
+
+  const oldToDate = proto.toDate
+  // @ts-expect-error it's compatible with its overload
+  proto.toDate = function (type) {
+    if (type === 's' && this['$conf'].offset) {
+      return dayFactory(this.format('YYYY-MM-DD HH:mm:ss:SSS')).toDate()
+    }
+    return oldToDate.call(this)
+  }
+
+  const oldUtcOffset = proto.utcOffset as (() => number)
+  // @ts-expect-error it's compatible with its overload
+  proto.utcOffset = function (offset, keepLocalTime) {
+    if (isUndefined(offset)) {
+      if (this['$conf'].utc) {
+        return 0
+      }
+
+      return this['$conf'].offset || oldUtcOffset.call(this)
+    }
+
+    let realOffset: number = 0
+    if (typeof offset === 'string') {
+      const temp = offsetFromString(offset)
+      if (temp === null) {
+        return this
+      }
+      realOffset = temp
+    }
+    else {
+      realOffset = offset
+    }
+    realOffset = Math.abs(realOffset) <= 16 ? realOffset * 60 : realOffset
+    // eslint-disable-next-line ts/no-this-alias
+    let ins = this
+    if (keepLocalTime) {
+      ins['$conf'].offset = realOffset
+      ins['$conf'].utc = offset === 0
+      return ins
+    }
+    if (realOffset !== 0) {
+      const localTimezoneOffset = this['$conf'].utc
+        ? this.toDate().getTimezoneOffset()
+        : -1 * this.utcOffset()
+      ins = this.local().add(realOffset + localTimezoneOffset, MIN)
+      ins['$conf'].offset = realOffset
+      ins['$conf'].localOffset = localTimezoneOffset
+    }
+    else {
+      ins = this.utc()
+    }
+    return ins
   }
 }
 
