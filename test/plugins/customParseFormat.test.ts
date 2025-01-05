@@ -1,6 +1,6 @@
 import { esday } from 'esday'
 import { expect, it } from 'vitest'
-import { customParseFormatPlugin } from '~/plugins/customParseFormat'
+import customParseFormatPlugin from '~/plugins/customParseFormat'
 
 esday.extend(customParseFormatPlugin)
 

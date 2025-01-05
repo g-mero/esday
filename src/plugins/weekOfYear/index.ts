@@ -9,7 +9,7 @@ declare module 'esday' {
   }
 }
 
-export const weekOfYearPlugin: EsDayPlugin<{}> = (_, dayClass) => {
+const weekOfYearPlugin: EsDayPlugin<{}> = (_, dayClass) => {
   // @ts-expect-error function is compatible with its overload
   dayClass.prototype.week = function (week?: number) {
     if (week) {
@@ -35,3 +35,5 @@ export const weekOfYearPlugin: EsDayPlugin<{}> = (_, dayClass) => {
 
   dayClass.prototype.weeks = dayClass.prototype.week
 }
+
+export default weekOfYearPlugin

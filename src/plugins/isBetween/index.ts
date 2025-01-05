@@ -23,7 +23,7 @@ declare module 'esday' {
   }
 }
 
-export const isBetweenPlugin: EsDayPlugin<{}> = (_, dayClass) => {
+const isBetweenPlugin: EsDayPlugin<{}> = (_, dayClass) => {
   dayClass.prototype.isBetween = function (
     from: DateType,
     to: DateType,
@@ -39,3 +39,5 @@ export const isBetweenPlugin: EsDayPlugin<{}> = (_, dayClass) => {
     return isAfterFrom && isBeforeTo
   }
 }
+
+export default isBetweenPlugin

@@ -1,7 +1,7 @@
 import { esday } from 'esday'
 import moment from 'moment'
 import { expect, it } from 'vitest'
-import { utcPlugin } from '~/plugins/utc'
+import utcPlugin from '~/plugins/utc'
 
 esday.extend(utcPlugin)
 

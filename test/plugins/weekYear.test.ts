@@ -2,9 +2,7 @@ import { esday } from 'esday'
 import moment from 'moment'
 import { describe, expect, it } from 'vitest'
 import localeEnUs from '~/locales/en-us'
-import { localePlugin } from '~/plugins/locale'
-import { weekOfYearPlugin } from '~/plugins/weekOfYear'
-import { weekYearPlugin } from '~/plugins/weekYear'
+import { localePlugin, weekOfYearPlugin, weekYearPlugin } from '~/plugins'
 
 // Extend esday with required plugins and locale
 esday.extend(localePlugin).extend(weekOfYearPlugin).extend(weekYearPlugin)

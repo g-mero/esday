@@ -20,7 +20,7 @@ declare module 'esday' {
   }
 }
 
-export const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
+const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   dayFactory.utc = (d?: DateType, ...others: any[]) => {
     const inst = dayFactory(d, ...others, { utc: true })
     return inst
@@ -64,3 +64,5 @@ export const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return old$set.call(this, unit, value, undefinedOr(utc, !!this['$conf'].utc))
   }
 }
+
+export default utcPlugin

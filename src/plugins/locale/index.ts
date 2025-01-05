@@ -109,7 +109,7 @@ function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
   return inst['$conf']['$locale_name'] as string || $localeGlobal
 }
 
-export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
+const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   // @ts-expect-error $locale is private method
   dayClass.prototype.$locale = function () {
     return getLocale(getSetPrivateLocaleName(this))
@@ -177,5 +177,7 @@ export const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return dayFactory
   }
 }
+
+export default localePlugin
 
 export * from './types'

@@ -2,7 +2,7 @@ import { esday } from 'esday'
 import moment from 'moment'
 import { describe, expect, it } from 'vitest'
 import { C } from '~/common'
-import { isBetweenPlugin } from '~/plugins/isBetween'
+import isBetweenPlugin from '~/plugins/isBetween'
 
 esday.extend(isBetweenPlugin)
 

@@ -3,8 +3,7 @@ import { esday } from 'esday'
 import moment from 'moment'
 import { describe, expect, it } from 'vitest'
 import localeEnUs from '~/locales/en-us'
-import { localePlugin } from '~/plugins/locale'
-import { weekOfYearPlugin } from '~/plugins/weekOfYear'
+import { localePlugin, weekOfYearPlugin } from '~/plugins'
 
 // set to 'en-US' to match moment's default locale
 // ! note that change moment's default locale will break browser tests

@@ -20,3 +20,5 @@ export const weekYearPlugin: EsDayPlugin<{}> = (_, dayClass) => {
     return year
   }
 }
+
+export default weekYearPlugin

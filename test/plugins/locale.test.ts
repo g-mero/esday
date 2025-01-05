@@ -3,7 +3,7 @@ import type { EsDay } from 'esday'
 import { esday } from 'esday'
 import { describe, expect, it } from 'vitest'
 import localeZh from '~/locales/zh'
-import { localePlugin } from '~/plugins/locale'
+import localePlugin from '~/plugins/locale'
 
 esday.extend(localePlugin)
 
