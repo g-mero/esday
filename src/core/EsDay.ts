@@ -3,7 +3,7 @@ import type { UnitDate, UnitDay, UnitHour, UnitMin, UnitMonth, UnitMs, UnitSecon
 import type { DateType, UnitType } from '~/types'
 import type { SimpleObject } from '~/types/util-types'
 import { C, prettyUnit } from '~/common'
-import { getUnitInDate, setUnitInDate } from '~/common/date-fields'
+import { getUnitInDate, prettyUnits, setUnitInDate } from '~/common/date-fields'
 import { esday } from '.'
 import { addImpl } from './Impl/add'
 import { formatImpl } from './Impl/format'
@@ -147,9 +147,7 @@ export class EsDay {
   }
 }
 
-const helperNames = ['year', 'month', 'date', 'day', 'hour', 'minute', 'second', 'millisecond'] as const
-
-helperNames.forEach((key) => {
+prettyUnits.forEach((key) => {
   // @ts-expect-error it's compatible with the overload
   EsDay.prototype[key] = function (...args: number[]): EsDay | number {
     if (args?.length) {
