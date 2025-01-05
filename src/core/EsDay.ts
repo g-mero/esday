@@ -3,6 +3,7 @@ import type { UnitDate, UnitDay, UnitHour, UnitMin, UnitMonth, UnitMs, UnitSecon
 import type { DateType, UnitType } from '~/types'
 import type { SimpleObject } from '~/types/util-types'
 import { C, defaultVal, prettyUnit } from '~/common'
+import { INDEX_MONDAY } from '~/common/constants'
 import { getUnitInDate, setUnitInDate } from '~/common/date-fields'
 import { esday } from '.'
 import { addImpl } from './Impl/add'
@@ -162,4 +163,7 @@ helperNames.forEach((key) => {
   }
 })
 
-defaultVal('weekStart', 1)
+// set some default values
+
+// week start on Monday, according to ISO-8601
+defaultVal('weekStart', INDEX_MONDAY)
