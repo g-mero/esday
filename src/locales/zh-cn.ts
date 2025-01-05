@@ -2,7 +2,7 @@
  * Chinese (China) [zh-CN]
  */
 
-import localeZh from '~/locales/en'
+import localeZh from '~/locales/zh'
 import { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 
 const localeZhCn = cloneLocale(localeZh)
