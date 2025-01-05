@@ -1,6 +1,6 @@
 import type { EsDayPlugin } from 'esday'
-import { C } from '~/common'
-import { INDEX_THURSDAY, MILLISECONDS_A_WEEK } from '~/common/constants'
+import { C, defaultVal } from '~/common'
+import { MILLISECONDS_A_WEEK } from '~/common/constants'
 
 declare module 'esday' {
   interface EsDay {
@@ -9,14 +9,16 @@ declare module 'esday' {
   }
 }
 
-export const weekOfYearPlugin: EsDayPlugin<{}> = (_, dayClass) => {
+export const weekOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
+  // according to ISO-8601, the first week of the year is the week that contains 4th January (or the first Thursday)
+  dayFactory.defaultVal('yearStart', 4)
   // @ts-expect-error function is compatible with its overload
   dayClass.prototype.week = function (week?: number) {
     if (week) {
       return this.add((week - this.week()) * 7, C.DAY)
     }
     // @ts-expect-error '$locale' is a private method when plugin locale is installed
-    const yearStart = this.$locale?.().yearStart || INDEX_THURSDAY // default to Thursday according to ISO 8601
+    const yearStart = this.$locale?.().yearStart || defaultVal('yearStart')
     if (this.month() === 11 && this.date() > 25) {
       const nextYearStartDay = this.startOf(C.YEAR).add(1, C.YEAR).date(yearStart)
       const thisEndOfWeek = this.endOf(C.WEEK)
