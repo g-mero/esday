@@ -125,9 +125,6 @@ export class EsDay {
   }
 
   toISOString() {
-    // ie 8 return
-    // new Dayjs(this.valueOf() + this.$d.getTimezoneOffset() * 60000)
-    // .format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
     return this.$d.toISOString()
   }
 
