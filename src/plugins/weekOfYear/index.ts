@@ -1,6 +1,6 @@
 import type { EsDayPlugin } from 'esday'
 import { C, defaultVal } from '~/common'
-import { INDEX_THURSDAY, MILLISECONDS_A_WEEK } from '~/common/constants'
+import { MILLISECONDS_A_WEEK } from '~/common/constants'
 
 declare module 'esday' {
   interface EsDay {
@@ -9,9 +9,9 @@ declare module 'esday' {
   }
 }
 
-export const weekOfYearPlugin: EsDayPlugin<{}> = (_, dayClass) => {
-  // according to ISO-8601
-  defaultVal('yearStart', INDEX_THURSDAY)
+export const weekOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
+  // according to ISO-8601, the first week of the year is the week that contains 4th January (or the first Thursday)
+  dayFactory.defaultVal('yearStart', 4)
   // @ts-expect-error function is compatible with its overload
   dayClass.prototype.week = function (week?: number) {
     if (week) {
