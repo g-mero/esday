@@ -20,11 +20,15 @@ esday('2024-12-10').set('year', 2025).add(1, 'month').isToday()
 - **Modern API**: Provides the same API as Day.js, with some features moved to plugins for a simpler core.
 - **Immutable**: esday is immutable, which means that all operations will return a new instance of esday.
 
-## Differences with Day.js
+## Differences to Day.js
 
 - **Locale is a Plugin**: no default locale!
-- **default value for 'Start of Week' is 1 (as in ISO 8601)**: 'Start of Week' is 1.
+- **default value for 'Start of Week' is 1 (as in ISO 8601)**: 'Start of Week' is 1 ('Monday').
 - **default value for 'Start of Year' is 4 (as in ISO 8601)**: 'Start of Year' is 4.
+
+## Differences to Moment.js
+
+- **toString** conforms to Day.js and uses Date.toUTCString() (returning the date in RFC 7231 format 'ddd, DD MMM YYYY HH:mm:ss [GMT]') while moment uses the format 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ'.
 
 ## License
 
