@@ -69,7 +69,7 @@ export class EsDay {
   }
 
   clone() {
-    const newInst = new EsDay(this.toDate())
+    const newInst = new EsDay(this.$d)
     newInst.$conf = { ...this.$conf }
     return newInst
   }
