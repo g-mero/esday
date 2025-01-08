@@ -12,6 +12,10 @@ function generateConfig(jsx: boolean): Options {
     outDir: 'dist/',
     treeshake: { preset: 'smallest' },
     replaceNodeEnv: true,
+    esbuildOptions(options) {
+      options.chunkNames = '[name]/[hash]'
+      options.drop = ['console', 'debugger']
+    },
   }
 }
 
