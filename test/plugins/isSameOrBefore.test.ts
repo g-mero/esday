@@ -7,25 +7,21 @@ import isSameOrBeforePlugin from '~/plugins/isSameOrBefore'
 esday.extend(isSameOrBeforePlugin)
 
 describe('isSameOrBefore plugin', () => {
-  it('should correctly determine if a date is the same or before another date', () => {
-    const testCases = [
-      { date1: '2025-01-06', date2: '2025-01-06', unit: 'day', expected: true },
-      { date1: '2025-01-06', date2: '2025-01-05', unit: 'day', expected: false },
-      { date1: '2025-01-05', date2: '2025-01-06', unit: 'day', expected: true },
-      { date1: '2025-01-06T12:00:00', date2: '2025-01-06T11:59:59', unit: 'second', expected: false },
-      { date1: '2025-01-06T11:59:58', date2: '2025-01-06T11:59:59', unit: 'second', expected: true },
-    ]
+  it.each([
+    { date1: '2025-01-06', date2: '2025-01-06', unit: 'day', expected: true },
+    { date1: '2025-01-06', date2: '2025-01-05', unit: 'day', expected: false },
+    { date1: '2025-01-05', date2: '2025-01-06', unit: 'day', expected: true },
+    { date1: '2025-01-06T12:00:00', date2: '2025-01-06T11:59:59', unit: 'second', expected: false },
+    { date1: '2025-01-06T11:59:58', date2: '2025-01-06T11:59:59', unit: 'second', expected: true },
+  ])('should correctly determine if "$date1" is the same or before "date2"', ({ date1, date2, unit, expected }) => {
+    const esDayInstance = esday(date1)
+    const momentInstance = moment(date1)
 
-    testCases.forEach(({ date1, date2, unit, expected }) => {
-      const esDayInstance = esday(date1)
-      const momentInstance = moment(date1)
+    const esDayResult = esDayInstance.isSameOrBefore(date2, unit as UnitType)
+    const momentResult = momentInstance.isSameOrBefore(date2, unit as UnitType)
 
-      const esDayResult = esDayInstance.isSameOrBefore(date2, unit as UnitType)
-      const momentResult = momentInstance.isSameOrBefore(date2, unit as UnitType)
-
-      expect(esDayResult).toBe(expected)
-      expect(esDayResult).toBe(momentResult)
-    })
+    expect(esDayResult).toBe(expected)
+    expect(esDayResult).toBe(momentResult)
   })
 
   it('should handle invalid dates gracefully', () => {

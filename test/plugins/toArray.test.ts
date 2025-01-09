@@ -6,22 +6,18 @@ import toArrayPlugin from '~/plugins/toArray'
 esday.extend(toArrayPlugin)
 
 describe('toArray plugin', () => {
-  it('should correctly convert a date to an array', () => {
-    const testDates = [
-      '2025-01-06T12:34:56.789Z',
-      '2000-02-29T23:59:59.999Z', // Leap year edge case
-      '1999-12-31T00:00:00.000Z',
-    ]
+  it.each([
+    '2025-01-06T12:34:56.789Z',
+    '2000-02-29T23:59:59.999Z', // Leap year edge case
+    '1999-12-31T00:00:00.000Z',
+  ])('should correctly convert "%s" to an array', (dateString) => {
+    const esDayInstance = esday(dateString)
+    const momentInstance = moment(dateString)
 
-    testDates.forEach((dateString) => {
-      const esDayInstance = esday(dateString)
-      const momentInstance = moment(dateString)
+    const esDayArray = esDayInstance.toArray()
+    const momentArray = momentInstance.toArray()
 
-      const esDayArray = esDayInstance.toArray()
-      const momentArray = momentInstance.toArray()
-
-      expect(esDayArray).toEqual(momentArray)
-    })
+    expect(esDayArray).toEqual(momentArray)
   })
 
   it('should handle invalid dates gracefully', () => {
