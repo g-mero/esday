@@ -2,7 +2,7 @@ import type { EsDay, UnitType } from 'esday'
 import { esday } from 'esday'
 import moment from 'moment'
 
-import { expectSame, expectSameResult } from 'test/util'
+import { expectSame, expectSameResult } from '../util'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import utcPlugin from '~/plugins/utc'
