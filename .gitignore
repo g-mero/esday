@@ -3,3 +3,7 @@ dist
 pnpm-lock.yaml
 bun.lockb
 coverage
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
