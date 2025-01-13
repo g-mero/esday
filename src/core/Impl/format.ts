@@ -7,7 +7,9 @@ export function formatImpl(that: EsDay, formatStr?: string) {
 
   const activeFormatString = formatStr || C.FORMAT_DEFAULT
   const unknownTokenOutput = '??'
-  const offset = ('utcOffset' in that) ? that.utcOffset() : 0
+  // eslint-disable-next-line dot-notation
+  const defaultOffset = -Math.round(that['$d'].getTimezoneOffset()) || 0
+  const offset = ('utcOffset' in that) ? that.utcOffset() : defaultOffset
 
   const get$H = (num: number) => (
     padStart(that.hour() % 12 || 12, num, '0')
