@@ -2,6 +2,8 @@
 import type { DateType, EsDay, EsDayPlugin } from 'esday'
 import { isString, isUndefined } from '~/common'
 
+const invalidDate = new Date('')
+
 const formattingTokens
   = /(\[[^[]*\])|([-_:/.,()\s]+)|(YYYY|YY?|MM?|DD?|hh?|HH?|mm?|ss?|S{1,3}|ZZ?|[QXx])/g
 
@@ -237,7 +239,7 @@ function parseFormattedInput(input: string, format: string, utc: boolean): Date 
     return new Date(year || 0, (month || 1) - 1, day || 1, hours || 0, minutes || 0, seconds || 0, milliseconds || 0)
   }
   catch {
-    return new Date(Number.NaN)
+    return invalidDate
   }
 }
 
@@ -253,7 +255,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayTsClass: typeof EsDay) => {
       const date = parseFormattedInput(d, format, !!this['$conf'].utc)
 
       if (Number.isNaN(date.getTime())) {
-        this['$d'] = new Date('')
+        this['$d'] = invalidDate
       }
       else {
         this['$d'] = date
