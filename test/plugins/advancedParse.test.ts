@@ -197,6 +197,14 @@ describe('advancedParse plugin - default mode', () => {
       // Remove offset from formatted string to make test runnable in every timezone
       expect(esday(sourceString, formatString).format().slice(0, -6)).toBe(expectedString)
     })
+
+    it('parse invalid format ""', () => {
+      const sourceString = ''
+      const formatString = 'YYYY-MM-DD'
+
+      expect(esday(sourceString, formatString).isValid()).toBeFalsy()
+      expectSameResult(esday => esday(sourceString, formatString))
+    })
   })
 
   describe('parse with format as array of strings', () => {

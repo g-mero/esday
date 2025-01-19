@@ -201,9 +201,6 @@ function makeParser(format: string): (input: string) => Time {
           input = input.replace(value, '')
           parser.call(time, value)
         }
-        else {
-          parser.call(time, Number.NaN)
-        }
       }
     }
     return time
@@ -221,7 +218,12 @@ function makeParser(format: string): (input: string) => Time {
 function parseFormattedInput(input: string, format: string, utc: boolean): Date {
   try {
     const parser = makeParser(format)
-    const { year, month, day, hours, minutes, seconds, milliseconds, zoneOffset, unix } = parser(input)
+    const parsedElements = parser(input)
+    const { year, month, day, hours, minutes, seconds, milliseconds, zoneOffset, unix } = parsedElements
+
+    if (Object.keys(parsedElements).length === 0) {
+      return invalidDate
+    }
 
     if (!isUndefined(unix)) {
       return new Date(unix)
@@ -253,13 +255,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayTsClass: typeof EsDay) => {
     if (isString(d) && isString(format)) {
       // utc plugin compatibility
       const date = parseFormattedInput(d, format, !!this['$conf'].utc)
-
-      if (Number.isNaN(date.getTime())) {
-        this['$d'] = invalidDate
-      }
-      else {
-        this['$d'] = date
-      }
+      this['$d'] = date
     }
     else {
       oldParse.call(this, d)
