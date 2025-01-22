@@ -1,3 +1,5 @@
+import { C } from '.'
+
 export function isUndefined(value: unknown): value is undefined {
   return value === undefined
 }
@@ -20,4 +22,8 @@ export function isString(value: unknown): value is string {
 
 export function isArray(value: any): value is any[] {
   return Array.isArray(value)
+}
+
+export function isValidDate(value: Date): boolean {
+  return (value.toString() === C.INVALID_DATE_STRING)
 }

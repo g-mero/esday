@@ -2,6 +2,7 @@ import { esday } from 'esday'
 import moment from 'moment'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { C } from '~/common'
 import advancedParsePlugin from '~/plugins/advancedParse'
 import { expectSame, expectSameResult } from '../util'
 
@@ -143,10 +144,32 @@ describe('advancedParse plugin - default mode', () => {
       expectSameResult(esday => esday(sourceString, formatString))
     })
 
-    it('parse with text as separator', () => {
-      const inst = esday('2024年07月月09日日.00时', 'YYYY年MM月月DD日日.HH时')
+    it('parse with remaining text in sourceString', () => {
+      const sourceString = '2024/07/09 14:27:34.987 and many more characters'
+      const formatString = 'YYYY-MM-DD HH-mm-ss-SSS'
 
-      expect(inst.format('YYYY-MM-DD HH:mm:ss')).toBe('2024-07-09 00:00:00')
+      expectSameResult(esday => esday(sourceString, formatString))
+    })
+
+    it('parse with not enough text in sourceString', () => {
+      const sourceString = '2024/07/09T21:27'
+      const formatString = 'YYYY-MM-DD HH-mm-ss-SSS'
+
+      expectSameResult(esday => esday(sourceString, formatString))
+    })
+
+    it('parse with text as separator', () => {
+      const sourceString = '2024ppp07qqq09 21:27:34'
+      const formatString = 'YYYY-MM-DD HH:mm:ss'
+
+      expectSameResult(esday => esday(sourceString, formatString))
+    })
+
+    it('parse with escaped text as separator', () => {
+      const sourceString = '2024/07/09 21H27m34'
+      const formatString = 'YYYY-MM-DD HH[H]mm[m]ss'
+
+      expectSameResult(esday => esday(sourceString, formatString))
     })
 
     it('parse invalid date with overflow', () => {
@@ -208,16 +231,24 @@ describe('advancedParse plugin - default mode', () => {
   })
 
   describe('parse with format as array of strings', () => {
-    // TODO activate after adding array formats to parse
-    // it('first match vs. longest match', () => {
-    //   const sourceString = '2012-05-28 10:21:15'
-    //   const formatString =  ['YYYY', 'YYYY-MM-DD', 'YYYY-MM-DD HH:mm:ss']
-    //   const expectedString = '2012-01-01 00:00:00' // moment: '2012-05-28 10:21:15'
+    it.each([
+      { name: 'last match', formatString: ['YYYY', 'YYYY-MM-DD', 'YYYY-MM-DD HH:mm:ss'], sourceString: '2012-05-28 10:21:15', expectedString: '2012-05-28T10:21:15' },
+      { name: 'first match', formatString: ['YYYY-MM-DD HH:mm:ss', 'YYYY', 'YYYY-MM-DD'], sourceString: '2012-11-28 20:21:15', expectedString: '2012-11-28T20:21:15' },
+      { name: 'single entry', formatString: ['YYYY-MM-DD'], sourceString: '2012-11-28 20:21:15', expectedString: '2012-11-28T00:00:00' },
+    ])('parse "$sourceString" with array - "$name"', ({ formatString, sourceString, expectedString }) => {
+      expectSameResult(esday => esday(sourceString, formatString))
+      // Remove offset from formatted string to make test runnable in every timezone
+      expect(esday(sourceString, formatString).format().slice(0, -6)).toBe(expectedString)
+    })
 
-    //   expectSameResult(esday => esday(sourceString, formatString))
-    //   // Remove offset from formatted string to make test runnable in every timezone
-    //   expect(esday(sourceString, formatString).format().slice(0, -6)).toBe(expectedString)
-    // })
+    it.each([
+      { name: 'empty format', formatString: [''], sourceString: '2012-11-28 20:21:15', expectedString: C.INVALID_DATE_STRING },
+      { name: 'no entry', formatString: [], sourceString: '2012-11-28 20:21:15', expectedString: C.INVALID_DATE_STRING },
+    ])('parse "$sourceString" with invalid array - "$name"', ({ formatString, sourceString, expectedString }) => {
+      expectSameResult(esday => esday(sourceString, formatString))
+      expect(esday(sourceString, formatString).format()).toBe(expectedString)
+      expect(esday(sourceString, formatString).isValid()).toBeFalsy()
+    })
   })
 })
 
