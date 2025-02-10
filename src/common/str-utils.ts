@@ -1,5 +1,5 @@
 /**
- * capitalize the first letter of a string
+ * Capitalize the first letter of a string
  * @param str the string to capitalize
  * @returns the capitalized string
  * @example
@@ -11,7 +11,7 @@ export function capitalize(str: string): string {
 }
 
 /**
- * pad the start of a string with a specified character
+ * Pad the start of a string with a specified character
  * @param origin the string or number to pad
  * @param length the length of the final string
  * @param pad the character to pad with
