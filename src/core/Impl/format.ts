@@ -1,5 +1,5 @@
 import type { EsDay } from 'esday'
-import { C, padStart, padZoneStr } from '~/common'
+import { C, padNumberWithLeadingZeros, padZoneStr } from '~/common'
 
 export function formatImpl(that: EsDay, formatStr?: string) {
   if (!that.isValid())
@@ -12,7 +12,8 @@ export function formatImpl(that: EsDay, formatStr?: string) {
   const offset = ('utcOffset' in that) ? that.utcOffset() : defaultOffset
 
   const get$H = (num: number) => (
-    padStart(that.hour() % 12 || 12, num, '0')
+    // HACK padStart(that.hour() % 12 || 12, num, '0')
+    padNumberWithLeadingZeros(that.hour() % 12 || 12, num)
   )
 
   const meridiemFunc = (hour: number, _minute: number, isLowercase: boolean) => {
@@ -35,21 +36,21 @@ export function formatImpl(that: EsDay, formatStr?: string) {
       case 'YY':
         return String($year).slice(-2)
       case 'YYYY':
-        return padStart($year, 4, '0')
+        return padNumberWithLeadingZeros($year, 4)
       case 'M':
         return $month + 1
       case 'MM':
-        return padStart($month + 1, 2, '0')
+        return padNumberWithLeadingZeros($month + 1, 2)
       case 'D':
         return $date
       case 'DD':
-        return padStart($date, 2, '0')
+        return padNumberWithLeadingZeros($date, 2)
       case 'd':
         return String($day)
       case 'H':
         return String($hour)
       case 'HH':
-        return padStart($hour, 2, '0')
+        return padNumberWithLeadingZeros($hour, 2)
       case 'h':
         return get$H(1)
       case 'hh':
@@ -61,13 +62,13 @@ export function formatImpl(that: EsDay, formatStr?: string) {
       case 'm':
         return String($minute)
       case 'mm':
-        return padStart($minute, 2, '0')
+        return padNumberWithLeadingZeros($minute, 2)
       case 's':
         return String($second)
       case 'ss':
-        return padStart($second, 2, '0')
+        return padNumberWithLeadingZeros($second, 2)
       case 'SSS':
-        return padStart($millisecond, 3, '0')
+        return padNumberWithLeadingZeros($millisecond, 3)
       case 'Z':
         return zoneStr
       case 'ZZ':

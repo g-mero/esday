@@ -45,6 +45,7 @@ interface parsedResult {
 
 // Helper functions
 function parseTwoDigitYear(input: string): number {
+  // 2-digitYears : use year+2000
   const inputLimited = input.slice(0, 2)
   const year = +inputLimited
   return year + (year > 68 ? 1900 : 2000)
@@ -136,6 +137,8 @@ function addUnixInput(isMilliseconds: boolean) {
  * month, day, ...).
  */
 // TODO signature of function must include 'strict' to be used in conversion function (e.g. in MS)
+// TODO rename to parseTokensDefinitions
+// add function to esday to extend this list (used for localizedParse)
 const expressions: Record<string, [RegExp, RegExp, (this: ParsedElements, input: string) => void]> = {
   Q: [match1, match1, function (input) {
     this.month = (Number.parseInt(input, 10) - 1) * 3 + 1
@@ -143,7 +146,7 @@ const expressions: Record<string, [RegExp, RegExp, (this: ParsedElements, input:
   S: [matchUnsigned, match1, addMillisecondsToInput()],
   SS: [matchUnsigned, match2, addMillisecondsToInput()],
   SSS: [matchUnsigned, match3, addMillisecondsToInput()],
-  s: [match1to2, match1, addInput('seconds')],
+  s: [match1to2, match1to2, addInput('seconds')],
   ss: [match1to2, match2, addInput('seconds')],
   m: [match1to2, match1to2, addInput('minutes')],
   mm: [match1to2, match2, addInput('minutes')],
@@ -157,8 +160,8 @@ const expressions: Record<string, [RegExp, RegExp, (this: ParsedElements, input:
   X: [matchTimestamp, matchTimestamp, addUnixInput(false)],
   M: [match1to2, match1to2, addInput('month')],
   MM: [match1to2, match2, addInput('month')],
-  Y: [match1to4, match1to2, function (input) {
-    this.year = parseTwoDigitYear(input)
+  Y: [matchSigned, matchSigned, function (input) {
+    this.year = Number.parseInt(input, 10)
   }],
   YY: [match1to4, match2, function (input) {
     this.year = parseTwoDigitYear(input)
@@ -179,16 +182,22 @@ const expressions: Record<string, [RegExp, RegExp, (this: ParsedElements, input:
  * object with the components of a date&time, the number of characters in input
  * not parsed and the number of unused token (i.e. not enough characters in input).
  * @param format - format to parse
+ * @param isStrict - must input match format exactly?
  * @returns function that will parse an input string to a 'parsedResultRaw' object
  */
-function makeParser(format: string): (input: string) => parsedResultRaw {
+function makeParser(format: string, isStrict: boolean): (input: string) => parsedResultRaw {
   const splittedFormat: any[] = format.match(formattingTokens) || []
   const length = splittedFormat.length
   for (let i = 0; i < length; i += 1) {
     const token = splittedFormat[i]
     const parseTo = expressions[token]
-    const regex = parseTo && parseTo[0]
-    // TODO this is for non-strict-mode only
+    let regex
+    if (!isStrict) {
+      regex = parseTo && parseTo[0]
+    }
+    else {
+      regex = parseTo && parseTo[1]
+    }
     const parser = parseTo && parseTo[2]
     if (parser as any) {
       splittedFormat[i] = { regex, parser }
@@ -262,7 +271,23 @@ function parsedElementsToDate(elements: ParsedElements, utc: boolean) {
     return new Date(Date.UTC(year || 0, (month || 1) - 1, day || 1, hours || 0, minutes || 0, seconds || 0, milliseconds || 0) - offsetMs)
   }
 
-  return new Date(year || 0, (month || 1) - 1, day || 1, hours || 0, minutes || 0, seconds || 0, milliseconds || 0)
+  const parsedYearOrDefault = (year === undefined) ? (new Date()).getFullYear() : year
+  let parsedDate = new Date(parsedYearOrDefault, (month || 1) - 1, day || 1, hours || 0, minutes || 0, seconds || 0, milliseconds || 0)
+  // Account for single digit years
+  if (Math.abs(parsedYearOrDefault) < 100) {
+    parsedDate.setFullYear(parsedYearOrDefault)
+  }
+
+  const overflowed = ((month !== undefined) && ((month - 1) !== parsedDate.getMonth()))
+    || ((day !== undefined) && (day !== parsedDate.getDate()))
+    || ((hours !== undefined) && (hours !== parsedDate.getHours()))
+    || ((minutes !== undefined) && (minutes !== parsedDate.getMinutes()))
+    || ((seconds !== undefined) && (seconds !== parsedDate.getSeconds()))
+  if (overflowed) {
+    parsedDate = invalidDate
+  }
+
+  return parsedDate
 }
 
 /**
@@ -270,11 +295,12 @@ function parsedElementsToDate(elements: ParsedElements, utc: boolean) {
  * object from the parsed elements.
  * @param input - string to be parsed
  * @param format - format to use
+ * @param isStrict - must input match format exactly?
  * @param utc - will this become an utc date&time?
  * @returns Date object generated from the given data
  */
-function parseFormattedInput(input: string, format: string, utc: boolean): parsedResult {
-  const parser = makeParser(format)
+function parseFormattedInput(input: string, format: string, isStrict: boolean, utc: boolean): parsedResult {
+  const parser = makeParser(format, isStrict)
   const parsedElements = parser(input)
   const parsedDate = parsedElementsToDate(parsedElements.dateElements, utc)
 
@@ -288,14 +314,26 @@ function parseFormattedInput(input: string, format: string, utc: boolean): parse
 const advancedParsePlugin: EsDayPlugin<{}> = (_, dayTsClass: typeof EsDay) => {
   const oldParse = dayTsClass.prototype['parse']
   dayTsClass.prototype['parse'] = function (d?: Exclude<DateType, EsDay>) {
-    // TODO use more than 1 additional parameter e..g. 'esday(date, format, strict)
     const format = this['$conf'].args_1
+    const arg2 = this['$conf'].args_2
+    const arg3 = this['$conf'].args_3
+
+    let isStrict = false
+    if (typeof arg2 === 'boolean') {
+      isStrict = arg2
+    }
+    else if ((arg3 !== undefined) && (typeof arg3 === 'boolean')) {
+      isStrict = arg3
+    }
 
     if (isString(d)) {
       // format as single string
       if (isString(format)) {
-        const parsingResult = parseFormattedInput(d, format, !!this['$conf'].utc)
+        const parsingResult = parseFormattedInput(d, format, isStrict, !!this['$conf'].utc)
         this['$d'] = parsingResult.date
+        if (isStrict && ((parsingResult.charsLeftOver > 0) || (parsingResult.unusedTokens > 0))) {
+          this['$d'] = invalidDate
+        }
       }
       else if (isArray(format)) {
         // format as array string
@@ -307,9 +345,12 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayTsClass: typeof EsDay) => {
           let validFormatFound = false
 
           const formatUnderInspection = format[i]
-          const parsingResult = parseFormattedInput(d, formatUnderInspection, !!this['$conf'].utc)
+          const parsingResult = parseFormattedInput(d, formatUnderInspection, isStrict, !!this['$conf'].utc)
+          if (isStrict && ((parsingResult.charsLeftOver > 0) || (parsingResult.unusedTokens > 0))) {
+            parsingResult.date = invalidDate
+          }
 
-          if (!isValidDate(parsingResult.date)) {
+          if (isValidDate(parsingResult.date)) {
             validFormatFound = true
           }
 
