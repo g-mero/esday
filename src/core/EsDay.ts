@@ -2,7 +2,7 @@
 import type { UnitDate, UnitDay, UnitHour, UnitMin, UnitMonth, UnitMs, UnitSecond, UnitWeek, UnitYear } from '~/common'
 import type { DateType, UnitType } from '~/types'
 import type { SimpleObject } from '~/types/util-types'
-import { C, isEmptyObject, isUndefined, prettyUnit } from '~/common'
+import { C, isEmptyObject, isUndefined, isValidDate, prettyUnit } from '~/common'
 import { getUnitInDate, prettyUnits, setUnitInDate } from '~/common/date-fields'
 import { esday } from '.'
 import { addImpl } from './Impl/add'
@@ -93,7 +93,7 @@ export class EsDay {
   }
 
   isValid() {
-    return !(this.$d.toString() === C.INVALID_DATE_STRING)
+    return isValidDate(this.$d)
   }
 
   clone() {
