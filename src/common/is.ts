@@ -25,5 +25,5 @@ export function isArray(value: any): value is any[] {
 }
 
 export function isValidDate(value: Date): boolean {
-  return (value.toString() === C.INVALID_DATE_STRING)
+  return (value.toString() !== C.INVALID_DATE_STRING)
 }
