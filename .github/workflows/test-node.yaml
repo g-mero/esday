@@ -1,5 +1,10 @@
 name: Test (Vitest)
 
+# Prevent that corepack looks for latest version of pnpm
+# HACK to work around issue nodejs/corepack#625
+env:
+  COREPACK_DEFAULT_TO_LATEST: 0
+
 # Controls when the action will run.
 on:
   # Triggers the workflow on pull request events but only for the main branch
