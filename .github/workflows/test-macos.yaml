@@ -1,5 +1,10 @@
 name: Test (vitest & playwright - macOS)
 
+# Prevent that corepack looks for latest version of pnpm
+# HACK to work around issue nodejs/corepack#625
+env:
+  COREPACK_DEFAULT_TO_LATEST: 0
+
 concurrency:
   group: macos-test-${{ github.head_ref }}
   cancel-in-progress: true
