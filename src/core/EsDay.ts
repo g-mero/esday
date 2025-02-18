@@ -2,12 +2,12 @@
 import type { UnitDate, UnitDay, UnitHour, UnitMin, UnitMonth, UnitMs, UnitSecond, UnitWeek, UnitYear } from '~/common'
 import type { DateType, UnitType } from '~/types'
 import type { SimpleObject } from '~/types/util-types'
-import { C, prettyUnit } from '~/common'
+import { C, isEmptyObject, isUndefined, prettyUnit } from '~/common'
 import { getUnitInDate, prettyUnits, setUnitInDate } from '~/common/date-fields'
 import { esday } from '.'
 import { addImpl } from './Impl/add'
 import { formatImpl } from './Impl/format'
-import { parseImpl } from './Impl/parse'
+import { parseArrayToDate } from './Impl/parse'
 import { startOfImpl } from './Impl/startOf'
 
 export declare interface EsDay {
@@ -34,11 +34,39 @@ export class EsDay {
   }
 
   private parse(d: Exclude<DateType, EsDay>) {
-    this.$d = this.$parseDate(d)
+    this.$d = this.$parseImpl(d)
   }
 
-  private $parseDate(d: DateType, utc = false) {
-    return parseImpl(d, utc)
+  private dateFromDateComponents(Y: number, M: number, D: number, h: number, m: number, s: number, ms: number) {
+    return new Date(Y, M, D, h, m, s, ms)
+  }
+
+  private $parseImpl(date?: Exclude<DateType, EsDay>): Date {
+    if (date instanceof Date)
+      return new Date(date)
+    if (date === null)
+      return new Date(Number.NaN)
+    if (isUndefined(date))
+      return new Date()
+    if (isEmptyObject(date))
+      return new Date()
+    if (Array.isArray(date))
+      return parseArrayToDate(date)
+    if (typeof date === 'string' && !/Z$/i.test(date)) {
+      const d = date.match(C.REGEX_PARSE)
+      if (d) {
+        const Y = Number(d[1])
+        const M = Number(d[2]) - 1 || 0
+        const D = Number(d[3] || 1)
+        const h = Number(d[4] || 0)
+        const m = Number(d[5] || 0)
+        const s = Number(d[6] || 0)
+        const ms = Number((d[7] || '0').substring(0, 3))
+        return this.dateFromDateComponents(Y, M, D, h, m, s, ms)
+      }
+    }
+
+    return new Date(date)
   }
 
   isSame(that: DateType, units: UnitType = C.MS) {

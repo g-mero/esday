@@ -121,8 +121,14 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   // change method 'parse'
-  proto['parse'] = function (date?: DateType) {
-    this['$d'] = this['$parseDate'](date, !!this['$conf'].utc)
+  const oldDateFromDateComponents = proto['dateFromDateComponents']
+  proto['dateFromDateComponents'] = function (Y: number, M: number, D: number, h: number, m: number, s: number, ms: number) {
+    if (this['$conf'].utc) {
+      return new Date(Date.UTC(Y, M, D, h, m, s, ms))
+    }
+    else {
+      return oldDateFromDateComponents(Y, M, D, h, m, s, ms)
+    }
   }
 
   proto.get = function (unit) {
