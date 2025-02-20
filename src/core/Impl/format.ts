@@ -12,7 +12,6 @@ export function formatImpl(that: EsDay, formatStr?: string) {
   const offset = ('utcOffset' in that) ? that.utcOffset() : defaultOffset
 
   const get$H = (num: number) => (
-    // HACK padStart(that.hour() % 12 || 12, num, '0')
     padNumberWithLeadingZeros(that.hour() % 12 || 12, num)
   )
 
