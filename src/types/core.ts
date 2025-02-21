@@ -8,3 +8,6 @@ export interface EsDayFactory {
 }
 export type EsDayPlugin<T extends {} = {}> = (option: T, esdayClass: typeof EsDay, esday: EsDayFactory) => void
 export type DateType = EsDay | Date | string | number | number[] | null | undefined | object
+
+// Signature of internal function that creates a Date from date components
+export type DateFromDateComponents = (Y: number | undefined, M: number | undefined, D: number | undefined, h: number | undefined, m: number | undefined, s: number | undefined, ms: number | undefined, offsetMs?: number) => Date
