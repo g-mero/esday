@@ -143,9 +143,7 @@ function addUnixInput(isMilliseconds: boolean) {
  * value to an object containing all the date&time elements (year,
  * month, day, ...).
  */
-// TODO rename to parseTokensDefinitions
-// TODO add function to esday core to extend this list (used for localizedParse)
-const expressions: Record<string, [RegExp, RegExp, (this: ParsedElements, input: string) => void]> = {
+const parseTokensDefinitions: Record<string, [RegExp, RegExp, (this: ParsedElements, input: string) => void]> = {
   Q: [match1, match1, function (input) {
     this.month = (Number.parseInt(input, 10) - 1) * 3 + 1
   }],
@@ -196,7 +194,7 @@ function makeParser(format: string, isStrict: boolean): (input: string, isStrict
   const length = splittedFormat.length
   for (let i = 0; i < length; i += 1) {
     const token = splittedFormat[i]
-    const parseTo = expressions[token]
+    const parseTo = parseTokensDefinitions[token]
     let regex
     if (!isStrict) {
       regex = parseTo && parseTo[0]
