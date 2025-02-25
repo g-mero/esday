@@ -39,6 +39,8 @@
     "test": "vitest",
     "test:ui": "vitest --ui --api 9527",
     "test:run": "vitest --run",
+    "test:run:tz1": "TZ=Pacific/Auckland vitest --run",
+    "test:run:tz2": "TZ=Asia/Kathmandu vitest --run",
     "test:run-browser": "vitest --run --browser.enabled",
     "test:coverage": "vitest run --coverage",
     "release": "commit-and-tag-version -i CHANGELOG.md --same-file",
