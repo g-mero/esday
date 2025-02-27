@@ -8,7 +8,6 @@ const esday: EsDayFactory = (d?: DateType, ...others: (SimpleType | { [key: stri
   if (d instanceof EsDay) {
     return d.clone()
   }
-
   else {
     const conf: SimpleObject = {}
     others.forEach((o, i) => {

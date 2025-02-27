@@ -8,19 +8,26 @@ import type { EsDay } from 'esday'
  > = R['length'] extends N ? R : ReadonlyTuple<T, N, readonly [T, ...R]>
 
 declare module 'esday' {
-/*   interface EsDay {
+/* get locale object of instance
+  interface EsDay {
     $locale: () => Locale
-  } */
+  }
+*/
 
   interface EsDay {
+    /**
+     * set locale of instance
+     */
     locale: (localeName: string) => EsDay
   }
 
   interface EsDayFactory {
     /**
-     * use locale as global
+     * set / get locale globally
      */
-    locale: (localeName: string) => EsDayFactory
+    // locale<T extends string | undefined = undefined>(localeName?: T): T extends string ? EsDayFactory : string
+    locale: <T extends string | undefined = undefined>(localeName?: T) => T extends string ? EsDayFactory : string
+
     /**
      * register locale
      */
