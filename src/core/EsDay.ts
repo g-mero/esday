@@ -236,7 +236,12 @@ export class EsDay {
   }
 
   toISOString() {
-    return this.$d.toISOString()
+    if (this.isValid()) {
+      return this.$d.toISOString()
+    }
+    else {
+      return C.INVALID_DATE_STRING
+    }
   }
 
   toString() {

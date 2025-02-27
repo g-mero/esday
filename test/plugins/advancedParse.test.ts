@@ -2,6 +2,7 @@ import { esday } from 'esday'
 import moment from 'moment'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { C } from '~/common'
 import advancedParsePlugin from '~/plugins/advancedParse'
 import { expectSame, expectSameResult } from '../util'
 
@@ -234,6 +235,16 @@ describe('advancedParse plugin - local mode', () => {
 
       expect(esday(sourceString, formatString).isValid()).toBeFalsy()
       expectSameResult(esday => esday(sourceString, formatString))
+    })
+
+    it('invalid date returns "Invalid Date" as toISOString unlike momentjs', () => {
+      const sourceString = ''
+      const formatString = 'YYYY-MM-DD'
+      const parsedEsDay = esday(sourceString, formatString)
+
+      expect(parsedEsDay.isValid()).toBeFalsy()
+      expect(parsedEsDay.toISOString()).toBe(C.INVALID_DATE_STRING)
+      expect(moment(sourceString, formatString).toISOString()).toBeNull()
     })
   })
 
