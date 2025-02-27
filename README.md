@@ -32,8 +32,6 @@ Esday uses moment@2.30.1 as api reference.
 
 - **toString**: conforms to Day.js and uses Date.toUTCString() (returning the date in RFC 7231 format 'ddd, DD MMM YYYY HH:mm:ss [GMT]') while moment uses the format 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ'.
 - **toISOString**: conforms to Day.js and returns 'Invalid Date' when called on an invalid date. In that case moment returns null (see [moment pr#3710](https://github.com/moment/moment/pull/3710)).
-- **1-digit-year with 'YYYY'**: this year will be interpreted as '1900 + x'
-- **Separator characters for parsing**: the character and the number of characters is ignored, while Moment.js expects that '.' or ':' as separator characters in the parsing format always represent the same character in the parsed string (the number of separator characters in the source string does not matter and even the separator between date and time is ignored)
 
 ## License
 
