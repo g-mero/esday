@@ -108,4 +108,6 @@ export interface Locale {
   readonly formats: Partial<Record<Format, string>>
   readonly relativeTime: Record<Relative, string | RelativeTimeElementFunction>
   readonly meridiem: (hour: number, minute: number, isLowercase: boolean) => string
+  readonly preParse?: (dateString: string) => string
+  readonly postFormat?: (formattedDate: string) => string
 }
