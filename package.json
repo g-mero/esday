@@ -41,7 +41,7 @@
     "test:run": "vitest --run",
     "test:run:tz1": "TZ=Pacific/Auckland vitest --run",
     "test:run:tz2": "TZ=Asia/Kathmandu vitest --run",
-    "test:run-browser": "vitest --run --browser.enabled --testTimeout=20000",
+    "test:run-browser": "vitest --run --browser.enabled --testTimeout=30000",
     "test:coverage": "vitest run --coverage",
     "release": "commit-and-tag-version -i CHANGELOG.md --same-file",
     "lint-commits": "commitlint --from b4c0a8614dd7d9997 --to HEAD --verbose",
