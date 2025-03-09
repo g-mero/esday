@@ -18,6 +18,14 @@ describe('factory locale methods', () => {
     expect(getLocaleName(esday())).toBe('non-exist')
   })
 
+  it('get locale', () => {
+    esday.locale('zh')
+    expect(esday.locale()).toBe('zh')
+
+    esday.locale('non-exist')
+    expect(esday.locale()).toBe('non-exist')
+  })
+
   it('register locale', () => {
     esday.registerLocale(localeZh)
     esday.locale('zh')
@@ -33,6 +41,7 @@ describe('factory locale methods', () => {
 
 describe('esDay locale methods', () => {
   const day = esday('2021-01-01')
+
   it('set locale for instance', () => {
     expect(getLocaleName(day)).toBe('en')
     const dayZh = day.locale('zh')

@@ -1,5 +1,5 @@
 /* eslint-disable dot-notation */
-import type { EsDay, EsDayPlugin, UnitType } from 'esday'
+import type { EsDay, EsDayFactory, EsDayPlugin, UnitType } from 'esday'
 import type { Locale } from './types'
 import { C, prettyUnit, undefinedOr } from '~/common'
 import en from '~/locales/en'
@@ -80,27 +80,6 @@ export function cloneLocale(source: Locale): Locale {
   return (cloneObject(source) as Locale)
 }
 
-declare module 'esday' {
-/*   interface EsDay {
-    $locale: () => Locale
-  } */
-
-  interface EsDay {
-    locale: (localeName: string) => EsDay
-  }
-
-  interface EsDayFactory {
-    /**
-     * use locale as global
-     */
-    locale: (localeName: string) => EsDayFactory
-    /**
-     * register locale
-     */
-    registerLocale: (locale: Locale, newName?: string) => EsDayFactory
-  }
-}
-
 function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
   if (newLocaleName) {
     inst['$conf']['$locale_name'] = newLocaleName
@@ -167,9 +146,14 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return fixDiff(inst, this, unit, true)
   }
 
-  dayFactory.locale = function (localeName: string) {
-    $localeGlobal = localeName
-    return dayFactory
+  dayFactory.locale = <T extends string | undefined>(localeName?: T): T extends string ? EsDayFactory : string => {
+    if ((localeName !== undefined) && (typeof localeName === 'string')) {
+      $localeGlobal = localeName
+      return dayFactory as any
+    }
+    else {
+      return $localeGlobal as any
+    }
   }
 
   dayFactory.registerLocale = function (locale: Locale, newName?: string) {
