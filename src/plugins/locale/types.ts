@@ -50,7 +50,8 @@ export interface MonthNamesFunction<T = MonthNames<string>> {
 export type RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string
+  token: string,
+  isFuture: boolean
 ) => string
 
 type Format =
@@ -68,6 +69,7 @@ type Relative =
   | 'future'
   | 'past'
   | 's'
+  | 'ss'
   | 'm'
   | 'mm'
   | 'h'

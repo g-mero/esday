@@ -11,8 +11,12 @@ const localeFr: Readonly<Locale> = {
   weekdaysMin: ['di', 'lu', 'ma', 'me', 'je', 've', 'sa'],
   months: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
   monthsShort: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'],
-  weekStart: 1,
-  yearStart: 4,
+  ordinal: (n) => {
+    const o = n === 1 ? 'er' : ''
+    return `${n}${o}`
+  },
+  weekStart: 1, // Monday is the first day of the week.
+  yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
@@ -29,6 +33,7 @@ const localeFr: Readonly<Locale> = {
     future: 'dans %s',
     past: 'il y a %s',
     s: 'quelques secondes',
+    ss: '%d secondes',
     m: 'une minute',
     mm: '%d minutes',
     h: 'une heure',
@@ -41,12 +46,9 @@ const localeFr: Readonly<Locale> = {
     yy: '%d ans',
   },
   meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+    // French doesn't have AM/PM, so return default values
     const m = (hour < 12 ? 'AM' : 'PM')
     return isLowercase ? m.toLowerCase() : m
-  },
-  ordinal: (n) => {
-    const o = n === 1 ? 'er' : ''
-    return `${n}${o}`
   },
 }
 
