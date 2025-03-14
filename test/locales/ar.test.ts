@@ -1,4 +1,10 @@
-// Test for locale 'ar'.
+/**
+ * Test for locale 'Arabic [ar]'.
+ *
+ * This is a minimal test for a locale with preParse / postFormat.
+ * This file should aso be used as a template for tests for
+ * other locales with preParse / postFormat.
+ */
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/ar'

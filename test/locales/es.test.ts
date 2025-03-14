@@ -1,4 +1,10 @@
-// Test for locale 'es'.
+/**
+ * Test for locale 'Spanish [es]'
+ *
+ * This is a minimal test for a locale without preParse / postFormat.
+ * This file should aso be used as a template for tests for
+ * other locales without preParse / postFormat.
+ */
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/es'
@@ -42,6 +48,7 @@ describe('locale es', () => {
       expect(locale.monthsShort).toBeTypeOf('function')
     }
   })
+
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')

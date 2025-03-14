@@ -1,4 +1,10 @@
-// Test for locale 'de'.
+/**
+ * Test for locale 'German [de]'
+ *
+ * This is a minimal test for a locale without preParse / postFormat.
+ * This file should aso be used as a template for tests for
+ * other locales without preParse / postFormat.
+ */
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/de'
