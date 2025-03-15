@@ -52,9 +52,9 @@ function cloneObject(sourceObject: object): object {
   const result = {}
 
   for (const [key, sourceValue] of Object.entries(sourceObject)) {
-    if ((typeof sourceValue === 'string') || (sourceValue instanceof String)
-      || (typeof sourceValue === 'number') || (sourceValue instanceof Number)
-      || (sourceValue instanceof Function)) {
+    if ((typeof sourceValue === 'string')
+      || (typeof sourceValue === 'number')
+      || (typeof sourceValue === 'function')) {
       setObjectProperty(result, key, sourceValue)
     }
     else if (Array.isArray(sourceValue)) {
