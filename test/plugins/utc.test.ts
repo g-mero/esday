@@ -183,6 +183,17 @@ describe('plugin utc', () => {
   })
 
   describe('parse (with format)', () => {
+    const fakeTimeAsString = '2023-12-17T03:24:46.234'
+
+    beforeEach(() => {
+      vi.useFakeTimers()
+      vi.setSystemTime(new Date(fakeTimeAsString))
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
     it.each([
       { dateString: '2011-02-02 03:04:05', format: 'YYYY-MM-DD HH:mm:ss' },
       { dateString: '2011-02-02 03:04:05Z', format: 'YYYY-MM-DD HH:mm:ss' },
@@ -192,6 +203,17 @@ describe('plugin utc', () => {
   })
 
   describe('format (core)', () => {
+    const fakeTimeAsString = '2023-12-17T03:24:46.234'
+
+    beforeEach(() => {
+      vi.useFakeTimers()
+      vi.setSystemTime(new Date(fakeTimeAsString))
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
     it('does not break default format for local date time', () => {
       const dateString = '2018-09-06T19:34:28.65'
       const esdayDateFormat = esday(dateString).format()
@@ -259,6 +281,17 @@ describe('plugin utc', () => {
   })
 
   describe('utc', () => {
+    const fakeTimeAsString = '2023-12-17T03:24:46.234'
+
+    beforeEach(() => {
+      vi.useFakeTimers()
+      vi.setSystemTime(new Date(fakeTimeAsString))
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
     it('convert to utc', () => {
       const dateString = '2016-05-03 22:15:01'
 
@@ -376,6 +409,17 @@ describe('plugin utc', () => {
   })
 
   describe('utcOffset set', () => {
+    const fakeTimeAsString = '2023-12-17T03:24:46.234'
+
+    beforeEach(() => {
+      vi.useFakeTimers()
+      vi.setSystemTime(new Date(fakeTimeAsString))
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
     it('returns an instance of EsDay', () => {
       const newDate: EsDay = esday().utcOffset(5)
 
