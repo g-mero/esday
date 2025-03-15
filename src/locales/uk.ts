@@ -24,7 +24,7 @@ function plural(timeStrings: string[], timeValue: number) {
   return timeValue % 10 === 1 && timeValue % 100 !== 11 ? forms[0] : (timeValue % 10 >= 2 && timeValue % 10 <= 4 && (timeValue % 100 < 10 || timeValue % 100 >= 20) ? forms[1] : forms[2])
 }
 function relativeTimeWithPlural(timeValue: string | number, withoutSuffix: boolean, range: string): string {
-  const format = {
+  const formats = {
     ss: withoutSuffix ? ['секунда', 'секунди', 'секунд'] : ['секунду', 'секунди', 'секунд'],
     mm: withoutSuffix ? ['хвилина', 'хвилини', 'хвилин'] : ['хвилину', 'хвилини', 'хвилин'],
     hh: withoutSuffix ? ['година', 'години', 'годин'] : ['годину', 'години', 'годин'],
@@ -39,7 +39,7 @@ function relativeTimeWithPlural(timeValue: string | number, withoutSuffix: boole
     return withoutSuffix ? 'година' : 'годину'
   }
 
-  return `${timeValue} ${plural(format[range as keyof typeof format], +timeValue)}`
+  return `${timeValue} ${plural(formats[range as keyof typeof formats], +timeValue)}`
 }
 
 const localeUk: Readonly<Locale> = {
@@ -49,8 +49,9 @@ const localeUk: Readonly<Locale> = {
   weekdaysMin: ['нд', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
   months,
   monthsShort: ['січ', 'лют', 'бер', 'квіт', 'трав', 'черв', 'лип', 'серп', 'вер', 'жовт', 'лист', 'груд'],
-  weekStart: 1,
-  yearStart: 4,
+  ordinal: n => `${n}`,
+  weekStart: 1, // Monday is the first day of the week.
+  yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
@@ -67,6 +68,7 @@ const localeUk: Readonly<Locale> = {
     future: 'за %s',
     past: '%s тому',
     s: 'декілька секунд',
+    ss: relativeTimeWithPlural,
     m: relativeTimeWithPlural,
     mm: relativeTimeWithPlural,
     h: relativeTimeWithPlural,
@@ -79,10 +81,10 @@ const localeUk: Readonly<Locale> = {
     yy: relativeTimeWithPlural,
   },
   meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+    // Ukrainian doesn't have AM/PM, so return default values
     const m = (hour < 12 ? 'AM' : 'PM')
     return isLowercase ? m.toLowerCase() : m
   },
-  ordinal: n => `${n}`,
 }
 
 export default localeUk

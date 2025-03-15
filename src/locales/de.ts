@@ -6,6 +6,7 @@ import type { Locale } from '~/plugins/locale'
 
 const relativeTimeFormatStrings = {
   s: 'ein paar Sekunden',
+  ss: '%d Sekunden',
   m: ['eine Minute', 'einer Minute'],
   mm: '%d Minuten',
   h: ['eine Stunde', 'einer Stunde'],
@@ -37,22 +38,10 @@ const localeDe: Readonly<Locale> = {
   weekdaysShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
   weekdaysMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
   months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-  monthsShort: [
-    'Jan.',
-    'Feb.',
-    'März',
-    'Apr.',
-    'Mai',
-    'Juni',
-    'Juli',
-    'Aug.',
-    'Sept.',
-    'Okt.',
-    'Nov.',
-    'Dez.',
-  ],
-  weekStart: 1,
-  yearStart: 4,
+  monthsShort: ['Jan.', 'Feb.', 'März', 'Apr.', 'Mai', 'Juni', 'Juli', 'Aug.', 'Sept.', 'Okt.', 'Nov.', 'Dez.'],
+  ordinal: n => `${n}.`,
+  weekStart: 1, // Monday is the first day of the week.
+  yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
@@ -69,6 +58,7 @@ const localeDe: Readonly<Locale> = {
     future: 'in %s',
     past: 'vor %s',
     s: relativeTimeFormatter,
+    ss: relativeTimeFormatter,
     m: relativeTimeFormatter,
     mm: relativeTimeFormatter,
     h: relativeTimeFormatter,
@@ -81,10 +71,10 @@ const localeDe: Readonly<Locale> = {
     yy: relativeTimeFormatter,
   },
   meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+    // German doesn't have AM/PM, so return default values
     const m = (hour < 12 ? 'AM' : 'PM')
     return isLowercase ? m.toLowerCase() : m
   },
-  ordinal: n => `${n}.`,
 }
 
 export default localeDe

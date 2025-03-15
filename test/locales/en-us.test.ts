@@ -1,4 +1,10 @@
-// Test for locale 'en-US'.
+/**
+ * Test for locale 'English (United States) [en-US]'
+ *
+ * This is a minimal test for a locale without preParse / postFormat.
+ * This file should aso be used as a template for tests for
+ * other locales without preParse / postFormat.
+ */
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/en-us'

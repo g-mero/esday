@@ -1,9 +1,15 @@
-// Test for locale 'zh-CN'.
+/**
+ * Test for locale 'Chinese (China) [zh-CN]'
+ *
+ * This is a minimal test for a locale without preParse / postFormat.
+ * This file should aso be used as a template for tests for
+ * other locales without preParse / postFormat.
+ */
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/zh-cn'
 
-describe('locale zh', () => {
+describe('locale zh-CN', () => {
   it('should have the correct name', () => {
     expect(locale.name).toBe('zh-CN')
   })

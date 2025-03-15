@@ -1,0 +1,70 @@
+/**
+ * Bulgarian [bg]
+ */
+
+import type { Locale } from '~/plugins/locale'
+
+const localeBg: Readonly<Locale> = {
+  name: 'bg',
+  weekdays: ['неделя', 'понеделник', 'вторник', 'сряда', 'четвъртък', 'петък', 'събота'],
+  weekdaysShort: ['нед', 'пон', 'вто', 'сря', 'чет', 'пет', 'съб'],
+  weekdaysMin: ['нд', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
+  months: ['януари', 'февруари', 'март', 'април', 'май', 'юни', 'юли', 'август', 'септември', 'октомври', 'ноември', 'декември'],
+  monthsShort: ['яну', 'фев', 'мар', 'апр', 'май', 'юни', 'юли', 'авг', 'сеп', 'окт', 'ное', 'дек'],
+  ordinal: (n) => {
+    const last2Digits = n % 100
+    if (last2Digits > 10 && last2Digits < 20) {
+      return `${n}-ти`
+    }
+
+    const lastDigit = n % 10
+    if (lastDigit === 1) {
+      return `${n}-ви`
+    }
+    if (lastDigit === 2) {
+      return `${n}-ри`
+    }
+    if (lastDigit === 7 || lastDigit === 8) {
+      return `${n}-ми`
+    }
+
+    return `${n}-ти`
+  },
+  weekStart: 1, // Monday is the first day of the week.
+  yearStart: 4, // The week that contains Jan 4th is the first week of the year.
+  formats: {
+    LT: 'H:mm',
+    LTS: 'H:mm:ss',
+    L: 'D.MM.YYYY',
+    LL: 'D MMMM YYYY',
+    LLL: 'D MMMM YYYY H:mm',
+    LLLL: 'dddd, D MMMM YYYY H:mm',
+    l: 'D.MM.YYYY',
+    ll: 'D MMMM YYYY',
+    lll: 'D MMMM YYYY H:mm',
+    llll: 'dddd, D MMMM YYYY H:mm',
+  },
+  relativeTime: {
+    future: 'след %s',
+    past: 'преди %s',
+    s: 'няколко секунди',
+    ss: '%d секунди',
+    m: 'минута',
+    mm: '%d минути',
+    h: 'час',
+    hh: '%d часа',
+    d: 'ден',
+    dd: '%d дена',
+    M: 'месец',
+    MM: '%d месеца',
+    y: 'година',
+    yy: '%d години',
+  },
+  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+    // Bulgarian doesn't have AM/PM, so return default values
+    const m = (hour < 12 ? 'AM' : 'PM')
+    return isLowercase ? m.toLowerCase() : m
+  },
+}
+
+export default localeBg

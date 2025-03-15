@@ -1,9 +1,15 @@
-// Test for locale 'en-GB'.
+/**
+ * Test for locale 'English (United Kingdom) [en-GB]'
+ *
+ * This is a minimal test for a locale without preParse / postFormat.
+ * This file should aso be used as a template for tests for
+ * other locales without preParse / postFormat.
+ */
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/en-gb'
 
-describe('locale en-US', () => {
+describe('locale en-GB', () => {
   it('should have the correct name', () => {
     expect(locale.name).toBe('en-GB')
   })

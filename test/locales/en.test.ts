@@ -1,9 +1,9 @@
 /**
- * Test for locale 'en'.
+ * Test for locale 'English [en]'.
  *
- * This is a minimal test for a locale.
+ * This is a minimal test for a locale without preParse / postFormat.
  * This file should aso be used as a template for tests for
- * other locales.
+ * other locales without preParse / postFormat.
  */
 
 import { describe, expect, it } from 'vitest'
