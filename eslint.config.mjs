@@ -16,4 +16,9 @@ export default antfu({
     'unused-imports/no-unused-imports': 'error',
     'unicorn/consistent-function-scoping': 'off',
   },
-}, { ignores: ['**/*.d.ts'] })
+}, {
+  ignores: [
+    '**/*.d.ts',
+    'docs/plugins/advancedParse.md',
+  ],
+})

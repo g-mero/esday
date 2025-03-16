@@ -5,7 +5,7 @@ import type { EsDay } from 'esday'
  *
  * when utc mode is enabled, get and set methods will use UTC time
  *
- * used esday parameters in '$conf':
+ * new esday parameters in '$conf':
  *   utc              utc mode (true / false)
  *   offset           utcOffset (constant value, no DST handling)
  *   timezoneOffset   timezone offset (with DST handling)
@@ -13,7 +13,7 @@ import type { EsDay } from 'esday'
 
 import type { UnitDay } from '~/common'
 import type { DateType, EsDayPlugin } from '~/types'
-import { C, getUnitInDate, getUnitInDateUTC, prettyUnit, setUnitInDateUTC } from '~/common'
+import { C, getUnitInDate, getUnitInDateUTC, isUndefined, prettyUnit, setUnitInDateUTC } from '~/common'
 
 const REGEX_VALID_OFFSET_FORMAT = /[+-]\d\d(?::?\d\d)?/g
 const REGEX_OFFSET_HOURS_MINUTES_FORMAT = /[+-]|\d\d/g
@@ -43,7 +43,6 @@ declare module 'esday' {
     utcOffset(): number
     utcOffset(offset: number | string, keepLocalTime?: boolean): EsDay
     /* eslint-enable ts/method-signature-style */
-    // HACK do we need this?toDate(type?: string): Date
   }
 
   interface EsDayFactory {
@@ -120,15 +119,51 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return oldFormat.call(this, str)
   }
 
-  // change method 'parse'
+  // change private method 'dateFromDateComponents' of EsDay
   const oldDateFromDateComponents = proto['dateFromDateComponents']
-  proto['dateFromDateComponents'] = function (Y: number, M: number, D: number, h: number, m: number, s: number, ms: number) {
-    if (this['$conf'].utc) {
-      return new Date(Date.UTC(Y, M, D, h, m, s, ms))
+  proto['dateFromDateComponents'] = function (Y: number | undefined, M: number | undefined, D: number | undefined, h: number | undefined, m: number | undefined, s: number | undefined, ms: number | undefined, offsetMs?: number) {
+    if (!this['$conf'].utc) {
+      return oldDateFromDateComponents(Y, M, D, h, m, s, ms, offsetMs)
+    }
+
+    const parsedYearOrDefault = (Y === undefined) ? (new Date()).getFullYear() : Y
+    const dateComponents = {
+      Y: parsedYearOrDefault,
+      M: (M || 1) - 1,
+      D: D || 1,
+      h: h || 0,
+      m: m || 0,
+      s: s || 0,
+      ms: ms || 0,
+    }
+
+    const yearWithoutCentury = (Math.abs(parsedYearOrDefault) < 100)
+    let result: Date
+    let overflowed = false
+
+    result = new Date(Date.UTC(dateComponents.Y, dateComponents.M, dateComponents.D, dateComponents.h, dateComponents.m, dateComponents.s, dateComponents.ms))
+
+    // Account for single digit years
+    if (yearWithoutCentury) {
+      result.setUTCFullYear(dateComponents.Y)
+    }
+
+    overflowed = ((M !== undefined) && ((M - 1) !== result.getUTCMonth()))
+      || ((D !== undefined) && (D !== result.getUTCDate()))
+      || ((h !== undefined) && (h !== result.getUTCHours()))
+      || ((m !== undefined) && (m !== result.getUTCMinutes()))
+      || ((s !== undefined) && (s !== result.getUTCSeconds()))
+
+    if (overflowed) {
+      result = C.INVALID_DATE
     }
     else {
-      return oldDateFromDateComponents(Y, M, D, h, m, s, ms)
+      if (!isUndefined(offsetMs)) {
+        result.setUTCMilliseconds(result.getUTCMilliseconds() - offsetMs)
+      }
     }
+
+    return result
   }
 
   proto.get = function (unit) {

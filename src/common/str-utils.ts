@@ -1,5 +1,5 @@
 /**
- * capitalize the first letter of a string
+ * Capitalize the first letter of a string
  * @param str the string to capitalize
  * @returns the capitalized string
  * @example
@@ -11,7 +11,7 @@ export function capitalize(str: string): string {
 }
 
 /**
- * pad the start of a string with a specified character
+ * Pad the start of a string with a specified character
  * @param origin the string or number to pad
  * @param length the length of the final string
  * @param pad the character to pad with
@@ -26,6 +26,31 @@ export function padStart(origin: string | number, length: number, pad: string) {
   if (!originStr || originStr.length >= length)
     return originStr
   return `${Array.from({ length: (length + 1) - originStr.length }).join(pad)}${originStr}`
+}
+
+/**
+ * Add leading zeros to a number to get the defined length: if
+ * the number is negative, the dash is appended after padding, the
+ * resulting string has 'length+1' characters
+ * @param origin the number to pad
+ * @param length the length of the final string (without dash)
+ * @returns the padded string
+ *
+ * @example
+ *
+ * padStart(1, 4) // '0001'
+ */
+export function padNumberWithLeadingZeros(origin: number, length: number) {
+  const isNegative = origin < 0
+  let result = String(origin)
+  let dash = ''
+
+  if (isNegative) {
+    result = result.slice(1)
+    dash = '-'
+  }
+
+  return `${dash}${result.padStart(length, '0')}`
 }
 
 export function padZoneStr(utcOffset: number) {

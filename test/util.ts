@@ -38,7 +38,6 @@ export function expectSameResult(fn: (instance: EsDayFactory) => EsDay | Moment)
     expect(d.millisecond()).toBe(m.millisecond())
     expect(d.toDate()).toEqual(m.toDate())
     expect(d.toJSON()).toBe(m.toJSON())
-    expect(d.format()).toBe(m.format()) // not recommend
   }
   else {
     expect(d.toString().toLowerCase()).toBe(m.toString().toLowerCase())

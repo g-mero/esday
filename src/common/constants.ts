@@ -25,6 +25,7 @@ export const DATE = 'date' as const
 
 export const FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ'
 
+export const INVALID_DATE = new Date('')
 export const INVALID_DATE_STRING = 'Invalid Date'
 
 // regex
@@ -53,6 +54,7 @@ export default {
   YEAR,
   DATE,
   FORMAT_DEFAULT,
+  INVALID_DATE,
   INVALID_DATE_STRING,
   REGEX_PARSE,
   REGEX_FORMAT,
