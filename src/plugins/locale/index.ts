@@ -94,7 +94,7 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return getLocale(getSetPrivateLocaleName(this))
   }
 
-  // add locale method
+  // setter for instance locale
   dayClass.prototype.locale = function (localeName: string) {
     const inst = this.clone()
     getSetPrivateLocaleName(inst, localeName)
@@ -146,6 +146,7 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return fixDiff(inst, this, unit, true)
   }
 
+  // setter / getter for global locale
   dayFactory.locale = <T extends string | undefined>(localeName?: T): T extends string ? EsDayFactory : string => {
     if ((localeName !== undefined) && (typeof localeName === 'string')) {
       $localeGlobal = localeName
