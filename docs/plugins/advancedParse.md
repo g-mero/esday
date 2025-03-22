@@ -2,6 +2,10 @@
 
 AdvancedParse extends the `esday` constructor to support custom formats of input strings.
 
+## Usage
+
+If used together with plugin utc, the plugin utc must be activated before the plugin AdvancedParse.
+
 ## Method signatures
 ```typescript
 esday(date: string, format: string): EsDay
@@ -54,7 +58,9 @@ If an array of formats is used, `date` will be parsed with the best matching for
 ```typescript
 import { esday } from 'esday'
 import advancedParsePlugin from 'esday/plugins/advancedParse'
+import utcPlugin from 'esday/plugins/utc'
 
+esday.extend(utcPlugin)
 esday.extend(advancedParsePlugin)
 
 esday('08-2023-14 21:43:12.123', 'MM-YYYY-DD HH:mm:ss.SSS')
@@ -62,4 +68,7 @@ esday('08-2023-14 21:43:12.123', 'MM-YYYY-DD HH:mm:ss.SSS')
 
 esday('08/2023/14 21 43.12 123', 'MM/YYYY/DD HH mm.ss SSS', true)
 // In strict mode the format must match the parsed date (even the separators)
+
+esday.utc('08-2023-14 21:43:12.123', 'MM-YYYY-DD HH:mm:ss.SSS')
+// Returns an instance containing '2023-08-14T21:43:12.123' in utc
 ```
