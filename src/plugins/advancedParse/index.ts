@@ -9,8 +9,8 @@ let dateFromDateComponents: DateFromDateComponents
 
 const invalidDate = new Date('')
 
-const formattingTokens
-  = /(\[[^[]*\])|([-_:/.,()\s]+)|(YYYY|YY?|MM?|DD?|hh?|HH?|mm?|ss?|S{1,3}|ZZ?|[QXx])/g
+const formattingSeparatorsRegex = '(\\[[^[]*\\])|([-_:/.,()\\s]+)'
+let formattingTokensRegex: RegExp
 
 // Regular expressions for parsing
 const match1 = /\d/
@@ -179,6 +179,39 @@ const parseTokensDefinitions: Record<string, [RegExp, RegExp, (this: ParsedEleme
   }],
 }
 
+// Get regex from list of supported tokens
+/**
+ * Compare 2 tokens for sorting.
+ * Longer token and upper case token are sorted to the top.
+ * @param a - token 1
+ * @param b - token 2
+ * @returns -1 (a<b), 0 (a==b), 1 (a>b)
+ */
+function compareTokens(a: string, b: string) {
+  if (a.length < b.length) {
+    return 1
+  }
+  else if (a.length > b.length) {
+    return -1
+  }
+
+  // length are equal, so compare values
+  if (a < b) {
+    return 1
+  }
+  else if (a > b) {
+    return -1
+  }
+
+  // are equal
+  return 0
+}
+function formattingTokensRegexFromDefinitions() {
+  // we have to sort the keys to always catch the longest matches
+  const tokenKeys = Object.keys(parseTokensDefinitions).sort(compareTokens)
+  formattingTokensRegex = new RegExp(`${formattingSeparatorsRegex}|(${tokenKeys.join('|')})`, 'g')
+}
+
 /**
  * Build a parser that will parse an input string an return an
  * object with the components of a date&time, the number of characters in input
@@ -188,7 +221,7 @@ const parseTokensDefinitions: Record<string, [RegExp, RegExp, (this: ParsedEleme
  * @returns function that will parse an input string to a 'parsedResultRaw' object
  */
 function makeParser(format: string, isStrict: boolean): (input: string, isStrict: boolean) => parsedResultRaw {
-  const splittedFormat: any[] = format.match(formattingTokens) || []
+  const splittedFormat: any[] = format.match(formattingTokensRegex) || []
   const length = splittedFormat.length
   for (let i = 0; i < length; i += 1) {
     const token = splittedFormat[i]
@@ -305,6 +338,9 @@ function parseFormattedInput(that: EsDay, input: string, format: string, isStric
 
 const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass: typeof EsDay) => {
   const proto = dayClass.prototype
+
+  // get regexp to separate format into formatting tokens and separators
+  formattingTokensRegexFromDefinitions()
 
   const oldParse = proto['parse']
   proto['parse'] = function (d?: Exclude<DateType, EsDay>) {
