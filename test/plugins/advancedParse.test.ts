@@ -1,7 +1,8 @@
+import type { TokenDefinitions } from '~/plugins/advancedParse/types'
 import { esday } from 'esday'
 import moment from 'moment'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import advancedParsePlugin from '~/plugins/advancedParse'
 import { expectSame, expectSameResult } from '../util'
@@ -398,6 +399,98 @@ describe('advancedParse plugin - local mode', () => {
 
       expect(parsedMoment.isValid()).toBeFalsy()
       expect(parsedEsDay.isValid()).toBeFalsy()
+    })
+  })
+
+  describe('extend token definitions', () => {
+    it.each([
+      { formatString: 'YYYY PP', sourceString: '2024 3' },
+      { formatString: 'YYYY PP', sourceString: '2024 23' },
+    ])('add new token to list of tokens - test with "$sourceString" with format "$formatString"', ({ sourceString, formatString }) => {
+      const additionalTokens: TokenDefinitions = {
+        PP: [/\d\d?/, /\d{2}/, function (input) {
+          // don't use parsed value ('input')
+          if (input.length > 0) {
+            this.milliseconds = 987
+          }
+        }],
+      }
+      esday.addTokenDefinitions(additionalTokens)
+      const parsedDate = esday(sourceString, formatString)
+
+      expect(parsedDate.year()).toBe(2024)
+      expect(parsedDate.millisecond()).toBe(987)
+    })
+
+    it.each([
+      { formatString: 'YYYY PP', sourceString: '2024 234' },
+    ])('add new token to list of tokens - failing test with "$sourceString" with format "$formatString"', ({ sourceString, formatString }) => {
+      const additionalTokens: TokenDefinitions = {
+        PP: [/\d\d?/, /\d{2}/, function (input) {
+          // don't use parsed value ('input')
+          if (input.length > 0) {
+            this.milliseconds = 987
+          }
+        }],
+      }
+      esday.addTokenDefinitions(additionalTokens)
+      const parsedDate = esday(sourceString, formatString)
+
+      expect(parsedDate.year()).toBe(2024)
+      expect(parsedDate.millisecond()).toBe(987)
+    })
+
+    it.each([
+      { formatString: 'YYYY PP', sourceString: '2024 23' },
+    ])('add new token to list of tokens - test in strict mode with "$sourceString" with format "$formatString"', ({ sourceString, formatString }) => {
+      const additionalTokens: TokenDefinitions = {
+        PP: [/\d\d?/, /\d{2}/, function (input) {
+          // don't use parsed value ('input')
+          if (input.length > 0) {
+            this.milliseconds = 987
+          }
+        }],
+      }
+      esday.addTokenDefinitions(additionalTokens)
+      const parsedDate = esday(sourceString, formatString, true)
+
+      expect(parsedDate.year()).toBe(2024)
+      expect(parsedDate.millisecond()).toBe(987)
+    })
+
+    it.each([
+      { formatString: 'YYYY PP', sourceString: '2024 3' },
+    ])('add new token to list of tokens - failing test in strict mode with "$sourceString" with format "$formatString"', ({ sourceString, formatString }) => {
+      const additionalTokens: TokenDefinitions = {
+        PP: [/\d\d?/, /\d{2}/, function (input) {
+          // don't use parsed value ('input')
+          if (input.length > 0) {
+            this.milliseconds = 987
+          }
+        }],
+      }
+      esday.addTokenDefinitions(additionalTokens)
+      const parsedDate = esday(sourceString, formatString, true)
+
+      expect(parsedDate.isValid()).toBeFalsy()
+    })
+
+    it('adding existing token should not change existing definition', () => {
+      const additionalTokens: TokenDefinitions = {
+        YYYY: [/\d\d?/, /\d{2}/, function (input) {
+          // don't use parsed value ('input')
+          if (input.length > 0) {
+            this.milliseconds = 987
+          }
+        }],
+      }
+      esday.addTokenDefinitions(additionalTokens)
+      const sourceString = '2024'
+      const formatString = 'YYYY'
+      const parsedDate = esday(sourceString, formatString, true)
+
+      expect(parsedDate.year()).toBe(2024)
+      expect(parsedDate.millisecond()).toBe(0)
     })
   })
 })

@@ -7,6 +7,7 @@ AdvancedParse extends the `esday` constructor to support custom formats of input
 If used together with plugin utc, the plugin utc must be activated before the plugin AdvancedParse.
 
 ## Method signatures
+### Parsing with a given format:
 ```typescript
 esday(date: string, format: string): EsDay
 esday(date: string, format: string[]): EsDay
@@ -28,6 +29,45 @@ esday.utc(date: string, format: string[], strict: boolean): EsDay
 | strict    | date string must match format exactly    |
 
 If an array of formats is used, `date` will be parsed with the best matching format in this array.
+
+### Adding new parsing tokens:
+```typescript
+esday.addTokenDefinitions(newTokens: TokenDefinitions)
+```
+
+**Format of TokenDefinitions**
+```typescript
+type TokenDefinitions = Record<string, [RegExp, RegExp, (this: ParsedElements, input: string) => void]>
+```
+
+| parameter          | type     | description                                      |
+| ------------------ | -------- | ------------------------------------------------ |
+| token              | string   | token to be parsed (e.g. 'Q')                    |
+| regex default mode | RegExp   | regex used for parsing in default mode           |
+| regex strict mode  | RegExp   | regex used for parsing in strict mode            |
+| setter             | function | function to add parsed value to result in 'this' |
+
+**Parameters of setter**
+| parameter | type           | description                   |
+| --------- | -------------- | ----------------------------- |
+| this      | ParsedElements | object for results of parsing |
+| input     | string         | parsed value                  |
+
+**Format of ParsedElements**
+```typescript
+interface ParsedElements {
+  year?: number
+  month?: number
+  day?: number
+  hours?: number
+  minutes?: number
+  seconds?: number
+  milliseconds?: number
+  zoneOffset?: number
+  unix?: number
+}
+```
+
 
 ## Parsing tokens
 | **Token** | **Example**   | **Description**                                                      |
@@ -55,6 +95,7 @@ If an array of formats is used, `date` will be parsed with the best matching for
 | x         | 1410715640579 | Unix ms timestamp                                                    |
 
 ## Examples
+### Parsing
 ```typescript
 import { esday } from 'esday'
 import advancedParsePlugin from 'esday/plugins/advancedParse'
@@ -71,4 +112,18 @@ esday('08/2023/14 21 43.12 123', 'MM/YYYY/DD HH mm.ss SSS', true)
 
 esday.utc('08-2023-14 21:43:12.123', 'MM-YYYY-DD HH:mm:ss.SSS')
 // Returns an instance containing '2023-08-14T21:43:12.123' in utc
+```
+
+### Adding new parsing tokens
+This functionality is above all for plugin developers
+```typescript
+const additionalTokens: TokenDefinitions = {
+  PP: [/\d\d?/, /\d{2}/, function (input) {
+    // in this example we don't use the parsed value ('input')
+    this.milliseconds = 987
+  }],
+}
+esday.addTokenDefinitions(additionalTokens)
+
+const parsedDate = esday('2024 3', 'YYYY PP')
 ```

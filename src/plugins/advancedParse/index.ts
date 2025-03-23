@@ -1,5 +1,6 @@
 /* eslint-disable dot-notation */
-import type { DateFromDateComponents, DateType, EsDay, EsDayPlugin } from 'esday'
+import type { DateFromDateComponents, DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
+import type { ParsedElements, TokenDefinitions } from './types'
 import { isArray, isString, isUndefined, isValidDate } from '~/common'
 
 // Function to create a Date object from its date components
@@ -23,18 +24,6 @@ const matchSigned = /[+-]?\d+/
 const matchUnsigned = /\d+/
 const matchTimestamp = /[+-]?\d+(\.\d{1,3})?/ // 123456789 123456789.123
 const matchOffset = /[+-]\d\d:?(\d\d)?|Z/
-
-interface ParsedElements {
-  year?: number
-  month?: number
-  day?: number
-  hours?: number
-  minutes?: number
-  seconds?: number
-  milliseconds?: number
-  zoneOffset?: number
-  unix?: number
-}
 
 interface parsedResultRaw {
   dateElements: ParsedElements
@@ -143,7 +132,7 @@ function addUnixInput(isMilliseconds: boolean) {
  * value to an object containing all the date&time elements (year,
  * month, day, ...).
  */
-const parseTokensDefinitions: Record<string, [RegExp, RegExp, (this: ParsedElements, input: string) => void]> = {
+const parseTokensDefinitions: TokenDefinitions = {
   Q: [match1, match1, function (input) {
     this.month = (Number.parseInt(input, 10) - 1) * 3 + 1
   }],
@@ -336,7 +325,22 @@ function parseFormattedInput(that: EsDay, input: string, format: string, isStric
   }
 }
 
-const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass: typeof EsDay) => {
+/**
+ * Add parsing tokens to list of global parsing tokens.
+ * @param newTokens - list of new parsing token definitions
+ */
+function addTokenDefinitions(newTokens: TokenDefinitions) {
+  // add all entries from newTokens into parseTokensDefinitions (without duplicates!)
+  for (const key in newTokens) {
+    if (!Object.prototype.hasOwnProperty.call(parseTokensDefinitions, key)) {
+      parseTokensDefinitions[key] = newTokens[key]
+    }
+  }
+
+  formattingTokensRegexFromDefinitions()
+}
+
+const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass: typeof EsDay, dayFactory: EsDayFactory) => {
   const proto = dayClass.prototype
 
   // get regexp to separate format into formatting tokens and separators
@@ -428,6 +432,8 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass: typeof EsDay) => {
   }
 
   dateFromDateComponents = proto['dateFromDateComponents']
+
+  dayFactory.addTokenDefinitions = addTokenDefinitions
 }
 
 export default advancedParsePlugin
