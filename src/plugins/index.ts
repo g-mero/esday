@@ -23,6 +23,7 @@ import type {
   RelativeTimeElementFunction,
   RelativeTimeKeys,
 } from './locale'
+import localizedParsePlugin from './localizedParse'
 import minMaxPlugin from './minMax'
 import quarterOfYearPlugin from './quarterOfYear'
 import toArrayPlugin from './toArray'
@@ -39,6 +40,7 @@ export {
   isSameOrBeforePlugin,
   isTodayPlugin,
   localePlugin,
+  localizedParsePlugin,
   minMaxPlugin,
   quarterOfYearPlugin,
   toArrayPlugin,
