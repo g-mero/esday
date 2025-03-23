@@ -1,9 +1,9 @@
+import type { TokenDefinitions } from '~/plugins/advancedParse/types'
 import { esday } from 'esday'
 import moment from 'moment'
-import { describe, expect, it } from 'vitest'
 
+import { describe, expect, it } from 'vitest'
 import advancedParsePlugin from '~/plugins/advancedParse'
-import { TokenDefinitions } from '~/plugins/advancedParse/types';
 import utcPlugin from '~/plugins/utc'
 import { expectSame, expectSameResult } from '../util'
 
