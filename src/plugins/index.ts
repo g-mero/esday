@@ -1,4 +1,4 @@
-import customParseFormatPlugin from './advancedParse'
+import advancedFormatPlugin from './advancedFormat'
 import isBetweenPlugin from './isBetween'
 import isSameOrAfterPlugin from './isSameOrAfter'
 import isSameOrBeforePlugin from './isSameOrBefore'
@@ -12,7 +12,7 @@ import weekOfYearPlugin from './weekOfYear'
 import weekYearPlugin from './weekYear'
 
 export {
-  customParseFormatPlugin,
+  advancedFormatPlugin,
   isBetweenPlugin,
   isSameOrAfterPlugin,
   isSameOrBeforePlugin,

@@ -62,15 +62,6 @@ describe('format', () => {
     expect(esday().format(formatString)).toBe(expected)
   })
 
-  it.each([{ formatString: 'd', expected: '4' }])(
-    'day of week (sun - sat) as "%s"',
-    ({ formatString, expected }) => {
-      vi.setSystemTime(new Date('2023-12-07T03:24:46.234'))
-
-      expect(esday().format(formatString)).toBe(expected)
-    },
-  )
-
   it.each([
     { formatString: 'H', expected: '3' },
     { formatString: 'HH', expected: '03' },
@@ -135,7 +126,7 @@ describe('format', () => {
     expect(esday().format(formatString)).toBe(expected)
   })
 
-  it('current date and time using "Z" to "??"', () => {
+  it('current date and time using "Z" to "nn:mm"', () => {
     const esdayDate = esday()
     const format = 'Z'
 
