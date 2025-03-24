@@ -1,83 +1,103 @@
-import type { EsDay } from 'esday'
-import { C, padNumberWithLeadingZeros, padZoneStr } from '~/common'
+import type { EsDay, FormattingTokenDefinitions } from 'esday'
+import { C, isUndefined, padStart, padZoneStr } from '~/common'
+
+const formattingSeparatorsRegex = '\\[([^\\]]+)\\]'
+let formattingTokensRegex: RegExp
+
+/**
+ * Get the utcOffset of date.
+ * Use the utcOffset method from the utc plugin if that is loaded;
+ * otherwise get it from the javascript Date object of date.
+ * @param date - EsDay instance to inspect
+ * @returns utcOffset of date
+ */
+function utcOffset(date: EsDay): number {
+  const defaultOffset = -Math.round(date['$d'].getTimezoneOffset()) || 0
+  return 'utcOffset' in date ? date.utcOffset() : defaultOffset
+}
+
+export const formatTokensDefinitions: FormattingTokenDefinitions = {
+  YY: (sourceDate: EsDay) => padStart(sourceDate.year(), 2, '0').slice(-2),
+  YYYY: (sourceDate: EsDay) => padStart(sourceDate.year(), 4, '0'),
+  M: (sourceDate: EsDay) => String(sourceDate.month() + 1),
+  MM: (sourceDate: EsDay) => padStart(sourceDate.month() + 1, 2, '0'),
+  D: (sourceDate: EsDay) => String(sourceDate.date()),
+  DD: (sourceDate: EsDay) => padStart(sourceDate.date(), 2, '0'),
+  H: (sourceDate: EsDay) => String(sourceDate.hour()),
+  HH: (sourceDate: EsDay) => padStart(sourceDate.hour(), 2, '0'),
+  m: (sourceDate: EsDay) => String(sourceDate.minute()),
+  mm: (sourceDate: EsDay) => padStart(sourceDate.minute(), 2, '0'),
+  s: (sourceDate: EsDay) => String(sourceDate.second()),
+  ss: (sourceDate: EsDay) => padStart(sourceDate.second(), 2, '0'),
+  SSS: (sourceDate: EsDay) => padStart(sourceDate.millisecond(), 3, '0'),
+  Z: (sourceDate: EsDay) => padZoneStr(utcOffset(sourceDate)),
+}
+
+// Get regex from list of supported tokens
+/**
+ * Compare 2 tokens for sorting.
+ * Longer token and upper case token are sorted to the top.
+ * @param a - token 1
+ * @param b - token 2
+ * @returns -1 (a<b), 0 (a==b), 1 (a>b)
+ */
+function compareTokens(a: string, b: string) {
+  if (a.length < b.length) {
+    return 1
+  }
+  if (a.length > b.length) {
+    return -1
+  }
+
+  // length are equal, so compare values
+  if (a < b) {
+    return 1
+  }
+  if (a > b) {
+    return -1
+  }
+
+  // are equal
+  return 0
+}
+export function formattingTokensRegexFromDefinitions() {
+  // we have to sort the keys to always catch the longest matches
+  const tokenKeys = Object.keys(formatTokensDefinitions).sort(compareTokens)
+  formattingTokensRegex = new RegExp(`${formattingSeparatorsRegex}|${tokenKeys.join('|')}`, 'g')
+}
+
+// initialize regexp to separate format into formatting tokens and separators
+formattingTokensRegexFromDefinitions()
+
+/**
+ * Add formatting tokens to list of global formatting tokens.
+ * @param newTokens - list of new parsing token definitions
+ */
+export function addFormatTokenDefinitions(newTokens: FormattingTokenDefinitions) {
+  // add all entries from newTokens into formatTokensDefinitions (without duplicates!)
+  for (const key in newTokens) {
+    if (!Object.prototype.hasOwnProperty.call(formatTokensDefinitions, key)) {
+      formatTokensDefinitions[key] = newTokens[key]
+    }
+  }
+
+  formattingTokensRegexFromDefinitions()
+}
 
 export function formatImpl(that: EsDay, formatStr?: string) {
   if (!that.isValid()) return C.INVALID_DATE_STRING
 
   const activeFormatString = formatStr || C.FORMAT_DEFAULT
   const unknownTokenOutput = '??'
-  // eslint-disable-next-line dot-notation
-  const defaultOffset = -Math.round(that['$d'].getTimezoneOffset()) || 0
-  const offset = 'utcOffset' in that ? that.utcOffset() : defaultOffset
-
-  const get$H = (num: number) => padNumberWithLeadingZeros(that.hour() % 12 || 12, num)
-
-  const meridiemFunc = (hour: number, _minute: number, isLowercase: boolean) => {
-    const m = hour < 12 ? 'AM' : 'PM'
-    return isLowercase ? m.toLowerCase() : m
-  }
-
-  const zoneStr = padZoneStr(offset)
-  const $year = that.year()
-  const $month = that.month()
-  const $date = that.date()
-  const $day = that.day()
-  const $hour = that.hour()
-  const $minute = that.minute()
-  const $second = that.second()
-  const $millisecond = that.millisecond()
 
   const matches = (match: string) => {
-    switch (match) {
-      case 'YY':
-        return String($year).slice(-2)
-      case 'YYYY':
-        return padNumberWithLeadingZeros($year, 4)
-      case 'M':
-        return $month + 1
-      case 'MM':
-        return padNumberWithLeadingZeros($month + 1, 2)
-      case 'D':
-        return $date
-      case 'DD':
-        return padNumberWithLeadingZeros($date, 2)
-      case 'd':
-        return String($day)
-      case 'H':
-        return String($hour)
-      case 'HH':
-        return padNumberWithLeadingZeros($hour, 2)
-      case 'h':
-        return get$H(1)
-      case 'hh':
-        return get$H(2)
-      case 'a':
-        return meridiemFunc($hour, $minute, true)
-      case 'A':
-        return meridiemFunc($hour, $minute, false)
-      case 'm':
-        return String($minute)
-      case 'mm':
-        return padNumberWithLeadingZeros($minute, 2)
-      case 's':
-        return String($second)
-      case 'ss':
-        return padNumberWithLeadingZeros($second, 2)
-      case 'SSS':
-        return padNumberWithLeadingZeros($millisecond, 3)
-      case 'Z':
-        return zoneStr
-      case 'ZZ':
-        return zoneStr.replace(':', '')
-      default:
-        break
-    }
-    return null
+    const formatter = formatTokensDefinitions[match]
+    return !isUndefined(formatter) ? formatter(that) : unknownTokenOutput
   }
 
   // replace format tokens with corresponding values
   return activeFormatString.replace(
-    C.REGEX_FORMAT,
+    formattingTokensRegex,
     (match, $1) => $1 || matches(match) || unknownTokenOutput,
   )
 }

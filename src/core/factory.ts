@@ -2,6 +2,7 @@ import { isArray, isObject } from '~/common'
 import type { DateType, EsDayFactory } from '~/types'
 import type { SimpleObject, SimpleType } from '~/types/util-types'
 import { EsDay } from './EsDay'
+import { addFormatTokenDefinitions } from './Impl/format'
 
 // @ts-ignore plugin declare may cause ts-type-checke error, but it's ok
 const esday: EsDayFactory = (
@@ -25,6 +26,8 @@ const esday: EsDayFactory = (
   })
   return new EsDay(d, conf)
 }
+
+esday.addFormatTokenDefinitions = addFormatTokenDefinitions
 
 esday.extend = (plugin, option) => {
   // @ts-expect-error plugin

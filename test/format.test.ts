@@ -1,3 +1,4 @@
+import type { EsDay, FormattingTokenDefinitions } from 'esday'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { esday } from '~/core'
 
@@ -87,26 +88,6 @@ describe('format', () => {
   })
 
   it.each([
-    { dateString: '2018-05-02T00:00:00.000', formatString: 'h', expected: '12' },
-    { dateString: '2018-05-02T01:00:00.000', formatString: 'h', expected: '1' },
-    { dateString: '2018-05-02T23:00:00.000', formatString: 'h', expected: '11' },
-    { dateString: '2018-05-02T00:00:00.000', formatString: 'hh', expected: '12' },
-    { dateString: '2018-05-02T01:00:00.000', formatString: 'hh', expected: '01' },
-    { dateString: '2018-05-02T23:00:00.000', formatString: 'hh', expected: '11' },
-  ])('hour as "$formatString" (12-hour format)', ({ dateString, formatString, expected }) => {
-    expect(esday(dateString).format(formatString)).toBe(expected)
-  })
-
-  it.each([
-    { dateString: '2018-05-02T01:00:00.000', formatString: 'a', expected: 'am' },
-    { dateString: '2018-05-02T23:00:00.000', formatString: 'a', expected: 'pm' },
-    { dateString: '2018-05-02T01:00:00.000', formatString: 'A', expected: 'AM' },
-    { dateString: '2018-05-02T23:00:00.000', formatString: 'A', expected: 'PM' },
-  ])('meridians as "$formatString" (12-hour)', ({ dateString, formatString, expected }) => {
-    expect(esday(dateString).format(formatString)).toBe(expected)
-  })
-
-  it.each([
     { formatString: 'm', expected: '5' },
     { formatString: 'mm', expected: '05' },
   ])('single digit minute as "$formatString"', ({ formatString, expected }) => {
@@ -154,25 +135,11 @@ describe('format', () => {
     expect(esday().format(formatString)).toBe(expected)
   })
 
-  it('"2000-01-02" using "d H m s" to "0 0 0 0"', () => {
-    const sundayDate = '2000-01-02'
-    const sundayStr = 'd H m s'
-
-    expect(esday(sundayDate).format(sundayStr)).toBe('0 0 0 0')
-  })
-
   it('current date and time using "Z" to "??"', () => {
     const esdayDate = esday()
     const format = 'Z'
 
     expect(esdayDate.format(format)).toMatch(/[+-]\d{2}:\d{2}/)
-  })
-
-  it('current date and time using "ZZ" to "??"', () => {
-    const esdayDate = esday()
-    const format = 'ZZ'
-
-    expect(esdayDate.format(format)).toMatch(/[+-]\d{4}/)
   })
 })
 
@@ -217,5 +184,35 @@ describe('conversion', () => {
 
   it('toISOString', () => {
     expect(esday().toISOString()).toBe(fakeTimeAsString)
+  })
+})
+
+describe('extend formatting token definitions', () => {
+  it.each([
+    { formatString: 'YYYY PP', sourceString: '2024 3', expected: '2024 [special token PP] 2024' },
+  ])(
+    'add new token to list of tokens - test with "$sourceString" with format "$formatString"',
+    ({ sourceString, formatString, expected }) => {
+      const additionalTokens: FormattingTokenDefinitions = {
+        PP: (sourceDate: EsDay) => `[special token PP] ${sourceDate.year().toString()}`,
+      }
+      esday.addFormatTokenDefinitions(additionalTokens)
+      const formattedDate = esday(sourceString).format(formatString)
+
+      expect(formattedDate).toBe(expected)
+    },
+  )
+
+  it('adding existing token should not change existing definition', () => {
+    const additionalTokens: FormattingTokenDefinitions = {
+      YYYY: (sourceDate: EsDay) => `[modified token YYYY] ${sourceDate.year.toString()}`,
+    }
+    esday.addFormatTokenDefinitions(additionalTokens)
+    const sourceString = '2024'
+    const formatString = 'YYYY'
+    const expected = '2024'
+    const formattedDate = esday(sourceString).format(formatString)
+
+    expect(formattedDate).toBe(expected)
   })
 })

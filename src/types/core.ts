@@ -8,6 +8,7 @@ export type EsDayFactoryParserFn = (
 export interface EsDayFactory {
   (...args: Parameters<EsDayFactoryParserFn>): ReturnType<EsDayFactoryParserFn>
   extend: <T extends {}>(plugin: EsDayPlugin<T>, option?: T) => EsDayFactory
+  addFormatTokenDefinitions: (newTokens: FormattingTokenDefinitions) => void
 }
 export type EsDayPlugin<T extends {} = {}> = (
   option: T,
@@ -27,3 +28,6 @@ export type DateFromDateComponents = (
   ms: number | undefined,
   offsetMs?: number,
 ) => Date
+
+// Types for for formatting
+export type FormattingTokenDefinitions = Record<string, (sourceDate: EsDay) => string>
