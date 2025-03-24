@@ -142,7 +142,7 @@ export class EsDay {
     if (Array.isArray(date))
       return parseArrayToDate(date)
     if (typeof date === 'string' && !/Z$/i.test(date)) {
-      const d = date.match(C.REGEX_PARSE)
+      const d = date.match(C.REGEX_PARSE_DEFAULT)
       if (d) {
         const Y = this.$toNumber(d[1])
         const M = this.$toNumber(d[2])
