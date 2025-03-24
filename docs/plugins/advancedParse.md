@@ -68,7 +68,6 @@ interface ParsedElements {
 }
 ```
 
-
 ## Parsing tokens
 | **Token** | **Example**   | **Description**                                                      |
 | --------- | ------------- | -------------------------------------------------------------------- |
