@@ -282,7 +282,7 @@ describe('advancedParse plugin - utc mode', () => {
           }
         }],
       }
-      esday.addTokenDefinitions(additionalTokens)
+      esday.addParseTokenDefinitions(additionalTokens)
       const parsedDate = esday.utc(sourceString, formatString)
 
       expect(parsedDate.year()).toBe(2024)
@@ -300,7 +300,7 @@ describe('advancedParse plugin - utc mode', () => {
           }
         }],
       }
-      esday.addTokenDefinitions(additionalTokens)
+      esday.addParseTokenDefinitions(additionalTokens)
       const parsedDate = esday.utc(sourceString, formatString)
 
       expect(parsedDate.year()).toBe(2024)
@@ -318,7 +318,7 @@ describe('advancedParse plugin - utc mode', () => {
           }
         }],
       }
-      esday.addTokenDefinitions(additionalTokens)
+      esday.addParseTokenDefinitions(additionalTokens)
       const parsedDate = esday.utc(sourceString, formatString, true)
 
       expect(parsedDate.year()).toBe(2024)
@@ -336,7 +336,7 @@ describe('advancedParse plugin - utc mode', () => {
           }
         }],
       }
-      esday.addTokenDefinitions(additionalTokens)
+      esday.addParseTokenDefinitions(additionalTokens)
       const parsedDate = esday.utc(sourceString, formatString, true)
 
       expect(parsedDate.isValid()).toBeFalsy()
@@ -351,7 +351,7 @@ describe('advancedParse plugin - utc mode', () => {
           }
         }],
       }
-      esday.addTokenDefinitions(additionalTokens)
+      esday.addParseTokenDefinitions(additionalTokens)
       const sourceString = '2024'
       const formatString = 'YYYY'
       const parsedDate = esday.utc(sourceString, formatString, true)

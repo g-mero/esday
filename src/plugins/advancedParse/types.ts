@@ -3,7 +3,7 @@ declare module 'esday' {
     /**
      * add new definitions for parsing tokens
      */
-    addTokenDefinitions: (newTokens: TokenDefinitions) => void
+    addParseTokenDefinitions: (newTokens: TokenDefinitions) => void
   }
 }
 

@@ -329,7 +329,7 @@ function parseFormattedInput(that: EsDay, input: string, format: string, isStric
  * Add parsing tokens to list of global parsing tokens.
  * @param newTokens - list of new parsing token definitions
  */
-function addTokenDefinitions(newTokens: TokenDefinitions) {
+function addParseTokenDefinitions(newTokens: TokenDefinitions) {
   // add all entries from newTokens into parseTokensDefinitions (without duplicates!)
   for (const key in newTokens) {
     if (!Object.prototype.hasOwnProperty.call(parseTokensDefinitions, key)) {
@@ -433,7 +433,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass: typeof EsDay, dayFact
 
   dateFromDateComponents = proto['dateFromDateComponents']
 
-  dayFactory.addTokenDefinitions = addTokenDefinitions
+  dayFactory.addParseTokenDefinitions = addParseTokenDefinitions
 }
 
 export default advancedParsePlugin

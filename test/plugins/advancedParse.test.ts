@@ -415,7 +415,7 @@ describe('advancedParse plugin - local mode', () => {
           }
         }],
       }
-      esday.addTokenDefinitions(additionalTokens)
+      esday.addParseTokenDefinitions(additionalTokens)
       const parsedDate = esday(sourceString, formatString)
 
       expect(parsedDate.year()).toBe(2024)
@@ -433,7 +433,7 @@ describe('advancedParse plugin - local mode', () => {
           }
         }],
       }
-      esday.addTokenDefinitions(additionalTokens)
+      esday.addParseTokenDefinitions(additionalTokens)
       const parsedDate = esday(sourceString, formatString)
 
       expect(parsedDate.year()).toBe(2024)
@@ -451,7 +451,7 @@ describe('advancedParse plugin - local mode', () => {
           }
         }],
       }
-      esday.addTokenDefinitions(additionalTokens)
+      esday.addParseTokenDefinitions(additionalTokens)
       const parsedDate = esday(sourceString, formatString, true)
 
       expect(parsedDate.year()).toBe(2024)
@@ -469,7 +469,7 @@ describe('advancedParse plugin - local mode', () => {
           }
         }],
       }
-      esday.addTokenDefinitions(additionalTokens)
+      esday.addParseTokenDefinitions(additionalTokens)
       const parsedDate = esday(sourceString, formatString, true)
 
       expect(parsedDate.isValid()).toBeFalsy()
@@ -484,7 +484,7 @@ describe('advancedParse plugin - local mode', () => {
           }
         }],
       }
-      esday.addTokenDefinitions(additionalTokens)
+      esday.addParseTokenDefinitions(additionalTokens)
       const sourceString = '2024'
       const formatString = 'YYYY'
       const parsedDate = esday(sourceString, formatString, true)
