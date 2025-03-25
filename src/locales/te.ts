@@ -13,7 +13,7 @@ const localeTe: Readonly<Locale> = {
   monthsShort: ['జన.', 'ఫిబ్ర.', 'మార్చి', 'ఏప్రి.', 'మే', 'జూన్', 'జులై', 'ఆగ.', 'సెప్.', 'అక్టో.', 'నవ.', 'డిసె.'],
   ordinal: n => `${n}`,
   weekStart: 0, // Sunday is the first day of the week.
-  yearStart: 6, // The week that contains Jan 6th is the first week of the year.
+  yearStart: 6, // The week that contains Jan 1st is the first week of the year.
   formats: {
     LT: 'A h:mm',
     LTS: 'A h:mm:ss',

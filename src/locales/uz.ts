@@ -13,7 +13,7 @@ const localeUz: Readonly<Locale> = {
   monthsShort: ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'],
   ordinal: n => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
-  yearStart: 7, // The week that contains Jan 4th is the first week of the year.
+  yearStart: 7, // The week that contains Jan 1st is the first week of the year.
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',

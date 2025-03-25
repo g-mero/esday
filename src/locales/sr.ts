@@ -52,7 +52,7 @@ const localeSr: Readonly<Locale> = {
   monthsShort: ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'Maj', 'Jun', 'Jul', 'Avg.', 'Sep.', 'Okt.', 'Nov.', 'Dec.'],
   ordinal: n => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
-  yearStart: 7, // The week that contains Jan 7th is the first week of the year.
+  yearStart: 7, // The week that contains Jan 1st is the first week of the year.
   formats: {
     LT: 'H:mm',
     LTS: 'H:mm:ss',

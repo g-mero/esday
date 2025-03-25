@@ -31,7 +31,7 @@ const localeGomLatn: Readonly<Locale> = {
   monthsShort: ['Jan.', 'Feb.', 'Mars', 'Abr.', 'Mai', 'Jun', 'Jul.', 'Ago.', 'Set.', 'Otu.', 'Nov.', 'Dez.'],
   ordinal: n => `${n}`,
   weekStart: 0, // Sunday is the first day of the week.
-  yearStart: 3, // The week that contains Jan 3rd is the first week of the year.
+  yearStart: 4, // The week that contains Jan 3rd is the first week of the year.
   formats: {
     LT: 'A h:mm [vazta]',
     LTS: 'A h:mm:ss [vazta]',
