@@ -1,5 +1,5 @@
 /**
- * English (Great Britain) [en-GB]
+ * English (United Kingdom) [en-GB]
  */
 
 import localeEn from '~/locales/en'

@@ -11,8 +11,9 @@ const localeNl: Readonly<Locale> = {
   weekdaysMin: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
   months: ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'],
   monthsShort: ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
-  weekStart: 1,
-  yearStart: 4,
+  ordinal: n => `[${n}${n === 1 || n === 8 || n >= 20 ? 'ste' : 'de'}]`,
+  weekStart: 1, // Monday is the first day of the week.
+  yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
@@ -29,6 +30,7 @@ const localeNl: Readonly<Locale> = {
     future: 'over %s',
     past: '%s geleden',
     s: 'een paar seconden',
+    ss: '%d seconden',
     m: 'een minuut',
     mm: '%d minuten',
     h: 'een uur',
@@ -41,10 +43,10 @@ const localeNl: Readonly<Locale> = {
     yy: '%d jaar',
   },
   meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+    // Dutch doesn't have AM/PM, so return default values
     const m = (hour < 12 ? 'AM' : 'PM')
     return isLowercase ? m.toLowerCase() : m
   },
-  ordinal: n => `[${n}${n === 1 || n === 8 || n >= 20 ? 'ste' : 'de'}]`,
 }
 
 export default localeNl

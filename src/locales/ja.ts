@@ -6,47 +6,14 @@ import type { Locale } from '~/plugins/locale'
 
 const localeJa: Readonly<Locale> = {
   name: 'ja',
-  weekdays: [
-    '日曜日',
-    '月曜日',
-    '火曜日',
-    '水曜日',
-    '木曜日',
-    '金曜日',
-    '土曜日',
-  ],
+  weekdays: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
   weekdaysShort: ['日', '月', '火', '水', '木', '金', '土'],
   weekdaysMin: ['日', '月', '火', '水', '木', '金', '土'],
-  months: [
-    '1月',
-    '2月',
-    '3月',
-    '4月',
-    '5月',
-    '6月',
-    '7月',
-    '8月',
-    '9月',
-    '10月',
-    '11月',
-    '12月',
-  ],
-  monthsShort: [
-    '1月',
-    '2月',
-    '3月',
-    '4月',
-    '5月',
-    '6月',
-    '7月',
-    '8月',
-    '9月',
-    '10月',
-    '11月',
-    '12月',
-  ],
-  weekStart: 0,
-  yearStart: 4,
+  months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+  monthsShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+  ordinal: n => `${n}日`,
+  weekStart: 0, // Sunday is the first day of the week.
+  yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
@@ -63,6 +30,7 @@ const localeJa: Readonly<Locale> = {
     future: '%s後',
     past: '%s前',
     s: '数秒',
+    ss: '%d秒',
     m: '1分',
     mm: '%d分',
     h: '1時間',
@@ -75,7 +43,6 @@ const localeJa: Readonly<Locale> = {
     yy: '%d年',
   },
   meridiem: hour => (hour < 12 ? '午前' : '午後'),
-  ordinal: n => `${n}日`,
 }
 
 export default localeJa

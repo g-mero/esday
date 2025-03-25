@@ -1,4 +1,10 @@
-// Test for locale 'ja'.
+/**
+ * Test for locale 'Japanese [ja]'
+ *
+ * This is a minimal test for a locale without preParse / postFormat.
+ * This file should aso be used as a template for tests for
+ * other locales without preParse / postFormat.
+ */
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/ja'
