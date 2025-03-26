@@ -29,13 +29,11 @@ describe('factory locale methods', () => {
   it('register locale', () => {
     esday.registerLocale(localeZh)
     esday.locale('zh')
-    // @ts-expect-error $locale is private method
-    expect(esday().$locale()).toBe(localeZh)
+    expect(esday().localeObject()).toBe(localeZh)
 
     esday.registerLocale(localeZh, 'zh-cn')
     esday.locale('zh-cn')
-    // @ts-expect-error $locale is private method
-    expect(esday().$locale()).toBe(localeZh)
+    expect(esday().localeObject()).toBe(localeZh)
   })
 })
 

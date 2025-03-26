@@ -29,7 +29,7 @@ describe('week plugin', () => {
     const customYearStart = 1 // 2nd day of the year
     const customDay = esday('2023-01-01') // Sunday
     // @ts-expect-error Mock `$locale` method to return custom `yearStart`
-    customDay['$locale'] = () => ({ yearStart: customYearStart })
+    customDay['localeObject'] = () => ({ yearStart: customYearStart })
     expect(customDay.weeks()).toBe(1)
   })
 
