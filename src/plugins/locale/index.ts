@@ -1,8 +1,8 @@
 /* eslint-disable dot-notation */
 import type { EsDay, EsDayFactory, EsDayPlugin, UnitType } from 'esday'
-import type { Locale } from './types'
 import { C, prettyUnit, undefinedOr } from '~/common'
 import en from '~/locales/en'
+import type { Locale } from './types'
 
 const LocaleStore: Map<string, Locale> = new Map()
 
@@ -52,15 +52,15 @@ function cloneObject(sourceObject: object): object {
   const result = {}
 
   for (const [key, sourceValue] of Object.entries(sourceObject)) {
-    if ((typeof sourceValue === 'string')
-      || (typeof sourceValue === 'number')
-      || (typeof sourceValue === 'function')) {
+    if (
+      typeof sourceValue === 'string' ||
+      typeof sourceValue === 'number' ||
+      typeof sourceValue === 'function'
+    ) {
       setObjectProperty(result, key, sourceValue)
-    }
-    else if (Array.isArray(sourceValue)) {
+    } else if (Array.isArray(sourceValue)) {
       setObjectProperty(result, key, structuredClone(sourceValue))
-    }
-    else if (typeof sourceValue === 'object') {
+    } else if (typeof sourceValue === 'object') {
       setObjectProperty(result, key, cloneObject(sourceValue))
     }
   }
@@ -77,7 +77,7 @@ function cloneObject(sourceObject: object): object {
  * @returns cloned locale with all all properties set to 'readonly'.
  */
 export function cloneLocale(source: Locale): Locale {
-  return (cloneObject(source) as Locale)
+  return cloneObject(source) as Locale
 }
 
 function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
@@ -85,7 +85,7 @@ function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
     inst['$conf']['$locale_name'] = newLocaleName
   }
 
-  return inst['$conf']['$locale_name'] as string || $localeGlobal
+  return (inst['$conf']['$locale_name'] as string) || $localeGlobal
 }
 
 const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
@@ -134,7 +134,8 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       const $date = origin.date()
       const diff = ($day < weekStart ? $day + 7 : $day) - weekStart
 
-      return origin.month(origin.month(), reverse ? $date + (6 - diff) : $date - diff)
+      return origin
+        .month(origin.month(), reverse ? $date + (6 - diff) : $date - diff)
         .hour(inst.hour(), inst.minute(), inst.second(), inst.millisecond())
     }
 
@@ -150,17 +151,17 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   // setter / getter for global locale
-  dayFactory.locale = <T extends string | undefined>(localeName?: T): T extends string ? EsDayFactory : string => {
-    if ((localeName !== undefined) && (typeof localeName === 'string')) {
+  dayFactory.locale = <T extends string | undefined>(
+    localeName?: T,
+  ): T extends string ? EsDayFactory : string => {
+    if (localeName !== undefined && typeof localeName === 'string') {
       $localeGlobal = localeName
       return dayFactory as any
     }
-    else {
-      return $localeGlobal as any
-    }
+    return $localeGlobal as any
   }
 
-  dayFactory.registerLocale = function (locale: Locale, newName?: string) {
+  dayFactory.registerLocale = (locale: Locale, newName?: string) => {
     registerLocale(locale, newName)
     return dayFactory
   }

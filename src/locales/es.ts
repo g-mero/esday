@@ -9,7 +9,20 @@ const localeEs: Readonly<Locale> = {
   weekdays: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
   weekdaysShort: ['dom.', 'lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.'],
   weekdaysMin: ['do', 'lu', 'ma', 'mi', 'ju', 'vi', 'sá'],
-  months: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+  months: [
+    'enero',
+    'febrero',
+    'marzo',
+    'abril',
+    'mayo',
+    'junio',
+    'julio',
+    'agosto',
+    'septiembre',
+    'octubre',
+    'noviembre',
+    'diciembre',
+  ],
   monthsShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
   weekStart: 1,
   yearStart: 4,
@@ -40,11 +53,11 @@ const localeEs: Readonly<Locale> = {
     y: 'un año',
     yy: '%d años',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
-    const m = (hour < 12 ? 'AM' : 'PM')
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
-  ordinal: n => `${n}º`,
+  ordinal: (n) => `${n}º`,
 }
 
 export default localeEs

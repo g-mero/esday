@@ -19,7 +19,6 @@ const localeEnUsFormats = {
   ll: 'MMMM D, YYYY',
   lll: 'MMMM D, YYYY h:mm a',
   llll: 'dddd, MMMM D, YYYY h:mm a',
-
 }
 
 // Use 'setLocaleProperty' as all properties are 'readonly'

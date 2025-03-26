@@ -1,9 +1,19 @@
 /* eslint-disable ts/no-unsafe-declaration-merging */
-import type { UnitDate, UnitDay, UnitHour, UnitMin, UnitMonth, UnitMs, UnitSecond, UnitWeek, UnitYear } from '~/common'
-import type { DateType, UnitType } from '~/types'
-import type { SimpleObject } from '~/types/util-types'
+import type {
+  UnitDate,
+  UnitDay,
+  UnitHour,
+  UnitMin,
+  UnitMonth,
+  UnitMs,
+  UnitSecond,
+  UnitWeek,
+  UnitYear,
+} from '~/common'
 import { C, isEmptyObject, isUndefined, isValidDate, prettyUnit } from '~/common'
 import { getUnitInDate, prettyUnits, setUnitInDate } from '~/common/date-fields'
+import type { DateType, UnitType } from '~/types'
+import type { SimpleObject } from '~/types/util-types'
 import { esday } from '.'
 import { addImpl } from './Impl/add'
 import { formatImpl } from './Impl/format'
@@ -50,8 +60,17 @@ export class EsDay {
    * @param offsetMs - offset from utc in milliseconds
    * @returns Date object created from input parameters
    */
-  protected dateFromDateComponents(Y: number | undefined, M: number | undefined, D: number | undefined, h: number | undefined, m: number | undefined, s: number | undefined, ms: number | undefined, offsetMs?: number) {
-    const parsedYearOrDefault = (Y === undefined) ? (new Date()).getFullYear() : Y
+  protected dateFromDateComponents(
+    Y: number | undefined,
+    M: number | undefined,
+    D: number | undefined,
+    h: number | undefined,
+    m: number | undefined,
+    s: number | undefined,
+    ms: number | undefined,
+    offsetMs?: number,
+  ) {
+    const parsedYearOrDefault = Y === undefined ? new Date().getFullYear() : Y
     const dateComponents = {
       Y: parsedYearOrDefault,
       M: (M || 1) - 1,
@@ -62,28 +81,36 @@ export class EsDay {
       ms: ms || 0,
     }
 
-    const yearWithoutCentury = (Math.abs(parsedYearOrDefault) < 100)
+    const yearWithoutCentury = Math.abs(parsedYearOrDefault) < 100
     let overflowed = false
-    let result = new Date(dateComponents.Y, dateComponents.M, dateComponents.D, dateComponents.h, dateComponents.m, dateComponents.s, dateComponents.ms)
+    let result = new Date(
+      dateComponents.Y,
+      dateComponents.M,
+      dateComponents.D,
+      dateComponents.h,
+      dateComponents.m,
+      dateComponents.s,
+      dateComponents.ms,
+    )
 
     // Account for single digit years
     if (yearWithoutCentury) {
       result.setFullYear(dateComponents.Y)
     }
 
-    overflowed = ((M !== undefined) && ((M - 1) !== result.getMonth()))
-      || ((D !== undefined) && (D !== result.getDate()))
-      || ((h !== undefined) && (h !== result.getHours()))
-      || ((m !== undefined) && (m !== result.getMinutes()))
-      || ((s !== undefined) && (s !== result.getSeconds()))
+    overflowed =
+      (M !== undefined && M - 1 !== result.getMonth()) ||
+      (D !== undefined && D !== result.getDate()) ||
+      (h !== undefined && h !== result.getHours()) ||
+      (m !== undefined && m !== result.getMinutes()) ||
+      (s !== undefined && s !== result.getSeconds())
 
     if (overflowed) {
       result = C.INVALID_DATE
-    }
-    else {
+    } else {
       if (!isUndefined(offsetMs)) {
         const currentOffsetMin = result.getTimezoneOffset()
-        const newMs = result.getMilliseconds() - ((currentOffsetMin * 60000) + offsetMs)
+        const newMs = result.getMilliseconds() - (currentOffsetMin * 60000 + offsetMs)
         result.setMilliseconds(newMs)
       }
     }
@@ -98,12 +125,14 @@ export class EsDay {
    * @returns parsed element as number
    */
   private $toNumber(parsedElement: string | number | undefined) {
-    if ((parsedElement === undefined) || ((typeof parsedElement === 'string') && (parsedElement.trim().length === 0))) {
+    if (
+      parsedElement === undefined ||
+      (typeof parsedElement === 'string' && parsedElement.trim().length === 0)
+    ) {
       return undefined
     }
-    else {
-      return Number(parsedElement)
-    }
+
+    return Number(parsedElement)
   }
 
   /**
@@ -122,25 +151,19 @@ export class EsDay {
       if (parsedElement.trim().length !== 0) {
         return Number(parsedElement.slice(0, 3))
       }
-      else {
-        return undefined
-      }
+
+      return undefined
     }
 
     return parsedElement
   }
 
   private $parseImpl(date?: Exclude<DateType, EsDay>): Date {
-    if (date instanceof Date)
-      return new Date(date)
-    if (date === null)
-      return new Date(Number.NaN)
-    if (isUndefined(date))
-      return new Date()
-    if (isEmptyObject(date))
-      return new Date()
-    if (Array.isArray(date))
-      return parseArrayToDate(date)
+    if (date instanceof Date) return new Date(date)
+    if (date === null) return new Date(Number.NaN)
+    if (isUndefined(date)) return new Date()
+    if (isEmptyObject(date)) return new Date()
+    if (Array.isArray(date)) return parseArrayToDate(date)
     if (typeof date === 'string' && !/Z$/i.test(date)) {
       const d = date.match(C.REGEX_PARSE_DEFAULT)
       if (d) {
@@ -239,9 +262,8 @@ export class EsDay {
     if (this.isValid()) {
       return this.$d.toISOString()
     }
-    else {
-      return C.INVALID_DATE_STRING
-    }
+
+    return C.INVALID_DATE_STRING
   }
 
   toString() {
@@ -251,8 +273,7 @@ export class EsDay {
   private $set(unit: Exclude<UnitType, UnitWeek>, values: number[]) {
     if (prettyUnit(unit) === C.DAY) {
       setUnitInDate(this.$d, C.DATE, this.date() + (values[0] - this.day()))
-    }
-    else {
+    } else {
       setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values)
     }
 
@@ -260,15 +281,13 @@ export class EsDay {
   }
 }
 
-prettyUnits.forEach((key) => {
+for (const key of prettyUnits) {
   // @ts-expect-error it's compatible with the overload
   EsDay.prototype[key] = function (...args: number[]): EsDay | number {
     if (args?.length) {
       // @ts-expect-error it's compatible with the overload
-      return this.set(key, ...args as [number])
+      return this.set(key, ...(args as [number]))
     }
-    else {
-      return this.get(key)
-    }
+    return this.get(key)
   }
-})
+}

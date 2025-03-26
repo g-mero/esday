@@ -18,7 +18,7 @@ declare module 'esday' {
       from: DateType,
       to: DateType,
       unit?: UnitType,
-      inclusivity?: '()' | '[]' | '[)' | '(]'
+      inclusivity?: '()' | '[]' | '[)' | '(]',
     ) => boolean
   }
 }

@@ -1,6 +1,6 @@
 import type { EsDay, EsDayFactory } from 'esday'
-import type { Moment } from 'moment'
 import { esday } from 'esday'
+import type { Moment } from 'moment'
 import moment from 'moment'
 import { expect } from 'vitest'
 
@@ -38,8 +38,7 @@ export function expectSameResult(fn: (instance: EsDayFactory) => EsDay | Moment)
     expect(d.millisecond()).toBe(m.millisecond())
     expect(d.toDate()).toEqual(m.toDate())
     expect(d.toJSON()).toBe(m.toJSON())
-  }
-  else {
+  } else {
     expect(d.toString().toLowerCase()).toBe(m.toString().toLowerCase())
   }
 }

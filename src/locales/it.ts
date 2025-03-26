@@ -9,7 +9,20 @@ const localeIt: Readonly<Locale> = {
   weekdays: ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'],
   weekdaysShort: ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'],
   weekdaysMin: ['do', 'lu', 'ma', 'me', 'gi', 've', 'sa'],
-  months: ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'],
+  months: [
+    'gennaio',
+    'febbraio',
+    'marzo',
+    'aprile',
+    'maggio',
+    'giugno',
+    'luglio',
+    'agosto',
+    'settembre',
+    'ottobre',
+    'novembre',
+    'dicembre',
+  ],
   monthsShort: ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'],
   weekStart: 1,
   yearStart: 4,
@@ -31,7 +44,7 @@ const localeIt: Readonly<Locale> = {
     s: 'qualche secondo',
     m: 'un minuto',
     mm: '%d minuti',
-    h: 'un\' ora',
+    h: "un' ora",
     hh: '%d ore',
     d: 'un giorno',
     dd: '%d giorni',
@@ -40,11 +53,11 @@ const localeIt: Readonly<Locale> = {
     y: 'un anno',
     yy: '%d anni',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
-    const m = (hour < 12 ? 'AM' : 'PM')
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
-  ordinal: n => `${n}º`,
+  ordinal: (n) => `${n}º`,
 }
 
 export default localeIt

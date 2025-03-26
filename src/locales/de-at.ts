@@ -20,7 +20,20 @@ const localeDeAtMonths = [
   'November',
   'Dezember',
 ]
-const localeDeAtMonthsShort = ['Jän.', 'Feb.', 'März', 'Apr.', 'Mai', 'Juni', 'Juli', 'Aug.', 'Sep.', 'Okt.', 'Nov.', 'Dez.']
+const localeDeAtMonthsShort = [
+  'Jän.',
+  'Feb.',
+  'März',
+  'Apr.',
+  'Mai',
+  'Juni',
+  'Juli',
+  'Aug.',
+  'Sep.',
+  'Okt.',
+  'Nov.',
+  'Dez.',
+]
 
 // Use 'setLocaleProperty' as all properties are 'readonly'
 setLocaleProperty(localeDeAt, 'name', 'de-AT')

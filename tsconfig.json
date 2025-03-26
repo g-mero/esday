@@ -7,12 +7,8 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "paths": {
-      "~/*": [
-        "src/*"
-      ],
-      "esday": [
-        "src/index"
-      ]
+      "~/*": ["src/*"],
+      "esday": ["src/index"]
     },
     "types": ["node"],
     "strict": true,

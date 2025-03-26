@@ -12,7 +12,12 @@ describe('add', () => {
     { value: 1, unit: 'hour', format: 'YYYY-MM-DD HH', expected: '2021-01-01 01' },
     { value: 1, unit: 'minute', format: 'YYYY-MM-DD HH:mm', expected: '2021-01-01 00:01' },
     { value: 1, unit: 'second', format: 'YYYY-MM-DD HH:mm:ss', expected: '2021-01-01 00:00:01' },
-    { value: 1, unit: 'millisecond', format: 'YYYY-MM-DD HH:mm:ss.SSS', expected: '2021-01-01 00:00:00.001' },
+    {
+      value: 1,
+      unit: 'millisecond',
+      format: 'YYYY-MM-DD HH:mm:ss.SSS',
+      expected: '2021-01-01 00:00:00.001',
+    },
   ])('add $value $unit to get $expected', ({ value, unit, format, expected }) => {
     const inst = esday('2021-01-01')
 

@@ -74,11 +74,11 @@ const localeRn: Readonly<Locale> = {
     y: 'umwaka',
     yy: '%d imyaka',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
-    const m = (hour < 12 ? 'AM' : 'PM')
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
-  ordinal: n => `${n}.`,
+  ordinal: (n) => `${n}.`,
 }
 
 export default localeRn
