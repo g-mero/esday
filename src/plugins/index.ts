@@ -1,4 +1,4 @@
-import customParseFormatPlugin from './customParseFormat'
+import customParseFormatPlugin from './advancedParse'
 import isBetweenPlugin from './isBetween'
 import isSameOrAfterPlugin from './isSameOrAfter'
 import isSameOrBeforePlugin from './isSameOrBefore'

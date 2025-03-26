@@ -2,7 +2,7 @@
 import type { UnitDate, UnitDay, UnitHour, UnitMin, UnitMonth, UnitMs, UnitSecond, UnitWeek, UnitYear } from '~/common'
 import type { DateType, UnitType } from '~/types'
 import type { SimpleObject } from '~/types/util-types'
-import { C, isEmptyObject, isUndefined, prettyUnit } from '~/common'
+import { C, isEmptyObject, isUndefined, isValidDate, prettyUnit } from '~/common'
 import { getUnitInDate, prettyUnits, setUnitInDate } from '~/common/date-fields'
 import { esday } from '.'
 import { addImpl } from './Impl/add'
@@ -37,8 +37,97 @@ export class EsDay {
     this.$d = this.$parseImpl(d)
   }
 
-  private dateFromDateComponents(Y: number, M: number, D: number, h: number, m: number, s: number, ms: number) {
-    return new Date(Y, M, D, h, m, s, ms)
+  /**
+   * Create a Date object from the date components (year, month, ...).
+   * Potential hook for plugins to change the details of Date creation.
+   * @param Y - year of date to create
+   * @param M - year of date to create
+   * @param D - year of date to create
+   * @param h - year of date to create
+   * @param m - year of date to create
+   * @param s - year of date to create
+   * @param ms - year of date to create
+   * @param offsetMs - offset from utc in milliseconds
+   * @returns Date object created from input parameters
+   */
+  protected dateFromDateComponents(Y: number | undefined, M: number | undefined, D: number | undefined, h: number | undefined, m: number | undefined, s: number | undefined, ms: number | undefined, offsetMs?: number) {
+    const parsedYearOrDefault = (Y === undefined) ? (new Date()).getFullYear() : Y
+    const dateComponents = {
+      Y: parsedYearOrDefault,
+      M: (M || 1) - 1,
+      D: D || 1,
+      h: h || 0,
+      m: m || 0,
+      s: s || 0,
+      ms: ms || 0,
+    }
+
+    const yearWithoutCentury = (Math.abs(parsedYearOrDefault) < 100)
+    let overflowed = false
+    let result = new Date(dateComponents.Y, dateComponents.M, dateComponents.D, dateComponents.h, dateComponents.m, dateComponents.s, dateComponents.ms)
+
+    // Account for single digit years
+    if (yearWithoutCentury) {
+      result.setFullYear(dateComponents.Y)
+    }
+
+    overflowed = ((M !== undefined) && ((M - 1) !== result.getMonth()))
+      || ((D !== undefined) && (D !== result.getDate()))
+      || ((h !== undefined) && (h !== result.getHours()))
+      || ((m !== undefined) && (m !== result.getMinutes()))
+      || ((s !== undefined) && (s !== result.getSeconds()))
+
+    if (overflowed) {
+      result = C.INVALID_DATE
+    }
+    else {
+      if (!isUndefined(offsetMs)) {
+        const currentOffsetMin = result.getTimezoneOffset()
+        const newMs = result.getMilliseconds() - ((currentOffsetMin * 60000) + offsetMs)
+        result.setMilliseconds(newMs)
+      }
+    }
+
+    return result
+  }
+
+  /**
+   * Convert a parsed element to a number | undefined;
+   * empty strings are treated as undefined.
+   * @param parsedElement - element to be converted
+   * @returns parsed element as number
+   */
+  private $toNumber(parsedElement: string | number | undefined) {
+    if ((parsedElement === undefined) || ((typeof parsedElement === 'string') && (parsedElement.trim().length === 0))) {
+      return undefined
+    }
+    else {
+      return Number(parsedElement)
+    }
+  }
+
+  /**
+   * Convert a parsed milliseconds element to a number | undefined;
+   * for milliseconds only the 1st 3 digits are considered;
+   * empty strings are treated as undefined.
+   * @param parsedElement - element to be converted
+   * @returns parsed element as number
+   */
+  private $toMsNumber(parsedElement: string | number | undefined) {
+    if (parsedElement === undefined) {
+      return undefined
+    }
+
+    if (typeof parsedElement === 'string') {
+      if (parsedElement.trim().length !== 0) {
+        return Number(parsedElement.slice(0, 3))
+      }
+      else {
+        return undefined
+      }
+    }
+
+    return parsedElement
   }
 
   private $parseImpl(date?: Exclude<DateType, EsDay>): Date {
@@ -53,15 +142,15 @@ export class EsDay {
     if (Array.isArray(date))
       return parseArrayToDate(date)
     if (typeof date === 'string' && !/Z$/i.test(date)) {
-      const d = date.match(C.REGEX_PARSE)
+      const d = date.match(C.REGEX_PARSE_DEFAULT)
       if (d) {
-        const Y = Number(d[1])
-        const M = Number(d[2]) - 1 || 0
-        const D = Number(d[3] || 1)
-        const h = Number(d[4] || 0)
-        const m = Number(d[5] || 0)
-        const s = Number(d[6] || 0)
-        const ms = Number((d[7] || '0').substring(0, 3))
+        const Y = this.$toNumber(d[1])
+        const M = this.$toNumber(d[2])
+        const D = this.$toNumber(d[3])
+        const h = this.$toNumber(d[4])
+        const m = this.$toNumber(d[5])
+        const s = this.$toNumber(d[6])
+        const ms = this.$toMsNumber(d[7])
         return this.dateFromDateComponents(Y, M, D, h, m, s, ms)
       }
     }
@@ -93,7 +182,7 @@ export class EsDay {
   }
 
   isValid() {
-    return !(this.$d.toString() === C.INVALID_DATE_STRING)
+    return isValidDate(this.$d)
   }
 
   clone() {
@@ -147,7 +236,12 @@ export class EsDay {
   }
 
   toISOString() {
-    return this.$d.toISOString()
+    if (this.isValid()) {
+      return this.$d.toISOString()
+    }
+    else {
+      return C.INVALID_DATE_STRING
+    }
   }
 
   toString() {

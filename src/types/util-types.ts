@@ -6,4 +6,5 @@ export type Tuple<
 > = R['length'] extends N ? R : Tuple<T, N, [T, ...R]>
 
 export type SimpleType = string | number | boolean | null | undefined
-export type SimpleObject = Record<string, SimpleType>
+// Type for e.g. calling parameters of EsDayFactory function
+export type SimpleObject = Record<string, SimpleType | string[]>

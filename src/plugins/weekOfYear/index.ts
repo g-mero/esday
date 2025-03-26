@@ -15,8 +15,8 @@ const weekOfYearPlugin: EsDayPlugin<{}> = (_, dayClass) => {
     if (week) {
       return this.add((week - this.week()) * 7, C.DAY)
     }
-    // @ts-expect-error '$locale' is a private method when plugin locale is installed
-    const yearStart = this.$locale?.().yearStart || INDEX_THURSDAY // default to Thursday according to ISO 8601
+
+    const yearStart = this.localeObject?.().yearStart || INDEX_THURSDAY // default to Thursday according to ISO 8601
     if (this.month() === 11 && this.date() > 25) {
       const nextYearStartDay = this.startOf(C.YEAR).add(1, C.YEAR).date(yearStart)
       const thisEndOfWeek = this.endOf(C.WEEK)

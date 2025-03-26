@@ -89,17 +89,21 @@ function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
 }
 
 const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
-  // @ts-expect-error $locale is private method
-  dayClass.prototype.$locale = function () {
+  dayClass.prototype.localeObject = function () {
     return getLocale(getSetPrivateLocaleName(this))
   }
 
-  // setter for instance locale
-  dayClass.prototype.locale = function (localeName: string) {
-    const inst = this.clone()
-    getSetPrivateLocaleName(inst, localeName)
-
-    return inst
+  // add locale getter / setter
+  dayClass.prototype.locale = function <T extends string | undefined>(localeName?: T): T extends string ? EsDay : string {
+  // dayClass.prototype.locale = function (localeName?: string): any {
+    if ((localeName !== undefined) && (typeof localeName === 'string')) {
+      const inst = this.clone()
+      getSetPrivateLocaleName(inst, localeName)
+      return inst as any
+    }
+    else {
+      return getSetPrivateLocaleName(this) as any
+    }
   }
 
   // set $l in clone method
@@ -125,8 +129,7 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     if (prettyUnit(unit) === C.WEEK) {
       // default start of week is Monday
       const defaultStartOfWeek = C.INDEX_MONDAY
-      // @ts-expect-error $locale is private method
-      const weekStart = undefinedOr(inst.$locale().weekStart, defaultStartOfWeek)
+      const weekStart = undefinedOr(inst.localeObject().weekStart, defaultStartOfWeek)
       const $day = origin.day()
       const $date = origin.date()
       const diff = ($day < weekStart ? $day + 7 : $day) - weekStart
