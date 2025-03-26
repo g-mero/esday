@@ -22,8 +22,6 @@ const formats = {
 
 // Use 'setLocaleProperty' as all properties are 'readonly'
 setLocaleProperty(localeEnIn, 'name', 'en-IN')
-setLocaleProperty(localeEnIn, 'weekStart', 0) // Sunday is the first day of the week.
-setLocaleProperty(localeEnIn, 'yearStart', 6) // The week that contains Jan 1st is the first week of the year.
 setLocaleProperty(localeEnIn, 'formats', formats)
 
 export default localeEnIn

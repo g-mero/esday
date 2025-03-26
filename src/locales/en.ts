@@ -16,20 +16,20 @@ const localeEn: Readonly<Locale> = {
     const v = n % 100
     return `[${n}${(s[(v - 20) % 10] || s[v] || s[0])}]`
   },
-  weekStart: 1, // Monday is the first day of the week.
-  yearStart: 4, // The week that contains Jan 4th is the first week of the year.
+  weekStart: 0, // Sunday is the first day of the week.
+  yearStart: 6, // The week that contains Jan 1st is the first week of the year.
   formats: {
-    LT: 'HH:mm',
-    LTS: 'HH:mm:ss',
-    L: 'DD/MM/YYYY',
-    LL: 'D MMMM YYYY',
-    LLL: 'D MMMM YYYY HH:mm',
-    LLLL: 'dddd, D MMMM YYYY HH:mm',
-    l: 'DD/MM/YYYY',
-    ll: 'D MMMM YYYY',
-    lll: 'D MMMM YYYY HH:mm',
-    llll: 'dddd, D MMMM YYYY HH:mm',
-  },
+    LT: 'h:mm A',
+    LTS: 'h:mm:ss A',
+    L: 'MM/DD/YYYY',
+    LL: 'D [de] MMMM [de] YYYY',
+    LLL: 'D [de] MMMM [de] YYYY h:mm A',
+    LLLL: 'dddd, D [de] MMMM [de] YYYY h:mm A',
+    l: 'MM/DD/YYYY',
+    ll: 'D [de] MMMM [de] YYYY',
+    lll: 'D [de] MMMM [de] YYYY h:mm A',
+    llll: 'dddd, D [de] MMMM [de] YYYY h:mm A',
+    },
   relativeTime: {
     future: 'in %s',
     past: '%s ago',
