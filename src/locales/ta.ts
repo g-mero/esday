@@ -41,7 +41,7 @@ const localeTa: Readonly<Locale> = {
   monthsShort: ['ஜனவரி', 'பிப்ரவரி', 'மார்ச்', 'ஏப்ரல்', 'மே', 'ஜூன்', 'ஜூலை', 'ஆகஸ்ட்', 'செப்டெம்பர்', 'அக்டோபர்', 'நவம்பர்', 'டிசம்பர்'],
   ordinal: n => `${n} வது`,
   weekStart: 0, // Sunday is the first day of the week.
-  yearStart: 6, // The week that contains Jan 1st is the first week of the year.
+  yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',

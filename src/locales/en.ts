@@ -1,5 +1,6 @@
 /**
  * English [en]
+ * The default locale for en is equivalent to en-US.
  */
 
 import type { Locale } from '~/plugins/locale'
@@ -17,7 +18,7 @@ const localeEn: Readonly<Locale> = {
     return `[${n}${(s[(v - 20) % 10] || s[v] || s[0])}]`
   },
   weekStart: 0, // Sunday is the first day of the week.
-  yearStart: 6, // The week that contains Jan 1st is the first week of the year.
+  yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
     LT: 'h:mm A',
     LTS: 'h:mm:ss A',
@@ -29,7 +30,7 @@ const localeEn: Readonly<Locale> = {
     ll: 'D [de] MMMM [de] YYYY',
     lll: 'D [de] MMMM [de] YYYY h:mm A',
     llll: 'dddd, D [de] MMMM [de] YYYY h:mm A',
-    },
+  },
   relativeTime: {
     future: 'in %s',
     past: '%s ago',

@@ -7,7 +7,7 @@ import { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 
 const localeEnAu = cloneLocale(localeEn)
 
-const formats =  {
+const formats = {
   LT: 'HH:mm',
   LTS: 'HH:mm:ss',
   L: 'DD/MM/YYYY',

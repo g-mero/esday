@@ -41,7 +41,7 @@ const localeBn: Readonly<Locale> = {
   monthsShort: ['জানু', 'ফেব্রু', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্ট', 'অক্টো', 'নভে', 'ডিসে'],
   ordinal: n => `${n}`, // No special ordinal format
   weekStart: 0, // The file did not contain this information, we will set it to zero as default.
-  yearStart: 6, // The week that contains Jan 1st is the first week of the year.
+  yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
     LT: 'A h:mm সময়',
     LTS: 'A h:mm:ss সময়',

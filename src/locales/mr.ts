@@ -126,7 +126,7 @@ const localeMr: Readonly<Locale> = {
   monthsShort: ['जाने.', 'फेब्रु.', 'मार्च.', 'एप्रि.', 'मे.', 'जून.', 'जुलै.', 'ऑग.', 'सप्टें.', 'ऑक्टो.', 'नोव्हें.', 'डिसें.'],
   ordinal: n => `${n}`,
   weekStart: 0, // Sunday is the first day of the week.
-  yearStart: 6, // The week that contains Jan 1st is the first week of the year.
+  yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
     LT: 'A h:mm वाजता',
     LTS: 'A h:mm:ss वाजता',

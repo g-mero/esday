@@ -1,5 +1,7 @@
 /**
  * English (United Kingdom) [en-GB]
+ * This locale shows how to create a locale for a territory based
+ * on the locale of the corresponding language.
  */
 
 import localeEn from '~/locales/en'
