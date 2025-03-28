@@ -63,7 +63,7 @@ describe('locale ar', () => {
   it('should have numeric property named yearStart', () => {
     expect(locale.yearStart).toBeDefined()
     expect(locale.yearStart).toBeTypeOf('number')
-    expect(locale.yearStart).toSatisfy((value: number) => (value >= 1) && (value <= 14))
+    expect(locale.yearStart).toSatisfy((value: number) => (value >= 1) && (value <= 7))
   })
 
   it('should have have an object named "formats" with 10 properties', () => {
