@@ -1,5 +1,5 @@
-import type { UnitType } from '~/common/units'
 import { describe, expect, it } from 'vitest'
+import type { UnitType } from '~/common/units'
 import { esday } from '~/core'
 
 describe('add', () => {

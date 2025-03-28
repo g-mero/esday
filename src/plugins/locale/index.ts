@@ -94,16 +94,16 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   // add locale getter / setter
-  dayClass.prototype.locale = function <T extends string | undefined>(localeName?: T): T extends string ? EsDay : string {
-  // dayClass.prototype.locale = function (localeName?: string): any {
-    if ((localeName !== undefined) && (typeof localeName === 'string')) {
+  dayClass.prototype.locale = function <T extends string | undefined>(
+    localeName?: T,
+  ): T extends string ? EsDay : string {
+    // dayClass.prototype.locale = function (localeName?: string): any {
+    if (localeName !== undefined && typeof localeName === 'string') {
       const inst = this.clone()
       getSetPrivateLocaleName(inst, localeName)
       return inst as any
     }
-    else {
-      return getSetPrivateLocaleName(this) as any
-    }
+    return getSetPrivateLocaleName(this) as any
   }
 
   // set $l in clone method
