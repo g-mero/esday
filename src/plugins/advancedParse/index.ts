@@ -1,7 +1,7 @@
 /* eslint-disable dot-notation */
 import type { DateFromDateComponents, DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
-import type { ParsedElements, TokenDefinitions } from './types'
 import { isArray, isString, isUndefined, isValidDate } from '~/common'
+import type { ParsedElements, TokenDefinitions } from './types'
 
 // Function to create a Date object from its date components
 // is set to the corresponding function in the core module and
@@ -51,19 +51,14 @@ function parseFourDigitYear(input: string): number {
   if (input.length === 2) {
     return parseTwoDigitYear(input)
   }
-  else {
-    return +input
-  }
+  return +input
 }
 
 function offsetFromString(offset: string): number {
-  if (!offset)
-    return 0
-  if (offset === 'Z')
-    return 0
+  if (!offset) return 0
+  if (offset === 'Z') return 0
   const parts = offset.match(/([+-]|\d\d)/g)
-  if (!parts)
-    return 0
+  if (!parts) return 0
   const minutes = +parts[1] * 60 + (+parts[2] || 0)
   return parts[0] === '+' ? minutes : -minutes
 }
@@ -115,8 +110,7 @@ function addUnixInput(isMilliseconds: boolean) {
     let value = +input
     if (isMilliseconds) {
       value = Number.parseInt(input, 10)
-    }
-    else {
+    } else {
       value = Number.parseFloat(input) * 1000
     }
     this.unix = value
@@ -133,9 +127,13 @@ function addUnixInput(isMilliseconds: boolean) {
  * month, day, ...).
  */
 const parseTokensDefinitions: TokenDefinitions = {
-  Q: [match1, match1, function (input) {
-    this.month = (Number.parseInt(input, 10) - 1) * 3 + 1
-  }],
+  Q: [
+    match1,
+    match1,
+    function (input) {
+      this.month = (Number.parseInt(input, 10) - 1) * 3 + 1
+    },
+  ],
   S: [matchUnsigned, match1, addMillisecondsToInput()],
   SS: [matchUnsigned, match2, addMillisecondsToInput()],
   SSS: [matchUnsigned, match3, addMillisecondsToInput()],
@@ -151,21 +149,41 @@ const parseTokensDefinitions: TokenDefinitions = {
   X: [matchTimestamp, matchTimestamp, addUnixInput(false)],
   M: [match1to2, match1to2, addInput('month')],
   MM: [match1to2, match2, addInput('month')],
-  Y: [matchSigned, matchSigned, function (input) {
-    this.year = Number.parseInt(input, 10)
-  }],
-  YY: [match1to4, match2, function (input) {
-    this.year = parseTwoDigitYear(input)
-  }],
-  YYYY: [match1to4, match4, function (input) {
-    this.year = parseFourDigitYear(input)
-  }],
-  Z: [matchOffset, matchOffset, function (input) {
-    this.zoneOffset = offsetFromString(input)
-  }],
-  ZZ: [matchOffset, matchOffset, function (input) {
-    this.zoneOffset = offsetFromString(input)
-  }],
+  Y: [
+    matchSigned,
+    matchSigned,
+    function (input) {
+      this.year = Number.parseInt(input, 10)
+    },
+  ],
+  YY: [
+    match1to4,
+    match2,
+    function (input) {
+      this.year = parseTwoDigitYear(input)
+    },
+  ],
+  YYYY: [
+    match1to4,
+    match4,
+    function (input) {
+      this.year = parseFourDigitYear(input)
+    },
+  ],
+  Z: [
+    matchOffset,
+    matchOffset,
+    function (input) {
+      this.zoneOffset = offsetFromString(input)
+    },
+  ],
+  ZZ: [
+    matchOffset,
+    matchOffset,
+    function (input) {
+      this.zoneOffset = offsetFromString(input)
+    },
+  ],
 }
 
 // Get regex from list of supported tokens
@@ -180,7 +198,7 @@ function compareTokens(a: string, b: string) {
   if (a.length < b.length) {
     return 1
   }
-  else if (a.length > b.length) {
+  if (a.length > b.length) {
     return -1
   }
 
@@ -188,7 +206,7 @@ function compareTokens(a: string, b: string) {
   if (a < b) {
     return 1
   }
-  else if (a > b) {
+  if (a > b) {
     return -1
   }
 
@@ -209,38 +227,39 @@ function formattingTokensRegexFromDefinitions() {
  * @param isStrict - must input match format exactly?
  * @returns function that will parse an input string to a 'parsedResultRaw' object
  */
-function makeParser(format: string, isStrict: boolean): (input: string, isStrict: boolean) => parsedResultRaw {
+function makeParser(
+  format: string,
+  isStrict: boolean,
+): (input: string, isStrict: boolean) => parsedResultRaw {
   const splittedFormat: any[] = format.match(formattingTokensRegex) || []
   const length = splittedFormat.length
   for (let i = 0; i < length; i += 1) {
     const token = splittedFormat[i]
     const parseTo = parseTokensDefinitions[token]
-    let regex
+    let regex: any
     if (!isStrict) {
-      regex = parseTo && parseTo[0]
+      regex = parseTo?.[0]
+    } else {
+      regex = parseTo?.[1]
     }
-    else {
-      regex = parseTo && parseTo[1]
-    }
-    const parser = parseTo && parseTo[2]
+
+    const parser = parseTo?.[2]
     if (parser as any) {
       splittedFormat[i] = { regex, parser }
-    }
-    else {
+    } else {
       // remove escaped text from input string (e.g. "[H]")
       splittedFormat[i] = token.replace(/^\[|\]$/g, '')
     }
   }
-  return function (input: string, isStrict: boolean): parsedResultRaw {
+  return (input: string, isStrict: boolean): parsedResultRaw => {
     let unusedTokens = 0
     let separatorsMatch = true
     const time: ParsedElements = {}
     for (let i = 0, start = 0; i < length; i += 1) {
       if (input.length === 0) {
-        unusedTokens = splittedFormat.slice(i).reduce(
-          (accumulator, currentValue) => accumulator + (isString(currentValue) ? 0 : 1),
-          0,
-        )
+        unusedTokens = splittedFormat
+          .slice(i)
+          .reduce((accumulator, currentValue) => accumulator + (isString(currentValue) ? 0 : 1), 0)
         break
       }
 
@@ -250,17 +269,17 @@ function makeParser(format: string, isStrict: boolean): (input: string, isStrict
         const separatorLength = token.length
         // in strict mode parsed date part must match format token!
         if (isStrict && separatorsMatch) {
-          separatorsMatch &&= (input.substring(0, separatorLength) === token)
+          separatorsMatch &&= input.substring(0, separatorLength) === token
         }
-
+        // biome-ignore lint/style/noParameterAssign: <explanation>
         input = input.slice(separatorLength)
-      }
-      else {
+      } else {
         const { regex, parser } = token
         const part = input.slice(start)
         const match = regex.exec(part)
         if (match !== null) {
           const value = match[0]
+          // biome-ignore lint/style/noParameterAssign: <explanation>
           input = input.replace(value, '')
           parser.call(time, value)
         }
@@ -299,7 +318,17 @@ function parsedElementsToDate(that: EsDay, elements: ParsedElements) {
     offsetMs = (zoneOffset || 0) * 60000
   }
 
-  return dateFromDateComponents.call(that, year, month, day, hours, minutes, seconds, milliseconds, offsetMs)
+  return dateFromDateComponents.call(
+    that,
+    year,
+    month,
+    day,
+    hours,
+    minutes,
+    seconds,
+    milliseconds,
+    offsetMs,
+  )
 }
 
 /**
@@ -311,7 +340,12 @@ function parsedElementsToDate(that: EsDay, elements: ParsedElements) {
  * @param isStrict - must input match format exactly?
  * @returns Date object generated from the given data
  */
-function parseFormattedInput(that: EsDay, input: string, format: string, isStrict: boolean): parsedResult {
+function parseFormattedInput(
+  that: EsDay,
+  input: string,
+  format: string,
+  isStrict: boolean,
+): parsedResult {
   const parser = makeParser(format, isStrict)
   const parsedElements = parser(input, isStrict)
   const parsedDate = parsedElementsToDate(that, parsedElements.dateElements)
@@ -321,7 +355,6 @@ function parseFormattedInput(that: EsDay, input: string, format: string, isStric
     charsLeftOver: parsedElements.charsLeftOver,
     unusedTokens: parsedElements.unusedTokens,
     separatorsMatch: parsedElements.separatorsMatch,
-
   }
 }
 
@@ -340,7 +373,11 @@ function addParseTokenDefinitions(newTokens: TokenDefinitions) {
   formattingTokensRegexFromDefinitions()
 }
 
-const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass: typeof EsDay, dayFactory: EsDayFactory) => {
+const advancedParsePlugin: EsDayPlugin<{}> = (
+  _,
+  dayClass: typeof EsDay,
+  dayFactory: EsDayFactory,
+) => {
   const proto = dayClass.prototype
 
   // get regexp to separate format into formatting tokens and separators
@@ -355,8 +392,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass: typeof EsDay, dayFact
     let isStrict = false
     if (typeof arg2 === 'boolean') {
       isStrict = arg2
-    }
-    else if ((arg3 !== undefined) && (typeof arg3 === 'boolean')) {
+    } else if (arg3 !== undefined && typeof arg3 === 'boolean') {
       isStrict = arg3
     }
 
@@ -365,18 +401,18 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass: typeof EsDay, dayFact
       if (isString(format)) {
         const parsingResult = parseFormattedInput(this, d, format, isStrict)
         this['$d'] = parsingResult.date
-        if (isStrict && (
-          (parsingResult.charsLeftOver > 0)
-          || (parsingResult.unusedTokens > 0)
-          || !parsingResult.separatorsMatch)
+        if (
+          isStrict &&
+          (parsingResult.charsLeftOver > 0 ||
+            parsingResult.unusedTokens > 0 ||
+            !parsingResult.separatorsMatch)
         ) {
           this['$d'] = invalidDate
         }
-      }
-      else if (isArray(format)) {
+      } else if (isArray(format)) {
         // format as array string
         let bestDate = invalidDate
-        let scoreToBeat
+        let scoreToBeat: any
         let bestFormatIsValid = false
         for (let i = 0; i < format.length; i++) {
           let currentScore = 0
@@ -384,10 +420,11 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass: typeof EsDay, dayFact
 
           const formatUnderInspection = format[i]
           const parsingResult = parseFormattedInput(this, d, formatUnderInspection, isStrict)
-          if (isStrict && (
-            (parsingResult.charsLeftOver > 0)
-            || (parsingResult.unusedTokens > 0)
-            || !parsingResult.separatorsMatch)
+          if (
+            isStrict &&
+            (parsingResult.charsLeftOver > 0 ||
+              parsingResult.unusedTokens > 0 ||
+              !parsingResult.separatorsMatch)
           ) {
             parsingResult.date = invalidDate
           }
@@ -404,9 +441,9 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass: typeof EsDay, dayFact
           // wait for valid date(s)
           if (!bestFormatIsValid) {
             if (
-              isUndefined(scoreToBeat) // take the first parsed date whatever it is
-              || currentScore < scoreToBeat // take better date (even invalid one)
-              || validFormatFound // take first valid date
+              isUndefined(scoreToBeat) || // take the first parsed date whatever it is
+              currentScore < scoreToBeat || // take better date (even invalid one)
+              validFormatFound // take first valid date
             ) {
               scoreToBeat = currentScore
               bestDate = parsingResult.date
@@ -414,10 +451,9 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass: typeof EsDay, dayFact
                 bestFormatIsValid = true
               }
             }
-          }
-          else {
+          } else {
             // evaluate only valid formats
-            if (validFormatFound && !isUndefined(scoreToBeat) && (currentScore < scoreToBeat)) {
+            if (validFormatFound && !isUndefined(scoreToBeat) && currentScore < scoreToBeat) {
               scoreToBeat = currentScore
               bestDate = parsingResult.date
             }
@@ -425,8 +461,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass: typeof EsDay, dayFact
         }
         this['$d'] = bestDate
       }
-    }
-    else {
+    } else {
       oldParse.call(this, d)
     }
   }

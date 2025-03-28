@@ -93,9 +93,7 @@ describe('isBetween', () => {
   for (const { date, from, to, unit, inclusivity, expected } of testCases) {
     it(`isBetween('${date}', '${from}', '${to}', ${unit}, '${inclusivity}') -> ${expected}`, () => {
       expect(esday(date).isBetween(from, to, unit, inclusivity)).toBe(expected)
-      expect(
-        esday(date).isBetween(from, to, unit, inclusivity),
-      ).toBe(
+      expect(esday(date).isBetween(from, to, unit, inclusivity)).toBe(
         moment(date).isBetween(from, to, unit, inclusivity),
       )
     })

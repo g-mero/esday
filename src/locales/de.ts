@@ -23,8 +23,7 @@ function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolea
   const l = relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings]
   if (Array.isArray(l)) {
     result = l[withoutSuffix ? 0 : 1]
-  }
-  else {
+  } else {
     result = l
   }
 
@@ -36,7 +35,20 @@ const localeDe: Readonly<Locale> = {
   weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
   weekdaysShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
   weekdaysMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-  months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+  months: [
+    'Januar',
+    'Februar',
+    'März',
+    'April',
+    'Mai',
+    'Juni',
+    'Juli',
+    'August',
+    'September',
+    'Oktober',
+    'November',
+    'Dezember',
+  ],
   monthsShort: [
     'Jan.',
     'Feb.',
@@ -80,11 +92,11 @@ const localeDe: Readonly<Locale> = {
     y: relativeTimeFormatter,
     yy: relativeTimeFormatter,
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
-    const m = (hour < 12 ? 'AM' : 'PM')
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
-  ordinal: n => `${n}.`,
+  ordinal: (n) => `${n}.`,
 }
 
 export default localeDe

@@ -19,4 +19,7 @@ export interface ParsedElements {
   unix?: number
 }
 
-export type TokenDefinitions = Record<string, [RegExp, RegExp, (this: ParsedElements, input: string) => void]>
+export type TokenDefinitions = Record<
+  string,
+  [RegExp, RegExp, (this: ParsedElements, input: string) => void]
+>

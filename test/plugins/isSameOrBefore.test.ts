@@ -13,16 +13,19 @@ describe('isSameOrBefore plugin', () => {
     { date1: '2025-01-05', date2: '2025-01-06', unit: 'day', expected: true },
     { date1: '2025-01-06T12:00:00', date2: '2025-01-06T11:59:59', unit: 'second', expected: false },
     { date1: '2025-01-06T11:59:58', date2: '2025-01-06T11:59:59', unit: 'second', expected: true },
-  ])('should correctly determine if "$date1" is the same or before "date2"', ({ date1, date2, unit, expected }) => {
-    const esDayInstance = esday(date1)
-    const momentInstance = moment(date1)
+  ])(
+    'should correctly determine if "$date1" is the same or before "date2"',
+    ({ date1, date2, unit, expected }) => {
+      const esDayInstance = esday(date1)
+      const momentInstance = moment(date1)
 
-    const esDayResult = esDayInstance.isSameOrBefore(date2, unit as UnitType)
-    const momentResult = momentInstance.isSameOrBefore(date2, unit as UnitType)
+      const esDayResult = esDayInstance.isSameOrBefore(date2, unit as UnitType)
+      const momentResult = momentInstance.isSameOrBefore(date2, unit as UnitType)
 
-    expect(esDayResult).toBe(expected)
-    expect(esDayResult).toBe(momentResult)
-  })
+      expect(esDayResult).toBe(expected)
+      expect(esDayResult).toBe(momentResult)
+    },
+  )
 
   it('should handle invalid dates gracefully', () => {
     const invalidEsDay = esday('invalid-date')
@@ -31,7 +34,9 @@ describe('isSameOrBefore plugin', () => {
     const validMoment = moment('2025-01-06')
 
     expect(invalidEsDay.isSameOrBefore(validEsDay)).toBe(invalidMoment.isSameOrBefore(validMoment))
-    expect(invalidEsDay.isSameOrBefore(invalidEsDay)).toBe(invalidMoment.isSameOrBefore(invalidMoment))
+    expect(invalidEsDay.isSameOrBefore(invalidEsDay)).toBe(
+      invalidMoment.isSameOrBefore(invalidMoment),
+    )
   })
 
   it('should handle edge cases', () => {
@@ -42,6 +47,8 @@ describe('isSameOrBefore plugin', () => {
     const laterMoment = moment('1970-01-02')
 
     expect(unixEpochEsDay.isSameOrBefore(0)).toBe(unixEpochMoment.isSameOrBefore(0))
-    expect(unixEpochEsDay.isSameOrBefore(laterDate)).toBe(unixEpochMoment.isSameOrBefore(laterMoment))
+    expect(unixEpochEsDay.isSameOrBefore(laterDate)).toBe(
+      unixEpochMoment.isSameOrBefore(laterMoment),
+    )
   })
 })

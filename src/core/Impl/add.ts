@@ -1,7 +1,7 @@
+import { C, createInstanceFromExist, prettyUnit } from '~/common'
 /* eslint-disable dot-notation */
 import type { EsDay } from '~/core'
 import type { UnitType } from '~/types'
-import { C, createInstanceFromExist, prettyUnit } from '~/common'
 
 export function addImpl(that: EsDay, number: number, units: UnitType) {
   const $d = that['$d']
@@ -26,12 +26,8 @@ export function addImpl(that: EsDay, number: number, units: UnitType) {
     return instanceFactorySet(7)
   }
 
-  // @ts-expect-error unit is string
-  const step = {
-    minute: 60 * 1000,
-    hour: 60 * 60 * 1000,
-    second: 1000,
-  }[unit] || 1 // 毫秒
+  // @ts-expect-error default 1
+  const step = { minute: 60 * 1000, hour: 60 * 60 * 1000, second: 1000 }[unit] || 1 // 毫秒
 
   const nextTimeStamp = $d.getTime() + number * step
   return createInstanceFromExist(new Date(nextTimeStamp), that)

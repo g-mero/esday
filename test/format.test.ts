@@ -18,15 +18,9 @@ describe('format', () => {
     expect(esday().format()).toBe(`2023-12-17T03:24:46${formattedOffset}`)
   })
 
-  it.each([
-    '',
-    'otherString',
-  ])(
-    'invalid date created from "%s"',
-    (value) => {
-      expect(esday(value).format()).toBe('Invalid Date')
-    },
-  )
+  it.each(['', 'otherString'])('invalid date created from "%s"', (value) => {
+    expect(esday(value).format()).toBe('Invalid Date')
+  })
 
   it.each([
     { formatString: 'YY', expected: '23' },
@@ -63,16 +57,11 @@ describe('format', () => {
   it.each([
     { formatString: 'D', expected: '17' },
     { formatString: 'DD', expected: '17' },
-  ])(
-    'double digit day of month as "$formatString"',
-    ({ formatString, expected }) => {
-      expect(esday().format(formatString)).toBe(expected)
-    },
-  )
+  ])('double digit day of month as "$formatString"', ({ formatString, expected }) => {
+    expect(esday().format(formatString)).toBe(expected)
+  })
 
-  it.each([
-    { formatString: 'd', expected: '4' },
-  ])(
+  it.each([{ formatString: 'd', expected: '4' }])(
     'day of week (sun - sat) as "%s"',
     ({ formatString, expected }) => {
       vi.setSystemTime(new Date('2023-12-07T03:24:46.234'))
