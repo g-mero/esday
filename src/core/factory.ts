@@ -30,6 +30,7 @@ esday.extend = (plugin, option) => {
   // @ts-expect-error plugin
   if (!plugin.$i) {
     // install plugin only once
+    // biome-ignore lint/suspicious/noExplicitAny: generic method to install any plugin
     plugin(option as any, EsDay, esday)
     // @ts-expect-error plugin
     plugin.$i = true

@@ -3,7 +3,7 @@ import type { EsDay } from 'esday'
 import { esday } from 'esday'
 import { describe, expect, it } from 'vitest'
 import localeZh from '~/locales/zh'
-import localePlugin from '~/plugins/locale'
+import localePlugin, { type Locale } from '~/plugins/locale'
 
 esday.extend(localePlugin)
 
@@ -50,7 +50,7 @@ describe('esDay locale methods', () => {
     esday.registerLocale({
       name: 'test',
       weekStart: 0,
-    } as any)
+    } as Locale)
     const dayTest = day.locale('test')
     expect(dayTest.startOf('week').format('YYYY-MM-DD')).toBe('2020-12-27')
     expect(dayTest.endOf('week').format('YYYY-MM-DD')).toBe('2021-01-02')

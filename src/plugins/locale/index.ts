@@ -1,5 +1,5 @@
 /* eslint-disable dot-notation */
-import type { EsDay, EsDayFactory, EsDayPlugin, UnitType } from 'esday'
+import type { DateType, EsDay, EsDayFactory, EsDayPlugin, UnitType } from 'esday'
 import { C, prettyUnit, undefinedOr } from '~/common'
 import en from '~/locales/en'
 import type { Locale } from './types'
@@ -23,6 +23,7 @@ export function registerLocale(locale: Locale, rename?: string): void {
  * @param propName - name of the property to create or set
  * @param newValue - new value of the property
  */
+// biome-ignore lint/suspicious/noExplicitAny: generic function
 function setObjectProperty(target: object, propName: string, newValue: any) {
   Object.defineProperty(target, propName, {
     enumerable: true,
@@ -38,6 +39,8 @@ function setObjectProperty(target: object, propName: string, newValue: any) {
  * @param propName - name of the property to create or set
  * @param newValue - new value of the property
  */
+
+// biome-ignore lint/suspicious/noExplicitAny: generic function
 export function setLocaleProperty(targetLocale: Locale, propName: string, newValue: any) {
   setObjectProperty(targetLocale, propName, newValue)
 }
@@ -101,8 +104,10 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     if (localeName !== undefined && typeof localeName === 'string') {
       const inst = this.clone()
       getSetPrivateLocaleName(inst, localeName)
+      // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
       return inst as any
     }
+    // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
     return getSetPrivateLocaleName(this) as any
   }
 
@@ -115,7 +120,7 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   const oldParse = dayClass.prototype['parse']
-  dayClass.prototype['parse'] = function (d: any) {
+  dayClass.prototype['parse'] = function (d: Exclude<DateType, EsDay>) {
     oldParse.call(this, d)
 
     // set locale name
@@ -156,8 +161,10 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   ): T extends string ? EsDayFactory : string => {
     if (localeName !== undefined && typeof localeName === 'string') {
       $localeGlobal = localeName
+      // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
       return dayFactory as any
     }
+    // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
     return $localeGlobal as any
   }
 

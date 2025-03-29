@@ -20,7 +20,7 @@ import {
   prettyUnit,
   setUnitInDateUTC,
 } from '~/common'
-import type { DateType, EsDayPlugin } from '~/types'
+import type { DateType, EsDayPlugin, SimpleType } from '~/types'
 
 const REGEX_VALID_OFFSET_FORMAT = /[+-]\d\d(?::?\d\d)?/g
 const REGEX_OFFSET_HOURS_MINUTES_FORMAT = /[+-]|\d\d/g
@@ -48,20 +48,24 @@ declare module 'esday' {
     utc: (keepLocalTime?: boolean) => EsDay
     local: () => EsDay
     isUTC: () => boolean
-    /* eslint-disable ts/method-signature-style */
     utcOffset(): number
     utcOffset(offset: number | string, keepLocalTime?: boolean): EsDay
-    /* eslint-enable ts/method-signature-style */
   }
 
   interface EsDayFactory {
-    utc: (date?: DateType, ...others: any[]) => EsDay
+    utc: (
+      date?: DateType,
+      ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
+    ) => EsDay
   }
 }
 
 const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   // parse a date as utc
-  dayFactory.utc = (d?: DateType, ...others: any[]) => {
+  dayFactory.utc = (
+    d?: DateType,
+    ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
+  ) => {
     const inst = dayFactory(d, ...others, { utc: true })
     return inst
   }
@@ -96,6 +100,7 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return C.INVALID_DATE_STRING
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: did not find a conditional return type a a replacement for 'any'
   proto.utcOffset = function (offset?: number | string, keepLocalTime?: boolean): any {
     if (offset === undefined) {
       const defaultOffset = -Math.round(this['$d'].getTimezoneOffset())

@@ -572,7 +572,7 @@ describe('plugin utc', () => {
   describe('startOf and endOf', () => {
     // weekday of fake date is a sunday
     const fakeTimeAsString = '2023-12-17T03:24:46.234'
-    let momentDefaultLocaleData: any
+    let momentDefaultLocaleData: moment.Locale
 
     beforeAll(() => {
       momentDefaultLocaleData = moment.localeData()
