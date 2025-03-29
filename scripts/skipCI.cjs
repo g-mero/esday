@@ -24,10 +24,12 @@ async function main() {
     )
 
   // eslint-disable-next-line no-console
+  // biome-ignore lint/suspicious/noConsole: required for report of CI action
   console.log(shouldNotSkipCI ? 'false' : 'true')
 }
 
 main().catch((err) => {
+  // biome-ignore lint/suspicious/noConsole: required for report of CI action
   console.error('Failed to detect CI skip', err)
 
   process.exit(1)

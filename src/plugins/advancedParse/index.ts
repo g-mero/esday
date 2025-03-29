@@ -1,7 +1,7 @@
 /* eslint-disable dot-notation */
 import type { DateFromDateComponents, DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
 import { isArray, isString, isUndefined, isValidDate } from '~/common'
-import type { ParsedElements, TokenDefinitions } from './types'
+import type { ParsedElements, TokenDefinitions, UpdateParsedElement } from './types'
 
 // Function to create a Date object from its date components
 // is set to the corresponding function in the core module and
@@ -24,6 +24,17 @@ const matchSigned = /[+-]?\d+/
 const matchUnsigned = /\d+/
 const matchTimestamp = /[+-]?\d+(\.\d{1,3})?/ // 123456789 123456789.123
 const matchOffset = /[+-]\d\d:?(\d\d)?|Z/
+
+/**
+ * Definition of parser that handles 1 token in the parsing format.
+ * The parser is derived from the TokenDefinitions by selecting the
+ * right regex (depending on normal or strict mode) and the related
+ * update function.
+ */
+interface ParserDefinition {
+  regex: RegExp
+  updater: UpdateParsedElement
+}
 
 interface parsedResultRaw {
   dateElements: ParsedElements
@@ -231,24 +242,26 @@ function makeParser(
   format: string,
   isStrict: boolean,
 ): (input: string, isStrict: boolean) => parsedResultRaw {
-  const splittedFormat: any[] = format.match(formattingTokensRegex) || []
+  const splittedFormat: Array<string> =
+    (format.match(formattingTokensRegex) as Array<string>) || ([] as Array<string>)
   const length = splittedFormat.length
+  const parsingDefinitions = Array<string | ParserDefinition>(length)
   for (let i = 0; i < length; i += 1) {
     const token = splittedFormat[i]
     const parseTo = parseTokensDefinitions[token]
-    let regex: any
+    let regex: RegExp | undefined
     if (!isStrict) {
       regex = parseTo?.[0]
     } else {
       regex = parseTo?.[1]
     }
 
-    const parser = parseTo?.[2]
-    if (parser as any) {
-      splittedFormat[i] = { regex, parser }
+    const updater = parseTo?.[2]
+    if (!isUndefined(updater)) {
+      parsingDefinitions[i] = { regex, updater }
     } else {
       // remove escaped text from input string (e.g. "[H]")
-      splittedFormat[i] = token.replace(/^\[|\]$/g, '')
+      parsingDefinitions[i] = token.replace(/^\[|\]$/g, '')
     }
   }
   return (input: string, isStrict: boolean): parsedResultRaw => {
@@ -257,13 +270,13 @@ function makeParser(
     const time: ParsedElements = {}
     for (let i = 0, start = 0; i < length; i += 1) {
       if (input.length === 0) {
-        unusedTokens = splittedFormat
+        unusedTokens = parsingDefinitions
           .slice(i)
           .reduce((accumulator, currentValue) => accumulator + (isString(currentValue) ? 0 : 1), 0)
         break
       }
 
-      const token = splittedFormat[i]
+      const token = parsingDefinitions[i]
       // is this a separator (i.e. has typeof string)?
       if (isString(token)) {
         const separatorLength = token.length
@@ -274,14 +287,14 @@ function makeParser(
         // biome-ignore lint/style/noParameterAssign: <explanation>
         input = input.slice(separatorLength)
       } else {
-        const { regex, parser } = token
+        const { regex, updater } = token
         const part = input.slice(start)
         const match = regex.exec(part)
         if (match !== null) {
           const value = match[0]
           // biome-ignore lint/style/noParameterAssign: <explanation>
           input = input.replace(value, '')
-          parser.call(time, value)
+          updater.call(time, value)
         }
       }
     }
@@ -412,7 +425,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (
       } else if (isArray(format)) {
         // format as array string
         let bestDate = invalidDate
-        let scoreToBeat: any
+        let scoreToBeat = 0
         let bestFormatIsValid = false
         for (let i = 0; i < format.length; i++) {
           let currentScore = 0

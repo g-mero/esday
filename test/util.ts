@@ -12,6 +12,8 @@ import { expect } from 'vitest'
  * expectSame((esday) => esday().format())
  * @param fn function whose return value is to be checked
  */
+
+// biome-ignore lint/suspicious/noExplicitAny: this method checks arbitrary methods of esday / moment
 export function expectSame(fn: (instance: EsDayFactory) => any) {
   const d = fn(esday)
   // call fn with moment; type casting avoids error from tsc

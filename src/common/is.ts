@@ -20,6 +20,7 @@ export function isString(value: unknown): value is string {
   return typeof value === 'string'
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: "project won't build without any"
 export function isArray(value: any): value is any[] {
   return Array.isArray(value)
 }

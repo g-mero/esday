@@ -572,10 +572,10 @@ describe('plugin utc', () => {
   describe('startOf and endOf', () => {
     // weekday of fake date is a sunday
     const fakeTimeAsString = '2023-12-17T03:24:46.234'
-    let momentDefaultLocaleData: any
+    let momentDefaultLocale: string
 
     beforeAll(() => {
-      momentDefaultLocaleData = moment.localeData()
+      momentDefaultLocale = moment.locale()
 
       // Change firstDayOfWeek to SIO 8601 used by esday
       moment.updateLocale('en', {
@@ -595,7 +595,7 @@ describe('plugin utc', () => {
     })
 
     afterAll(() => {
-      moment.locale(momentDefaultLocaleData._abbr)
+      moment.locale(momentDefaultLocale)
     })
 
     it.each([C.YEAR, C.MONTH, C.DAY, C.DATE, C.WEEK, C.HOUR, C.MIN, C.SECOND])(
