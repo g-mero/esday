@@ -10,9 +10,7 @@ esday.registerLocale(localeAr)
 esday.locale('ar')
 moment.locale('ar')
 
-// TODO Transfer to other locale test files
-// TODO adjust all locales to use date and not doy
-// HACK startOf does not account for current timezone!
+// Tests with Friday as start of week
 describe('week plugin - locale "ar"', () => {
   it.each([
     { sourceDate: '2024-03-29', expected: 13, weekday: 'Friday' },
@@ -20,13 +18,11 @@ describe('week plugin - locale "ar"', () => {
     { sourceDate: '2024-03-31', expected: 14, weekday: 'Sunday' },
     { sourceDate: '2024-04-01', expected: 14, weekday: 'Monday' },
     { sourceDate: '2025-04-02', expected: 14, weekday: 'Tuesday' },
-
     { sourceDate: '2024-04-05', expected: 14, weekday: 'Friday' },
     { sourceDate: '2024-04-06', expected: 15, weekday: 'Saturday' },
     { sourceDate: '2024-04-07', expected: 15, weekday: 'Sunday' },
     { sourceDate: '2024-04-08', expected: 15, weekday: 'Monday' },
     { sourceDate: '2025-04-09', expected: 15, weekday: 'Tuesday' },
-
     { sourceDate: '2024-06-10', expected: 24, weekday: 'Monday' },
     { sourceDate: '2024-06-11', expected: 24, weekday: 'Tuesday' },
     { sourceDate: '2024-06-12', expected: 24, weekday: 'Wednesday' },
@@ -42,6 +38,36 @@ describe('week plugin - locale "ar"', () => {
     expect(esday(sourceDate).week()).toBe(expected)
     expectSame((esday) => esday(sourceDate).week())
   })
+
+  it.each([
+    { sourceDate: '2024-03-29T07:18:29', expected: 13, weekday: 'Friday' },
+    { sourceDate: '2024-03-30T07:18:29', expected: 14, weekday: 'Saturday' },
+    { sourceDate: '2024-03-31T07:18:29', expected: 14, weekday: 'Sunday' },
+    { sourceDate: '2024-04-01T07:18:29', expected: 14, weekday: 'Monday' },
+    { sourceDate: '2025-04-02T07:18:29', expected: 14, weekday: 'Tuesday' },
+    { sourceDate: '2024-04-05T07:18:29', expected: 14, weekday: 'Friday' },
+    { sourceDate: '2024-04-06T07:18:29', expected: 15, weekday: 'Saturday' },
+    { sourceDate: '2024-04-07T07:18:29', expected: 15, weekday: 'Sunday' },
+    { sourceDate: '2024-04-08T07:18:29', expected: 15, weekday: 'Monday' },
+    { sourceDate: '2025-04-09T07:18:29', expected: 15, weekday: 'Tuesday' },
+    { sourceDate: '2024-06-10T07:18:29', expected: 24, weekday: 'Monday' },
+    { sourceDate: '2024-06-11T07:18:29', expected: 24, weekday: 'Tuesday' },
+    { sourceDate: '2024-06-12T07:18:29', expected: 24, weekday: 'Wednesday' },
+    { sourceDate: '2024-06-13T07:18:29', expected: 24, weekday: 'Thursday' },
+    { sourceDate: '2024-06-14T07:18:29', expected: 24, weekday: 'Friday' },
+    { sourceDate: '2024-06-15T07:18:29', expected: 25, weekday: 'Saturday' },
+    { sourceDate: '2024-06-16T07:18:29', expected: 25, weekday: 'Sunday' },
+    { sourceDate: '2024-06-17T07:18:29', expected: 25, weekday: 'Monday' },
+    { sourceDate: '2025-06-18T07:18:29', expected: 25, weekday: 'Tuesday' },
+    { sourceDate: '2025-06-19T07:18:29', expected: 25, weekday: 'Wednesday' },
+    { sourceDate: '2025-06-20T07:18:29', expected: 25, weekday: 'Thursday' },
+  ])(
+    'should return the correct week number for "$sourceDate" with time part',
+    ({ sourceDate, expected }) => {
+      expect(esday(sourceDate).week()).toBe(expected)
+      expectSame((esday) => esday(sourceDate).week())
+    },
+  )
 
   it.each([
     { sourceDate: '2023-01-01', expected: 1, weekday: 'Sunday' },

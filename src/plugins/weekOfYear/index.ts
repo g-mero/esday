@@ -2,6 +2,7 @@ import type { EsDayPlugin } from 'esday'
 import { C } from '~/common'
 
 declare module 'esday' {
+  // TODO fix getter / setter signatures
   interface EsDay {
     week: (() => number) & ((week: number) => EsDay)
     weeks: (() => number) & ((week: number) => EsDay)
@@ -27,9 +28,7 @@ const weekOfYearPlugin: EsDayPlugin<{}> = (_, dayClass) => {
     }
     const yearStartDay = this.startOf(C.YEAR).date(yearStart)
     const yearStartWeek = yearStartDay.startOf(C.WEEK).subtract(1, C.MS)
-    // TODO to avoid problems with (local) DST rules,
-    // we must calculate the diff in days or use utc (?)
-    const diffInWeek = (this.valueOf() - yearStartWeek.valueOf()) / C.MILLISECONDS_A_WEEK
+    const diffInWeek = this.diff(yearStartWeek, C.WEEK, true)
     if (diffInWeek < 0) {
       return this.startOf(C.WEEK).week()
     }
