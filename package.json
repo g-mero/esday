@@ -28,12 +28,10 @@
   "module": "index.js",
   "types": "index.d.ts",
   "typesVersions": {},
-  "files": [
-    "*"
-  ],
+  "files": ["*"],
   "scripts": {
-    "lint": "pnpm exec eslint .",
-    "lint:fix": "pnpm exec eslint . --fix",
+    "lint": "pnpm exec biome check .",
+    "lint:fix": "pnpm exec biome check --write .",
     "build": "tsup --dts",
     "type-check": "tsc --noEmit --skipLibCheck",
     "test": "vitest",
@@ -50,7 +48,7 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4",
+    "@biomejs/biome": "1.9.4",
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
     "@playwright/test": "~1.49.1",
@@ -60,7 +58,6 @@
     "@vitest/ui": "3.0.5",
     "commit-and-tag-version": "^12.5.0",
     "cpy-cli": "^5.0.0",
-    "eslint": "^9.20.1",
     "husky": "^9.1.7",
     "moment": "^2.30.1",
     "playwright": "~1.49.1",

@@ -9,9 +9,22 @@ const localeEs: Readonly<Locale> = {
   weekdays: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
   weekdaysShort: ['dom.', 'lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.'],
   weekdaysMin: ['do', 'lu', 'ma', 'mi', 'ju', 'vi', 'sá'],
-  months: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+  months: [
+    'enero',
+    'febrero',
+    'marzo',
+    'abril',
+    'mayo',
+    'junio',
+    'julio',
+    'agosto',
+    'septiembre',
+    'octubre',
+    'noviembre',
+    'diciembre',
+  ],
   monthsShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
-  ordinal: n => `${n}º`,
+  ordinal: (n) => `${n}º`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -44,7 +57,7 @@ const localeEs: Readonly<Locale> = {
   },
   meridiem: (hour: number, minute: number, isLowercase: boolean) => {
     // Spanish doesn't have AM/PM, so return default values
-    const m = (hour < 12 ? 'AM' : 'PM')
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
 }

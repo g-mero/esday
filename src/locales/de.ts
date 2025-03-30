@@ -24,8 +24,7 @@ function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolea
   const l = relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings]
   if (Array.isArray(l)) {
     result = l[withoutSuffix ? 0 : 1]
-  }
-  else {
+  } else {
     result = l
   }
 
@@ -37,9 +36,35 @@ const localeDe: Readonly<Locale> = {
   weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
   weekdaysShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
   weekdaysMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-  months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-  monthsShort: ['Jan.', 'Feb.', 'März', 'Apr.', 'Mai', 'Juni', 'Juli', 'Aug.', 'Sept.', 'Okt.', 'Nov.', 'Dez.'],
-  ordinal: n => `${n}.`,
+  months: [
+    'Januar',
+    'Februar',
+    'März',
+    'April',
+    'Mai',
+    'Juni',
+    'Juli',
+    'August',
+    'September',
+    'Oktober',
+    'November',
+    'Dezember',
+  ],
+  monthsShort: [
+    'Jan.',
+    'Feb.',
+    'März',
+    'Apr.',
+    'Mai',
+    'Juni',
+    'Juli',
+    'Aug.',
+    'Sept.',
+    'Okt.',
+    'Nov.',
+    'Dez.',
+  ],
+  ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -72,7 +97,7 @@ const localeDe: Readonly<Locale> = {
   },
   meridiem: (hour: number, minute: number, isLowercase: boolean) => {
     // German doesn't have AM/PM, so return default values
-    const m = (hour < 12 ? 'AM' : 'PM')
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
 }

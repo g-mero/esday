@@ -12,8 +12,15 @@ import type { EsDay } from 'esday'
  */
 
 import type { UnitDay } from '~/common'
-import type { DateType, EsDayPlugin } from '~/types'
-import { C, getUnitInDate, getUnitInDateUTC, isUndefined, prettyUnit, setUnitInDateUTC } from '~/common'
+import {
+  C,
+  getUnitInDate,
+  getUnitInDateUTC,
+  isUndefined,
+  prettyUnit,
+  setUnitInDateUTC,
+} from '~/common'
+import type { DateType, EsDayPlugin, SimpleType } from '~/types'
 
 const REGEX_VALID_OFFSET_FORMAT = /[+-]\d\d(?::?\d\d)?/g
 const REGEX_OFFSET_HOURS_MINUTES_FORMAT = /[+-]|\d\d/g
@@ -24,8 +31,10 @@ function offsetFromString(value = '') {
     return Number.NaN
   }
 
-  const [indicator, hoursOffset, minutesOffset] = `${offset[0]}`.match(REGEX_OFFSET_HOURS_MINUTES_FORMAT) || ['-', 0, 0]
-  const totalOffsetInMinutes = (+hoursOffset * 60) + (+minutesOffset)
+  const [indicator, hoursOffset, minutesOffset] = `${offset[0]}`.match(
+    REGEX_OFFSET_HOURS_MINUTES_FORMAT,
+  ) || ['-', 0, 0]
+  const totalOffsetInMinutes = +hoursOffset * 60 + +minutesOffset
 
   if (totalOffsetInMinutes === 0) {
     return 0
@@ -39,20 +48,24 @@ declare module 'esday' {
     utc: (keepLocalTime?: boolean) => EsDay
     local: () => EsDay
     isUTC: () => boolean
-    /* eslint-disable ts/method-signature-style */
     utcOffset(): number
     utcOffset(offset: number | string, keepLocalTime?: boolean): EsDay
-    /* eslint-enable ts/method-signature-style */
   }
 
   interface EsDayFactory {
-    utc: (date?: DateType, ...others: any[]) => EsDay
+    utc: (
+      date?: DateType,
+      ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
+    ) => EsDay
   }
 }
 
 const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   // parse a date as utc
-  dayFactory.utc = (d?: DateType, ...others: any[]) => {
+  dayFactory.utc = (
+    d?: DateType,
+    ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
+  ) => {
     const inst = dayFactory(d, ...others, { utc: true })
     return inst
   }
@@ -84,19 +97,16 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     if (this.isValid()) {
       return this.toDate().toISOString()
     }
-    else {
-      return C.INVALID_DATE_STRING
-    }
+    return C.INVALID_DATE_STRING
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: did not find a conditional return type a a replacement for 'any'
   proto.utcOffset = function (offset?: number | string, keepLocalTime?: boolean): any {
     if (offset === undefined) {
       const defaultOffset = -Math.round(this['$d'].getTimezoneOffset())
       return utcOffsetGetImpl(this, defaultOffset)
     }
-    else {
-      return utcOffsetSetImpl(this, offset, keepLocalTime)
-    }
+    return utcOffsetSetImpl(this, offset, keepLocalTime)
   }
 
   const oldValueOf = proto.valueOf
@@ -107,9 +117,7 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       const addedOffset = Number(this['$conf'].offset) + offsetToUse
       return internalDate.valueOf() - addedOffset * C.MILLISECONDS_A_MINUTE
     }
-    else {
-      return oldValueOf.call(this)
-    }
+    return oldValueOf.call(this)
   }
 
   const oldFormat = proto.format
@@ -121,12 +129,21 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
   // change private method 'dateFromDateComponents' of EsDay
   const oldDateFromDateComponents = proto['dateFromDateComponents']
-  proto['dateFromDateComponents'] = function (Y: number | undefined, M: number | undefined, D: number | undefined, h: number | undefined, m: number | undefined, s: number | undefined, ms: number | undefined, offsetMs?: number) {
+  proto['dateFromDateComponents'] = function (
+    Y: number | undefined,
+    M: number | undefined,
+    D: number | undefined,
+    h: number | undefined,
+    m: number | undefined,
+    s: number | undefined,
+    ms: number | undefined,
+    offsetMs?: number,
+  ) {
     if (!this['$conf'].utc) {
       return oldDateFromDateComponents(Y, M, D, h, m, s, ms, offsetMs)
     }
 
-    const parsedYearOrDefault = (Y === undefined) ? (new Date()).getFullYear() : Y
+    const parsedYearOrDefault = Y === undefined ? new Date().getFullYear() : Y
     const dateComponents = {
       Y: parsedYearOrDefault,
       M: (M || 1) - 1,
@@ -137,27 +154,37 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       ms: ms || 0,
     }
 
-    const yearWithoutCentury = (Math.abs(parsedYearOrDefault) < 100)
+    const yearWithoutCentury = Math.abs(parsedYearOrDefault) < 100
     let result: Date
     let overflowed = false
 
-    result = new Date(Date.UTC(dateComponents.Y, dateComponents.M, dateComponents.D, dateComponents.h, dateComponents.m, dateComponents.s, dateComponents.ms))
+    result = new Date(
+      Date.UTC(
+        dateComponents.Y,
+        dateComponents.M,
+        dateComponents.D,
+        dateComponents.h,
+        dateComponents.m,
+        dateComponents.s,
+        dateComponents.ms,
+      ),
+    )
 
     // Account for single digit years
     if (yearWithoutCentury) {
       result.setUTCFullYear(dateComponents.Y)
     }
 
-    overflowed = ((M !== undefined) && ((M - 1) !== result.getUTCMonth()))
-      || ((D !== undefined) && (D !== result.getUTCDate()))
-      || ((h !== undefined) && (h !== result.getUTCHours()))
-      || ((m !== undefined) && (m !== result.getUTCMinutes()))
-      || ((s !== undefined) && (s !== result.getUTCSeconds()))
+    overflowed =
+      (M !== undefined && M - 1 !== result.getUTCMonth()) ||
+      (D !== undefined && D !== result.getUTCDate()) ||
+      (h !== undefined && h !== result.getUTCHours()) ||
+      (m !== undefined && m !== result.getUTCMinutes()) ||
+      (s !== undefined && s !== result.getUTCSeconds())
 
     if (overflowed) {
       result = C.INVALID_DATE
-    }
-    else {
+    } else {
       if (!isUndefined(offsetMs)) {
         result.setUTCMilliseconds(result.getUTCMilliseconds() - offsetMs)
       }
@@ -178,8 +205,7 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       const $date = this['$d']
       if (prettyUnit(unit) === C.DAY) {
         setUnitInDateUTC($date, C.DATE, this.date() + (values[0] - this.day()))
-      }
-      else {
+      } else {
         setUnitInDateUTC($date, unit as Exclude<typeof unit, UnitDay>, values)
       }
 
@@ -207,8 +233,7 @@ function utcOffsetSetImpl(that: EsDay, offset: number | string, keepLocalTime?: 
     if (Number.isNaN(offsetAsNumber)) {
       return that
     }
-  }
-  else {
+  } else {
     offsetAsNumber = offset
   }
 
@@ -216,11 +241,13 @@ function utcOffsetSetImpl(that: EsDay, offset: number | string, keepLocalTime?: 
 
   if (keepLocalTime) {
     // change point in time using offset and return new instance
-    const localTimezoneOffset = that['$conf'].utc ? that.toDate().getTimezoneOffset() : -1 * that.utcOffset()
+    const localTimezoneOffset = that['$conf'].utc
+      ? that.toDate().getTimezoneOffset()
+      : -1 * that.utcOffset()
     const instance = that.add(localTimezoneOffset, C.MIN)
     instance['$conf'].offset = offsetAsMinutes
     instance['$conf'].tzOffset = localTimezoneOffset
-    instance['$conf'].utc = (offsetAsMinutes === 0)
+    instance['$conf'].utc = offsetAsMinutes === 0
     return instance
   }
 
@@ -235,9 +262,7 @@ function utcOffsetSetImpl(that: EsDay, offset: number | string, keepLocalTime?: 
     instance['$conf'].tzOffset = localTimezoneOffset
     return instance
   }
-  else {
-    return that.utc()
-  }
+  return that.utc()
 }
 
 export default utcPlugin

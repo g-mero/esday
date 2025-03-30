@@ -23,9 +23,8 @@ export function capitalize(str: string): string {
  */
 export function padStart(origin: string | number, length: number, pad: string) {
   const originStr = String(origin)
-  if (!originStr || originStr.length >= length)
-    return originStr
-  return `${Array.from({ length: (length + 1) - originStr.length }).join(pad)}${originStr}`
+  if (!originStr || originStr.length >= length) return originStr
+  return `${Array.from({ length: length + 1 - originStr.length }).join(pad)}${originStr}`
 }
 
 /**

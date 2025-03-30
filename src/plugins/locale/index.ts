@@ -1,8 +1,8 @@
 /* eslint-disable dot-notation */
-import type { EsDay, EsDayFactory, EsDayPlugin, UnitType } from 'esday'
-import type { Locale } from './types'
+import type { DateType, EsDay, EsDayFactory, EsDayPlugin, UnitType } from 'esday'
 import { C, prettyUnit, undefinedOr } from '~/common'
 import en from '~/locales/en'
+import type { Locale } from './types'
 
 const LocaleStore: Map<string, Locale> = new Map()
 
@@ -23,6 +23,7 @@ export function registerLocale(locale: Locale, rename?: string): void {
  * @param propName - name of the property to create or set
  * @param newValue - new value of the property
  */
+// biome-ignore lint/suspicious/noExplicitAny: generic function
 function setObjectProperty(target: object, propName: string, newValue: any) {
   Object.defineProperty(target, propName, {
     enumerable: true,
@@ -38,6 +39,8 @@ function setObjectProperty(target: object, propName: string, newValue: any) {
  * @param propName - name of the property to create or set
  * @param newValue - new value of the property
  */
+
+// biome-ignore lint/suspicious/noExplicitAny: generic function
 export function setLocaleProperty(targetLocale: Locale, propName: string, newValue: any) {
   setObjectProperty(targetLocale, propName, newValue)
 }
@@ -52,15 +55,15 @@ function cloneObject(sourceObject: object): object {
   const result = {}
 
   for (const [key, sourceValue] of Object.entries(sourceObject)) {
-    if ((typeof sourceValue === 'string')
-      || (typeof sourceValue === 'number')
-      || (typeof sourceValue === 'function')) {
+    if (
+      typeof sourceValue === 'string' ||
+      typeof sourceValue === 'number' ||
+      typeof sourceValue === 'function'
+    ) {
       setObjectProperty(result, key, sourceValue)
-    }
-    else if (Array.isArray(sourceValue)) {
+    } else if (Array.isArray(sourceValue)) {
       setObjectProperty(result, key, structuredClone(sourceValue))
-    }
-    else if (typeof sourceValue === 'object') {
+    } else if (typeof sourceValue === 'object') {
       setObjectProperty(result, key, cloneObject(sourceValue))
     }
   }
@@ -77,7 +80,7 @@ function cloneObject(sourceObject: object): object {
  * @returns cloned locale with all all properties set to 'readonly'.
  */
 export function cloneLocale(source: Locale): Locale {
-  return (cloneObject(source) as Locale)
+  return cloneObject(source) as Locale
 }
 
 function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
@@ -85,7 +88,7 @@ function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
     inst['$conf']['$locale_name'] = newLocaleName
   }
 
-  return inst['$conf']['$locale_name'] as string || $localeGlobal
+  return (inst['$conf']['$locale_name'] as string) || $localeGlobal
 }
 
 const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
@@ -94,16 +97,18 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   // add locale getter / setter
-  dayClass.prototype.locale = function <T extends string | undefined>(localeName?: T): T extends string ? EsDay : string {
-  // dayClass.prototype.locale = function (localeName?: string): any {
-    if ((localeName !== undefined) && (typeof localeName === 'string')) {
+  dayClass.prototype.locale = function <T extends string | undefined>(
+    localeName?: T,
+  ): T extends string ? EsDay : string {
+    // dayClass.prototype.locale = function (localeName?: string): any {
+    if (localeName !== undefined && typeof localeName === 'string') {
       const inst = this.clone()
       getSetPrivateLocaleName(inst, localeName)
+      // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
       return inst as any
     }
-    else {
-      return getSetPrivateLocaleName(this) as any
-    }
+    // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
+    return getSetPrivateLocaleName(this) as any
   }
 
   // set $l in clone method
@@ -115,7 +120,7 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   const oldParse = dayClass.prototype['parse']
-  dayClass.prototype['parse'] = function (d: any) {
+  dayClass.prototype['parse'] = function (d: Exclude<DateType, EsDay>) {
     oldParse.call(this, d)
 
     // set locale name
@@ -134,7 +139,8 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       const $date = origin.date()
       const diff = ($day < weekStart ? $day + 7 : $day) - weekStart
 
-      return origin.month(origin.month(), reverse ? $date + (6 - diff) : $date - diff)
+      return origin
+        .month(origin.month(), reverse ? $date + (6 - diff) : $date - diff)
         .hour(inst.hour(), inst.minute(), inst.second(), inst.millisecond())
     }
 
@@ -150,17 +156,19 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   // setter / getter for global locale
-  dayFactory.locale = <T extends string | undefined>(localeName?: T): T extends string ? EsDayFactory : string => {
-    if ((localeName !== undefined) && (typeof localeName === 'string')) {
+  dayFactory.locale = <T extends string | undefined>(
+    localeName?: T,
+  ): T extends string ? EsDayFactory : string => {
+    if (localeName !== undefined && typeof localeName === 'string') {
       $localeGlobal = localeName
+      // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
       return dayFactory as any
     }
-    else {
-      return $localeGlobal as any
-    }
+    // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
+    return $localeGlobal as any
   }
 
-  dayFactory.registerLocale = function (locale: Locale, newName?: string) {
+  dayFactory.registerLocale = (locale: Locale, newName?: string) => {
     registerLocale(locale, newName)
     return dayFactory
   }

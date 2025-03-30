@@ -10,8 +10,21 @@ const localeJa: Readonly<Locale> = {
   weekdaysShort: ['日', '月', '火', '水', '木', '金', '土'],
   weekdaysMin: ['日', '月', '火', '水', '木', '金', '土'],
   months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-  monthsShort: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-  ordinal: n => `${n}日`,
+  monthsShort: [
+    '1月',
+    '2月',
+    '3月',
+    '4月',
+    '5月',
+    '6月',
+    '7月',
+    '8月',
+    '9月',
+    '10月',
+    '11月',
+    '12月',
+  ],
+  ordinal: (n) => `${n}日`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +55,7 @@ const localeJa: Readonly<Locale> = {
     y: '1年',
     yy: '%d年',
   },
-  meridiem: hour => (hour < 12 ? '午前' : '午後'),
+  meridiem: (hour) => (hour < 12 ? '午前' : '午後'),
 }
 
 export default localeJa

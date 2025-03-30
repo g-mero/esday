@@ -2,21 +2,18 @@ import type { EsDay } from 'esday'
 import { C, padNumberWithLeadingZeros, padZoneStr } from '~/common'
 
 export function formatImpl(that: EsDay, formatStr?: string) {
-  if (!that.isValid())
-    return C.INVALID_DATE_STRING
+  if (!that.isValid()) return C.INVALID_DATE_STRING
 
   const activeFormatString = formatStr || C.FORMAT_DEFAULT
   const unknownTokenOutput = '??'
   // eslint-disable-next-line dot-notation
   const defaultOffset = -Math.round(that['$d'].getTimezoneOffset()) || 0
-  const offset = ('utcOffset' in that) ? that.utcOffset() : defaultOffset
+  const offset = 'utcOffset' in that ? that.utcOffset() : defaultOffset
 
-  const get$H = (num: number) => (
-    padNumberWithLeadingZeros(that.hour() % 12 || 12, num)
-  )
+  const get$H = (num: number) => padNumberWithLeadingZeros(that.hour() % 12 || 12, num)
 
   const meridiemFunc = (hour: number, _minute: number, isLowercase: boolean) => {
-    const m = (hour < 12 ? 'AM' : 'PM')
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   }
 

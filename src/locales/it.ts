@@ -9,9 +9,22 @@ const localeIt: Readonly<Locale> = {
   weekdays: ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'],
   weekdaysShort: ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'],
   weekdaysMin: ['do', 'lu', 'ma', 'me', 'gi', 've', 'sa'],
-  months: ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'],
+  months: [
+    'gennaio',
+    'febbraio',
+    'marzo',
+    'aprile',
+    'maggio',
+    'giugno',
+    'luglio',
+    'agosto',
+    'settembre',
+    'ottobre',
+    'novembre',
+    'dicembre',
+  ],
   monthsShort: ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'],
-  ordinal: n => `${n}º`,
+  ordinal: (n) => `${n}º`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -33,7 +46,7 @@ const localeIt: Readonly<Locale> = {
     ss: '%d secondi',
     m: 'un minuto',
     mm: '%d minuti',
-    h: 'un\' ora',
+    h: "un' ora",
     hh: '%d ore',
     d: 'un giorno',
     dd: '%d giorni',
@@ -44,7 +57,7 @@ const localeIt: Readonly<Locale> = {
   },
   meridiem: (hour: number, minute: number, isLowercase: boolean) => {
     // Italian doesn't have AM/PM, so return default values
-    const m = (hour < 12 ? 'AM' : 'PM')
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
 }

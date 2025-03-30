@@ -1,11 +1,9 @@
 import type { EsDay } from 'esday'
 
 // From https://stackoverflow.com/questions/41139763/how-to-declare-a-fixed-length-array-in-typescript
- type ReadonlyTuple<
-   T,
-   N extends number,
-   R extends readonly T[] = [],
- > = R['length'] extends N ? R : ReadonlyTuple<T, N, readonly [T, ...R]>
+type ReadonlyTuple<T, N extends number, R extends readonly T[] = []> = R['length'] extends N
+  ? R
+  : ReadonlyTuple<T, N, readonly [T, ...R]>
 
 declare module 'esday' {
   interface EsDay {
@@ -14,7 +12,9 @@ declare module 'esday' {
      * locale(): string
      * locale(localeName: string): EsDay
      */
-    locale: <T extends string | undefined = undefined>(localeName?: T) => T extends string ? EsDay : string
+    locale: <T extends string | undefined = undefined>(
+      localeName?: T,
+    ) => T extends string ? EsDay : string
 
     localeObject: () => Locale
   }
@@ -25,7 +25,9 @@ declare module 'esday' {
      * locale(): string
      * locale(localeName: string): EsDay
      */
-    locale: <T extends string | undefined = undefined>(localeName?: T) => T extends string ? EsDayFactory : string
+    locale: <T extends string | undefined = undefined>(
+      localeName?: T,
+    ) => T extends string ? EsDayFactory : string
 
     /**
      * register locale
@@ -50,20 +52,10 @@ export type RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
   token: string,
-  isFuture: boolean
+  isFuture: boolean,
 ) => string
 
-type Format =
-  | 'LT'
-  | 'LTS'
-  | 'L'
-  | 'LL'
-  | 'LLL'
-  | 'LLLL'
-  | 'l'
-  | 'll'
-  | 'lll'
-  | 'llll'
+type Format = 'LT' | 'LTS' | 'L' | 'LL' | 'LLL' | 'LLLL' | 'l' | 'll' | 'lll' | 'llll'
 type Relative =
   | 'future'
   | 'past'

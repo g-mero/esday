@@ -1,6 +1,6 @@
 import type { EsDay, EsDayFactory } from 'esday'
-import type { Moment } from 'moment'
 import { esday } from 'esday'
+import type { Moment } from 'moment'
 import moment from 'moment'
 import { expect } from 'vitest'
 
@@ -12,6 +12,8 @@ import { expect } from 'vitest'
  * expectSame((esday) => esday().format())
  * @param fn function whose return value is to be checked
  */
+
+// biome-ignore lint/suspicious/noExplicitAny: this method checks arbitrary methods of esday / moment
 export function expectSame(fn: (instance: EsDayFactory) => any) {
   const d = fn(esday)
   // call fn with moment; type casting avoids error from tsc
@@ -38,8 +40,7 @@ export function expectSameResult(fn: (instance: EsDayFactory) => EsDay | Moment)
     expect(d.millisecond()).toBe(m.millisecond())
     expect(d.toDate()).toEqual(m.toDate())
     expect(d.toJSON()).toBe(m.toJSON())
-  }
-  else {
+  } else {
     expect(d.toString().toLowerCase()).toBe(m.toString().toLowerCase())
   }
 }

@@ -20,10 +20,11 @@ export function isString(value: unknown): value is string {
   return typeof value === 'string'
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: "project won't build without any"
 export function isArray(value: any): value is any[] {
   return Array.isArray(value)
 }
 
 export function isValidDate(value: Date): boolean {
-  return (value.toString() !== C.INVALID_DATE_STRING)
+  return value.toString() !== C.INVALID_DATE_STRING
 }

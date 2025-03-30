@@ -9,8 +9,34 @@ const localeFr: Readonly<Locale> = {
   weekdays: ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
   weekdaysShort: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'],
   weekdaysMin: ['di', 'lu', 'ma', 'me', 'je', 've', 'sa'],
-  months: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
-  monthsShort: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'],
+  months: [
+    'janvier',
+    'février',
+    'mars',
+    'avril',
+    'mai',
+    'juin',
+    'juillet',
+    'août',
+    'septembre',
+    'octobre',
+    'novembre',
+    'décembre',
+  ],
+  monthsShort: [
+    'janv.',
+    'févr.',
+    'mars',
+    'avr.',
+    'mai',
+    'juin',
+    'juil.',
+    'août',
+    'sept.',
+    'oct.',
+    'nov.',
+    'déc.',
+  ],
   ordinal: (n) => {
     const o = n === 1 ? 'er' : ''
     return `${n}${o}`
@@ -47,7 +73,7 @@ const localeFr: Readonly<Locale> = {
   },
   meridiem: (hour: number, minute: number, isLowercase: boolean) => {
     // French doesn't have AM/PM, so return default values
-    const m = (hour < 12 ? 'AM' : 'PM')
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
 }

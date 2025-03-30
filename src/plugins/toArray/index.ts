@@ -8,7 +8,15 @@ declare module 'esday' {
 
 const toArrayPlugin: EsDayPlugin<{}> = (_, dayClass) => {
   dayClass.prototype.toArray = function () {
-    return [this.year(), this.month(), this.date(), this.hour(), this.minute(), this.second(), this.millisecond()]
+    return [
+      this.year(),
+      this.month(),
+      this.date(),
+      this.hour(),
+      this.minute(),
+      this.second(),
+      this.millisecond(),
+    ]
   }
 }
 

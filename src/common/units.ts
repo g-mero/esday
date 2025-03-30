@@ -13,9 +13,9 @@ const UNIT_MAP = {
 } as const
 
 export type ShortUnit = keyof typeof UNIT_MAP
-export type PrettyUnitType = typeof UNIT_MAP[ShortUnit]
+export type PrettyUnitType = (typeof UNIT_MAP)[ShortUnit]
 export type UnitType = ShortUnit | PrettyUnitType
-export type PrettyUnit<T extends UnitType> = T extends ShortUnit ? typeof UNIT_MAP[T] : T
+export type PrettyUnit<T extends UnitType> = T extends ShortUnit ? (typeof UNIT_MAP)[T] : T
 type UnionUnit<T extends ShortUnit> = T | PrettyUnit<T>
 export type UnitYear = UnionUnit<'y'>
 export type UnitMonth = UnionUnit<'M'>

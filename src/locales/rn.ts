@@ -6,12 +6,46 @@ import type { Locale } from '~/plugins/locale'
 
 const localeRn: Readonly<Locale> = {
   name: 'rn',
-  weekdays: ['Ku wa Mungu', 'Ku wa Mbere', 'Ku wa Kabiri', 'Ku wa Gatatu', 'Ku wa Kane', 'Ku wa Gatanu', 'Ku wa Gatandatu'],
+  weekdays: [
+    'Ku wa Mungu',
+    'Ku wa Mbere',
+    'Ku wa Kabiri',
+    'Ku wa Gatatu',
+    'Ku wa Kane',
+    'Ku wa Gatanu',
+    'Ku wa Gatandatu',
+  ],
   weekdaysShort: ['Kngu', 'Kmbr', 'Kbri', 'Ktat', 'Kkan', 'Ktan', 'Kdat'],
   weekdaysMin: ['K7', 'K1', 'K2', 'K3', 'K4', 'K5', 'K6'],
-  months: ['Nzero', 'Ruhuhuma', 'Ntwarante', 'Ndamukiza', 'Rusama', 'Ruhenshi', 'Mukakaro', 'Myandagaro', 'Nyakanga', 'Gitugutu', 'Munyonyo', 'Kigarama'],
-  monthsShort: ['Nzer', 'Ruhuh', 'Ntwar', 'Ndam', 'Rus', 'Ruhen', 'Muk', 'Myand', 'Nyak', 'Git', 'Muny', 'Kig'],
-  ordinal: n => `${n}.`,
+  months: [
+    'Nzero',
+    'Ruhuhuma',
+    'Ntwarante',
+    'Ndamukiza',
+    'Rusama',
+    'Ruhenshi',
+    'Mukakaro',
+    'Myandagaro',
+    'Nyakanga',
+    'Gitugutu',
+    'Munyonyo',
+    'Kigarama',
+  ],
+  monthsShort: [
+    'Nzer',
+    'Ruhuh',
+    'Ntwar',
+    'Ndam',
+    'Rus',
+    'Ruhen',
+    'Muk',
+    'Myand',
+    'Nyak',
+    'Git',
+    'Muny',
+    'Kig',
+  ],
+  ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -44,7 +78,7 @@ const localeRn: Readonly<Locale> = {
   },
   meridiem: (hour: number, minute: number, isLowercase: boolean) => {
     // Kirundi doesn't have AM/PM, so return default values
-    const m = (hour < 12 ? 'AM' : 'PM')
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
 }

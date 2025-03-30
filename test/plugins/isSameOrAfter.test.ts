@@ -13,16 +13,19 @@ describe('isSameOrAfter plugin', () => {
     { date1: '2025-01-05', date2: '2025-01-06', unit: 'day', expected: false },
     { date1: '2025-01-06T12:00:00', date2: '2025-01-06T11:59:59', unit: 'second', expected: true },
     { date1: '2025-01-06T11:59:58', date2: '2025-01-06T11:59:59', unit: 'second', expected: false },
-  ])('should correctly determine if "$date1" is the same or after "$date2"', ({ date1, date2, unit, expected }) => {
-    const esDayInstance = esday(date1)
-    const momentInstance = moment(date1)
+  ])(
+    'should correctly determine if "$date1" is the same or after "$date2"',
+    ({ date1, date2, unit, expected }) => {
+      const esDayInstance = esday(date1)
+      const momentInstance = moment(date1)
 
-    const esDayResult = esDayInstance.isSameOrAfter(date2, unit as UnitType)
-    const momentResult = momentInstance.isSameOrAfter(date2, unit as UnitType)
+      const esDayResult = esDayInstance.isSameOrAfter(date2, unit as UnitType)
+      const momentResult = momentInstance.isSameOrAfter(date2, unit as UnitType)
 
-    expect(esDayResult).toBe(expected)
-    expect(esDayResult).toBe(momentResult)
-  })
+      expect(esDayResult).toBe(expected)
+      expect(esDayResult).toBe(momentResult)
+    },
+  )
 
   it('should handle invalid dates gracefully', () => {
     const invalidEsDay = esday('invalid-date')
@@ -31,7 +34,9 @@ describe('isSameOrAfter plugin', () => {
     const validMoment = moment('2025-01-06')
 
     expect(invalidEsDay.isSameOrAfter(validEsDay)).toBe(invalidMoment.isSameOrAfter(validMoment))
-    expect(invalidEsDay.isSameOrAfter(invalidEsDay)).toBe(invalidMoment.isSameOrAfter(invalidMoment))
+    expect(invalidEsDay.isSameOrAfter(invalidEsDay)).toBe(
+      invalidMoment.isSameOrAfter(invalidMoment),
+    )
   })
 
   it('should handle edge cases', () => {

@@ -19,4 +19,9 @@ export interface ParsedElements {
   unix?: number
 }
 
-export type TokenDefinitions = Record<string, [RegExp, RegExp, (this: ParsedElements, input: string) => void]>
+/**
+ * Update property of 'this' with value from 'input'.
+ * This function is used when defining the parsing tokens.
+ */
+export type UpdateParsedElement = (this: ParsedElements, input: string) => void
+export type TokenDefinitions = Record<string, [RegExp, RegExp, UpdateParsedElement]>

@@ -1,5 +1,5 @@
-import type { EsDay } from '~/core'
 import { beforeEach, describe, expect, it } from 'vitest'
+import type { EsDay } from '~/core'
 import { esday } from '~/core'
 
 describe('get', () => {
@@ -10,7 +10,15 @@ describe('get', () => {
   const testMinute = 14
   const testSecond = 15
   const testMillisecond = 678
-  const testDate = esday([testYear, testMonth, testDay, testHour, testMinute, testSecond, testMillisecond])
+  const testDate = esday([
+    testYear,
+    testMonth,
+    testDay,
+    testHour,
+    testMinute,
+    testSecond,
+    testMillisecond,
+  ])
 
   it('year', () => {
     expect(testDate.year()).toBe(testYear)
@@ -72,11 +80,27 @@ describe('set', () => {
   let testDate: EsDay
 
   beforeEach(() => {
-    testDate = esday([testYear, testMonth, testDay, testHour, testMinute, testSecond, testMillisecond])
+    testDate = esday([
+      testYear,
+      testMonth,
+      testDay,
+      testHour,
+      testMinute,
+      testSecond,
+      testMillisecond,
+    ])
   })
 
   describe('year', () => {
-    const resultDateAsIso = esday([2025, testMonth, testDay, testHour, testMinute, testSecond, testMillisecond]).toISOString()
+    const resultDateAsIso = esday([
+      2025,
+      testMonth,
+      testDay,
+      testHour,
+      testMinute,
+      testSecond,
+      testMillisecond,
+    ]).toISOString()
 
     it('using method', () => {
       const modifiedDate = testDate.year(2025)
@@ -98,7 +122,15 @@ describe('set', () => {
   })
 
   describe('month', () => {
-    const resultDateAsIso = esday([testYear, 5, testDay, testHour, testMinute, testSecond, testMillisecond]).toISOString()
+    const resultDateAsIso = esday([
+      testYear,
+      5,
+      testDay,
+      testHour,
+      testMinute,
+      testSecond,
+      testMillisecond,
+    ]).toISOString()
 
     it('using method', () => {
       const modifiedDate = testDate.month(5)
@@ -120,7 +152,15 @@ describe('set', () => {
   })
 
   describe('day of month', () => {
-    const resultDateAsIso = esday([testYear, testMonth, 23, testHour, testMinute, testSecond, testMillisecond]).toISOString()
+    const resultDateAsIso = esday([
+      testYear,
+      testMonth,
+      23,
+      testHour,
+      testMinute,
+      testSecond,
+      testMillisecond,
+    ]).toISOString()
 
     it('using method', () => {
       const modifiedDate = testDate.date(23)
@@ -142,7 +182,15 @@ describe('set', () => {
   })
 
   describe('day of week', () => {
-    const resultDateAsIso = esday([testYear, 0, 30, testHour, testMinute, testSecond, testMillisecond]).toISOString()
+    const resultDateAsIso = esday([
+      testYear,
+      0,
+      30,
+      testHour,
+      testMinute,
+      testSecond,
+      testMillisecond,
+    ]).toISOString()
 
     it('using method', () => {
       const modifiedDate = testDate.day(2)
@@ -164,7 +212,15 @@ describe('set', () => {
   })
 
   describe('hour', () => {
-    const resultDateAsIso = esday([testYear, testMonth, testDay, 21, testMinute, testSecond, testMillisecond]).toISOString()
+    const resultDateAsIso = esday([
+      testYear,
+      testMonth,
+      testDay,
+      21,
+      testMinute,
+      testSecond,
+      testMillisecond,
+    ]).toISOString()
 
     it('using method', () => {
       const modifiedDate = testDate.hour(21)
@@ -186,7 +242,15 @@ describe('set', () => {
   })
 
   describe('minute', () => {
-    const resultDateAsIso = esday([testYear, testMonth, testDay, testHour, 43, testSecond, testMillisecond]).toISOString()
+    const resultDateAsIso = esday([
+      testYear,
+      testMonth,
+      testDay,
+      testHour,
+      43,
+      testSecond,
+      testMillisecond,
+    ]).toISOString()
 
     it('using method', () => {
       const modifiedDate = testDate.minute(43)
@@ -208,7 +272,15 @@ describe('set', () => {
   })
 
   describe('second', () => {
-    const resultDateAsIso = esday([testYear, testMonth, testDay, testHour, testMinute, 54, testMillisecond]).toISOString()
+    const resultDateAsIso = esday([
+      testYear,
+      testMonth,
+      testDay,
+      testHour,
+      testMinute,
+      54,
+      testMillisecond,
+    ]).toISOString()
 
     it('using method', () => {
       const modifiedDate = testDate.second(54)
@@ -230,7 +302,15 @@ describe('set', () => {
   })
 
   describe('millisecond', () => {
-    const resultDateAsIso = esday([testYear, testMonth, testDay, testHour, testMinute, testSecond, 273]).toISOString()
+    const resultDateAsIso = esday([
+      testYear,
+      testMonth,
+      testDay,
+      testHour,
+      testMinute,
+      testSecond,
+      273,
+    ]).toISOString()
 
     it('using method', () => {
       const modifiedDate = testDate.millisecond(273)

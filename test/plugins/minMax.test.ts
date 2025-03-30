@@ -13,7 +13,7 @@ describe('minMax plugin', () => {
       { dateStrings: ['2024-02-29', '2024-02-28', '2024-01-01'] }, // Leap year edge case
     ])('should correctly determine the maximum date from "dateStrings"', ({ dateStrings }) => {
       const maxEsDay = esday.max(...dateStrings)
-      const maxMoment = moment.max(dateStrings.map(d => moment(d)))
+      const maxMoment = moment.max(dateStrings.map((d) => moment(d)))
 
       expect(maxEsDay.toISOString()).toEqual(maxMoment.toISOString())
     })
@@ -23,16 +23,8 @@ describe('minMax plugin', () => {
     })
 
     it('should handle invalid dates gracefully', () => {
-      const testDates = [
-        esday('2025-01-01'),
-        esday('invalid-date'),
-        esday('2024-12-31'),
-      ]
-      const momentDates = [
-        moment('2025-01-01'),
-        moment.invalid(),
-        moment('2024-12-31'),
-      ]
+      const testDates = [esday('2025-01-01'), esday('invalid-date'), esday('2024-12-31')]
+      const momentDates = [moment('2025-01-01'), moment.invalid(), moment('2024-12-31')]
 
       const maxEsDay = esday.max(testDates)
       const maxMoment = moment.max(momentDates)
@@ -49,7 +41,7 @@ describe('minMax plugin', () => {
       { dateStrings: ['2024-02-29', '2024-02-28', '2024-01-01'] }, // Leap year edge case
     ])('should correctly determine the minimum date', ({ dateStrings }) => {
       const minEsDay = esday.min(dateStrings)
-      const minMoment = moment.min(dateStrings.map(d => moment(d)))
+      const minMoment = moment.min(dateStrings.map((d) => moment(d)))
 
       expect(minEsDay.toISOString()).toEqual(minMoment.toISOString())
     })
@@ -59,16 +51,8 @@ describe('minMax plugin', () => {
     })
 
     it('should handle invalid dates gracefully', () => {
-      const testDates = [
-        esday('2025-01-01'),
-        esday('invalid-date'),
-        esday('2024-12-31'),
-      ]
-      const momentDates = [
-        moment('2025-01-01'),
-        moment.invalid(),
-        moment('2024-12-31'),
-      ]
+      const testDates = [esday('2025-01-01'), esday('invalid-date'), esday('2024-12-31')]
+      const momentDates = [moment('2025-01-01'), moment.invalid(), moment('2024-12-31')]
 
       const minEsDay = esday.min(testDates)
       const minMoment = moment.min(momentDates)
