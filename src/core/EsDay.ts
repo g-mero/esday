@@ -6,6 +6,7 @@ import type {
   UnitMin,
   UnitMonth,
   UnitMs,
+  UnitQuarter,
   UnitSecond,
   UnitWeek,
   UnitYear,
@@ -234,7 +235,7 @@ export class EsDay {
     return this.add(-number, units)
   }
 
-  get(units: Exclude<UnitType, UnitWeek>) {
+  get(units: Exclude<UnitType, UnitWeek | UnitQuarter>) {
     return getUnitInDate(this.$d, units)
   }
 
@@ -246,7 +247,7 @@ export class EsDay {
   set(unit: UnitMin, min: number, sec?: number, ms?: number): EsDay
   set(unit: UnitSecond, sec: number, ms?: number): EsDay
   set(unit: UnitMs, ms: number): EsDay
-  set(unit: Exclude<UnitType, UnitWeek>, ...values: number[]) {
+  set(unit: Exclude<UnitType, UnitWeek | UnitQuarter>, ...values: number[]) {
     return this.clone().$set(unit, values)
   }
 
@@ -270,7 +271,7 @@ export class EsDay {
     return this.$d.toUTCString()
   }
 
-  private $set(unit: Exclude<UnitType, UnitWeek>, values: number[]) {
+  private $set(unit: Exclude<UnitType, UnitWeek | UnitQuarter>, values: number[]) {
     if (prettyUnit(unit) === C.DAY) {
       setUnitInDate(this.$d, C.DATE, this.date() + (values[0] - this.day()))
     } else {

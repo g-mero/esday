@@ -20,6 +20,7 @@ export const HOUR = 'hour' as const
 export const DAY = 'day' as const
 export const WEEK = 'week' as const
 export const MONTH = 'month' as const
+export const QUARTER = 'quarter' as const
 export const YEAR = 'year' as const
 export const DATE = 'date' as const
 
@@ -52,6 +53,7 @@ export default {
   DAY,
   WEEK,
   MONTH,
+  QUARTER,
   YEAR,
   DATE,
   FORMAT_DEFAULT,
