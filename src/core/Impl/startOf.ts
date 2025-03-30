@@ -7,7 +7,6 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
   const result = that.clone()
 
   // for performance , $set can change inst itself
-  // eslint-disable-next-line dot-notation
   const setterFunc = result['$set']
 
   const instanceFactorySet = (method: Exclude<UnitType, UnitWeek>, slice: number) => {

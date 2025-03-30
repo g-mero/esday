@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 import type { EsDay } from 'esday'
 
 export function createInstanceFromExist(d: Date, existInst: EsDay) {

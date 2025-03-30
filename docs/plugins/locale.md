@@ -40,7 +40,6 @@ esday.registerLocale(localeZhCn)
 esday.locale('zh-cn')
 
 // get global locale
-// eslint-disable-next-line no-console
 console.log(esday.locale()) // 'zh-cn'
 
 // set the locale of an esday object
