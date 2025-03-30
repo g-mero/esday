@@ -22,9 +22,16 @@ const relativeTimeFormatStrings = {
   yy: '%d שנים',
   yy2: 'שנתיים',
 }
-function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolean, range: string): string {
-  const formatStringsIndex = (range + (+timeValue === 2 ? '2' : '')) as keyof typeof relativeTimeFormatStrings
-  const text = relativeTimeFormatStrings[formatStringsIndex] || relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings]
+function relativeTimeFormatter(
+  timeValue: string | number,
+  _withoutSuffix: boolean,
+  range: string,
+): string {
+  const formatStringsIndex = (range +
+    (+timeValue === 2 ? '2' : '')) as keyof typeof relativeTimeFormatStrings
+  const text =
+    relativeTimeFormatStrings[formatStringsIndex] ||
+    relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings]
   return text.replace('%d', timeValue.toString())
 }
 
@@ -33,9 +40,22 @@ const localeHe: Readonly<Locale> = {
   weekdays: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
   weekdaysShort: ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ש׳'],
   weekdaysMin: ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו', 'ש׳'],
-  months: ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'],
+  months: [
+    'ינואר',
+    'פברואר',
+    'מרץ',
+    'אפריל',
+    'מאי',
+    'יוני',
+    'יולי',
+    'אוגוסט',
+    'ספטמבר',
+    'אוקטובר',
+    'נובמבר',
+    'דצמבר',
+  ],
   monthsShort: ['ינו', 'פבר', 'מרץ', 'אפר', 'מאי', 'יונ', 'יול', 'אוג', 'ספט', 'אוק', 'נוב', 'דצמ'],
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -66,7 +86,7 @@ const localeHe: Readonly<Locale> = {
     y: relativeTimeFormatter,
     yy: relativeTimeFormatter,
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Hebrew doesn't have AM/PM in the same way, but we add them for consistency with other languages
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

@@ -6,12 +6,33 @@ import type { Locale } from '~/plugins/locale'
 
 const localeAz: Readonly<Locale> = {
   name: 'az',
-  weekdays: ['Bazar', 'Bazar ertəsi', 'Çərşənbə axşamı', 'Çərşənbə', 'Cümə axşamı', 'Cümə', 'Şənbə'],
+  weekdays: [
+    'Bazar',
+    'Bazar ertəsi',
+    'Çərşənbə axşamı',
+    'Çərşənbə',
+    'Cümə axşamı',
+    'Cümə',
+    'Şənbə',
+  ],
   weekdaysShort: ['Baz', 'BzE', 'ÇAx', 'Çər', 'CAx', 'Cüm', 'Şən'],
   weekdaysMin: ['Bz', 'BE', 'ÇA', 'Çə', 'CA', 'Cü', 'Şə'],
-  months: ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avqust', 'sentyabr', 'oktyabr', 'noyabr', 'dekabr'],
+  months: [
+    'yanvar',
+    'fevral',
+    'mart',
+    'aprel',
+    'may',
+    'iyun',
+    'iyul',
+    'avqust',
+    'sentyabr',
+    'oktyabr',
+    'noyabr',
+    'dekabr',
+  ],
   monthsShort: ['yan', 'fev', 'mar', 'apr', 'may', 'iyn', 'iyl', 'avq', 'sen', 'okt', 'noy', 'dek'],
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,9 +63,9 @@ const localeAz: Readonly<Locale> = {
     y: 'bir il',
     yy: '%d il',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Azerbaijani doesn't have AM/PM, so return default values
-    const m = (hour < 12 ? 'AM' : 'PM')
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
 }

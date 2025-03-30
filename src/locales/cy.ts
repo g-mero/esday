@@ -6,12 +6,46 @@ import type { Locale } from '~/plugins/locale'
 
 const localeCy: Readonly<Locale> = {
   name: 'cy',
-  weekdays: ['Dydd Sul', 'Dydd Llun', 'Dydd Mawrth', 'Dydd Mercher', 'Dydd Iau', 'Dydd Gwener', 'Dydd Sadwrn'],
+  weekdays: [
+    'Dydd Sul',
+    'Dydd Llun',
+    'Dydd Mawrth',
+    'Dydd Mercher',
+    'Dydd Iau',
+    'Dydd Gwener',
+    'Dydd Sadwrn',
+  ],
   weekdaysShort: ['Sul', 'Llun', 'Maw', 'Mer', 'Iau', 'Gwe', 'Sad'],
   weekdaysMin: ['Su', 'Ll', 'Ma', 'Me', 'Ia', 'Gw', 'Sa'],
-  months: ['Ionawr', 'Chwefror', 'Mawrth', 'Ebrill', 'Mai', 'Mehefin', 'Gorffennaf', 'Awst', 'Medi', 'Hydref', 'Tachwedd', 'Rhagfyr'],
-  monthsShort: ['Ion', 'Chwe', 'Maw', 'Ebr', 'Mai', 'Meh', 'Gor', 'Aws', 'Med', 'Hyd', 'Tach', 'Rhag'],
-  ordinal: n => `${n}`,
+  months: [
+    'Ionawr',
+    'Chwefror',
+    'Mawrth',
+    'Ebrill',
+    'Mai',
+    'Mehefin',
+    'Gorffennaf',
+    'Awst',
+    'Medi',
+    'Hydref',
+    'Tachwedd',
+    'Rhagfyr',
+  ],
+  monthsShort: [
+    'Ion',
+    'Chwe',
+    'Maw',
+    'Ebr',
+    'Mai',
+    'Meh',
+    'Gor',
+    'Aws',
+    'Med',
+    'Hyd',
+    'Tach',
+    'Rhag',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +76,7 @@ const localeCy: Readonly<Locale> = {
     y: 'blwyddyn',
     yy: '%d flynedd',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Welsh doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

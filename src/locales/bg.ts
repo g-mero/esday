@@ -9,7 +9,20 @@ const localeBg: Readonly<Locale> = {
   weekdays: ['неделя', 'понеделник', 'вторник', 'сряда', 'четвъртък', 'петък', 'събота'],
   weekdaysShort: ['нед', 'пон', 'вто', 'сря', 'чет', 'пет', 'съб'],
   weekdaysMin: ['нд', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
-  months: ['януари', 'февруари', 'март', 'април', 'май', 'юни', 'юли', 'август', 'септември', 'октомври', 'ноември', 'декември'],
+  months: [
+    'януари',
+    'февруари',
+    'март',
+    'април',
+    'май',
+    'юни',
+    'юли',
+    'август',
+    'септември',
+    'октомври',
+    'ноември',
+    'декември',
+  ],
   monthsShort: ['яну', 'фев', 'мар', 'апр', 'май', 'юни', 'юли', 'авг', 'сеп', 'окт', 'ное', 'дек'],
   ordinal: (n) => {
     const last2Digits = n % 100
@@ -60,9 +73,9 @@ const localeBg: Readonly<Locale> = {
     y: 'година',
     yy: '%d години',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Bulgarian doesn't have AM/PM, so return default values
-    const m = (hour < 12 ? 'AM' : 'PM')
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
 }

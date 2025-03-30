@@ -6,12 +6,46 @@ import type { Locale } from '~/plugins/locale'
 
 const localeGa: Readonly<Locale> = {
   name: 'ga',
-  weekdays: ['Dé Domhnaigh', 'Dé Luain', 'Dé Máirt', 'Dé Céadaoin', 'Déardaoin', 'Dé hAoine', 'Dé Satharn'],
+  weekdays: [
+    'Dé Domhnaigh',
+    'Dé Luain',
+    'Dé Máirt',
+    'Dé Céadaoin',
+    'Déardaoin',
+    'Dé hAoine',
+    'Dé Satharn',
+  ],
   weekdaysShort: ['Dom', 'Lua', 'Mái', 'Céa', 'Déa', 'hAo', 'Sat'],
   weekdaysMin: ['Do', 'Lu', 'Má', 'Ce', 'Dé', 'hA', 'Sa'],
-  months: ['Eanáir', 'Feabhra', 'Márta', 'Aibreán', 'Bealtaine', 'Méitheamh', 'Iúil', 'Lúnasa', 'Meán Fómhair', 'Deaireadh Fómhair', 'Samhain', 'Nollaig'],
-  monthsShort: ['Eaná', 'Feab', 'Márt', 'Aibr', 'Beal', 'Méit', 'Iúil', 'Lúna', 'Meán', 'Deai', 'Samh', 'Noll'],
-  ordinal: n => `${n}`,
+  months: [
+    'Eanáir',
+    'Feabhra',
+    'Márta',
+    'Aibreán',
+    'Bealtaine',
+    'Méitheamh',
+    'Iúil',
+    'Lúnasa',
+    'Meán Fómhair',
+    'Deaireadh Fómhair',
+    'Samhain',
+    'Nollaig',
+  ],
+  monthsShort: [
+    'Eaná',
+    'Feab',
+    'Márt',
+    'Aibr',
+    'Beal',
+    'Méit',
+    'Iúil',
+    'Lúna',
+    'Meán',
+    'Deai',
+    'Samh',
+    'Noll',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +76,7 @@ const localeGa: Readonly<Locale> = {
     y: 'bliain',
     yy: '%d bliain',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Irish Gaelic doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

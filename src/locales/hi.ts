@@ -9,9 +9,35 @@ const localeHi: Readonly<Locale> = {
   weekdays: ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरूवार', 'शुक्रवार', 'शनिवार'],
   weekdaysShort: ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरू', 'शुक्र', 'शनि'],
   weekdaysMin: ['र', 'सो', 'मं', 'बु', 'गु', 'शु', 'श'],
-  months: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितम्बर', 'अक्टूबर', 'नवम्बर', 'दिसम्बर'],
-  monthsShort: ['जन.', 'फ़र.', 'मार्च', 'अप्रै.', 'मई', 'जून', 'जुल.', 'अग.', 'सित.', 'अक्टू.', 'नव.', 'दिस.'],
-  ordinal: n => `${n}`,
+  months: [
+    'जनवरी',
+    'फ़रवरी',
+    'मार्च',
+    'अप्रैल',
+    'मई',
+    'जून',
+    'जुलाई',
+    'अगस्त',
+    'सितम्बर',
+    'अक्टूबर',
+    'नवम्बर',
+    'दिसम्बर',
+  ],
+  monthsShort: [
+    'जन.',
+    'फ़र.',
+    'मार्च',
+    'अप्रै.',
+    'मई',
+    'जून',
+    'जुल.',
+    'अग.',
+    'सित.',
+    'अक्टू.',
+    'नव.',
+    'दिस.',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +68,7 @@ const localeHi: Readonly<Locale> = {
     y: 'एक वर्ष',
     yy: '%d वर्ष',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Hindi doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

@@ -34,12 +34,46 @@ const englishToTamilNumbersMap = {
 
 const localeTa: Readonly<Locale> = {
   name: 'ta',
-  weekdays: ['ஞாயிற்றுக்கிழமை', 'திங்கட்கிழமை', 'செவ்வாய்கிழமை', 'புதன்கிழமை', 'வியாழக்கிழமை', 'வெள்ளிக்கிழமை', 'சனிக்கிழமை'],
+  weekdays: [
+    'ஞாயிற்றுக்கிழமை',
+    'திங்கட்கிழமை',
+    'செவ்வாய்கிழமை',
+    'புதன்கிழமை',
+    'வியாழக்கிழமை',
+    'வெள்ளிக்கிழமை',
+    'சனிக்கிழமை',
+  ],
   weekdaysShort: ['ஞாயிறு', 'திங்கள்', 'செவ்வாய்', 'புதன்', 'வியாழன்', 'வெள்ளி', 'சனி'],
   weekdaysMin: ['ஞா', 'தி', 'செ', 'பு', 'வி', 'வெ', 'ச'],
-  months: ['ஜனவரி', 'பிப்ரவரி', 'மார்ச்', 'ஏப்ரல்', 'மே', 'ஜூன்', 'ஜூலை', 'ஆகஸ்ட்', 'செப்டெம்பர்', 'அக்டோபர்', 'நவம்பர்', 'டிசம்பர்'],
-  monthsShort: ['ஜனவரி', 'பிப்ரவரி', 'மார்ச்', 'ஏப்ரல்', 'மே', 'ஜூன்', 'ஜூலை', 'ஆகஸ்ட்', 'செப்டெம்பர்', 'அக்டோபர்', 'நவம்பர்', 'டிசம்பர்'],
-  ordinal: n => `${n} வது`,
+  months: [
+    'ஜனவரி',
+    'பிப்ரவரி',
+    'மார்ச்',
+    'ஏப்ரல்',
+    'மே',
+    'ஜூன்',
+    'ஜூலை',
+    'ஆகஸ்ட்',
+    'செப்டெம்பர்',
+    'அக்டோபர்',
+    'நவம்பர்',
+    'டிசம்பர்',
+  ],
+  monthsShort: [
+    'ஜனவரி',
+    'பிப்ரவரி',
+    'மார்ச்',
+    'ஏப்ரல்',
+    'மே',
+    'ஜூன்',
+    'ஜூலை',
+    'ஆகஸ்ட்',
+    'செப்டெம்பர்',
+    'அக்டோபர்',
+    'நவம்பர்',
+    'டிசம்பர்',
+  ],
+  ordinal: (n) => `${n} வது`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
@@ -71,33 +105,37 @@ const localeTa: Readonly<Locale> = {
     yy: '%d ஆண்டுகள்',
   },
   // eslint-disable-next-line unused-imports/no-unused-vars
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {
     if (hour < 2) {
       return ' யாமம்'
     }
-    else if (hour < 6) {
+    if (hour < 6) {
       return ' வைகறை' // வைகறை
     }
-    else if (hour < 10) {
+    if (hour < 10) {
       return ' காலை' // காலை
     }
-    else if (hour < 14) {
+    if (hour < 14) {
       return ' நண்பகல்' // நண்பகல்
     }
-    else if (hour < 18) {
+    if (hour < 18) {
       return ' எற்பாடு' // எற்பாடு
     }
-    else if (hour < 22) {
+    if (hour < 22) {
       return ' மாலை' // மாலை
     }
-    else {
-      return ' யாமம்'
-    }
+    return ' யாமம்'
   },
-  preParse: (dateString: string) => dateString
-    .replace(/[௧௨௩௪௫௬௭௮௯௦]/g, match => tamilToEnglishNumbersMap[match as keyof typeof tamilToEnglishNumbersMap]),
-  postFormat: (formattedDate: string) => formattedDate
-    .replace(/\d/g, match => englishToTamilNumbersMap[Number(match) as keyof typeof englishToTamilNumbersMap]),
+  preParse: (dateString: string) =>
+    dateString.replace(
+      /[௧௨௩௪௫௬௭௮௯௦]/g,
+      (match) => tamilToEnglishNumbersMap[match as keyof typeof tamilToEnglishNumbersMap],
+    ),
+  postFormat: (formattedDate: string) =>
+    formattedDate.replace(
+      /\d/g,
+      (match) => englishToTamilNumbersMap[Number(match) as keyof typeof englishToTamilNumbersMap],
+    ),
 }
 
 export default localeTa

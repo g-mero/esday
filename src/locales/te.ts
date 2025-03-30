@@ -9,9 +9,35 @@ const localeTe: Readonly<Locale> = {
   weekdays: ['ఆదివారం', 'సోమవారం', 'మంగళవారం', 'బుధవారం', 'గురువారం', 'శుక్రవారం', 'శనివారం'],
   weekdaysShort: ['ఆది', 'సోమ', 'మంగళ', 'బుధ', 'గురు', 'శుక్ర', 'శని'],
   weekdaysMin: ['ఆ', 'సో', 'మం', 'బు', 'గు', 'శు', 'శ'],
-  months: ['జనవరి', 'ఫిబ్రవరి', 'మార్చి', 'ఏప్రిల్', 'మే', 'జూన్', 'జులై', 'ఆగస్టు', 'సెప్టెంబర్', 'అక్టోబర్', 'నవంబర్', 'డిసెంబర్'],
-  monthsShort: ['జన.', 'ఫిబ్ర.', 'మార్చి', 'ఏప్రి.', 'మే', 'జూన్', 'జులై', 'ఆగ.', 'సెప్.', 'అక్టో.', 'నవ.', 'డిసె.'],
-  ordinal: n => `${n}`,
+  months: [
+    'జనవరి',
+    'ఫిబ్రవరి',
+    'మార్చి',
+    'ఏప్రిల్',
+    'మే',
+    'జూన్',
+    'జులై',
+    'ఆగస్టు',
+    'సెప్టెంబర్',
+    'అక్టోబర్',
+    'నవంబర్',
+    'డిసెంబర్',
+  ],
+  monthsShort: [
+    'జన.',
+    'ఫిబ్ర.',
+    'మార్చి',
+    'ఏప్రి.',
+    'మే',
+    'జూన్',
+    'జులై',
+    'ఆగ.',
+    'సెప్.',
+    'అక్టో.',
+    'నవ.',
+    'డిసె.',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
@@ -43,22 +69,20 @@ const localeTe: Readonly<Locale> = {
     yy: '%d సంవత్సరాలు',
   },
   // eslint-disable-next-line unused-imports/no-unused-vars
-  meridiem(hour, minute, isLower) {
+  meridiem(hour, _minute, _isLower) {
     if (hour < 4) {
       return 'రాత్రి'
     }
-    else if (hour < 10) {
+    if (hour < 10) {
       return 'ఉదయం'
     }
-    else if (hour < 17) {
+    if (hour < 17) {
       return 'మధ్యాహ్నం'
     }
-    else if (hour < 20) {
+    if (hour < 20) {
       return 'సాయంత్రం'
     }
-    else {
-      return 'రాత్రి'
-    }
+    return 'రాత్రి'
   },
 }
 

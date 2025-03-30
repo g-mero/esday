@@ -8,9 +8,35 @@ const mlLocale: Readonly<Locale> = {
   weekdays: ['ഞായറാഴ്ച', 'തിങ്കളാഴ്ച', 'ചൊവ്വാഴ്ച', 'ബുധനാഴ്ച', 'വ്യാഴാഴ്ച', 'വെള്ളിയാഴ്ച', 'ശനിയാഴ്ച'],
   weekdaysShort: ['ഞായർ', 'തിങ്കൾ', 'ചൊവ്വ', 'ബുധൻ', 'വ്യാഴം', 'വെള്ളി', 'ശനി'],
   weekdaysMin: ['ഞാ', 'തി', 'ചൊ', 'ബു', 'വ്യാ', 'വെ', 'ശ'],
-  months: ['ജനുവരി', 'ഫെബ്രുവരി', 'മാർച്ച്', 'ഏപ്രിൽ', 'മേയ്', 'ജൂൺ', 'ജൂലൈ', 'ഓഗസ്റ്റ്', 'സെപ്റ്റംബർ', 'ഒക്ടോബർ', 'നവംബർ', 'ഡിസംബർ'],
-  monthsShort: ['ജനു.', 'ഫെബ്രു.', 'മാർ.', 'ഏപ്രി.', 'മേയ്', 'ജൂൺ', 'ജൂലൈ.', 'ഓഗ.', 'സെപ്റ്റ.', 'ഒക്ടോ.', 'നവം.', 'ഡിസം.'],
-  ordinal: n => `${n}`,
+  months: [
+    'ജനുവരി',
+    'ഫെബ്രുവരി',
+    'മാർച്ച്',
+    'ഏപ്രിൽ',
+    'മേയ്',
+    'ജൂൺ',
+    'ജൂലൈ',
+    'ഓഗസ്റ്റ്',
+    'സെപ്റ്റംബർ',
+    'ഒക്ടോബർ',
+    'നവംബർ',
+    'ഡിസംബർ',
+  ],
+  monthsShort: [
+    'ജനു.',
+    'ഫെബ്രു.',
+    'മാർ.',
+    'ഏപ്രി.',
+    'മേയ്',
+    'ജൂൺ',
+    'ജൂലൈ.',
+    'ഓഗ.',
+    'സെപ്റ്റ.',
+    'ഒക്ടോ.',
+    'നവം.',
+    'ഡിസം.',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,22 +68,20 @@ const mlLocale: Readonly<Locale> = {
     yy: '%d വർഷം',
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {
     if (hour < 4) {
       return 'രാത്രി'
     }
-    else if (hour < 12) {
+    if (hour < 12) {
       return 'രാവിലെ'
     }
-    else if (hour < 17) {
+    if (hour < 17) {
       return 'ഉച്ച കഴിഞ്ഞ്'
     }
-    else if (hour < 20) {
+    if (hour < 20) {
       return 'വൈകുന്നേരം'
     }
-    else {
-      return 'രാത്രി'
-    }
+    return 'രാത്രി'
   },
 }
 

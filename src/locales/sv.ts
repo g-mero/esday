@@ -9,11 +9,24 @@ const localeSv: Readonly<Locale> = {
   weekdays: ['söndag', 'måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag', 'lördag'],
   weekdaysShort: ['sön', 'mån', 'tis', 'ons', 'tor', 'fre', 'lör'],
   weekdaysMin: ['sö', 'må', 'ti', 'on', 'to', 'fr', 'lö'],
-  months: ['januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december'],
+  months: [
+    'januari',
+    'februari',
+    'mars',
+    'april',
+    'maj',
+    'juni',
+    'juli',
+    'augusti',
+    'september',
+    'oktober',
+    'november',
+    'december',
+  ],
   monthsShort: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
   ordinal: (n) => {
     const b = n % 10
-    const o = (b === 1) || (b === 2) ? 'a' : 'e'
+    const o = b === 1 || b === 2 ? 'a' : 'e'
     return `[${n}${o}]`
   },
   weekStart: 1, // Monday is the first day of the week.
@@ -46,7 +59,7 @@ const localeSv: Readonly<Locale> = {
     y: 'ett år',
     yy: '%d år',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Swedish doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

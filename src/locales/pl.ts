@@ -5,8 +5,34 @@
 import type { EsDay } from 'esday'
 import type { Locale, MonthNames, MonthNamesFunction } from '~/plugins/locale'
 
-const monthFormat: MonthNames = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia']
-const monthStandalone: MonthNames = ['styczeń', 'luty', 'marzec', 'kwiecień', 'maj', 'czerwiec', 'lipiec', 'sierpień', 'wrzesień', 'październik', 'listopad', 'grudzień']
+const monthFormat: MonthNames = [
+  'stycznia',
+  'lutego',
+  'marca',
+  'kwietnia',
+  'maja',
+  'czerwca',
+  'lipca',
+  'sierpnia',
+  'września',
+  'października',
+  'listopada',
+  'grudnia',
+]
+const monthStandalone: MonthNames = [
+  'styczeń',
+  'luty',
+  'marzec',
+  'kwiecień',
+  'maj',
+  'czerwiec',
+  'lipiec',
+  'sierpień',
+  'wrzesień',
+  'październik',
+  'listopad',
+  'grudzień',
+]
 
 const MONTHS_IN_FORMAT = /D MMMM/
 
@@ -21,9 +47,13 @@ months.format = monthFormat
 months.standalone = monthStandalone
 
 function usePlural(timeValue: number) {
-  return (timeValue % 10 < 5) && (timeValue % 10 > 1) && ((~~(timeValue / 10) % 10) !== 1)
+  return timeValue % 10 < 5 && timeValue % 10 > 1 && ~~(timeValue / 10) % 10 !== 1
 }
-function relativeTimeWithPlural(timeValue: string | number, withoutSuffix: boolean, range: string): string {
+function relativeTimeWithPlural(
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  range: string,
+): string {
   const result = `${timeValue} `
   switch (range) {
     case 'ss':
@@ -52,7 +82,7 @@ const localePl: Readonly<Locale> = {
   weekdaysMin: ['Nd', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'],
   months,
   monthsShort: ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'],
-  ordinal: n => `${n}.`,
+  ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -83,7 +113,7 @@ const localePl: Readonly<Locale> = {
     y: 'rok',
     yy: relativeTimeWithPlural,
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Polish doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

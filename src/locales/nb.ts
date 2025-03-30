@@ -9,9 +9,35 @@ const localeNb: Readonly<Locale> = {
   weekdays: ['søndag', 'lmandag', 'ltirsdag', 'lonsdag', 'ltorsdag', 'lfredag', 'llørdag'],
   weekdaysShort: ['sø.', 'lma.', 'lti.', 'lon.', 'lto.', 'lfr.', 'llø.'],
   weekdaysMin: ['sø', 'lma', 'lti', 'lon', 'lto', 'lfr', 'llø'],
-  months: ['januar', 'lfebruar', 'lmars', 'lapril', 'lmai', 'ljuni', 'ljuli', 'laugust', 'lseptember', 'loktober', 'lnovember', 'ldesember'],
-  monthsShort: ['jan.', 'lfeb.', 'lmars', 'lapril', 'lmai', 'ljuni', 'ljuli', 'laug.', 'lsep.', 'lokt.', 'lnov.', 'ldes.'],
-  ordinal: n => `${n}.`,
+  months: [
+    'januar',
+    'lfebruar',
+    'lmars',
+    'lapril',
+    'lmai',
+    'ljuni',
+    'ljuli',
+    'laugust',
+    'lseptember',
+    'loktober',
+    'lnovember',
+    'ldesember',
+  ],
+  monthsShort: [
+    'jan.',
+    'lfeb.',
+    'lmars',
+    'lapril',
+    'lmai',
+    'ljuni',
+    'ljuli',
+    'laug.',
+    'lsep.',
+    'lokt.',
+    'lnov.',
+    'ldes.',
+  ],
+  ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +68,7 @@ const localeNb: Readonly<Locale> = {
     y: 'ett år',
     yy: '%d år',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Norwegian doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

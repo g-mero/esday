@@ -40,7 +40,7 @@ describe('week plugin - locale "ar"', () => {
     { sourceDate: '2025-06-20', expected: 25, weekday: 'Thursday' },
   ])('should return the correct week number for "$sourceDate"', ({ sourceDate, expected }) => {
     expect(esday(sourceDate).week()).toBe(expected)
-    expectSame(esday => esday(sourceDate).week())
+    expectSame((esday) => esday(sourceDate).week())
   })
 
   it.each([
@@ -53,7 +53,7 @@ describe('week plugin - locale "ar"', () => {
     { sourceDate: '2025-01-01', expected: 1, weekday: 'Wednesday' },
   ])('should handle year transition correctly for "$sourceDate"', ({ sourceDate, expected }) => {
     expect(esday(sourceDate).week()).toBe(expected)
-    expectSame(esday => esday(sourceDate).week())
+    expectSame((esday) => esday(sourceDate).week())
   })
 
   it('should set the correct week number and adjust the date', () => {

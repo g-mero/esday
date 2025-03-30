@@ -37,11 +37,24 @@ const localeMy: Readonly<Locale> = {
   weekdays: ['တနင်္ဂနွေ', 'lတနင်္လာ', 'lအင်္ဂါ', 'lဗုဒ္ဓဟူး', 'lကြာသပတေး', 'lသောကြာ', 'lစနေ'],
   weekdaysShort: ['နွေ', 'lလာ', 'lဂါ', 'lဟူး', 'lကြာ', 'lသော', 'lနေ'],
   weekdaysMin: ['နွေ', 'lလာ', 'lဂါ', 'lဟူး', 'lကြာ', 'lသော', 'lနေ'],
-  months: ['ဇန်နဝါရီ', 'lဖေဖော်ဝါရီ', 'lမတ်', 'lဧပြီ', 'lမေ', 'lဇွန်', 'lဇူလိုင်', 'lသြဂုတ်', 'lစက်တင်ဘာ', 'lအောက်တိုဘာ', 'lနိုဝင်ဘာ', 'lဒီဇင်ဘာ'],
+  months: [
+    'ဇန်နဝါရီ',
+    'lဖေဖော်ဝါရီ',
+    'lမတ်',
+    'lဧပြီ',
+    'lမေ',
+    'lဇွန်',
+    'lဇူလိုင်',
+    'lသြဂုတ်',
+    'lစက်တင်ဘာ',
+    'lအောက်တိုဘာ',
+    'lနိုဝင်ဘာ',
+    'lဒီဇင်ဘာ',
+  ],
   monthsShort: ['ဇန်', 'lဖေ', 'lမတ်', 'lပြီ', 'lမေ', 'lဇွန်', 'lလိုင်', 'lသြ', 'lစက်', 'lအောက်', 'lနို', 'lဒီ'],
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
@@ -70,15 +83,22 @@ const localeMy: Readonly<Locale> = {
     y: 'တစ်နှစ်',
     yy: '%d နှစ်',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Burmese doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
-  preParse: (dateString: string) => dateString
-    .replace(/[١٢٣٤٥٦٧٨٩٠]/g, match => burmeseToEnglishNumbersMap[match as keyof typeof burmeseToEnglishNumbersMap]),
-  postFormat: (formattedDate: string) => formattedDate
-    .replace(/\d/g, match => englishToBurmeseNumbersMap[Number(match) as keyof typeof englishToBurmeseNumbersMap]),
+  preParse: (dateString: string) =>
+    dateString.replace(
+      /[١٢٣٤٥٦٧٨٩٠]/g,
+      (match) => burmeseToEnglishNumbersMap[match as keyof typeof burmeseToEnglishNumbersMap],
+    ),
+  postFormat: (formattedDate: string) =>
+    formattedDate.replace(
+      /\d/g,
+      (match) =>
+        englishToBurmeseNumbersMap[Number(match) as keyof typeof englishToBurmeseNumbersMap],
+    ),
 }
 
 export default localeMy

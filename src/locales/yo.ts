@@ -9,9 +9,22 @@ const localeYo: Readonly<Locale> = {
   weekdays: ['Àìkú', 'Ajé', 'Ìsẹ́gun', 'Ọjọ́rú', 'Ọjọ́bọ', 'Ẹtì', 'Àbámẹ́ta'],
   weekdaysShort: ['Àìk', 'Ajé', 'Ìsẹ́', 'Ọjr', 'Ọjb', 'Ẹtì', 'Àbá'],
   weekdaysMin: ['Àì', 'Aj', 'Ìs', 'Ọr', 'Ọb', 'Ẹt', 'Àb'],
-  months: ['Sẹ́rẹ́', 'Èrèlè', 'Ẹrẹ̀nà', 'Ìgbé', 'Èbibi', 'Òkùdu', 'Agẹmo', 'Ògún', 'Owewe', 'Ọ̀wàrà', 'Bélú', 'Ọ̀pẹ̀̀'],
+  months: [
+    'Sẹ́rẹ́',
+    'Èrèlè',
+    'Ẹrẹ̀nà',
+    'Ìgbé',
+    'Èbibi',
+    'Òkùdu',
+    'Agẹmo',
+    'Ògún',
+    'Owewe',
+    'Ọ̀wàrà',
+    'Bélú',
+    'Ọ̀pẹ̀̀',
+  ],
   monthsShort: ['Sẹ́r', 'Èrl', 'Ẹrn', 'Ìgb', 'Èbi', 'Òkù', 'Agẹ', 'Ògú', 'Owe', 'Ọ̀wà', 'Bél', 'Ọ̀pẹ̀̀'],
-  ordinal: n => `ọjọ́ ${n}`,
+  ordinal: (n) => `ọjọ́ ${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +55,7 @@ const localeYo: Readonly<Locale> = {
     y: 'ọdún kan',
     yy: 'ọdún %d',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Yoruba Nigeria doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

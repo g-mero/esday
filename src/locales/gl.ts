@@ -9,9 +9,35 @@ const localeGl: Readonly<Locale> = {
   weekdays: ['domingo', 'luns', 'martes', 'mércores', 'xoves', 'venres', 'sábado'],
   weekdaysShort: ['dom.', 'lun.', 'mar.', 'mér.', 'xov.', 'ven.', 'sáb.'],
   weekdaysMin: ['do', 'lu', 'ma', 'mé', 'xo', 've', 'sá'],
-  months: ['xaneiro', 'febreiro', 'marzo', 'abril', 'maio', 'xuño', 'xullo', 'agosto', 'setembro', 'outubro', 'novembro', 'decembro'],
-  monthsShort: ['xan.', 'feb.', 'mar.', 'abr.', 'mai.', 'xuñ.', 'xul.', 'ago.', 'set.', 'out.', 'nov.', 'dec.'],
-  ordinal: n => `${n}º`,
+  months: [
+    'xaneiro',
+    'febreiro',
+    'marzo',
+    'abril',
+    'maio',
+    'xuño',
+    'xullo',
+    'agosto',
+    'setembro',
+    'outubro',
+    'novembro',
+    'decembro',
+  ],
+  monthsShort: [
+    'xan.',
+    'feb.',
+    'mar.',
+    'abr.',
+    'mai.',
+    'xuñ.',
+    'xul.',
+    'ago.',
+    'set.',
+    'out.',
+    'nov.',
+    'dec.',
+  ],
+  ordinal: (n) => `${n}º`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +68,7 @@ const localeGl: Readonly<Locale> = {
     y: 'un ano',
     yy: '%d anos',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Galician doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

@@ -6,12 +6,21 @@
 import type { Locale } from '~/plugins/locale'
 
 function plural(timeValue: number, wordKey: string[]) {
-  if (timeValue % 10 >= 1 && timeValue % 10 <= 4 && (timeValue % 100 < 10 || timeValue % 100 >= 20)) {
+  if (
+    timeValue % 10 >= 1 &&
+    timeValue % 10 <= 4 &&
+    (timeValue % 100 < 10 || timeValue % 100 >= 20)
+  ) {
     return timeValue % 10 === 1 ? wordKey[0] : wordKey[1]
   }
   return wordKey[2]
 }
-function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolean, range: string, isFuture: boolean): string {
+function relativeTimeFormatter(
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  range: string,
+  isFuture: boolean,
+): string {
   const formats = {
     ss: ['sekunda', 'sekunde', 'sekundi'],
     m: ['jedan minut', 'jednog minuta'],
@@ -30,15 +39,13 @@ function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolea
 
   if (range.length === 1) {
     // Nominativ
-    if (range === 'y' && withoutSuffix)
-      return 'jedna godina'
+    if (range === 'y' && withoutSuffix) return 'jedna godina'
     return isFuture || withoutSuffix ? wordKey[0] : wordKey[1]
   }
 
   const word = plural(+timeValue, wordKey)
   // Nominativ
-  if (range === 'yy' && withoutSuffix && word === '%d godinu')
-    return `${timeValue} godina`
+  if (range === 'yy' && withoutSuffix && word === '%d godinu') return `${timeValue} godina`
 
   return word.replace('%d', timeValue.toString())
 }
@@ -48,9 +55,35 @@ const localeSr: Readonly<Locale> = {
   weekdays: ['Nedelja', 'Ponedeljak', 'Utorak', 'Sreda', 'Četvrtak', 'Petak', 'Subota'],
   weekdaysShort: ['Ned.', 'Pon.', 'Uto.', 'Sre.', 'Čet.', 'Pet.', 'Sub.'],
   weekdaysMin: ['ne', 'po', 'ut', 'sr', 'če', 'pe', 'su'],
-  months: ['Januar', 'Februar', 'Mart', 'April', 'Maj', 'Jun', 'Jul', 'Avgust', 'Septembar', 'Oktobar', 'Novembar', 'Decembar'],
-  monthsShort: ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'Maj', 'Jun', 'Jul', 'Avg.', 'Sep.', 'Okt.', 'Nov.', 'Dec.'],
-  ordinal: n => `${n}.`,
+  months: [
+    'Januar',
+    'Februar',
+    'Mart',
+    'April',
+    'Maj',
+    'Jun',
+    'Jul',
+    'Avgust',
+    'Septembar',
+    'Oktobar',
+    'Novembar',
+    'Decembar',
+  ],
+  monthsShort: [
+    'Jan.',
+    'Feb.',
+    'Mar.',
+    'Apr.',
+    'Maj',
+    'Jun',
+    'Jul',
+    'Avg.',
+    'Sep.',
+    'Okt.',
+    'Nov.',
+    'Dec.',
+  ],
+  ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
@@ -81,7 +114,7 @@ const localeSr: Readonly<Locale> = {
     y: relativeTimeFormatter,
     yy: relativeTimeFormatter,
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Serbian doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

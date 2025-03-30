@@ -4,7 +4,20 @@
 
 import type { Locale, MonthNames } from '~/plugins/locale'
 
-const months: MonthNames = ['ਜਨਵਰੀ', 'ਫ਼ਰਵਰੀ', 'ਮਾਰਚ', 'ਅਪ੍ਰੈਲ', 'ਮਈ', 'ਜੂਨ', 'ਜੁਲਾਈ', 'ਅਗਸਤ', 'ਸਤੰਬਰ', 'ਅਕਤੂਬਰ', 'ਨਵੰਬਰ', 'ਦਸੰਬਰ']
+const months: MonthNames = [
+  'ਜਨਵਰੀ',
+  'ਫ਼ਰਵਰੀ',
+  'ਮਾਰਚ',
+  'ਅਪ੍ਰੈਲ',
+  'ਮਈ',
+  'ਜੂਨ',
+  'ਜੁਲਾਈ',
+  'ਅਗਸਤ',
+  'ਸਤੰਬਰ',
+  'ਅਕਤੂਬਰ',
+  'ਨਵੰਬਰ',
+  'ਦਸੰਬਰ',
+]
 
 // used in preParse function (number symbol => number)
 const punjabiToEnglishNumbersMap = {
@@ -41,7 +54,7 @@ const localePaIn: Readonly<Locale> = {
   weekdaysMin: ['ਐਤ', 'ਸੋਮ', 'ਮੰਗਲ', 'ਬੁਧ', 'ਵੀਰ', 'ਸ਼ੁਕਰ', 'ਸ਼ਨੀ'],
   months,
   monthsShort: months,
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
@@ -73,27 +86,32 @@ const localePaIn: Readonly<Locale> = {
     yy: '%d أعوام',
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {
     if (hour < 4) {
       return 'ਰਾਤ'
     }
-    else if (hour < 10) {
+    if (hour < 10) {
       return 'ਸਵੇਰ'
     }
-    else if (hour < 17) {
+    if (hour < 17) {
       return 'ਦੁਪਹਿਰ'
     }
-    else if (hour < 20) {
+    if (hour < 20) {
       return 'ਸ਼ਾਮ'
     }
-    else {
-      return 'ਰਾਤ'
-    }
+    return 'ਰਾਤ'
   },
-  preParse: (dateString: string) => dateString
-    .replace(/[੧੨੩੪੫੬੭੮੯੦]/g, match => punjabiToEnglishNumbersMap[match as keyof typeof punjabiToEnglishNumbersMap]),
-  postFormat: (formattedDate: string) => formattedDate
-    .replace(/\d/g, match => englishToPunjabiNumbersMap[Number(match) as keyof typeof englishToPunjabiNumbersMap]),
+  preParse: (dateString: string) =>
+    dateString.replace(
+      /[੧੨੩੪੫੬੭੮੯੦]/g,
+      (match) => punjabiToEnglishNumbersMap[match as keyof typeof punjabiToEnglishNumbersMap],
+    ),
+  postFormat: (formattedDate: string) =>
+    formattedDate.replace(
+      /\d/g,
+      (match) =>
+        englishToPunjabiNumbersMap[Number(match) as keyof typeof englishToPunjabiNumbersMap],
+    ),
 }
 
 export default localePaIn

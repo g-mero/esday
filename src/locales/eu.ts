@@ -6,14 +6,48 @@ import type { Locale } from '~/plugins/locale'
 
 const localeEu: Readonly<Locale> = {
   name: 'eu',
-  weekdays: ['igandea', 'astelehena', 'asteartea', 'asteazkena', 'osteguna', 'ostirala', 'larunbata'],
+  weekdays: [
+    'igandea',
+    'astelehena',
+    'asteartea',
+    'asteazkena',
+    'osteguna',
+    'ostirala',
+    'larunbata',
+  ],
   weekdaysShort: ['ig.', 'al.', 'ar.', 'az.', 'og.', 'ol.', 'lr.'],
   weekdaysMin: ['ig', 'al', 'ar', 'az', 'og', 'ol', 'lr'],
-  months: ['urtarrila', 'otsaila', 'martxoa', 'apirila', 'maiatza', 'ekaina', 'uztaila', 'abuztua', 'iraila', 'urria', 'azaroa', 'abendua'],
-  monthsShort: ['urt.', 'ots.', 'mar.', 'api.', 'mai.', 'eka.', 'uzt.', 'abu.', 'ira.', 'urr.', 'aza.', 'abe.'],
+  months: [
+    'urtarrila',
+    'otsaila',
+    'martxoa',
+    'apirila',
+    'maiatza',
+    'ekaina',
+    'uztaila',
+    'abuztua',
+    'iraila',
+    'urria',
+    'azaroa',
+    'abendua',
+  ],
+  monthsShort: [
+    'urt.',
+    'ots.',
+    'mar.',
+    'api.',
+    'mai.',
+    'eka.',
+    'uzt.',
+    'abu.',
+    'ira.',
+    'urr.',
+    'aza.',
+    'abe.',
+  ],
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
@@ -42,7 +76,7 @@ const localeEu: Readonly<Locale> = {
     y: 'urte bat',
     yy: '%d urte',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Basque doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

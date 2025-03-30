@@ -7,7 +7,15 @@ import { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 
 const localePtBr = cloneLocale(localePt)
 
-const weekdays = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado']
+const weekdays = [
+  'domingo',
+  'segunda-feira',
+  'terça-feira',
+  'quarta-feira',
+  'quinta-feira',
+  'sexta-feira',
+  'sábado',
+]
 const weekdaysShort = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
 const weekdaysMin = ['Do', '2ª', '3ª', '4ª', '5ª', '6ª', 'Sá']
 

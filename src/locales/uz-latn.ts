@@ -8,7 +8,20 @@ import { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 const localeUzLatn = cloneLocale(localeUz)
 
 const weekdays = ['asamas', 'aynas', 'asinas', 'akras', 'akwas', 'asimwas', 'asiḍyas']
-const months = ['innayr', 'brˤayrˤ', 'marˤsˤ', 'ibrir', 'mayyw', 'ywnyw', 'ywlywz', 'ɣwšt', 'šwtanbir', 'ktˤwbrˤ', 'nwwanbir', 'dwjnbir']
+const months = [
+  'innayr',
+  'brˤayrˤ',
+  'marˤsˤ',
+  'ibrir',
+  'mayyw',
+  'ywnyw',
+  'ywlywz',
+  'ɣwšt',
+  'šwtanbir',
+  'ktˤwbrˤ',
+  'nwwanbir',
+  'dwjnbir',
+]
 const relativeTime = {
   future: 'Yaqin %s ichida',
   past: 'Bir necha %s oldin',

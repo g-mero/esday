@@ -7,7 +7,20 @@ import { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 
 const localeArDz = cloneLocale(localeAr)
 
-const months = ['جانفي', 'فيفري', 'مارس', 'أفريل', 'ماي', 'جوان', 'جويلية', 'أوت', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
+const months = [
+  'جانفي',
+  'فيفري',
+  'مارس',
+  'أفريل',
+  'ماي',
+  'جوان',
+  'جويلية',
+  'أوت',
+  'سبتمبر',
+  'أكتوبر',
+  'نوفمبر',
+  'ديسمبر',
+]
 
 // Use 'setLocaleProperty' as all properties are 'readonly'
 setLocaleProperty(localeArDz, 'name', 'ar-DZ')

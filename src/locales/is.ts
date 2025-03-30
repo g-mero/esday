@@ -19,17 +19,27 @@ const relativeTimeFormatStrings = {
   yy: ['ár', 'ár', 'árum'],
 }
 
-function resolveTemplate(key: string, number: number, isFuture: boolean, withoutSuffix: boolean): string {
+function resolveTemplate(
+  key: string,
+  number: number,
+  isFuture: boolean,
+  withoutSuffix: boolean,
+): string {
   const suffixIndex = isFuture ? 1 : 2
   const index = withoutSuffix ? 0 : suffixIndex
-  const keyShouldBeSingular = (key.length === 2) && (number % 10 === 1)
+  const keyShouldBeSingular = key.length === 2 && number % 10 === 1
   const correctedKey = keyShouldBeSingular ? key[0] : key
   const unitText = relativeTimeFormatStrings[correctedKey as keyof typeof relativeTimeFormatStrings]
   const text = unitText[index]
-  return (key.length === 1) ? text : `%d ${text}`
+  return key.length === 1 ? text : `%d ${text}`
 }
 
-function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolean, range: string, isFuture: boolean): string {
+function relativeTimeFormatter(
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  range: string,
+  isFuture: boolean,
+): string {
   const template = resolveTemplate(range, +timeValue, isFuture, withoutSuffix)
 
   return template.replace('%d', String(timeValue))
@@ -37,12 +47,33 @@ function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolea
 
 const localeIs: Readonly<Locale> = {
   name: 'is',
-  weekdays: ['sunnudagur', 'mánudagur', 'þriðjudagur', 'miðvikudagur', 'fimmtudagur', 'föstudagur', 'laugardagur'],
+  weekdays: [
+    'sunnudagur',
+    'mánudagur',
+    'þriðjudagur',
+    'miðvikudagur',
+    'fimmtudagur',
+    'föstudagur',
+    'laugardagur',
+  ],
   weekdaysShort: ['sun', 'mán', 'þri', 'mið', 'fim', 'fös', 'lau'],
   weekdaysMin: ['Su', 'Má', 'Þr', 'Mi', 'Fi', 'Fö', 'La'],
-  months: ['janúar', 'febrúar', 'mars', 'apríl', 'maí', 'júní', 'júlí', 'ágúst', 'september', 'október', 'nóvember', 'desember'],
+  months: [
+    'janúar',
+    'febrúar',
+    'mars',
+    'apríl',
+    'maí',
+    'júní',
+    'júlí',
+    'ágúst',
+    'september',
+    'október',
+    'nóvember',
+    'desember',
+  ],
   monthsShort: ['jan', 'feb', 'mar', 'apr', 'maí', 'jún', 'júl', 'ágú', 'sep', 'okt', 'nóv', 'des'],
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -73,7 +104,7 @@ const localeIs: Readonly<Locale> = {
     y: relativeTimeFormatter,
     yy: relativeTimeFormatter,
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Icelandic doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

@@ -9,9 +9,22 @@ const localeSw: Readonly<Locale> = {
   weekdays: ['Jumapili', 'Jumatatu', 'Jumanne', 'Jumatano', 'Alhamisi', 'Ijumaa', 'Jumamosi'],
   weekdaysShort: ['Jpl', 'Jtat', 'Jnne', 'Jtan', 'Alh', 'Ijm', 'Jmos'],
   weekdaysMin: ['J2', 'J3', 'J4', 'J5', 'Al', 'Ij', 'J1'],
-  months: ['Januari', 'Februari', 'Machi', 'Aprili', 'Mei', 'Juni', 'Julai', 'Agosti', 'Septemba', 'Oktoba', 'Novemba', 'Desemba'],
+  months: [
+    'Januari',
+    'Februari',
+    'Machi',
+    'Aprili',
+    'Mei',
+    'Juni',
+    'Julai',
+    'Agosti',
+    'Septemba',
+    'Oktoba',
+    'Novemba',
+    'Desemba',
+  ],
   monthsShort: ['Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul', 'Ago', 'Sep', 'Okt', 'Nov', 'Des'],
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
@@ -42,7 +55,7 @@ const localeSw: Readonly<Locale> = {
     y: 'mwaka mmoja',
     yy: 'miaka %d',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Swahili doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

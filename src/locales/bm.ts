@@ -9,9 +9,22 @@ const localeBm: Readonly<Locale> = {
   weekdays: ['Kari', 'Ntɛnɛn', 'Tarata', 'Araba', 'Alamisa', 'Juma', 'Sibiri'],
   weekdaysShort: ['Kar', 'Ntɛ', 'Tar', 'Ara', 'Ala', 'Jum', 'Sib'],
   weekdaysMin: ['Ka', 'Nt', 'Ta', 'Ar', 'Al', 'Ju', 'Si'],
-  months: ['Zanwuyekalo', 'Fewuruyekalo', 'Marisikalo', 'Awirilikalo', 'Mɛkalo', 'Zuwɛnkalo', 'Zuluyekalo', 'Utikalo', 'Sɛtanburukalo', 'ɔkutɔburukalo', 'Nowanburukalo', 'Desanburukalo'],
+  months: [
+    'Zanwuyekalo',
+    'Fewuruyekalo',
+    'Marisikalo',
+    'Awirilikalo',
+    'Mɛkalo',
+    'Zuwɛnkalo',
+    'Zuluyekalo',
+    'Utikalo',
+    'Sɛtanburukalo',
+    'ɔkutɔburukalo',
+    'Nowanburukalo',
+    'Desanburukalo',
+  ],
   monthsShort: ['Zan', 'Few', 'Mar', 'Awi', 'Mɛ', 'Zuw', 'Zul', 'Uti', 'Sɛt', 'ɔku', 'Now', 'Des'],
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,9 +55,9 @@ const localeBm: Readonly<Locale> = {
     y: 'san kelen',
     yy: 'san %d',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Bambara doesn't have AM/PM, so return default values
-    const m = (hour < 12 ? 'AM' : 'PM')
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
 }

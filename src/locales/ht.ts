@@ -9,9 +9,35 @@ const localeHt: Readonly<Locale> = {
   weekdays: ['dimanch', 'lendi', 'madi', 'mèkredi', 'jedi', 'vandredi', 'samdi'],
   weekdaysShort: ['dim.', 'len.', 'mad.', 'mèk.', 'jed.', 'van.', 'sam.'],
   weekdaysMin: ['di', 'le', 'ma', 'mè', 'je', 'va', 'sa'],
-  months: ['janvye', 'fevriye', 'mas', 'avril', 'me', 'jen', 'jiyè', 'out', 'septanm', 'oktòb', 'novanm', 'desanm'],
-  monthsShort: ['jan.', 'fev.', 'mas', 'avr.', 'me', 'jen', 'jiyè.', 'out', 'sept.', 'okt.', 'nov.', 'des.'],
-  ordinal: n => `${n}`,
+  months: [
+    'janvye',
+    'fevriye',
+    'mas',
+    'avril',
+    'me',
+    'jen',
+    'jiyè',
+    'out',
+    'septanm',
+    'oktòb',
+    'novanm',
+    'desanm',
+  ],
+  monthsShort: [
+    'jan.',
+    'fev.',
+    'mas',
+    'avr.',
+    'me',
+    'jen',
+    'jiyè.',
+    'out',
+    'sept.',
+    'okt.',
+    'nov.',
+    'des.',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +68,7 @@ const localeHt: Readonly<Locale> = {
     y: 'yon ane',
     yy: '%d ane',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Haitian Creole doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

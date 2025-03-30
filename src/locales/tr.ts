@@ -5,24 +5,24 @@
 import type { Locale } from '~/plugins/locale'
 
 const suffixes = {
-  1: '\'inci',
-  5: '\'inci',
-  8: '\'inci',
-  70: '\'inci',
-  80: '\'inci',
-  2: '\'nci',
-  7: '\'nci',
-  20: '\'nci',
-  50: '\'nci',
-  3: '\'üncü',
-  4: '\'üncü',
-  100: '\'üncü',
-  6: '\'ncı',
-  9: '\'uncu',
-  10: '\'uncu',
-  30: '\'uncu',
-  60: '\'ıncı',
-  90: '\'ıncı',
+  1: "'inci",
+  5: "'inci",
+  8: "'inci",
+  70: "'inci",
+  80: "'inci",
+  2: "'nci",
+  7: "'nci",
+  20: "'nci",
+  50: "'nci",
+  3: "'üncü",
+  4: "'üncü",
+  100: "'üncü",
+  6: "'ncı",
+  9: "'uncu",
+  10: "'uncu",
+  30: "'uncu",
+  60: "'ıncı",
+  90: "'ıncı",
 }
 
 const localeTr: Readonly<Locale> = {
@@ -30,7 +30,20 @@ const localeTr: Readonly<Locale> = {
   weekdays: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'],
   weekdaysShort: ['Paz', 'Pts', 'Sal', 'Çar', 'Per', 'Cum', 'Cts'],
   weekdaysMin: ['Pz', 'Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct'],
-  months: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+  months: [
+    'Ocak',
+    'Şubat',
+    'Mart',
+    'Nisan',
+    'Mayıs',
+    'Haziran',
+    'Temmuz',
+    'Ağustos',
+    'Eylül',
+    'Ekim',
+    'Kasım',
+    'Aralık',
+  ],
   monthsShort: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
   ordinal: (n: number) => {
     if (n === 0) {
@@ -40,11 +53,10 @@ const localeTr: Readonly<Locale> = {
     const a = n % 10
     const b = (n % 100) - a
     const c = n >= 100 ? 100 : null
-    const suffix = (
-      suffixes[a as keyof typeof suffixes]
-      || suffixes[b as keyof typeof suffixes]
-      || suffixes[c as keyof typeof suffixes]
-    )
+    const suffix =
+      suffixes[a as keyof typeof suffixes] ||
+      suffixes[b as keyof typeof suffixes] ||
+      suffixes[c as keyof typeof suffixes]
     return `${n}${suffix}`
   },
   weekStart: 1, // Monday is the first day of the week.
@@ -77,13 +89,11 @@ const localeTr: Readonly<Locale> = {
     y: 'bir yıl',
     yy: '%d yıl',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     if (hour < 12) {
       return isLowercase ? 'öö' : 'ÖÖ'
     }
-    else {
-      return isLowercase ? 'ös' : 'ÖS'
-    }
+    return isLowercase ? 'ös' : 'ÖS'
   },
 }
 

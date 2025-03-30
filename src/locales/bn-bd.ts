@@ -8,28 +8,27 @@ import { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 const localeBnBd = cloneLocale(localeBn)
 
 // eslint-disable-next-line  unused-imports/no-unused-vars
-function meridiem(hour: number, minute: number, isLowercase: boolean) {
+function meridiem(hour: number, _minute: number, _isLowercase: boolean) {
   if (hour < 4) {
     return 'রাত'
   }
-  else if (hour < 6) {
+  if (hour < 6) {
     return 'ভোর'
   }
-  else if (hour < 12) {
+  if (hour < 12) {
     return 'সকাল'
   }
-  else if (hour < 15) {
+  if (hour < 15) {
     return 'দুপুর'
   }
-  else if (hour < 18) {
+  if (hour < 18) {
     return 'বিকাল'
   }
-  else if (hour < 20) {
+  if (hour < 20) {
     return 'সন্ধ্যা'
   }
-  else {
-    return 'রাত'
-  }
+
+  return 'রাত'
 }
 
 // Use 'setLocaleProperty' as all properties are 'readonly'

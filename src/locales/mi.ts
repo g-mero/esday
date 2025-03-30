@@ -8,9 +8,35 @@ const localeMi: Readonly<Locale> = {
   weekdays: ['Rātapu', 'Mane', 'Tūrei', 'Wenerei', 'Tāite', 'Paraire', 'Hātarei'],
   weekdaysShort: ['Ta', 'Ma', 'Tū', 'We', 'Tāi', 'Pa', 'Hā'],
   weekdaysMin: ['Ta', 'Ma', 'Tū', 'We', 'Tāi', 'Pa', 'Hā'],
-  months: ['Kohi-tāte', 'Hui-tanguru', 'Poutū-te-rangi', 'Paenga-whāwhā', 'Haratua', 'Pipiri', 'Hōngoingoi', 'Here-turi-kōkā', 'Mahuru', 'Whiringa-ā-nuku', 'Whiringa-ā-rangi', 'Hakihea'],
-  monthsShort: ['Kohi', 'Hui', 'Pou', 'Pae', 'Hara', 'Pipi', 'Hōngoi', 'Here', 'Mahu', 'Whi-nu', 'Whi-ra', 'Haki'],
-  ordinal: n => `${n}`,
+  months: [
+    'Kohi-tāte',
+    'Hui-tanguru',
+    'Poutū-te-rangi',
+    'Paenga-whāwhā',
+    'Haratua',
+    'Pipiri',
+    'Hōngoingoi',
+    'Here-turi-kōkā',
+    'Mahuru',
+    'Whiringa-ā-nuku',
+    'Whiringa-ā-rangi',
+    'Hakihea',
+  ],
+  monthsShort: [
+    'Kohi',
+    'Hui',
+    'Pou',
+    'Pae',
+    'Hara',
+    'Pipi',
+    'Hōngoi',
+    'Here',
+    'Mahu',
+    'Whi-nu',
+    'Whi-ra',
+    'Haki',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +68,7 @@ const localeMi: Readonly<Locale> = {
     y: 'he tau',
     yy: '%d tau',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Maori doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

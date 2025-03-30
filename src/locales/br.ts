@@ -27,7 +27,7 @@ function mutation(text: string, number: number): string {
   return text
 }
 
-function relativeTimeWithMutation(number: number, withoutSuffix: boolean, key: string): string {
+function relativeTimeWithMutation(number: number, _withoutSuffix: boolean, key: string): string {
   const format: Record<string, string> = {
     mm: 'munutenn',
     MM: 'miz',
@@ -64,10 +64,18 @@ const relativeTimeFormatStrings = {
   y: 'ur bloaz',
   yy: specialMutationForYears,
 }
-function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolean, range: string): string {
+function relativeTimeFormatter(
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  range: string,
+): string {
   const l = relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings]
   if (typeof l === 'function') {
-    return (l as (number: number, withoutSuffix: boolean, key: string) => string)(Number(timeValue), withoutSuffix, range)
+    return (l as (number: number, withoutSuffix: boolean, key: string) => string)(
+      Number(timeValue),
+      withoutSuffix,
+      range,
+    )
   }
   return l.replace('%d', timeValue.toString())
 }
@@ -77,9 +85,35 @@ const localeBr: Readonly<Locale> = {
   weekdays: ['Sul', 'Lun', 'Meurzh', 'Mercʼher', 'Yaou', 'Gwener', 'Sadorn'],
   weekdaysShort: ['Sul', 'Lun', 'Meu', 'Mer', 'Yao', 'Gwe', 'Sad'],
   weekdaysMin: ['Su', 'Lu', 'Me', 'Mer', 'Ya', 'Gw', 'Sa'],
-  months: ['Genver', 'Cʼhwevrer', 'Meurzh', 'Ebrel', 'Mae', 'Mezheven', 'Gouere', 'Eost', 'Gwengolo', 'Here', 'Du', 'Kerzu'],
-  monthsShort: ['Gen', 'Cʼhwe', 'Meu', 'Ebr', 'Mae', 'Eve', 'Gou', 'Eos', 'Gwe', 'Her', 'Du', 'Ker'],
-  ordinal: n => `${n}`,
+  months: [
+    'Genver',
+    'Cʼhwevrer',
+    'Meurzh',
+    'Ebrel',
+    'Mae',
+    'Mezheven',
+    'Gouere',
+    'Eost',
+    'Gwengolo',
+    'Here',
+    'Du',
+    'Kerzu',
+  ],
+  monthsShort: [
+    'Gen',
+    'Cʼhwe',
+    'Meu',
+    'Ebr',
+    'Mae',
+    'Eve',
+    'Gou',
+    'Eos',
+    'Gwe',
+    'Her',
+    'Du',
+    'Ker',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -111,7 +145,7 @@ const localeBr: Readonly<Locale> = {
     yy: relativeTimeFormatter,
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => (hour < 12 ? 'a.m.' : 'g.m.'), // a-raok merenn | goude merenn
+  meridiem: (hour: number, _minute: number, _isLowercase: boolean) => (hour < 12 ? 'a.m.' : 'g.m.'), // a-raok merenn | goude merenn
 }
 
 export default localeBr

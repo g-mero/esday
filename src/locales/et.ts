@@ -4,7 +4,12 @@
 
 import type { Locale } from '~/plugins/locale'
 
-function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolean, key: string, isFuture: boolean): string {
+function relativeTimeFormatter(
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  key: string,
+  isFuture: boolean,
+): string {
   const timeValueAsString = `${timeValue} `
   const format: Record<string, string[]> = {
     s: ['mõne sekundi', 'mõni sekund', 'paar sekundit'],
@@ -21,7 +26,7 @@ function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolea
     yy: ['%d aasta', '%d aastat'],
   }
   if (key === 'dd') {
-    return (format[key][0]).replace('%d', timeValueAsString)
+    return format[key][0].replace('%d', timeValueAsString)
   }
   if (withoutSuffix) {
     return (format[key][2] ? format[key][2] : format[key][1]).replace('%d', timeValueAsString)
@@ -34,9 +39,35 @@ const localeEt: Readonly<Locale> = {
   weekdays: ['pühapäev', 'esmaspäev', 'teisipäev', 'kolmapäev', 'neljapäev', 'reede', 'laupäev'],
   weekdaysShort: ['P', 'E', 'T', 'K', 'N', 'R', 'L'],
   weekdaysMin: ['P', 'E', 'T', 'K', 'N', 'R', 'L'],
-  months: ['jaanuar', 'veebruar', 'märts', 'aprill', 'mai', 'juuni', 'juuli', 'august', 'september', 'oktoober', 'november', 'detsember'],
-  monthsShort: ['jaan', 'veebr', 'märts', 'apr', 'mai', 'juuni', 'juuli', 'aug', 'sept', 'okt', 'nov', 'dets'],
-  ordinal: n => `${n}.`,
+  months: [
+    'jaanuar',
+    'veebruar',
+    'märts',
+    'aprill',
+    'mai',
+    'juuni',
+    'juuli',
+    'august',
+    'september',
+    'oktoober',
+    'november',
+    'detsember',
+  ],
+  monthsShort: [
+    'jaan',
+    'veebr',
+    'märts',
+    'apr',
+    'mai',
+    'juuni',
+    'juuli',
+    'aug',
+    'sept',
+    'okt',
+    'nov',
+    'dets',
+  ],
+  ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -67,7 +98,7 @@ const localeEt: Readonly<Locale> = {
     y: relativeTimeFormatter,
     yy: relativeTimeFormatter,
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Estonian doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

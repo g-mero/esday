@@ -9,9 +9,35 @@ const localeNe: Readonly<Locale> = {
   weekdays: ['आइतबार', 'सोमबार', 'मङ्गलबार', 'बुधबार', 'बिहिबार', 'शुक्रबार', 'शनिबार'],
   weekdaysShort: ['आइत.', 'सोम.', 'मङ्गल.', 'बुध.', 'बिहि.', 'शुक्र.', 'शनि.'],
   weekdaysMin: ['आ.', 'सो.', 'मं.', 'बु.', 'बि.', 'शु.', 'श.'],
-  months: ['जनवरी', 'फेब्रुवरी', 'मार्च', 'अप्रिल', 'मे', 'जुन', 'जुलाई', 'अगष्ट', 'सेप्टेम्बर', 'अक्टोबर', 'नोभेम्बर', 'डिसेम्बर'],
-  monthsShort: ['जन.', 'फेब्रु.', 'मार्च', 'अप्रि.', 'मई', 'जुन', 'जुलाई.', 'अग.', 'सेप्ट.', 'अक्टो.', 'नोभे.', 'डिसे.'],
-  ordinal: n => `${n}`.replace(/\d/g, (i: string) => '०१२३४५६७८९'[+i]),
+  months: [
+    'जनवरी',
+    'फेब्रुवरी',
+    'मार्च',
+    'अप्रिल',
+    'मे',
+    'जुन',
+    'जुलाई',
+    'अगष्ट',
+    'सेप्टेम्बर',
+    'अक्टोबर',
+    'नोभेम्बर',
+    'डिसेम्बर',
+  ],
+  monthsShort: [
+    'जन.',
+    'फेब्रु.',
+    'मार्च',
+    'अप्रि.',
+    'मई',
+    'जुन',
+    'जुलाई.',
+    'अग.',
+    'सेप्ट.',
+    'अक्टो.',
+    'नोभे.',
+    'डिसे.',
+  ],
+  ordinal: (n) => `${n}`.replace(/\d/g, (i: string) => '०१२३४५६७८९'[+i]),
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +68,7 @@ const localeNe: Readonly<Locale> = {
     y: 'एक वर्ष',
     yy: '%d वर्ष',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Nepalese doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

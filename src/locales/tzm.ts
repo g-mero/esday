@@ -9,9 +9,35 @@ const localeTzm: Readonly<Locale> = {
   weekdays: ['ⴰⵙⴰⵎⴰⵙ', 'ⴰⵢⵏⴰⵙ', 'ⴰⵙⵉⵏⴰⵙ', 'ⴰⴽⵔⴰⵙ', 'ⴰⴽⵡⴰⵙ', 'ⴰⵙⵉⵎⵡⴰⵙ', 'ⴰⵙⵉⴹⵢⴰⵙ'],
   weekdaysShort: ['ⴰⵙⴰⵎⴰⵙ', 'ⴰⵢⵏⴰⵙ', 'ⴰⵙⵉⵏⴰⵙ', 'ⴰⴽⵔⴰⵙ', 'ⴰⴽⵡⴰⵙ', 'ⴰⵙⵉⵎⵡⴰⵙ', 'ⴰⵙⵉⴹⵢⴰⵙ'],
   weekdaysMin: ['ⴰⵙⴰⵎⴰⵙ', 'ⴰⵢⵏⴰⵙ', 'ⴰⵙⵉⵏⴰⵙ', 'ⴰⴽⵔⴰⵙ', 'ⴰⴽⵡⴰⵙ', 'ⴰⵙⵉⵎⵡⴰⵙ', 'ⴰⵙⵉⴹⵢⴰⵙ'],
-  months: ['ⵉⵏⵏⴰⵢⵔ', 'ⴱⵕⴰⵢⵕ', 'ⵎⴰⵕⵚ', 'ⵉⴱⵔⵉⵔ', 'ⵎⴰⵢⵢⵓ', 'ⵢⵓⵏⵢⵓ', 'ⵢⵓⵍⵢⵓⵣ', 'ⵖⵓⵛⵜ', 'ⵛⵓⵜⴰⵏⴱⵉⵔ', 'ⴽⵟⵓⴱⵕ', 'ⵏⵓⵡⴰⵏⴱⵉⵔ', 'ⴷⵓⵊⵏⴱⵉⵔ'],
-  monthsShort: ['ⵉⵏⵏⴰⵢⵔ', 'ⴱⵕⴰⵢⵕ', 'ⵎⴰⵕⵚ', 'ⵉⴱⵔⵉⵔ', 'ⵎⴰⵢⵢⵓ', 'ⵢⵓⵏⵢⵓ', 'ⵢⵓⵍⵢⵓⵣ', 'ⵖⵓⵛⵜ', 'ⵛⵓⵜⴰⵏⴱⵉⵔ', 'ⴽⵟⵓⴱⵕ', 'ⵏⵓⵡⴰⵏⴱⵉⵔ', 'ⴷⵓⵊⵏⴱⵉⵔ'],
-  ordinal: n => `${n}`,
+  months: [
+    'ⵉⵏⵏⴰⵢⵔ',
+    'ⴱⵕⴰⵢⵕ',
+    'ⵎⴰⵕⵚ',
+    'ⵉⴱⵔⵉⵔ',
+    'ⵎⴰⵢⵢⵓ',
+    'ⵢⵓⵏⵢⵓ',
+    'ⵢⵓⵍⵢⵓⵣ',
+    'ⵖⵓⵛⵜ',
+    'ⵛⵓⵜⴰⵏⴱⵉⵔ',
+    'ⴽⵟⵓⴱⵕ',
+    'ⵏⵓⵡⴰⵏⴱⵉⵔ',
+    'ⴷⵓⵊⵏⴱⵉⵔ',
+  ],
+  monthsShort: [
+    'ⵉⵏⵏⴰⵢⵔ',
+    'ⴱⵕⴰⵢⵕ',
+    'ⵎⴰⵕⵚ',
+    'ⵉⴱⵔⵉⵔ',
+    'ⵎⴰⵢⵢⵓ',
+    'ⵢⵓⵏⵢⵓ',
+    'ⵢⵓⵍⵢⵓⵣ',
+    'ⵖⵓⵛⵜ',
+    'ⵛⵓⵜⴰⵏⴱⵉⵔ',
+    'ⴽⵟⵓⴱⵕ',
+    'ⵏⵓⵡⴰⵏⴱⵉⵔ',
+    'ⴷⵓⵊⵏⴱⵉⵔ',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 6, // Saturday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
@@ -42,7 +68,7 @@ const localeTzm: Readonly<Locale> = {
     y: 'ⴰⵙⴳⴰⵙ',
     yy: '%d ⵉⵙⴳⴰⵙⵏ',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Central Atlas Tamazight doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

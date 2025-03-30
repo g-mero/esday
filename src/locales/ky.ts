@@ -9,11 +9,37 @@ const localeKy: Readonly<Locale> = {
   weekdays: ['Жекшемби', 'Дүйшөмбү', 'Шейшемби', 'Шаршемби', 'Бейшемби', 'Жума', 'Ишемби'],
   weekdaysShort: ['Жек', 'Дүй', 'Шей', 'Шар', 'Бей', 'Жум', 'Ише'],
   weekdaysMin: ['Жк', 'Дй', 'Шй', 'Шр', 'Бй', 'Жм', 'Иш'],
-  months: ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'],
-  monthsShort: ['янв', 'фев', 'март', 'апр', 'май', 'июнь', 'июль', 'авг', 'сен', 'окт', 'ноя', 'дек'],
+  months: [
+    'январь',
+    'февраль',
+    'март',
+    'апрель',
+    'май',
+    'июнь',
+    'июль',
+    'август',
+    'сентябрь',
+    'октябрь',
+    'ноябрь',
+    'декабрь',
+  ],
+  monthsShort: [
+    'янв',
+    'фев',
+    'март',
+    'апр',
+    'май',
+    'июнь',
+    'июль',
+    'авг',
+    'сен',
+    'окт',
+    'ноя',
+    'дек',
+  ],
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
@@ -42,7 +68,7 @@ const localeKy: Readonly<Locale> = {
     y: 'бир жыл',
     yy: '%d жыл',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Kyrgyz doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

@@ -6,12 +6,33 @@ import type { Locale } from '~/plugins/locale'
 
 const localeSs: Readonly<Locale> = {
   name: 'ss',
-  weekdays: ['Lisontfo', 'Umsombuluko', 'Lesibili', 'Lesitsatfu', 'Lesine', 'Lesihlanu', 'Umgcibelo'],
+  weekdays: [
+    'Lisontfo',
+    'Umsombuluko',
+    'Lesibili',
+    'Lesitsatfu',
+    'Lesine',
+    'Lesihlanu',
+    'Umgcibelo',
+  ],
   weekdaysShort: ['Lis', 'Umb', 'Lsb', 'Les', 'Lsi', 'Lsh', 'Umg'],
   weekdaysMin: ['Li', 'Us', 'Lb', 'Lt', 'Ls', 'Lh', 'Ug'],
-  months: ['Bhimbidvwane', 'Indlovana', 'Indlov\'lenkhulu', 'Mabasa', 'Inkhwekhweti', 'Inhlaba', 'Kholwane', 'Ingci', 'Inyoni', 'Imphala', 'Lweti', 'Ingongoni'],
+  months: [
+    'Bhimbidvwane',
+    'Indlovana',
+    "Indlov'lenkhulu",
+    'Mabasa',
+    'Inkhwekhweti',
+    'Inhlaba',
+    'Kholwane',
+    'Ingci',
+    'Inyoni',
+    'Imphala',
+    'Lweti',
+    'Ingongoni',
+  ],
   monthsShort: ['Bhi', 'Ina', 'Inu', 'Mab', 'Ink', 'Inh', 'Kho', 'Igc', 'Iny', 'Imp', 'Lwe', 'Igo'],
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -43,19 +64,17 @@ const localeSs: Readonly<Locale> = {
     yy: '%d iminyaka',
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {
     if (hour < 11) {
       return 'ekuseni'
     }
-    else if (hour < 15) {
+    if (hour < 15) {
       return 'emini'
     }
-    else if (hour < 19) {
+    if (hour < 19) {
       return 'entsambama'
     }
-    else {
-      return 'ebusuku'
-    }
+    return 'ebusuku'
   },
 }
 

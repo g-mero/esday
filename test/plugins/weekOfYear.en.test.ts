@@ -1,6 +1,6 @@
 import { esday } from 'esday'
 import moment from 'moment'
-import { expectSame } from 'test/util';
+import { expectSame } from 'test/util'
 import { describe, expect, it } from 'vitest'
 import localeEn from '~/locales/en'
 import { localePlugin, weekOfYearPlugin } from '~/plugins'
@@ -39,7 +39,7 @@ describe('week plugin - locale "en"', () => {
     { sourceDate: '2025-06-20', expected: 25, weekday: 'Thursday' },
   ])('should return the correct week number for "$sourceDate"', ({ sourceDate, expected }) => {
     expect(esday(sourceDate).week()).toBe(expected)
-    expectSame(esday => esday(sourceDate).week())
+    expectSame((esday) => esday(sourceDate).week())
   })
 
   it.todo('implemented tests with time in source string')
@@ -55,7 +55,7 @@ describe('week plugin - locale "en"', () => {
     { sourceDate: '2025-01-01', expected: 1, weekday: 'Wednesday' },
   ])('should handle year transition correctly for "$sourceDate"', ({ sourceDate, expected }) => {
     expect(esday(sourceDate).week()).toBe(expected)
-    expectSame(esday => esday(sourceDate).week())
+    expectSame((esday) => esday(sourceDate).week())
   })
 
   it('should set the correct week number and adjust the date', () => {

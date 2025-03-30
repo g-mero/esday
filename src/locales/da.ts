@@ -9,9 +9,35 @@ const localeDa: Readonly<Locale> = {
   weekdays: ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'],
   weekdaysShort: ['søn.', 'man.', 'tirs.', 'ons.', 'tors.', 'fre.', 'lør.'],
   weekdaysMin: ['sø.', 'ma.', 'ti.', 'on.', 'to.', 'fr.', 'lø.'],
-  months: ['januar', 'februar', 'marts', 'april', 'maj', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'december'],
-  monthsShort: ['jan.', 'feb.', 'mar.', 'apr.', 'maj', 'juni', 'juli', 'aug.', 'sept.', 'okt.', 'nov.', 'dec.'],
-  ordinal: n => `${n}.`,
+  months: [
+    'januar',
+    'februar',
+    'marts',
+    'april',
+    'maj',
+    'juni',
+    'juli',
+    'august',
+    'september',
+    'oktober',
+    'november',
+    'december',
+  ],
+  monthsShort: [
+    'jan.',
+    'feb.',
+    'mar.',
+    'apr.',
+    'maj',
+    'juni',
+    'juli',
+    'aug.',
+    'sept.',
+    'okt.',
+    'nov.',
+    'dec.',
+  ],
+  ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +68,7 @@ const localeDa: Readonly<Locale> = {
     y: 'et år',
     yy: '%d år',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Danish doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

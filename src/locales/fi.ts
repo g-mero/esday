@@ -4,7 +4,12 @@
 
 import type { Locale } from '~/plugins/locale'
 
-function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolean, range: string, isFuture: boolean): string {
+function relativeTimeFormatter(
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  range: string,
+  isFuture: boolean,
+): string {
   const pastWords = {
     s: 'muutama sekunti',
     ss: '%d sekuntia',
@@ -19,7 +24,18 @@ function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolea
     y: 'vuosi',
     yy: '%d vuotta',
   }
-  const pastNumbers = ['nolla', 'yksi', 'kaksi', 'kolme', 'neljä', 'viisi', 'kuusi', 'seitsemän', 'kahdeksan', 'yhdeksän']
+  const pastNumbers = [
+    'nolla',
+    'yksi',
+    'kaksi',
+    'kolme',
+    'neljä',
+    'viisi',
+    'kuusi',
+    'seitsemän',
+    'kahdeksan',
+    'yhdeksän',
+  ]
 
   const futureWords = {
     s: 'muutaman sekunnin',
@@ -35,10 +51,21 @@ function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolea
     y: 'vuoden',
     yy: '%d vuoden',
   }
-  const futureNumbers = ['nollan', 'yhden', 'kahden', 'kolmen', 'neljän', 'viiden', 'kuuden', 'seitsemän', 'kahdeksan', 'yhdeksän']
+  const futureNumbers = [
+    'nollan',
+    'yhden',
+    'kahden',
+    'kolmen',
+    'neljän',
+    'viiden',
+    'kuuden',
+    'seitsemän',
+    'kahdeksan',
+    'yhdeksän',
+  ]
 
-  const words = (isFuture && !withoutSuffix) ? futureWords : pastWords
-  const numbers = (isFuture && !withoutSuffix) ? futureNumbers : pastNumbers
+  const words = isFuture && !withoutSuffix ? futureWords : pastWords
+  const numbers = isFuture && !withoutSuffix ? futureNumbers : pastNumbers
 
   const result = words[range as keyof typeof words]
   if (+timeValue < 10) {
@@ -49,12 +76,46 @@ function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolea
 
 const localeFi: Readonly<Locale> = {
   name: 'fi',
-  weekdays: ['sunnuntai', 'maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai', 'lauantai'],
+  weekdays: [
+    'sunnuntai',
+    'maanantai',
+    'tiistai',
+    'keskiviikko',
+    'torstai',
+    'perjantai',
+    'lauantai',
+  ],
   weekdaysShort: ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'],
   weekdaysMin: ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'],
-  months: ['tammikuu', 'helmikuu', 'maaliskuu', 'huhtikuu', 'toukokuu', 'kesäkuu', 'heinäkuu', 'elokuu', 'syyskuu', 'lokakuu', 'marraskuu', 'joulukuu'],
-  monthsShort: ['tammi', 'helmi', 'maalis', 'huhti', 'touko', 'kesä', 'heinä', 'elo', 'syys', 'loka', 'marras', 'joulu'],
-  ordinal: n => `${n}.`,
+  months: [
+    'tammikuu',
+    'helmikuu',
+    'maaliskuu',
+    'huhtikuu',
+    'toukokuu',
+    'kesäkuu',
+    'heinäkuu',
+    'elokuu',
+    'syyskuu',
+    'lokakuu',
+    'marraskuu',
+    'joulukuu',
+  ],
+  monthsShort: [
+    'tammi',
+    'helmi',
+    'maalis',
+    'huhti',
+    'touko',
+    'kesä',
+    'heinä',
+    'elo',
+    'syys',
+    'loka',
+    'marras',
+    'joulu',
+  ],
+  ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -85,7 +146,7 @@ const localeFi: Readonly<Locale> = {
     y: relativeTimeFormatter,
     yy: relativeTimeFormatter,
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Finnish doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

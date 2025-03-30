@@ -9,9 +9,22 @@ const localeCv: Readonly<Locale> = {
   weekdays: ['вырсарникун', 'тунтикун', 'ытларикун', 'юнкун', 'кӗҫнерникун', 'эрнекун', 'шӑматкун'],
   weekdaysShort: ['выр', 'тун', 'ытл', 'юн', 'кӗҫ', 'эрн', 'шӑм'],
   weekdaysMin: ['вр', 'тн', 'ыт', 'юн', 'кҫ', 'эр', 'шм'],
-  months: ['кӑрлач', 'нарӑс', 'пуш', 'ака', 'май', 'ҫӗртме', 'утӑ', 'ҫурла', 'авӑн', 'юпа', 'чӳк', 'раштав'],
+  months: [
+    'кӑрлач',
+    'нарӑс',
+    'пуш',
+    'ака',
+    'май',
+    'ҫӗртме',
+    'утӑ',
+    'ҫурла',
+    'авӑн',
+    'юпа',
+    'чӳк',
+    'раштав',
+  ],
   monthsShort: ['кӑр', 'нар', 'пуш', 'ака', 'май', 'ҫӗр', 'утӑ', 'ҫур', 'авн', 'юпа', 'чӳк', 'раш'],
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +55,7 @@ const localeCv: Readonly<Locale> = {
     y: 'пӗр ҫул',
     yy: '%d ҫул',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Chuvash doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

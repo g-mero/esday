@@ -9,9 +9,35 @@ const localeOcLnc: Readonly<Locale> = {
   weekdays: ['dimenge', 'diluns', 'dimars', 'dimècres', 'dijòus', 'divendres', 'dissabte'],
   weekdaysShort: ['Dg', 'Dl', 'Dm', 'Dc', 'Dj', 'Dv', 'Ds'],
   weekdaysMin: ['dg', 'dl', 'dm', 'dc', 'dj', 'dv', 'ds'],
-  months: ['genièr', 'febrièr', 'març', 'abrial', 'mai', 'junh', 'julhet', 'agost', 'setembre', 'octòbre', 'novembre', 'decembre'],
-  monthsShort: ['gen', 'feb', 'març', 'abr', 'mai', 'junh', 'julh', 'ago', 'set', 'oct', 'nov', 'dec'],
-  ordinal: n => `${n}º`,
+  months: [
+    'genièr',
+    'febrièr',
+    'març',
+    'abrial',
+    'mai',
+    'junh',
+    'julhet',
+    'agost',
+    'setembre',
+    'octòbre',
+    'novembre',
+    'decembre',
+  ],
+  monthsShort: [
+    'gen',
+    'feb',
+    'març',
+    'abr',
+    'mai',
+    'junh',
+    'julh',
+    'ago',
+    'set',
+    'oct',
+    'nov',
+    'dec',
+  ],
+  ordinal: (n) => `${n}º`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -27,7 +53,7 @@ const localeOcLnc: Readonly<Locale> = {
     llll: 'dddd D MMMM [de] YYYY [a] H:mm',
   },
   relativeTime: {
-    future: 'd\'aquí %s',
+    future: "d'aquí %s",
     past: 'fa %s',
     s: 'unas segondas',
     ss: '%d segondas',
@@ -42,9 +68,9 @@ const localeOcLnc: Readonly<Locale> = {
     y: 'un an',
     yy: '%d ans',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Occitan doesn't have AM/PM, so return default values
-    const m = (hour < 12 ? 'AM' : 'PM')
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
 }

@@ -4,7 +4,12 @@
 
 import type { Locale } from '~/plugins/locale'
 
-function processRelativeTime(timeValue: string | number, withoutSuffix: boolean, range: string, isFuture: boolean) {
+function processRelativeTime(
+  timeValue: string | number,
+  _withoutSuffix: boolean,
+  range: string,
+  isFuture: boolean,
+) {
   const relativeTimeFormatStrings = {
     s: ['thoddea sekondamni', 'thodde sekond'],
     ss: [`${timeValue} sekondamni`, `${timeValue} sekond`],
@@ -19,17 +24,45 @@ function processRelativeTime(timeValue: string | number, withoutSuffix: boolean,
     y: ['eka vorsan', 'ek voros'],
     yy: [`${timeValue} vorsamni`, `${timeValue} vorsam`],
   }
-  return isFuture ? relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings][0] : relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings][1]
+  return isFuture
+    ? relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings][0]
+    : relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings][1]
 }
 
 const localeGomLatn: Readonly<Locale> = {
   name: 'gom-LATN',
-  weekdays: ['Aitar', 'Somar', 'Mongllar', 'Budvar', 'Brestar', 'Sukrar', 'Son\'var'],
+  weekdays: ['Aitar', 'Somar', 'Mongllar', 'Budvar', 'Brestar', 'Sukrar', "Son'var"],
   weekdaysShort: ['Ait.', 'Som.', 'Mon.', 'Bud.', 'Bre.', 'Suk.', 'Son.'],
   weekdaysMin: ['Ai', 'Sm', 'Mo', 'Bu', 'Br', 'Su', 'Sn'],
-  months: ['Janer', 'Febrer', 'Mars', 'Abril', 'Mai', 'Jun', 'Julai', 'Agost', 'Setembr', 'Otubr', 'Novembr', 'Dezembr'],
-  monthsShort: ['Jan.', 'Feb.', 'Mars', 'Abr.', 'Mai', 'Jun', 'Jul.', 'Ago.', 'Set.', 'Otu.', 'Nov.', 'Dez.'],
-  ordinal: n => `${n}`,
+  months: [
+    'Janer',
+    'Febrer',
+    'Mars',
+    'Abril',
+    'Mai',
+    'Jun',
+    'Julai',
+    'Agost',
+    'Setembr',
+    'Otubr',
+    'Novembr',
+    'Dezembr',
+  ],
+  monthsShort: [
+    'Jan.',
+    'Feb.',
+    'Mars',
+    'Abr.',
+    'Mai',
+    'Jun',
+    'Jul.',
+    'Ago.',
+    'Set.',
+    'Otu.',
+    'Nov.',
+    'Dez.',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 4, // The week that contains Jan 3rd is the first week of the year.
   formats: {
@@ -61,22 +94,20 @@ const localeGomLatn: Readonly<Locale> = {
     yy: processRelativeTime,
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {
     if (hour < 4) {
       return 'rati'
     }
-    else if (hour < 12) {
+    if (hour < 12) {
       return 'sokallim'
     }
-    else if (hour < 16) {
+    if (hour < 16) {
       return 'donparam'
     }
-    else if (hour < 20) {
+    if (hour < 20) {
       return 'sanje'
     }
-    else {
-      return 'rati'
-    }
+    return 'rati'
   },
 }
 

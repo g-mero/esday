@@ -26,33 +26,36 @@ function numberAsNoun(n: number) {
 function translateFuture(timeValue: string | number) {
   const timeValueAsString = timeValue.toString()
   let time = timeValueAsString
-  time
-    = timeValueAsString.includes('jaj')
-      ? `${time.slice(0, -3)}leS`
-      : timeValueAsString.includes('jar')
-        ? `${time.slice(0, -3)}waQ`
-        : timeValueAsString.includes('DIS')
-          ? `${time.slice(0, -3)}nem`
-          : `${time} pIq`
+  time = timeValueAsString.includes('jaj')
+    ? `${time.slice(0, -3)}leS`
+    : timeValueAsString.includes('jar')
+      ? `${time.slice(0, -3)}waQ`
+      : timeValueAsString.includes('DIS')
+        ? `${time.slice(0, -3)}nem`
+        : `${time} pIq`
   return time
 }
 
 function translatePast(timeValue: string | number) {
   const timeValueAsString = timeValue.toString()
   let time = timeValueAsString
-  time
-    = timeValueAsString.includes('jaj')
-      ? `${time.slice(0, -3)}Hu’`
-      : timeValueAsString.includes('jar')
-        ? `${time.slice(0, -3)}wen`
-        : timeValueAsString.includes('DIS')
-          ? `${time.slice(0, -3)}ben`
-          : `${timeValueAsString} ret`
+  time = timeValueAsString.includes('jaj')
+    ? `${time.slice(0, -3)}Hu’`
+    : timeValueAsString.includes('jar')
+      ? `${time.slice(0, -3)}wen`
+      : timeValueAsString.includes('DIS')
+        ? `${time.slice(0, -3)}ben`
+        : `${timeValueAsString} ret`
   return time
 }
 
 // eslint-disable-next-line unused-imports/no-unused-vars
-function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolean, range: string, isFuture: boolean): string {
+function relativeTimeFormatter(
+  timeValue: string | number,
+  _withoutSuffix: boolean,
+  range: string,
+  _isFuture: boolean,
+): string {
   const numberNoun = numberAsNoun(+timeValue)
   switch (range) {
     case 'ss':
@@ -77,9 +80,35 @@ const localeTlh: Readonly<Locale> = {
   weekdays: ['lojmItjaj', 'DaSjaj', 'povjaj', 'ghItlhjaj', 'loghjaj', 'buqjaj', 'ghInjaj'],
   weekdaysShort: ['lojmItjaj', 'DaSjaj', 'povjaj', 'ghItlhjaj', 'loghjaj', 'buqjaj', 'ghInjaj'],
   weekdaysMin: ['lojmItjaj', 'DaSjaj', 'povjaj', 'ghItlhjaj', 'loghjaj', 'buqjaj', 'ghInjaj'],
-  months: ['tera’ jar wa’', 'tera’ jar cha’', 'tera’ jar wej', 'tera’ jar loS', 'tera’ jar vagh', 'tera’ jar jav', 'tera’ jar Soch', 'tera’ jar chorgh', 'tera’ jar Hut', 'tera’ jar wa’maH', 'tera’ jar wa’maH wa’', 'tera’ jar wa’maH cha’'],
-  monthsShort: ['jar wa’', 'jar cha’', 'jar wej', 'jar loS', 'jar vagh', 'jar jav', 'jar Soch', 'jar chorgh', 'jar Hut', 'jar wa’maH', 'jar wa’maH wa’', 'jar wa’maH cha’'],
-  ordinal: n => `${n}`,
+  months: [
+    'tera’ jar wa’',
+    'tera’ jar cha’',
+    'tera’ jar wej',
+    'tera’ jar loS',
+    'tera’ jar vagh',
+    'tera’ jar jav',
+    'tera’ jar Soch',
+    'tera’ jar chorgh',
+    'tera’ jar Hut',
+    'tera’ jar wa’maH',
+    'tera’ jar wa’maH wa’',
+    'tera’ jar wa’maH cha’',
+  ],
+  monthsShort: [
+    'jar wa’',
+    'jar cha’',
+    'jar wej',
+    'jar loS',
+    'jar vagh',
+    'jar jav',
+    'jar Soch',
+    'jar chorgh',
+    'jar Hut',
+    'jar wa’maH',
+    'jar wa’maH wa’',
+    'jar wa’maH cha’',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -110,7 +139,7 @@ const localeTlh: Readonly<Locale> = {
     y: 'wa’ DIS',
     yy: relativeTimeFormatter,
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Welsh doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

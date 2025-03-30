@@ -5,10 +5,15 @@
 import type { Locale } from '~/plugins/locale'
 
 function usePlural(timeValue: number): boolean {
-  return (timeValue > 1) && (timeValue < 5) && (~~(timeValue / 10) !== 1)
+  return timeValue > 1 && timeValue < 5 && ~~(timeValue / 10) !== 1
 }
 
-function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolean, range: string, isFuture: boolean): string {
+function relativeTimeFormatter(
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  range: string,
+  isFuture: boolean,
+): string {
   const result = `${timeValue} `
   switch (range) {
     case 's': // a few seconds / in a few seconds / a few seconds ago
@@ -17,9 +22,7 @@ function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolea
       if (withoutSuffix || isFuture) {
         return result + (usePlural(+timeValue) ? 'sekundy' : 'sekund')
       }
-      else {
-        return `${result}sekundami`
-      }
+      return `${result}sekundami`
     case 'm': // a minute / in a minute / a minute ago
       return withoutSuffix ? 'minuta' : isFuture ? 'minutu' : 'minutou'
     case 'mm': // 9 minutes / in 9 minutes / 9 minutes ago
@@ -65,9 +68,22 @@ const localeCs: Readonly<Locale> = {
   weekdays: ['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'],
   weekdaysShort: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
   weekdaysMin: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
-  months: ['leden', 'únor', 'březen', 'duben', 'květen', 'červen', 'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'],
+  months: [
+    'leden',
+    'únor',
+    'březen',
+    'duben',
+    'květen',
+    'červen',
+    'červenec',
+    'srpen',
+    'září',
+    'říjen',
+    'listopad',
+    'prosinec',
+  ],
   monthsShort: ['led', 'úno', 'bře', 'dub', 'kvě', 'čvn', 'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'],
-  ordinal: n => `${n}.`,
+  ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -98,7 +114,7 @@ const localeCs: Readonly<Locale> = {
     y: relativeTimeFormatter,
     yy: relativeTimeFormatter,
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Czech doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

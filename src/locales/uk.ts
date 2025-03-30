@@ -127,7 +127,7 @@ const localeUk: Readonly<Locale> = {
     y: 'рік',
     yy: relativeTimeWithPlural,
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Ukrainian doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

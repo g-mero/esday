@@ -9,9 +9,22 @@ const localeAm: Readonly<Locale> = {
   weekdays: ['እሑድ', 'ሰኞ', 'ማክሰኞ', 'ረቡዕ', 'ሐሙስ', 'አርብ', 'ቅዳሜ'],
   weekdaysShort: ['እሑድ', 'ሰኞ', 'ማክሰ', 'ረቡዕ', 'ሐሙስ', 'አርብ', 'ቅዳሜ'],
   weekdaysMin: ['እሑ', 'ሰኞ', 'ማክ', 'ረቡ', 'ሐሙ', 'አር', 'ቅዳ'],
-  months: ['ጃንዋሪ', 'ፌብሯሪ', 'ማርች', 'ኤፕሪል', 'ሜይ', 'ጁን', 'ጁላይ', 'ኦገስት', 'ሴፕቴምበር', 'ኦክቶበር', 'ኖቬምበር', 'ዲሴምበር'],
+  months: [
+    'ጃንዋሪ',
+    'ፌብሯሪ',
+    'ማርች',
+    'ኤፕሪል',
+    'ሜይ',
+    'ጁን',
+    'ጁላይ',
+    'ኦገስት',
+    'ሴፕቴምበር',
+    'ኦክቶበር',
+    'ኖቬምበር',
+    'ዲሴምበር',
+  ],
   monthsShort: ['ጃንዋ', 'ፌብሯ', 'ማርች', 'ኤፕሪ', 'ሜይ', 'ጁን', 'ጁላይ', 'ኦገስ', 'ሴፕቴ', 'ኦክቶ', 'ኖቬም', 'ዲሴም'],
-  ordinal: n => `${n}ኛ`,
+  ordinal: (n) => `${n}ኛ`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,9 +55,9 @@ const localeAm: Readonly<Locale> = {
     y: 'አንድ ዓመት',
     yy: '%d ዓመታት',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Amharic doesn't have AM/PM, so return default values
-    const m = (hour < 12 ? 'AM' : 'PM')
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
 }

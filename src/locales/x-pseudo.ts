@@ -6,15 +6,49 @@ import type { Locale } from '~/plugins/locale'
 
 const localeXpseudo: Readonly<Locale> = {
   name: 'x-pseudo',
-  weekdays: ['S~úñdá~ý', 'Mó~ñdáý~', 'Túé~sdáý~', 'Wéd~ñésd~áý', 'T~húrs~dáý', '~Fríd~áý', 'S~átúr~dáý'],
+  weekdays: [
+    'S~úñdá~ý',
+    'Mó~ñdáý~',
+    'Túé~sdáý~',
+    'Wéd~ñésd~áý',
+    'T~húrs~dáý',
+    '~Fríd~áý',
+    'S~átúr~dáý',
+  ],
   weekdaysShort: ['S~úñ', '~Móñ', '~Túé', '~Wéd', '~Thú', '~Frí', '~Sát'],
   weekdaysMin: ['S~ú', 'Mó~', 'Tú', '~Wé', 'T~h', 'Fr~', 'Sá'],
-  months: ['J~áñúá~rý', 'F~ébrú~árý', '~Márc~h', 'Áp~ríl', '~Máý', '~Júñé~', 'Júl~ý', 'Áú~gúst~', 'Sép~témb~ér', 'Ó~ctób~ér', 'Ñ~óvém~bér', '~Décé~mbér'],
-  monthsShort: ['J~áñ', '~Féb', '~Már', '~Ápr', '~Máý', '~Júñ', '~Júl', '~Áúg', '~Sép', '~Óct', '~Ñóv', '~Déc'],
+  months: [
+    'J~áñúá~rý',
+    'F~ébrú~árý',
+    '~Márc~h',
+    'Áp~ríl',
+    '~Máý',
+    '~Júñé~',
+    'Júl~ý',
+    'Áú~gúst~',
+    'Sép~témb~ér',
+    'Ó~ctób~ér',
+    'Ñ~óvém~bér',
+    '~Décé~mbér',
+  ],
+  monthsShort: [
+    'J~áñ',
+    '~Féb',
+    '~Már',
+    '~Ápr',
+    '~Máý',
+    '~Júñ',
+    '~Júl',
+    '~Áúg',
+    '~Sép',
+    '~Óct',
+    '~Ñóv',
+    '~Déc',
+  ],
   ordinal: (n: number) => {
     const one = n % 10
-    const output
-      = ~~((n % 100) / 10) === 1
+    const output =
+      ~~((n % 100) / 10) === 1
         ? 'th'
         : one === 1
           ? 'st'
@@ -55,7 +89,7 @@ const localeXpseudo: Readonly<Locale> = {
     y: 'á ~ýéár',
     yy: '%d ý~éárs',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Pseudo doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

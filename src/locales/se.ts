@@ -6,12 +6,46 @@ import type { Locale } from '~/plugins/locale'
 
 const localeSe: Readonly<Locale> = {
   name: 'se',
-  weekdays: ['sotnabeaivi', 'vuossárga', 'maŋŋebárga', 'gaskavahkku', 'duorastat', 'bearjadat', 'lávvardat'],
+  weekdays: [
+    'sotnabeaivi',
+    'vuossárga',
+    'maŋŋebárga',
+    'gaskavahkku',
+    'duorastat',
+    'bearjadat',
+    'lávvardat',
+  ],
   weekdaysShort: ['sotn', 'vuos', 'maŋ', 'gask', 'duor', 'bear', 'láv'],
   weekdaysMin: ['s', 'v', 'm', 'g', 'd', 'b', 'L'],
-  months: ['ođđajagemánnu', 'guovvamánnu', 'njukčamánnu', 'cuoŋománnu', 'miessemánnu', 'geassemánnu', 'suoidnemánnu', 'borgemánnu', 'čakčamánnu', 'golggotmánnu', 'skábmamánnu', 'juovlamánnu'],
-  monthsShort: ['ođđj', 'guov', 'njuk', 'cuo', 'mies', 'geas', 'suoi', 'borg', 'čakč', 'golg', 'skáb', 'juov'],
-  ordinal: n => `${n}.`,
+  months: [
+    'ođđajagemánnu',
+    'guovvamánnu',
+    'njukčamánnu',
+    'cuoŋománnu',
+    'miessemánnu',
+    'geassemánnu',
+    'suoidnemánnu',
+    'borgemánnu',
+    'čakčamánnu',
+    'golggotmánnu',
+    'skábmamánnu',
+    'juovlamánnu',
+  ],
+  monthsShort: [
+    'ođđj',
+    'guov',
+    'njuk',
+    'cuo',
+    'mies',
+    'geas',
+    'suoi',
+    'borg',
+    'čakč',
+    'golg',
+    'skáb',
+    'juov',
+  ],
+  ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +76,7 @@ const localeSe: Readonly<Locale> = {
     y: 'okta jahki',
     yy: '%d jagit',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Northern Sami doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

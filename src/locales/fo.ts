@@ -6,12 +6,33 @@ import type { Locale } from '~/plugins/locale'
 
 const localeFo: Readonly<Locale> = {
   name: 'fo',
-  weekdays: ['sunnudagur', 'mánadagur', 'týsdagur', 'mikudagur', 'hósdagur', 'fríggjadagur', 'leygardagur'],
+  weekdays: [
+    'sunnudagur',
+    'mánadagur',
+    'týsdagur',
+    'mikudagur',
+    'hósdagur',
+    'fríggjadagur',
+    'leygardagur',
+  ],
   weekdaysShort: ['sun', 'mán', 'týs', 'mik', 'hós', 'frí', 'ley'],
   weekdaysMin: ['su', 'má', 'tý', 'mi', 'hó', 'fr', 'le'],
-  months: ['januar', 'februar', 'mars', 'apríl', 'mai', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'desember'],
+  months: [
+    'januar',
+    'februar',
+    'mars',
+    'apríl',
+    'mai',
+    'juni',
+    'juli',
+    'august',
+    'september',
+    'oktober',
+    'november',
+    'desember',
+  ],
   monthsShort: ['jan', 'feb', 'mar', 'apr', 'mai', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'des'],
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +63,7 @@ const localeFo: Readonly<Locale> = {
     y: 'eitt ár',
     yy: '%d ár',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Faroese doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

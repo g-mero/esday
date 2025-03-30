@@ -8,9 +8,35 @@ const localeMn: Readonly<Locale> = {
   weekdays: ['Ням', 'Даваа', 'Мягмар', 'Лхагва', 'Пүрэв', 'Баасан', 'Бямба'],
   weekdaysShort: ['Ням', 'Дав', 'Мяг', 'Лха', 'Пүр', 'Баа', 'Бям'],
   weekdaysMin: ['Ня', 'Да', 'Мя', 'Лх', 'Пү', 'Ба', 'Бя'],
-  months: ['Нэгдүгээр сар', 'Хоёрдугаар сар', 'Гуравдугаар сар', 'Дөрөвдүгээр сар', 'Тавдугаар сар', 'Зургадугаар сар', 'Долдугаар сар', 'Наймдугаар сар', 'Есдүгээр сар', 'Аравдугаар сар', 'Арван нэгдүгээр сар', 'Арван хоёрдугаар сар'],
-  monthsShort: ['1 сар', '2 сар', '3 сар', '4 сар', '5 сар', '6 сар', '7 сар', '8 сар', '9 сар', '10 сар', '11 сар', '12 сар'],
-  ordinal: n => `${n}`,
+  months: [
+    'Нэгдүгээр сар',
+    'Хоёрдугаар сар',
+    'Гуравдугаар сар',
+    'Дөрөвдүгээр сар',
+    'Тавдугаар сар',
+    'Зургадугаар сар',
+    'Долдугаар сар',
+    'Наймдугаар сар',
+    'Есдүгээр сар',
+    'Аравдугаар сар',
+    'Арван нэгдүгээр сар',
+    'Арван хоёрдугаар сар',
+  ],
+  monthsShort: [
+    '1 сар',
+    '2 сар',
+    '3 сар',
+    '4 сар',
+    '5 сар',
+    '6 сар',
+    '7 сар',
+    '8 сар',
+    '9 сар',
+    '10 сар',
+    '11 сар',
+    '12 сар',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,13 +68,11 @@ const localeMn: Readonly<Locale> = {
     yy: '%d ж',
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {
     if (hour < 12) {
       return 'ҮӨ'
     }
-    else {
-      return 'ҮХ'
-    }
+    return 'ҮХ'
   },
 }
 

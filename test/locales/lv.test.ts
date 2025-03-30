@@ -33,8 +33,7 @@ describe('locale lv', () => {
     expect(locale.months).toBeDefined()
     if (Array.isArray(locale.months)) {
       expect(locale.months.length).toBe(12)
-    }
-    else {
+    } else {
       expect(locale.months).toBeTypeOf('function')
     }
   })
@@ -43,8 +42,7 @@ describe('locale lv', () => {
     expect(locale.monthsShort).toBeDefined()
     if (Array.isArray(locale.monthsShort)) {
       expect(locale.monthsShort.length).toBe(12)
-    }
-    else {
+    } else {
       expect(locale.monthsShort).toBeTypeOf('function')
     }
   })
@@ -57,13 +55,13 @@ describe('locale lv', () => {
   it('should have numeric property named weekStart', () => {
     expect(locale.weekStart).toBeDefined()
     expect(locale.weekStart).toBeTypeOf('number')
-    expect(locale.weekStart).toSatisfy((value: number) => (value >= 0) && (value <= 6))
+    expect(locale.weekStart).toSatisfy((value: number) => value >= 0 && value <= 6)
   })
 
   it('should have numeric property named yearStart', () => {
     expect(locale.yearStart).toBeDefined()
     expect(locale.yearStart).toBeTypeOf('number')
-    expect(locale.yearStart).toSatisfy((value: number) => (value >= 1) && (value <= 7))
+    expect(locale.yearStart).toSatisfy((value: number) => value >= 1 && value <= 7)
   })
 
   it('should have have an object named "formats" with 10 properties', () => {

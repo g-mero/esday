@@ -5,8 +5,34 @@
 import type { EsDay } from 'esday'
 import type { Locale, MonthNames, MonthNamesFunction } from '~/plugins/locale'
 
-const monthFormat: MonthNames = ['sausio', 'vasario', 'kovo', 'balandžio', 'gegužės', 'birželio', 'liepos', 'rugpjūčio', 'rugsėjo', 'spalio', 'lapkričio', 'gruodžio']
-const monthStandalone: MonthNames = ['sausis', 'vasaris', 'kovas', 'balandis', 'gegužė', 'birželis', 'liepa', 'rugpjūtis', 'rugsėjis', 'spalis', 'lapkritis', 'gruodis']
+const monthFormat: MonthNames = [
+  'sausio',
+  'vasario',
+  'kovo',
+  'balandžio',
+  'gegužės',
+  'birželio',
+  'liepos',
+  'rugpjūčio',
+  'rugsėjo',
+  'spalio',
+  'lapkričio',
+  'gruodžio',
+]
+const monthStandalone: MonthNames = [
+  'sausis',
+  'vasaris',
+  'kovas',
+  'balandis',
+  'gegužė',
+  'birželis',
+  'liepa',
+  'rugpjūtis',
+  'rugsėjis',
+  'spalis',
+  'lapkritis',
+  'gruodis',
+]
 
 const MONTHS_IN_FORMAT = /D[oD]?(?:\[[^[\]]*\]|\s)+MMMM?|MMMM?(?:\[[^[\]]*\]|\s)+D[oD]?/
 
@@ -21,12 +47,20 @@ months.standalone = monthStandalone
 
 const localeLt: Locale = {
   name: 'lt',
-  weekdays: ['sekmadienis', 'pirmadienis', 'antradienis', 'trečiadienis', 'ketvirtadienis', 'penktadienis', 'šeštadienis'],
+  weekdays: [
+    'sekmadienis',
+    'pirmadienis',
+    'antradienis',
+    'trečiadienis',
+    'ketvirtadienis',
+    'penktadienis',
+    'šeštadienis',
+  ],
   weekdaysShort: ['sek', 'pir', 'ant', 'tre', 'ket', 'pen', 'šeš'],
   weekdaysMin: ['s', 'p', 'a', 't', 'k', 'pn', 'š'],
   months,
   monthsShort: ['sau', 'vas', 'kov', 'bal', 'geg', 'bir', 'lie', 'rgp', 'rgs', 'spa', 'lap', 'grd'],
-  ordinal: n => `${n}-oji`,
+  ordinal: (n) => `${n}-oji`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -57,7 +91,7 @@ const localeLt: Locale = {
     y: 'metus',
     yy: '%d metus',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Lithuanian doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

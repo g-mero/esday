@@ -10,8 +10,21 @@ const localeKo: Readonly<Locale> = {
   weekdaysShort: ['일', '월', '화', '수', '목', '금', '토'],
   weekdaysMin: ['일', '월', '화', '수', '목', '금', '토'],
   months: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-  monthsShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-  ordinal: n => `${n}일`,
+  monthsShort: [
+    '1월',
+    '2월',
+    '3월',
+    '4월',
+    '5월',
+    '6월',
+    '7월',
+    '8월',
+    '9월',
+    '10월',
+    '11월',
+    '12월',
+  ],
+  ordinal: (n) => `${n}일`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -43,8 +56,8 @@ const localeKo: Readonly<Locale> = {
     yy: '%d년',
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
-    return (hour < 12) ? '오전' : '오후'
+  meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {
+    return hour < 12 ? '오전' : '오후'
   },
 }
 

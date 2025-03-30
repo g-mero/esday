@@ -37,9 +37,35 @@ const locale: Readonly<Locale> = {
   weekdays: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
   weekdaysShort: ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'],
   weekdaysMin: ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'],
-  months: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
-  monthsShort: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
-  ordinal: n => `${n}`,
+  months: [
+    'يناير',
+    'فبراير',
+    'مارس',
+    'أبريل',
+    'مايو',
+    'يونيو',
+    'يوليو',
+    'أغسطس',
+    'سبتمبر',
+    'أكتوبر',
+    'نوفمبر',
+    'ديسمبر',
+  ],
+  monthsShort: [
+    'يناير',
+    'فبراير',
+    'مارس',
+    'أبريل',
+    'مايو',
+    'يونيو',
+    'يوليو',
+    'أغسطس',
+    'سبتمبر',
+    'أكتوبر',
+    'نوفمبر',
+    'ديسمبر',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 6, // Saturday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
@@ -71,13 +97,22 @@ const locale: Readonly<Locale> = {
     yy: '%d أعوام',
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => (hour > 12 ? 'م' : 'ص'),
-  preParse: (dateString: string) => dateString
-    .replace(/[١٢٣٤٥٦٧٨٩٠]/g, match => arabicToEnglishNumbersMap[match as keyof typeof arabicToEnglishNumbersMap])
-    .replace(/،/g, ','),
-  postFormat: (formattedDate: string) => formattedDate
-    .replace(/\d/g, match => englishToArabicNumbersMap[Number(match) as keyof typeof englishToArabicNumbersMap])
-    .replace(/,/g, '،'),
+  meridiem: (hour: number, _minute: number, _isLowercase: boolean) => (hour > 12 ? 'م' : 'ص'),
+  preParse: (dateString: string) =>
+    dateString
+      .replace(
+        /[١٢٣٤٥٦٧٨٩٠]/g,
+        (match) => arabicToEnglishNumbersMap[match as keyof typeof arabicToEnglishNumbersMap],
+      )
+      .replace(/،/g, ','),
+  postFormat: (formattedDate: string) =>
+    formattedDate
+      .replace(
+        /\d/g,
+        (match) =>
+          englishToArabicNumbersMap[Number(match) as keyof typeof englishToArabicNumbersMap],
+      )
+      .replace(/,/g, '،'),
 }
 
 export default locale

@@ -9,9 +9,22 @@ const localeBi: Readonly<Locale> = {
   weekdays: ['Sande', 'Mande', 'Tusde', 'Wenesde', 'Tosde', 'Fraede', 'Sarade'],
   weekdaysShort: ['San', 'Man', 'Tus', 'Wen', 'Tos', 'Frae', 'Sar'],
   weekdaysMin: ['San', 'Ma', 'Tu', 'We', 'To', 'Fr', 'Sar'],
-  months: ['Januari', 'Februari', 'Maj', 'Eprel', 'Mei', 'Jun', 'Julae', 'Okis', 'Septemba', 'Oktoba', 'Novemba', 'Disemba'],
+  months: [
+    'Januari',
+    'Februari',
+    'Maj',
+    'Eprel',
+    'Mei',
+    'Jun',
+    'Julae',
+    'Okis',
+    'Septemba',
+    'Oktoba',
+    'Novemba',
+    'Disemba',
+  ],
   monthsShort: ['Jan', 'Feb', 'Maj', 'Epr', 'Mai', 'Jun', 'Jul', 'Oki', 'Sep', 'Okt', 'Nov', 'Dis'],
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,9 +55,9 @@ const localeBi: Readonly<Locale> = {
     y: 'wan yia',
     yy: '%d yia',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Bislama doesn't have AM/PM, so return default values
-    const m = (hour < 12 ? 'AM' : 'PM')
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
 }

@@ -8,9 +8,22 @@ const localeMk: Readonly<Locale> = {
   weekdays: ['недела', 'понеделник', 'вторник', 'среда', 'четврток', 'петок', 'сабота'],
   weekdaysShort: ['нед', 'пон', 'вто', 'сре', 'чет', 'пет', 'саб'],
   weekdaysMin: ['нe', 'пo', 'вт', 'ср', 'че', 'пе', 'сa'],
-  months: ['јануари', 'февруари', 'март', 'април', 'мај', 'јуни', 'јули', 'август', 'септември', 'октомври', 'ноември', 'декември'],
+  months: [
+    'јануари',
+    'февруари',
+    'март',
+    'април',
+    'мај',
+    'јуни',
+    'јули',
+    'август',
+    'септември',
+    'октомври',
+    'ноември',
+    'декември',
+  ],
   monthsShort: ['јан', 'фев', 'мар', 'апр', 'мај', 'јун', 'јул', 'авг', 'сеп', 'окт', 'ное', 'дек'],
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -41,7 +54,7 @@ const localeMk: Readonly<Locale> = {
     y: 'година',
     yy: '%d години',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Macedonian doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

@@ -9,9 +9,22 @@ const localeEo: Readonly<Locale> = {
   weekdays: ['dimanĉo', 'lundo', 'mardo', 'merkredo', 'ĵaŭdo', 'vendredo', 'sabato'],
   weekdaysShort: ['dim', 'lun', 'mard', 'merk', 'ĵaŭ', 'ven', 'sab'],
   weekdaysMin: ['di', 'lu', 'ma', 'me', 'ĵa', 've', 'sa'],
-  months: ['januaro', 'februaro', 'marto', 'aprilo', 'majo', 'junio', 'julio', 'aŭgusto', 'septembro', 'oktobro', 'novembro', 'decembro'],
+  months: [
+    'januaro',
+    'februaro',
+    'marto',
+    'aprilo',
+    'majo',
+    'junio',
+    'julio',
+    'aŭgusto',
+    'septembro',
+    'oktobro',
+    'novembro',
+    'decembro',
+  ],
   monthsShort: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aŭg', 'sep', 'okt', 'nov', 'dec'],
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +55,7 @@ const localeEo: Readonly<Locale> = {
     y: 'jaro',
     yy: '%d jaroj',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Esperanto doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

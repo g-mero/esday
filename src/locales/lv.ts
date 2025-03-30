@@ -6,12 +6,33 @@ import type { Locale } from '~/plugins/locale'
 
 const localeLv: Locale = {
   name: 'lv',
-  weekdays: ['svētdiena', 'pirmdiena', 'otrdiena', 'trešdiena', 'ceturtdiena', 'piektdiena', 'sestdiena'],
+  weekdays: [
+    'svētdiena',
+    'pirmdiena',
+    'otrdiena',
+    'trešdiena',
+    'ceturtdiena',
+    'piektdiena',
+    'sestdiena',
+  ],
   weekdaysShort: ['Sv', 'P', 'O', 'T', 'C', 'Pk', 'S'],
   weekdaysMin: ['Sv', 'P', 'O', 'T', 'C', 'Pk', 'S'],
-  months: ['janvāris', 'februāris', 'marts', 'aprīlis', 'maijs', 'jūnijs', 'jūlijs', 'augusts', 'septembris', 'oktobris', 'novembris', 'decembris'],
+  months: [
+    'janvāris',
+    'februāris',
+    'marts',
+    'aprīlis',
+    'maijs',
+    'jūnijs',
+    'jūlijs',
+    'augusts',
+    'septembris',
+    'oktobris',
+    'novembris',
+    'decembris',
+  ],
   monthsShort: ['jan', 'feb', 'mar', 'apr', 'mai', 'jūn', 'jūl', 'aug', 'sep', 'okt', 'nov', 'dec'],
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +63,7 @@ const localeLv: Locale = {
     y: 'gada',
     yy: '%d gadiem',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Latvian doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

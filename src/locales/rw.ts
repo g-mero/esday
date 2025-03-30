@@ -6,12 +6,62 @@ import type { Locale } from '~/plugins/locale'
 
 const localeRw: Readonly<Locale> = {
   name: 'rw',
-  weekdays: ['Ku Cyumweru', 'Kuwa Mbere', 'Kuwa Kabiri', 'Kuwa Gatatu', 'Kuwa Kane', 'Kuwa Gatanu', 'Kuwa Gatandatu'],
-  weekdaysShort: ['Ku Cyumweru', 'Kuwa Mbere', 'Kuwa Kabiri', 'Kuwa Gatatu', 'Kuwa Kane', 'Kuwa Gatanu', 'Kuwa Gatandatu'],
-  weekdaysMin: ['Ku Cyumweru', 'Kuwa Mbere', 'Kuwa Kabiri', 'Kuwa Gatatu', 'Kuwa Kane', 'Kuwa Gatanu', 'Kuwa Gatandatu'],
-  months: ['Mutarama', 'Gashyantare', 'Werurwe', 'Mata', 'Gicurasi', 'Kamena', 'Nyakanga', 'Kanama', 'Nzeri', 'Ukwakira', 'Ugushyingo', 'Ukuboza'],
-  monthsShort: ['Mutarama', 'Gashyantare', 'Werurwe', 'Mata', 'Gicurasi', 'Kamena', 'Nyakanga', 'Kanama', 'Nzeri', 'Ukwakira', 'Ugushyingo', 'Ukuboza'],
-  ordinal: n => `${n}`,
+  weekdays: [
+    'Ku Cyumweru',
+    'Kuwa Mbere',
+    'Kuwa Kabiri',
+    'Kuwa Gatatu',
+    'Kuwa Kane',
+    'Kuwa Gatanu',
+    'Kuwa Gatandatu',
+  ],
+  weekdaysShort: [
+    'Ku Cyumweru',
+    'Kuwa Mbere',
+    'Kuwa Kabiri',
+    'Kuwa Gatatu',
+    'Kuwa Kane',
+    'Kuwa Gatanu',
+    'Kuwa Gatandatu',
+  ],
+  weekdaysMin: [
+    'Ku Cyumweru',
+    'Kuwa Mbere',
+    'Kuwa Kabiri',
+    'Kuwa Gatatu',
+    'Kuwa Kane',
+    'Kuwa Gatanu',
+    'Kuwa Gatandatu',
+  ],
+  months: [
+    'Mutarama',
+    'Gashyantare',
+    'Werurwe',
+    'Mata',
+    'Gicurasi',
+    'Kamena',
+    'Nyakanga',
+    'Kanama',
+    'Nzeri',
+    'Ukwakira',
+    'Ugushyingo',
+    'Ukuboza',
+  ],
+  monthsShort: [
+    'Mutarama',
+    'Gashyantare',
+    'Werurwe',
+    'Mata',
+    'Gicurasi',
+    'Kamena',
+    'Nyakanga',
+    'Kanama',
+    'Nzeri',
+    'Ukwakira',
+    'Ugushyingo',
+    'Ukuboza',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +92,7 @@ const localeRw: Readonly<Locale> = {
     y: 'umwaka',
     yy: '%d imyaka',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Kinyarwanda doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

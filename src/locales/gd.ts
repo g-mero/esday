@@ -6,12 +6,46 @@ import type { Locale } from '~/plugins/locale'
 
 const localeGd: Readonly<Locale> = {
   name: 'gd',
-  weekdays: ['Didòmhnaich', 'Diluain', 'Dimàirt', 'Diciadain', 'Diardaoin', 'Dihaoine', 'Disathairne'],
+  weekdays: [
+    'Didòmhnaich',
+    'Diluain',
+    'Dimàirt',
+    'Diciadain',
+    'Diardaoin',
+    'Dihaoine',
+    'Disathairne',
+  ],
   weekdaysShort: ['Did', 'Dil', 'Dim', 'Dic', 'Dia', 'Dih', 'Dis'],
   weekdaysMin: ['Dò', 'Lu', 'Mà', 'Ci', 'Ar', 'Ha', 'Sa'],
-  months: ['Am Faoilleach', 'An Gearran', 'Am Màrt', 'An Giblean', 'An Cèitean', 'An t-Ògmhios', 'An t-Iuchar', 'An Lùnastal', 'An t-Sultain', 'An Dàmhair', 'An t-Samhain', 'An Dùbhlachd'],
-  monthsShort: ['Faoi', 'Gear', 'Màrt', 'Gibl', 'Cèit', 'Ògmh', 'Iuch', 'Lùn', 'Sult', 'Dàmh', 'Samh', 'Dùbh'],
-  ordinal: n => `${n}`,
+  months: [
+    'Am Faoilleach',
+    'An Gearran',
+    'Am Màrt',
+    'An Giblean',
+    'An Cèitean',
+    'An t-Ògmhios',
+    'An t-Iuchar',
+    'An Lùnastal',
+    'An t-Sultain',
+    'An Dàmhair',
+    'An t-Samhain',
+    'An Dùbhlachd',
+  ],
+  monthsShort: [
+    'Faoi',
+    'Gear',
+    'Màrt',
+    'Gibl',
+    'Cèit',
+    'Ògmh',
+    'Iuch',
+    'Lùn',
+    'Sult',
+    'Dàmh',
+    'Samh',
+    'Dùbh',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +76,7 @@ const localeGd: Readonly<Locale> = {
     y: 'bliadhna',
     yy: '%d bliadhna',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Scottish Gaelic doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

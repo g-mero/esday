@@ -32,7 +32,11 @@ const englishToMarathiNumbersMap = {
   0: '०',
 }
 
-function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolean, range: string): string {
+function relativeTimeFormatter(
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  range: string,
+): string {
   let output = ''
   if (withoutSuffix) {
     switch (range) {
@@ -73,8 +77,7 @@ function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolea
         output = '%d वर्षे'
         break
     }
-  }
-  else {
+  } else {
     switch (range) {
       case 's':
         output = 'काही सेकंदां'
@@ -122,9 +125,35 @@ const localeMr: Readonly<Locale> = {
   weekdays: ['रविवार', 'सोमवार', 'मंगळवार', 'बुधवार', 'गुरूवार', 'शुक्रवार', 'शनिवार'],
   weekdaysShort: ['रवि', 'सोम', 'मंगळ', 'बुध', 'गुरू', 'शुक्र', 'शनि'],
   weekdaysMin: ['र', 'सो', 'मं', 'बु', 'गु', 'शु', 'श'],
-  months: ['जानेवारी', 'फेब्रुवारी', 'मार्च', 'एप्रिल', 'मे', 'जून', 'जुलै', 'ऑगस्ट', 'सप्टेंबर', 'ऑक्टोबर', 'नोव्हेंबर', 'डिसेंबर'],
-  monthsShort: ['जाने.', 'फेब्रु.', 'मार्च.', 'एप्रि.', 'मे.', 'जून.', 'जुलै.', 'ऑग.', 'सप्टें.', 'ऑक्टो.', 'नोव्हें.', 'डिसें.'],
-  ordinal: n => `${n}`,
+  months: [
+    'जानेवारी',
+    'फेब्रुवारी',
+    'मार्च',
+    'एप्रिल',
+    'मे',
+    'जून',
+    'जुलै',
+    'ऑगस्ट',
+    'सप्टेंबर',
+    'ऑक्टोबर',
+    'नोव्हेंबर',
+    'डिसेंबर',
+  ],
+  monthsShort: [
+    'जाने.',
+    'फेब्रु.',
+    'मार्च.',
+    'एप्रि.',
+    'मे.',
+    'जून.',
+    'जुलै.',
+    'ऑग.',
+    'सप्टें.',
+    'ऑक्टो.',
+    'नोव्हें.',
+    'डिसें.',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
@@ -156,27 +185,32 @@ const localeMr: Readonly<Locale> = {
     yy: relativeTimeFormatter,
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {
     if (hour >= 0 && hour < 6) {
       return 'पहाटे'
     }
-    else if (hour < 12) {
+    if (hour < 12) {
       return 'सकाळी'
     }
-    else if (hour < 17) {
+    if (hour < 17) {
       return 'दुपारी'
     }
-    else if (hour < 20) {
+    if (hour < 20) {
       return 'सायंकाळी'
     }
-    else {
-      return 'रात्री'
-    }
+    return 'रात्री'
   },
-  preParse: (dateString: string) => dateString
-    .replace(/[१२३४५६७८९०]/g, match => marathiToEnglishNumbersMap[match as keyof typeof marathiToEnglishNumbersMap]),
-  postFormat: (formattedDate: string) => formattedDate
-    .replace(/\d/g, match => englishToMarathiNumbersMap[Number(match) as keyof typeof englishToMarathiNumbersMap]),
+  preParse: (dateString: string) =>
+    dateString.replace(
+      /[१२३४५६७८९०]/g,
+      (match) => marathiToEnglishNumbersMap[match as keyof typeof marathiToEnglishNumbersMap],
+    ),
+  postFormat: (formattedDate: string) =>
+    formattedDate.replace(
+      /\d/g,
+      (match) =>
+        englishToMarathiNumbersMap[Number(match) as keyof typeof englishToMarathiNumbersMap],
+    ),
 }
 
 export default localeMr

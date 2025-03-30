@@ -10,16 +10,51 @@ const localeSrCyrl = cloneLocale(localeSr)
 const weekdays = ['Недеља', 'Понедељак', 'Уторак', 'Среда', 'Четвртак', 'Петак', 'Субота']
 const weekdaysShort = ['Нед.', 'Пон.', 'Уто.', 'Сре.', 'Чет.', 'Пет.', 'Суб.']
 const weekdaysMin = ['не', 'по', 'ут', 'ср', 'че', 'пе', 'су']
-const months = ['Јануар', 'Фебруар', 'Март', 'Април', 'Мај', 'Јун', 'Јул', 'Август', 'Септембар', 'Октобар', 'Новембар', 'Децембар']
-const monthsShort = ['Јан.', 'Феб.', 'Мар.', 'Апр.', 'Мај', 'Јун', 'Јул', 'Авг.', 'Сеп.', 'Окт.', 'Нов.', 'Дец.']
+const months = [
+  'Јануар',
+  'Фебруар',
+  'Март',
+  'Април',
+  'Мај',
+  'Јун',
+  'Јул',
+  'Август',
+  'Септембар',
+  'Октобар',
+  'Новембар',
+  'Децембар',
+]
+const monthsShort = [
+  'Јан.',
+  'Феб.',
+  'Мар.',
+  'Апр.',
+  'Мај',
+  'Јун',
+  'Јул',
+  'Авг.',
+  'Сеп.',
+  'Окт.',
+  'Нов.',
+  'Дец.',
+]
 
 function plural(timeValue: number, wordKey: string[]) {
-  if (timeValue % 10 >= 1 && timeValue % 10 <= 4 && (timeValue % 100 < 10 || timeValue % 100 >= 20)) {
+  if (
+    timeValue % 10 >= 1 &&
+    timeValue % 10 <= 4 &&
+    (timeValue % 100 < 10 || timeValue % 100 >= 20)
+  ) {
     return timeValue % 10 === 1 ? wordKey[0] : wordKey[1]
   }
   return wordKey[2]
 }
-function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolean, range: string, isFuture: boolean): string {
+function relativeTimeFormatter(
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  range: string,
+  isFuture: boolean,
+): string {
   const formats = {
     ss: ['секунда', 'секунде', 'секунди'],
     m: ['један минут', 'једног минута'],
@@ -38,15 +73,13 @@ function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolea
 
   if (range.length === 1) {
     // Nominativ
-    if (range === 'y' && withoutSuffix)
-      return 'једна година'
+    if (range === 'y' && withoutSuffix) return 'једна година'
     return isFuture || withoutSuffix ? wordKey[0] : wordKey[1]
   }
 
   const word = plural(+timeValue, wordKey)
   // Nominativ
-  if (range === 'yy' && withoutSuffix && word === '%d годину')
-    return `${timeValue} година`
+  if (range === 'yy' && withoutSuffix && word === '%d годину') return `${timeValue} година`
 
   return word.replace('%d', timeValue.toString())
 }

@@ -54,7 +54,7 @@ const localeKu: Readonly<Locale> = {
   weekdaysMin: ['ی', 'د', 'س', 'چ', 'پ', 'هـ', 'ش'],
   months,
   monthsShort: months,
-  ordinal: n => `${n}`,
+  ordinal: (n) => `${n}`,
   weekStart: 6, // Saturday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
@@ -86,15 +86,24 @@ const localeKu: Readonly<Locale> = {
     yy: '%d ساڵ',
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
-    return (hour < 12) ? 'پ.ن' : 'د.ن'
+  meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {
+    return hour < 12 ? 'پ.ن' : 'د.ن'
   },
-  preParse: (dateString: string) => dateString
-    .replace(/[١٢٣٤٥٦٧٨٩٠]/g, match => arabicToEnglishNumbersMap[match as keyof typeof arabicToEnglishNumbersMap])
-    .replace(/،/g, ','),
-  postFormat: (formattedDate: string) => formattedDate
-    .replace(/\d/g, match => englishToArabicNumbersMap[Number(match) as keyof typeof englishToArabicNumbersMap])
-    .replace(/,/g, '،'),
+  preParse: (dateString: string) =>
+    dateString
+      .replace(
+        /[١٢٣٤٥٦٧٨٩٠]/g,
+        (match) => arabicToEnglishNumbersMap[match as keyof typeof arabicToEnglishNumbersMap],
+      )
+      .replace(/،/g, ','),
+  postFormat: (formattedDate: string) =>
+    formattedDate
+      .replace(
+        /\d/g,
+        (match) =>
+          englishToArabicNumbersMap[Number(match) as keyof typeof englishToArabicNumbersMap],
+      )
+      .replace(/,/g, '،'),
 }
 
 export default localeKu

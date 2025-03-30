@@ -4,19 +4,24 @@
 
 import type { Locale } from '~/plugins/locale'
 
-function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolean, range: string, isFuture: boolean): string {
+function relativeTimeFormatter(
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  range: string,
+  isFuture: boolean,
+): string {
   const format = {
-    s: ['viensas secunds', '\'iensas secunds'],
+    s: ['viensas secunds', "'iensas secunds"],
     ss: [`${timeValue} secunds`, `${timeValue} secunds`],
-    m: ['\'n míut', '\'iens míut'],
+    m: ["'n míut", "'iens míut"],
     mm: [`${timeValue} míuts`, `${timeValue} míuts`],
-    h: ['\'n þora', '\'iensa þora'],
+    h: ["'n þora", "'iensa þora"],
     hh: [`${timeValue} þoras`, `${timeValue} þoras`],
-    d: ['\'n ziua', '\'iensa ziua'],
+    d: ["'n ziua", "'iensa ziua"],
     dd: [`${timeValue} ziuas`, `${timeValue} ziuas`],
-    M: ['\'n mes', '\'iens mes'],
+    M: ["'n mes", "'iens mes"],
     MM: [`${timeValue} mesen`, `${timeValue} mesen`],
-    y: ['\'n ar', '\'iens ar'],
+    y: ["'n ar", "'iens ar"],
     yy: [`${timeValue} ars`, `${timeValue} ars`],
   }
   return isFuture
@@ -31,9 +36,22 @@ const localeTzl: Readonly<Locale> = {
   weekdays: ['Súladi', 'Lúneçi', 'Maitzi', 'Márcuri', 'Xhúadi', 'Viénerçi', 'Sáturi'],
   weekdaysShort: ['Súl', 'Lún', 'Mai', 'Már', 'Xhú', 'Vié', 'Sát'],
   weekdaysMin: ['Sú', 'Lú', 'Ma', 'Má', 'Xh', 'Vi', 'Sá'],
-  months: ['Januar', 'Fevraglh', 'Març', 'Avrïu', 'Mai', 'Gün', 'Julia', 'Guscht', 'Setemvar', 'Listopäts', 'Noemvar', 'Zecemvar'],
+  months: [
+    'Januar',
+    'Fevraglh',
+    'Març',
+    'Avrïu',
+    'Mai',
+    'Gün',
+    'Julia',
+    'Guscht',
+    'Setemvar',
+    'Listopäts',
+    'Noemvar',
+    'Zecemvar',
+  ],
   monthsShort: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Gün', 'Jul', 'Gus', 'Set', 'Lis', 'Noe', 'Zec'],
-  ordinal: n => `${n}.`,
+  ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -64,13 +82,11 @@ const localeTzl: Readonly<Locale> = {
     y: relativeTimeFormatter,
     yy: relativeTimeFormatter,
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     if (hour > 11) {
-      return isLowercase ? 'd\'o' : 'D\'O'
+      return isLowercase ? "d'o" : "D'O"
     }
-    else {
-      return isLowercase ? 'd\'a' : 'D\'A'
-    }
+    return isLowercase ? "d'a" : "D'A"
   },
 }
 

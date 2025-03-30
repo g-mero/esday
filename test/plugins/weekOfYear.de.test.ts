@@ -1,7 +1,7 @@
 /* eslint-disable dot-notation */
 import { esday } from 'esday'
 import moment from 'moment'
-import { expectSame } from 'test/util';
+import { expectSame } from 'test/util'
 import { describe, expect, it } from 'vitest'
 import localeDe from '~/locales/de'
 import { localePlugin, weekOfYearPlugin } from '~/plugins'
@@ -38,7 +38,7 @@ describe('week plugin - locale "de"', () => {
     { sourceDate: '2025-06-20', expected: 25, weekday: 'Thursday' },
   ])('should return the correct week number for "$sourceDate"', ({ sourceDate, expected }) => {
     expect(esday(sourceDate).week()).toBe(expected)
-    expectSame(esday => esday(sourceDate).week())
+    expectSame((esday) => esday(sourceDate).week())
   })
 
   it.each([
@@ -51,7 +51,7 @@ describe('week plugin - locale "de"', () => {
     { sourceDate: '2025-01-01', expected: 1, weekday: 'Wednesday' },
   ])('should handle year transition correctly for "$sourceDate"', ({ sourceDate, expected }) => {
     expect(esday(sourceDate).week()).toBe(expected)
-    expectSame(esday => esday(sourceDate).week())
+    expectSame((esday) => esday(sourceDate).week())
   })
 
   it('should set the correct week number and adjust the date', () => {

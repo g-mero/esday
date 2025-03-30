@@ -9,9 +9,35 @@ const localeFy: Readonly<Locale> = {
   weekdays: ['snein', 'moandei', 'tiisdei', 'woansdei', 'tongersdei', 'freed', 'sneon'],
   weekdaysShort: ['si.', 'mo.', 'ti.', 'wo.', 'to.', 'fr.', 'so.'],
   weekdaysMin: ['Si', 'Mo', 'Ti', 'Wo', 'To', 'Fr', 'So'],
-  months: ['jannewaris', 'febrewaris', 'maart', 'april', 'maaie', 'juny', 'july', 'augustus', 'septimber', 'oktober', 'novimber', 'desimber'],
-  monthsShort: ['jan.', 'feb.', 'mrt.', 'apr.', 'mai', 'jun.', 'jul.', 'aug.', 'sep.', 'okt.', 'nov.', 'des.'],
-  ordinal: n => `${n}`,
+  months: [
+    'jannewaris',
+    'febrewaris',
+    'maart',
+    'april',
+    'maaie',
+    'juny',
+    'july',
+    'augustus',
+    'septimber',
+    'oktober',
+    'novimber',
+    'desimber',
+  ],
+  monthsShort: [
+    'jan.',
+    'feb.',
+    'mrt.',
+    'apr.',
+    'mai',
+    'jun.',
+    'jul.',
+    'aug.',
+    'sep.',
+    'okt.',
+    'nov.',
+    'des.',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,7 +68,7 @@ const localeFy: Readonly<Locale> = {
     y: 'ien jier',
     yy: '%d jierren',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Frisian doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m

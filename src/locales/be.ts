@@ -9,9 +9,35 @@ const localeBe: Readonly<Locale> = {
   weekdays: ['нядзелю', 'панядзелак', 'аўторак', 'сераду', 'чацвер', 'пятніцу', 'суботу'],
   weekdaysShort: ['нд', 'пн', 'ат', 'ср', 'чц', 'пт', 'сб'],
   weekdaysMin: ['нд', 'пн', 'ат', 'ср', 'чц', 'пт', 'сб'],
-  months: ['студзеня', 'лютага', 'сакавіка', 'красавіка', 'траўня', 'чэрвеня', 'ліпеня', 'жніўня', 'верасня', 'кастрычніка', 'лістапада', 'снежня'],
-  monthsShort: ['студ', 'лют', 'сак', 'крас', 'трав', 'чэрв', 'ліп', 'жнів', 'вер', 'каст', 'ліст', 'снеж'],
-  ordinal: n => `${n}`,
+  months: [
+    'студзеня',
+    'лютага',
+    'сакавіка',
+    'красавіка',
+    'траўня',
+    'чэрвеня',
+    'ліпеня',
+    'жніўня',
+    'верасня',
+    'кастрычніка',
+    'лістапада',
+    'снежня',
+  ],
+  monthsShort: [
+    'студ',
+    'лют',
+    'сак',
+    'крас',
+    'трав',
+    'чэрв',
+    'ліп',
+    'жнів',
+    'вер',
+    'каст',
+    'ліст',
+    'снеж',
+  ],
+  ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
@@ -42,9 +68,9 @@ const localeBe: Readonly<Locale> = {
     y: 'год',
     yy: '%d гадоў',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Belarusian doesn't have AM/PM, so return default values
-    const m = (hour < 12 ? 'AM' : 'PM')
+    const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
 }

@@ -37,9 +37,35 @@ const localeBn: Readonly<Locale> = {
   weekdays: ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'],
   weekdaysShort: ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পতি', 'শুক্র', 'শনি'],
   weekdaysMin: ['রবি', 'সোম', 'মঙ্গ', 'বুধ', 'বৃহঃ', 'শুক্র', 'শনি'],
-  months: ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'],
-  monthsShort: ['জানু', 'ফেব্রু', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্ট', 'অক্টো', 'নভে', 'ডিসে'],
-  ordinal: n => `${n}`, // No special ordinal format
+  months: [
+    'জানুয়ারি',
+    'ফেব্রুয়ারি',
+    'মার্চ',
+    'এপ্রিল',
+    'মে',
+    'জুন',
+    'জুলাই',
+    'আগস্ট',
+    'সেপ্টেম্বর',
+    'অক্টোবর',
+    'নভেম্বর',
+    'ডিসেম্বর',
+  ],
+  monthsShort: [
+    'জানু',
+    'ফেব্রু',
+    'মার্চ',
+    'এপ্রিল',
+    'মে',
+    'জুন',
+    'জুলাই',
+    'আগস্ট',
+    'সেপ্ট',
+    'অক্টো',
+    'নভে',
+    'ডিসে',
+  ],
+  ordinal: (n) => `${n}`, // No special ordinal format
   weekStart: 0, // The file did not contain this information, we will set it to zero as default.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.
   formats: {
@@ -71,26 +97,24 @@ const localeBn: Readonly<Locale> = {
     yy: '%d বছর',
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {
     if (hour < 4) {
       return 'রাত'
     }
-    else if (hour < 10) {
+    if (hour < 10) {
       return 'সকাল'
     }
-    else if (hour < 17) {
+    if (hour < 17) {
       return 'দুপুর'
     }
-    else if (hour < 20) {
+    if (hour < 20) {
       return 'বিকাল'
     }
-    else {
-      return 'রাত'
-    }
+    return 'রাত'
   },
-  preParse: string => string.replace(/[১২৩৪৫৬৭৮৯০]/g, match => bengaliToEnglishNumbersMap[match]),
-  postFormat: string => string.replace(/\d/g, match => englishToBengaliNumbersMap[match]),
-
+  preParse: (string) =>
+    string.replace(/[১২৩৪৫৬৭৮৯০]/g, (match) => bengaliToEnglishNumbersMap[match]),
+  postFormat: (string) => string.replace(/\d/g, (match) => englishToBengaliNumbersMap[match]),
 }
 
 export default localeBn

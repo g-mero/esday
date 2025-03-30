@@ -9,19 +9,33 @@ const localeTet: Readonly<Locale> = {
   weekdays: ['Domingu', 'Segunda', 'Tersa', 'Kuarta', 'Kinta', 'Sesta', 'Sabadu'],
   weekdaysShort: ['Dom', 'Seg', 'Ters', 'Kua', 'Kint', 'Sest', 'Sab'],
   weekdaysMin: ['Do', 'Seg', 'Te', 'Ku', 'Ki', 'Ses', 'Sa'],
-  months: ['Janeiru', 'Fevereiru', 'Marsu', 'Abril', 'Maiu', 'Juñu', 'Jullu', 'Agustu', 'Setembru', 'Outubru', 'Novembru', 'Dezembru'],
+  months: [
+    'Janeiru',
+    'Fevereiru',
+    'Marsu',
+    'Abril',
+    'Maiu',
+    'Juñu',
+    'Jullu',
+    'Agustu',
+    'Setembru',
+    'Outubru',
+    'Novembru',
+    'Dezembru',
+  ],
   monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
   ordinal: (n: number) => {
     const numberTens = n % 10
-    const output = ~~((n % 100) / 10) === 1
-      ? 'th'
-      : numberTens === 1
-        ? 'st'
-        : numberTens === 2
-          ? 'nd'
-          : numberTens === 3
-            ? 'rd'
-            : 'th'
+    const output =
+      ~~((n % 100) / 10) === 1
+        ? 'th'
+        : numberTens === 1
+          ? 'st'
+          : numberTens === 2
+            ? 'nd'
+            : numberTens === 3
+              ? 'rd'
+              : 'th'
     return `${n} ${output}`
   },
   weekStart: 1, // Monday is the first day of the week.
@@ -54,7 +68,7 @@ const localeTet: Readonly<Locale> = {
     y: 'tinan ida',
     yy: 'tinan %d',
   },
-  meridiem: (hour: number, minute: number, isLowercase: boolean) => {
+  meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Tetun Dili doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
