@@ -38,11 +38,11 @@ function absFloor(n: number): number {
 }
 
 /**
- * Get the utcOffset of date.
+ * Get the utcOffset of date in minutes.
  * Use the utcOffset method from the utc plugin if that is loaded;
  * otherwise get it from the javascript Date object of date.
  * @param date - EsDay instance to inspect
- * @returns utcOffset of date
+ * @returns utcOffset of date in minutes
  */
 function utcOffset(date: EsDay): number {
   const defaultOffset = -Math.round(date['$d'].getTimezoneOffset()) || 0
@@ -68,10 +68,10 @@ export function diffImpl(that: EsDay, date: EsDay, units?: UnitType, asFloat = f
         result = diffInMonths / 3
         break
       case C.WEEK:
-        result = (diffInMs - zoneDelta) / C.MILLISECONDS_A_WEEK
+        result = (diffInMs + zoneDelta) / C.MILLISECONDS_A_WEEK
         break
       case C.DAY:
-        result = (diffInMs - zoneDelta) / C.MILLISECONDS_A_DAY
+        result = (diffInMs + zoneDelta) / C.MILLISECONDS_A_DAY
         break
       case C.HOUR:
         result = diffInMs / C.MILLISECONDS_A_HOUR
