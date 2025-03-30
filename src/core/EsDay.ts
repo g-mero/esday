@@ -17,6 +17,7 @@ import type { DateType, UnitType } from '~/types'
 import type { SimpleObject } from '~/types/util-types'
 import { esday } from '.'
 import { addImpl } from './Impl/add'
+import { diffImpl } from './Impl/diff'
 import { formatImpl } from './Impl/format'
 import { parseArrayToDate } from './Impl/parse'
 import { startOfImpl } from './Impl/startOf'
@@ -233,6 +234,10 @@ export class EsDay {
 
   subtract(number: number, units: UnitType) {
     return this.add(-number, units)
+  }
+
+  diff(date: EsDay, units?: UnitType, asFloat = false): number {
+    return diffImpl(this, date, units, asFloat)
   }
 
   get(units: Exclude<UnitType, UnitWeek | UnitQuarter>) {
