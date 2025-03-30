@@ -1,5 +1,5 @@
 import type { EsDay } from 'esday'
-import type { UnitWeek } from '~/common'
+import type { UnitQuarter, UnitWeek } from '~/common'
 import { C, prettyUnit } from '~/common'
 import type { UnitType } from '~/types'
 
@@ -10,7 +10,7 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
   // eslint-disable-next-line dot-notation
   const setterFunc = result['$set']
 
-  const instanceFactorySet = (method: Exclude<UnitType, UnitWeek>, slice: number) => {
+  const instanceFactorySet = (method: Exclude<UnitType, UnitWeek | UnitQuarter>, slice: number) => {
     const argumentStart = [0, 0, 0, 0]
     const argumentEnd = [23, 59, 59, 999]
     const argument = reverse ? argumentEnd.slice(slice) : argumentStart.slice(slice)
