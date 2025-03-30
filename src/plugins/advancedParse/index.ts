@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 import type { DateFromDateComponents, DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
 import { isArray, isString, isUndefined, isValidDate } from '~/common'
 import type { ParsedElements, TokenDefinitions, UpdateParsedElement } from './types'

@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 import type { DateType, EsDay, EsDayFactory, EsDayPlugin, UnitType } from 'esday'
 import { C, prettyUnit, undefinedOr } from '~/common'
 import en from '~/locales/en'

@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 import { esday } from 'esday'
 import moment from 'moment'
 import { describe, expect, it } from 'vitest'
