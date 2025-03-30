@@ -278,7 +278,7 @@ export class EsDay {
 
   private $set(unit: Exclude<UnitType, UnitWeek | UnitQuarter>, values: number[]) {
     if (prettyUnit(unit) === C.DAY) {
-      setUnitInDate(this.$d, C.DATE, this.date() + (values[0] - this.day()))
+      setUnitInDate(this.$d, C.DATE_OF_WEEK, this.date() + (values[0] - this.day()))
     } else {
       setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values)
     }

@@ -23,7 +23,7 @@ export const WEEK = 'week' as const
 export const MONTH = 'month' as const
 export const QUARTER = 'quarter' as const
 export const YEAR = 'year' as const
-export const DATE = 'date' as const
+export const DATE_OF_WEEK = 'date' as const
 
 export const FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ'
 
@@ -58,7 +58,7 @@ export default {
   MONTH,
   QUARTER,
   YEAR,
-  DATE,
+  DATE_OF_WEEK,
   FORMAT_DEFAULT,
   INVALID_DATE,
   INVALID_DATE_STRING,

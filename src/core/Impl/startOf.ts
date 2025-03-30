@@ -44,7 +44,7 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
       break
     }
     case C.DAY:
-    case C.DATE:
+    case C.DATE_OF_WEEK:
       instanceFactorySet(C.HOUR, 0)
       break
     case C.HOUR:
