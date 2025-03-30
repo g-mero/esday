@@ -1,5 +1,5 @@
 {
-  // Disable the default formatter, use eslint instead
+  // Disable the default formatter, use biome instead
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "biomejs.biome",
 

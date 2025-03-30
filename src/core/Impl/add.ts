@@ -1,5 +1,4 @@
 import { C, createInstanceFromExist, prettyUnit } from '~/common'
-/* eslint-disable dot-notation */
 import type { EsDay } from '~/core'
 import type { UnitType } from '~/types'
 

@@ -1,4 +1,3 @@
-/* eslint-disable node/prefer-global/process */
 const { execSync } = require('node:child_process')
 
 const SKIP_FOLDERS = ['.changeset', '.github', '.vscode', '.husky', 'scripts/skipCI.cjs']
@@ -23,7 +22,6 @@ async function main() {
         ),
     )
 
-  // eslint-disable-next-line no-console
   // biome-ignore lint/suspicious/noConsole: required for report of CI action
   console.log(shouldNotSkipCI ? 'false' : 'true')
 }

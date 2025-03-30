@@ -1,4 +1,3 @@
-/* eslint-disable ts/no-unsafe-declaration-merging */
 import type {
   UnitDate,
   UnitDay,

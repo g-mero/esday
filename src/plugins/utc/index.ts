@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 import type { EsDay } from 'esday'
 /**
  * utc plugin
