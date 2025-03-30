@@ -9,11 +9,15 @@ import type { UnitType } from '~/types'
  * @returns b - a in months
  */
 function monthDiff(a: EsDay, b: EsDay): number {
-  // function from moment.js in order to keep the same result
+  // taken from moment.js for compatibility
   if (a.date() < b.date()) return -monthDiff(b, a)
   const wholeMonthDiff = (b.year() - a.year()) * 12 + (b.month() - a.month())
   const anchor: EsDay = a.clone().add(wholeMonthDiff, C.MONTH)
+
+  // is wholeMonthDiff too large?
   const c = b.valueOf() - anchor.valueOf() < 0
+
+  // if so then subtract 1 month else add 1 month
   const anchor2 = a.clone().add(wholeMonthDiff + (c ? -1 : 1), C.MONTH)
   return +(
     -(
