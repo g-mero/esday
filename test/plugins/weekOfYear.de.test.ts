@@ -1,7 +1,7 @@
 /* eslint-disable dot-notation */
 import { esday } from 'esday'
 import moment from 'moment'
-import { expectSame } from 'test/util'
+import { expectSame } from '../util'
 import { describe, expect, it } from 'vitest'
 import localeDe from '~/locales/de'
 import { localePlugin, weekOfYearPlugin } from '~/plugins'
