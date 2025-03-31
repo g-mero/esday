@@ -14,6 +14,7 @@ export default defineConfig({
       headless: true,
       enabled: false,
       provider: 'playwright',
+      screenshotFailures: false,
       instances: [{ browser: 'firefox' }, { browser: 'chromium' }, { browser: 'webkit' }],
     },
     onConsoleLog(log) {
