@@ -1,10 +1,13 @@
-/* eslint-disable dot-notation */
+/**
+ * This test fails in vitest browser mode as the locale 'de' of moment is not loaded
+ */
+
 import { esday } from 'esday'
 import moment from 'moment'
-import { expectSame } from '../util'
 import { describe, expect, it } from 'vitest'
 import localeDe from '~/locales/de'
 import { localePlugin, weekOfYearPlugin } from '~/plugins'
+import { expectSame } from '../util'
 
 esday.extend(localePlugin).extend(weekOfYearPlugin)
 esday.registerLocale(localeDe)

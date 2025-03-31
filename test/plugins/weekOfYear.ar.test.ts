@@ -1,8 +1,12 @@
+/**
+ * This test fails in vitest browser mode as the locale 'ar' of moment is not loaded
+ */
 import { esday } from 'esday'
 import moment from 'moment'
-import { expectSame } from '../util'
 import { describe, expect, it } from 'vitest'
 import localeAr from '~/locales/ar'
+import { expectSame } from '../util'
+import 'moment/locale/ar'
 import { localePlugin, weekOfYearPlugin } from '~/plugins'
 
 esday.extend(localePlugin).extend(weekOfYearPlugin)
