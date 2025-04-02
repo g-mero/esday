@@ -5,6 +5,7 @@ import isSameOrBeforePlugin from './isSameOrBefore'
 import isTodayPlugin from './isToday'
 import localePlugin from './locale'
 import minMaxPlugin from './minMax'
+import quarterOfYearPlugin from './quarterOfYear'
 import toArrayPlugin from './toArray'
 import toObjectPlugin from './toObject'
 import utcPlugin from './utc'
@@ -19,6 +20,7 @@ export {
   isTodayPlugin,
   localePlugin,
   minMaxPlugin,
+  quarterOfYearPlugin,
   toArrayPlugin,
   toObjectPlugin,
   utcPlugin,
