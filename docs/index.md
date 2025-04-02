@@ -21,6 +21,7 @@ Currently there are the following plugins:
 - DayOfYear (DayOfYear adds .dayOfYear() API - number indicating the day of the year)
 - [IsBetween](./plugins/isBetween.md) (IsBetween adds .isBetween() API - is date between two other dates)
 - [IsLeapYear](./plugins/isLeapYear.md) (IsLeapYear adds .isLeapYear() API - is year a leap year)
+- [IsoWeek](./plugins/isoWeek.md) (IsoWeek adds .isoWeek API and formatting and parsing tokens)
 - [IsSameOrAfter](./plugins/isSameOrAfter.md) (IsSameOrAfter adds .isSameOrAfter() API - is date the same or after another date)
 - [IsSameOrBefore](./plugins/isSameOrBefore.md) (IsSameOrBefore adds .isSameOrBefore() API - is date the same or before another date)
 - [IsToday](./plugins/isToday.md) (IsToday adds .isToday() API - is date today)
