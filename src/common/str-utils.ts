@@ -52,6 +52,13 @@ export function padNumberWithLeadingZeros(origin: number, length: number) {
   return `${dash}${result.padStart(length, '0')}`
 }
 
+/**
+ * Format utcOffset as a string with format 'hh:mm':
+ * hh: hours of the utcOffset
+ * mm: minutes of the utcOffset
+ * @param utcOffset - utcOffset to convert to a string
+ * @returns utcOffset formatted as a string
+ */
 export function padZoneStr(utcOffset: number) {
   const negMinutes = -utcOffset
   const minutes = Math.abs(negMinutes)

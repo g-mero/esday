@@ -261,21 +261,21 @@ describe('plugin utc', () => {
       expect(esdayDate.format(format)).toBe(momentDate.format(format))
     })
 
-    it('using "HH-hh-mm-ss-SSS-Z-ZZ" parsing "2018-09-06T19:34:28.657Z"', () => {
+    it('using "HH-mm-ss-SSS-Z" parsing "2018-09-06T19:34:28.657Z"', () => {
       const dateString = '2018-09-06T19:34:28.657Z'
       const esdayDate = esday.utc(dateString)
-      const format = 'HH-hh-mm-ss-SSS-Z-ZZ'
+      const format = 'HH-mm-ss-SSS-Z'
 
-      expect(esdayDate.format(format)).toBe('19-07-34-28-657-+00:00-+0000')
+      expect(esdayDate.format(format)).toBe('19-34-28-657-+00:00')
       expect(esdayDate.format(format)).toBe(moment.utc(dateString).format(format))
     })
 
-    it('using "HH-hh-mm-ss-SSS-Z-ZZ" converting "2018-09-06T19:34:28.657Z"', () => {
+    it('using "HH-mm-ss-SSS-Z" converting "2018-09-06T19:34:28.657Z"', () => {
       const dateString = '2018-09-06T19:34:28.657Z'
       const esdayDate = esday(dateString).utc()
-      const format = 'HH-hh-mm-ss-SSS-Z-ZZ'
+      const format = 'HH-mm-ss-SSS-Z'
 
-      expect(esdayDate.format(format)).toBe('19-07-34-28-657-+00:00-+0000')
+      expect(esdayDate.format(format)).toBe('19-34-28-657-+00:00')
       expect(esdayDate.format(format)).toBe(moment.utc(dateString).format(format))
     })
   })

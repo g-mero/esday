@@ -6,6 +6,7 @@ EsDay has an API largely similar to [Moment.js](https://momentjs.com/docs/) (v2.
 
 EsDay has many integrated functions:
 - [diff](./core/diff.md) calculating the difference between 2 esday objects based on a given unit.
+- [formatting](./core/format.md) an esday object as a string
 
 EsDay supports many locales. A list of the supported locales can be found in the [details page](./locales/locales.md).
 
@@ -13,6 +14,7 @@ EsDay is extensible by plugins.
 
 Currently there are the following plugins:
 - [AdvancedParse](./plugins/advancedParse.md) (for parsing arbitrary formatted date and time strings)
+- [AdvancedFormat](./plugins/advancedFormat.md) (for formatting using a custom template)
 - IsBetween (IsBetween adds .isBetween() API - is date is between two other dates)
 - IsLeapYear (IsLeapYear adds .isLeapYear() API - is year a leap year)
 - IsSameOrAfter (IsSameOrAfter adds .isSameOrAfter() API - is date the same or after another date)
