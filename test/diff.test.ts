@@ -78,7 +78,7 @@ describe('Difference', () => {
       resultUnit: C.YEAR,
     },
   ])(
-    'diff for B > A in unit "$unit"',
+    'diff for B > A in unit "$resultUnit"',
     ({ sourceString, sourceDiffValue, sourceDiffUnit, resultUnit }) => {
       expectSame((esday) =>
         esday(sourceString).diff(
@@ -145,7 +145,7 @@ describe('Difference', () => {
       resultUnit: C.YEAR,
     },
   ])(
-    'diff for B < A in unit "$unit"',
+    'diff for B < A in unit "$resultUnit"',
     ({ sourceString, sourceDiffValue, sourceDiffUnit, resultUnit }) => {
       expectSame((esday) =>
         esday(sourceString).diff(
@@ -247,7 +247,7 @@ describe('Difference', () => {
       sourceString2: '2014-01-08T13:24:35.789',
       resultUnit: C.YEAR,
     },
-  ])('diff in unit "$unit" as float', ({ sourceString1, sourceString2, resultUnit }) => {
+  ])('diff in unit "$resultUnit" as float', ({ sourceString1, sourceString2, resultUnit }) => {
     expectSame((esday) => esday(sourceString1).diff(esday(sourceString2), resultUnit, true))
   })
 
