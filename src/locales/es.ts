@@ -24,8 +24,9 @@ const localeEs: Readonly<Locale> = {
     'diciembre',
   ],
   monthsShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
-  weekStart: 1,
-  yearStart: 4,
+  ordinal: (n) => `${n}º`,
+  weekStart: 1, // Monday is the first day of the week.
+  yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
     LT: 'H:mm',
     LTS: 'H:mm:ss',
@@ -42,6 +43,7 @@ const localeEs: Readonly<Locale> = {
     future: 'en %s',
     past: 'hace %s',
     s: 'unos segundos',
+    ss: '%d segundos',
     m: 'un minuto',
     mm: '%d minutos',
     h: 'una hora',
@@ -54,10 +56,10 @@ const localeEs: Readonly<Locale> = {
     yy: '%d años',
   },
   meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
+    // Spanish doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
-  ordinal: (n) => `${n}º`,
 }
 
 export default localeEs

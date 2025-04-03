@@ -1,8 +1,8 @@
 import type { EsDayPlugin } from 'esday'
 import { C } from '~/common'
-import { INDEX_THURSDAY, MILLISECONDS_A_WEEK } from '~/common/constants'
 
 declare module 'esday' {
+  // TODO fix getter / setter signatures
   interface EsDay {
     week: (() => number) & ((week: number) => EsDay)
     weeks: (() => number) & ((week: number) => EsDay)
@@ -12,11 +12,13 @@ declare module 'esday' {
 const weekOfYearPlugin: EsDayPlugin<{}> = (_, dayClass) => {
   // @ts-expect-error function is compatible with its overload
   dayClass.prototype.week = function (week?: number) {
+    // Setter
     if (week) {
       return this.add((week - this.week()) * 7, C.DAY)
     }
 
-    const yearStart = this.localeObject?.().yearStart || INDEX_THURSDAY // default to Thursday according to ISO 8601
+    // Getter
+    const yearStart = this.localeObject?.().yearStart || C.INDEX_THURSDAY // default to Thursday according to ISO 8601
     if (this.month() === 11 && this.date() > 25) {
       const nextYearStartDay = this.startOf(C.YEAR).add(1, C.YEAR).date(yearStart)
       const thisEndOfWeek = this.endOf(C.WEEK)
@@ -26,7 +28,7 @@ const weekOfYearPlugin: EsDayPlugin<{}> = (_, dayClass) => {
     }
     const yearStartDay = this.startOf(C.YEAR).date(yearStart)
     const yearStartWeek = yearStartDay.startOf(C.WEEK).subtract(1, C.MS)
-    const diffInWeek = (this.valueOf() - yearStartWeek.valueOf()) / MILLISECONDS_A_WEEK
+    const diffInWeek = this.diff(yearStartWeek, C.WEEK, true)
     if (diffInWeek < 0) {
       return this.startOf(C.WEEK).week()
     }

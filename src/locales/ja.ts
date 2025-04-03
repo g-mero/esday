@@ -24,8 +24,9 @@ const localeJa: Readonly<Locale> = {
     '11月',
     '12月',
   ],
-  weekStart: 0,
-  yearStart: 4,
+  ordinal: (n) => `${n}日`,
+  weekStart: 0, // Sunday is the first day of the week.
+  yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
@@ -42,6 +43,7 @@ const localeJa: Readonly<Locale> = {
     future: '%s後',
     past: '%s前',
     s: '数秒',
+    ss: '%d秒',
     m: '1分',
     mm: '%d分',
     h: '1時間',
@@ -54,7 +56,6 @@ const localeJa: Readonly<Locale> = {
     yy: '%d年',
   },
   meridiem: (hour) => (hour < 12 ? '午前' : '午後'),
-  ordinal: (n) => `${n}日`,
 }
 
 export default localeJa

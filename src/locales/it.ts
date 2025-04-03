@@ -24,8 +24,9 @@ const localeIt: Readonly<Locale> = {
     'dicembre',
   ],
   monthsShort: ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'],
-  weekStart: 1,
-  yearStart: 4,
+  ordinal: (n) => `${n}º`,
+  weekStart: 1, // Monday is the first day of the week.
+  yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
@@ -42,6 +43,7 @@ const localeIt: Readonly<Locale> = {
     future: 'tra %s',
     past: '%s fa',
     s: 'qualche secondo',
+    ss: '%d secondi',
     m: 'un minuto',
     mm: '%d minuti',
     h: "un' ora",
@@ -54,10 +56,10 @@ const localeIt: Readonly<Locale> = {
     yy: '%d anni',
   },
   meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
+    // Italian doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
-  ordinal: (n) => `${n}º`,
 }
 
 export default localeIt

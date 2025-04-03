@@ -9,6 +9,7 @@ export const MILLISECONDS_A_HOUR = SECONDS_A_HOUR * MILLISECONDS_A_SECOND
 export const MILLISECONDS_A_DAY = SECONDS_A_DAY * MILLISECONDS_A_SECOND
 export const MILLISECONDS_A_WEEK = SECONDS_A_WEEK * MILLISECONDS_A_SECOND
 
+export const INDEX_SUNDAY = 0
 export const INDEX_MONDAY = 1
 export const INDEX_THURSDAY = 4
 
@@ -22,7 +23,7 @@ export const WEEK = 'week' as const
 export const MONTH = 'month' as const
 export const QUARTER = 'quarter' as const
 export const YEAR = 'year' as const
-export const DATE = 'date' as const
+export const DATE_OF_WEEK = 'date' as const
 
 export const FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ'
 
@@ -43,7 +44,9 @@ export default {
   MILLISECONDS_A_HOUR,
   MILLISECONDS_A_DAY,
   MILLISECONDS_A_WEEK,
+  INDEX_SUNDAY,
   INDEX_MONDAY,
+  INDEX_THURSDAY,
   MS,
   SECOND,
   MIN,
@@ -53,7 +56,7 @@ export default {
   MONTH,
   QUARTER,
   YEAR,
-  DATE,
+  DATE_OF_WEEK,
   FORMAT_DEFAULT,
   INVALID_DATE,
   INVALID_DATE_STRING,

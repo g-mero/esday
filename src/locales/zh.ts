@@ -45,8 +45,8 @@ const localeZh: Readonly<Locale> = {
         return `${number}日`
     }
   },
-  weekStart: 1,
-  yearStart: 4,
+  weekStart: 1, // Monday is the first day of the week.
+  yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
@@ -63,6 +63,7 @@ const localeZh: Readonly<Locale> = {
     future: '%s后',
     past: '%s前',
     s: '几秒',
+    ss: '%d 秒',
     m: '1 分钟',
     mm: '%d 分钟',
     h: '1 小时',

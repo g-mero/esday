@@ -18,7 +18,7 @@ export function addImpl(that: EsDay, number: number, units: UnitType) {
   if (unit === C.YEAR) {
     return that.set('year', that.get('year') + number)
   }
-  if (unit === C.DATE || unit === C.DAY) {
+  if (unit === C.DATE_OF_WEEK || unit === C.DAY) {
     return instanceFactorySet(1)
   }
   if (unit === C.WEEK) {

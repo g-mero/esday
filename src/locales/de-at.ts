@@ -6,7 +6,8 @@ import localeDe from '~/locales/de'
 import { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 
 const localeDeAt = cloneLocale(localeDe)
-const localeDeAtMonths = [
+
+const months = [
   'Jänner',
   'Februar',
   'März',
@@ -20,7 +21,7 @@ const localeDeAtMonths = [
   'November',
   'Dezember',
 ]
-const localeDeAtMonthsShort = [
+const monthsShort = [
   'Jän.',
   'Feb.',
   'März',
@@ -37,7 +38,7 @@ const localeDeAtMonthsShort = [
 
 // Use 'setLocaleProperty' as all properties are 'readonly'
 setLocaleProperty(localeDeAt, 'name', 'de-AT')
-setLocaleProperty(localeDeAt, 'months', localeDeAtMonths)
-setLocaleProperty(localeDeAt, 'monthsShort', localeDeAtMonthsShort)
+setLocaleProperty(localeDeAt, 'months', months)
+setLocaleProperty(localeDeAt, 'monthsShort', monthsShort)
 
 export default localeDeAt

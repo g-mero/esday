@@ -1,11 +1,11 @@
-import { DATE, DAY, HOUR, MIN, MONTH, MS, QUARTER, SECOND, WEEK, YEAR } from './constants'
+import { DATE_OF_WEEK, DAY, HOUR, MIN, MONTH, MS, QUARTER, SECOND, WEEK, YEAR } from './constants'
 
 const UNIT_MAP = {
   y: YEAR,
   Q: QUARTER,
   M: MONTH,
   w: WEEK,
-  D: DATE,
+  D: DATE_OF_WEEK,
   d: DAY,
   h: HOUR,
   m: MIN,

@@ -45,8 +45,9 @@ const localeRn: Readonly<Locale> = {
     'Muny',
     'Kig',
   ],
-  weekStart: 1,
-  yearStart: 4,
+  ordinal: (n) => `${n}.`,
+  weekStart: 1, // Monday is the first day of the week.
+  yearStart: 4, // The week that contains Jan 4th is the first week of the year.
   formats: {
     LT: 'HH:mm',
     LTS: 'HH:mm:ss',
@@ -63,6 +64,7 @@ const localeRn: Readonly<Locale> = {
     future: 'mu %s',
     past: '%s',
     s: 'amasegonda',
+    ss: '%d isegonda',
     m: 'Umunota',
     mm: '%d iminota',
     h: 'isaha',
@@ -75,10 +77,10 @@ const localeRn: Readonly<Locale> = {
     yy: '%d imyaka',
   },
   meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
+    // Kirundi doesn't have AM/PM, so return default values
     const m = hour < 12 ? 'AM' : 'PM'
     return isLowercase ? m.toLowerCase() : m
   },
-  ordinal: (n) => `${n}.`,
 }
 
 export default localeRn
