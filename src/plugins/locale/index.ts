@@ -139,7 +139,7 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       const diff = ($day < weekStart ? $day + 7 : $day) - weekStart
 
       return origin
-        .month(origin.month(), reverse ? $date + (6 - diff) : $date - diff)
+        .date(reverse ? $date + (6 - diff) : $date - diff)
         .hour(inst.hour(), inst.minute(), inst.second(), inst.millisecond())
     }
 
