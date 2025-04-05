@@ -24,8 +24,8 @@ import { startOfImpl } from './Impl/startOf'
 export declare interface EsDay {
   year: (() => number) & ((year: number, month?: number, date?: number) => EsDay)
   month: (() => number) & ((month: number, date?: number) => EsDay)
-  date: (() => number) & ((date: number) => EsDay)
-  day: (() => number) & ((day: number) => EsDay)
+  date: (() => number) & ((date: number) => EsDay) // day of month
+  day: (() => number) & ((day: number) => EsDay) // day of week
   hour: (() => number) & ((hours: number, min?: number, sec?: number, ms?: number) => EsDay)
   minute: (() => number) & ((min: number, sec?: number, ms?: number) => EsDay)
   second: (() => number) & ((sec: number, ms?: number) => EsDay)
@@ -278,6 +278,13 @@ export class EsDay {
   private $set(unit: Exclude<UnitType, UnitWeek | UnitQuarter>, values: number[]) {
     if (prettyUnit(unit) === C.DAY) {
       setUnitInDate(this.$d, C.DATE_OF_WEEK, this.date() + (values[0] - this.day()))
+    } else if (prettyUnit(unit) === C.MONTH) {
+      const originalDate = values.length === 1 ? this.date() : values[1]
+      setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values)
+      if (originalDate > 0 && this.date() !== originalDate) {
+        // reset date to last day of previous month
+        setUnitInDate(this.$d, C.DATE_OF_WEEK, 0)
+      }
     } else {
       setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values)
     }
