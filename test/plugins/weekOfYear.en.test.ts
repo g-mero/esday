@@ -8,8 +8,7 @@ import { expectSame } from '../util'
 
 esday.extend(localePlugin).extend(weekOfYearPlugin)
 esday.registerLocale(localeEn)
-esday.locale('en')
-moment.locale('en')
+// we do not have to call 'moment.locale('en')' as this is the default locale
 
 // Tests with Sunday as start of week
 describe('week plugin - locale "en"', () => {

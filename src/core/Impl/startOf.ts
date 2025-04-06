@@ -22,7 +22,7 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
 
   const $month = result.month()
   const $date = result.date()
-  const $day = result.day()
+  const $dayOfWeek = result.day()
 
   switch (prettyUnit(unit)) {
     case C.YEAR:
@@ -34,11 +34,11 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
       instanceFactorySet(C.HOUR, 0)
       break
     case C.WEEK: {
-      // default start of week is Monday
-      // according to ISO 8601
+      // default start of week is Monday (according to ISO 8601)
       const weekStart = C.INDEX_MONDAY
-      const diff = ($day < weekStart ? $day + 7 : $day) - weekStart
-      instanceFactory(reverse ? $date + (6 - diff) : $date - diff, $month)
+      const diff = ($dayOfWeek < weekStart ? $dayOfWeek + 7 : $dayOfWeek) - weekStart
+      const newDate = reverse ? $date + (6 - diff) : $date - diff
+      setterFunc.call(result, C.DATE_OF_WEEK, [newDate])
       instanceFactorySet(C.HOUR, 0)
       break
     }

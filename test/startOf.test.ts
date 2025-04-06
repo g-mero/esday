@@ -1,6 +1,18 @@
+import moment from 'moment'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { DATE_OF_WEEK, DAY, HOUR, MIN, MONTH, SECOND, WEEK, YEAR } from '~/common/constants'
 import { esday } from '~/core'
+import { expectSameResult } from './util'
+
+//make the default moment locale use the required settings compatible
+// with ISO 8601, as in vitest browser mode we cannot load a moment
+// locale in the head element.
+moment.updateLocale('en', {
+  week: {
+    dow: 1, // First day of week is Monday
+    doy: 4, // First week of year must contain 4 January (7 + 1 - 4)
+  },
+})
 
 describe('startOf', () => {
   // => format uses null as offset
@@ -30,6 +42,17 @@ describe('startOf', () => {
 
     expect(resultDate.format('YYYY-MM-DDTHH:mm:ss.SSS')).toBe(expectedAsString)
   })
+
+  it.each([
+    { sourceString: '2024-01-01T00:00:00' },
+    { sourceString: '2023-12-31T00:00:00' },
+    { sourceString: '2023-11-12T00:00:00' },
+    { sourceString: '2023-11-13T00:00:00' },
+    { sourceString: '2023-11-14T00:00:00' },
+    { sourceString: '2023-05-07T00:00:00' },
+  ])('for edge case "$sourceString"', ({ sourceString }) => {
+    expectSameResult((esday) => esday(sourceString).startOf(WEEK))
+  })
 })
 
 describe('endOf', () => {
@@ -57,5 +80,16 @@ describe('endOf', () => {
     const resultDate = esday().endOf(unit)
 
     expect(resultDate.format('YYYY-MM-DDTHH:mm:ss.SSS')).toBe(expectedAsString)
+  })
+
+  it.each([
+    { sourceString: '2024-01-01T00:00:00' },
+    { sourceString: '2023-12-31T00:00:00' },
+    { sourceString: '2023-11-12T00:00:00' },
+    { sourceString: '2023-11-13T00:00:00' },
+    { sourceString: '2023-11-14T00:00:00' },
+    { sourceString: '2023-05-07T00:00:00' },
+  ])('for edge case "$sourceString"', ({ sourceString }) => {
+    expectSameResult((esday) => esday(sourceString).endOf(WEEK))
   })
 })
