@@ -4,8 +4,15 @@ import { DATE_OF_WEEK, DAY, HOUR, MIN, MONTH, SECOND, WEEK, YEAR } from '~/commo
 import { esday } from '~/core'
 import { expectSameResult } from './util'
 
-// make moment use an ISO 8601 compatible locale
-moment.locale('en-GB')
+//make the default moment locale use the required settings compatible
+// with ISO 8601, as in vitest browser mode we cannot load a moment
+// locale in the head element.
+moment.updateLocale('en', {
+  week: {
+    dow: 1, // First day of week is Monday
+    doy: 4, // First week of year must contain 4 January (7 + 1 - 4)
+  },
+})
 
 describe('startOf', () => {
   // => format uses null as offset
