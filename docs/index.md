@@ -25,6 +25,7 @@ Currently there are the following plugins:
 - IsToday (IsToday adds .isToday() API is date today)
 - [Locale](./plugins/locale.md) (add locale functions to EsDay)
 - MinMax (MinMax adds .min() and .max() APIs - find the minimum or maximum of several dates)
+- [QuarterOfYear](./plugins/quarterOfYear.md) (QuarterOfYear adds .quarter() getter and setter APIs and formatter token 'Q' - handle quarter of year)
 - ToArray (ToArray adds .toArray() API - get an array with the components of a date)
 - ToObject (ToObject adds .toObject() API - get an object with the components of a date)
 - Utc (UTC adds .utc(), .local() and .isUTC APIs - handle dates as UTC)
