@@ -6,10 +6,11 @@ declare module 'esday' {
   interface EsDay {
     week: (() => number) & ((week: number) => EsDay)
     weeks: (() => number) & ((week: number) => EsDay)
+    weekYear: () => number
   }
 }
 
-const weekOfYearPlugin: EsDayPlugin<{}> = (_, dayClass) => {
+const weekPlugin: EsDayPlugin<{}> = (_, dayClass) => {
   // @ts-expect-error function is compatible with its overload
   dayClass.prototype.week = function (week?: number) {
     // Setter
@@ -36,6 +37,19 @@ const weekOfYearPlugin: EsDayPlugin<{}> = (_, dayClass) => {
   }
 
   dayClass.prototype.weeks = dayClass.prototype.week
+
+  dayClass.prototype.weekYear = function () {
+    const month = this.month()
+    const weekOfYear = this.week()
+    const year = this.year()
+    if (weekOfYear === 1 && month === 11) {
+      return year + 1
+    }
+    if (month === 0 && weekOfYear >= 52) {
+      return year - 1
+    }
+    return year
+  }
 }
 
-export default weekOfYearPlugin
+export default weekPlugin

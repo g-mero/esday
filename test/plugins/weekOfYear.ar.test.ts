@@ -2,10 +2,10 @@ import { esday } from 'esday'
 import moment from 'moment'
 import { describe, expect, it } from 'vitest'
 import localeAr from '~/locales/ar'
-import { localePlugin, weekOfYearPlugin } from '~/plugins'
+import { localePlugin, weekPlugin } from '~/plugins'
 import { expectSame } from '../util'
 
-esday.extend(localePlugin).extend(weekOfYearPlugin)
+esday.extend(localePlugin).extend(weekPlugin)
 esday.registerLocale(localeAr)
 esday.locale('ar')
 
