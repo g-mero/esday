@@ -3,10 +3,10 @@ import moment from 'moment'
 import { describe, expect, it } from 'vitest'
 import localeEn from '~/locales/en'
 // We expect moment to have 'en' as default locale that cannot be imported
-import { localePlugin, weekOfYearPlugin } from '~/plugins'
+import { localePlugin, weekPlugin } from '~/plugins'
 import { expectSame } from '../util'
 
-esday.extend(localePlugin).extend(weekOfYearPlugin)
+esday.extend(localePlugin).extend(weekPlugin)
 esday.registerLocale(localeEn)
 // we do not have to call 'moment.locale('en')' as this is the default locale
 

@@ -9,8 +9,7 @@ import quarterOfYearPlugin from './quarterOfYear'
 import toArrayPlugin from './toArray'
 import toObjectPlugin from './toObject'
 import utcPlugin from './utc'
-import weekOfYearPlugin from './weekOfYear'
-import weekYearPlugin from './weekYear'
+import weekPlugin from './week'
 
 export {
   advancedFormatPlugin,
@@ -24,6 +23,5 @@ export {
   toArrayPlugin,
   toObjectPlugin,
   utcPlugin,
-  weekOfYearPlugin,
-  weekYearPlugin,
+  weekPlugin,
 }
