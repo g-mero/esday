@@ -1,6 +1,6 @@
 import type { EsDay, UnitType } from 'esday'
 import { esday } from 'esday'
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
