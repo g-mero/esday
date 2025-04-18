@@ -1,10 +1,10 @@
 import { esday } from 'esday'
 import moment from 'moment'
-import type { TokenDefinitions } from '~/plugins/advancedParse/types'
+import type { ParsedElements, TokenDefinitions } from '~/plugins'
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
-import advancedParsePlugin from '~/plugins/advancedParse'
+import { advancedParsePlugin } from '~/plugins'
 import { expectSame, expectSameResult } from '../util'
 
 esday.extend(advancedParsePlugin)
@@ -465,10 +465,10 @@ describe('advancedParse plugin - local mode', () => {
           PP: [
             /\d\d?/,
             /\d{2}/,
-            function (input) {
-              // don't use parsed value ('input')
+            (parsedElements: ParsedElements, input: string) => {
+              // we don't use parsed value ('input')
               if (input.length > 0) {
-                this.milliseconds = 987
+                parsedElements.milliseconds = 987
               }
             },
           ],
@@ -488,10 +488,10 @@ describe('advancedParse plugin - local mode', () => {
           PP: [
             /\d\d?/,
             /\d{2}/,
-            function (input) {
-              // don't use parsed value ('input')
+            (parsedElements: ParsedElements, input: string) => {
+              // we don't use parsed value ('input')
               if (input.length > 0) {
-                this.milliseconds = 987
+                parsedElements.milliseconds = 987
               }
             },
           ],
@@ -511,10 +511,10 @@ describe('advancedParse plugin - local mode', () => {
           PP: [
             /\d\d?/,
             /\d{2}/,
-            function (input) {
-              // don't use parsed value ('input')
+            (parsedElements: ParsedElements, input: string) => {
+              // we don't use parsed value ('input')
               if (input.length > 0) {
-                this.milliseconds = 987
+                parsedElements.milliseconds = 987
               }
             },
           ],
@@ -534,10 +534,10 @@ describe('advancedParse plugin - local mode', () => {
           PP: [
             /\d\d?/,
             /\d{2}/,
-            function (input) {
-              // don't use parsed value ('input')
+            (parsedElements: ParsedElements, input: string) => {
+              // we don't use parsed value ('input')
               if (input.length > 0) {
-                this.milliseconds = 987
+                parsedElements.milliseconds = 987
               }
             },
           ],
@@ -554,10 +554,10 @@ describe('advancedParse plugin - local mode', () => {
         YYYY: [
           /\d\d?/,
           /\d{2}/,
-          function (input) {
-            // don't use parsed value ('input')
+          (parsedElements: ParsedElements, input: string) => {
+            // we don't use parsed value ('input')
             if (input.length > 0) {
-              this.milliseconds = 987
+              parsedElements.milliseconds = 987
             }
           },
         ],
