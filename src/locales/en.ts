@@ -28,7 +28,7 @@ const localeEn: Readonly<Locale> = {
   ordinal: (n) => {
     const s = ['th', 'st', 'nd', 'rd']
     const v = n % 100
-    return `[${n}${s[(v - 20) % 10] || s[v] || s[0]}]`
+    return `${n}${s[(v - 20) % 10] || s[v] || s[0]}`
   },
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.

@@ -1,10 +1,32 @@
+/**
+ * advancedParse plugin
+ *
+ * This plugin adds format definitions to date parsing
+ *
+ * used esday parameters in '$conf':
+ *   args_1           format parameter in call signature
+ *   args_2           2nd parameter in call signature
+ *   args_3           3rd parameter in call signature
+ *
+ * new esday parameters in '$conf':
+ *   parseOptions     ParseOptions object containing parsing options
+ */
+
 import type { DateFromDateComponents, DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
 import { isArray, isString, isUndefined, isValidDate } from '~/common'
-import type { ParsedElements, TokenDefinitions, UpdateParsedElement } from './types'
+import type {
+  ParseOptions,
+  ParsedElements,
+  ParsedResultRaw,
+  Parser,
+  PostParser,
+  TokenDefinitions,
+  UpdateParsedElement,
+} from './types'
 
 // Function to create a Date object from its date components
 // is set to the corresponding function in the core module and
-// requires the correct this context!
+// requires the correct this context (e.g. for the utc plugin)!
 let dateFromDateComponents: DateFromDateComponents
 
 const invalidDate = new Date('')
@@ -35,14 +57,11 @@ interface ParserDefinition {
   updater: UpdateParsedElement
 }
 
-interface parsedResultRaw {
-  dateElements: ParsedElements
-  charsLeftOver: number
-  unusedTokens: number
-  separatorsMatch: boolean
-}
-
-interface parsedResult {
+/**
+ * Result of parsing after converting the parsed elements to
+ * a Date object.
+ */
+interface ParsedResult {
   date: Date
   charsLeftOver: number
   unusedTokens: number
@@ -80,8 +99,10 @@ function offsetFromString(offset: string): number {
  * @returns function that will add the given value to date&time component
  */
 function addInput(property: keyof ParsedElements) {
-  return function (this: ParsedElements, input: string | number) {
-    this[property] = +input
+  return (parsedElements: ParsedElements, input: string) => {
+    if (property !== 'afternoon') {
+      parsedElements[property] = +input
+    }
   }
 }
 
@@ -93,7 +114,7 @@ function addInput(property: keyof ParsedElements) {
  * @returns function that will add the given value to the milliseconds property of date&time component
  */
 function addMillisecondsToInput() {
-  return function (this: ParsedElements, input: string) {
+  return (parsedElements: ParsedElements, input: string) => {
     const inputLimited = input.slice(0, 3)
     let value = +inputLimited
     switch (inputLimited.length) {
@@ -104,7 +125,7 @@ function addMillisecondsToInput() {
         value *= 10
         break
     }
-    this.milliseconds = value
+    parsedElements.milliseconds = value
   }
 }
 
@@ -116,14 +137,14 @@ function addMillisecondsToInput() {
  * @returns function that will add the given value to the milliseconds property of date&time component
  */
 function addUnixInput(isMilliseconds: boolean) {
-  return function (this: ParsedElements, input: string) {
+  return (parsedElements: ParsedElements, input: string) => {
     let value = +input
     if (isMilliseconds) {
       value = Number.parseInt(input, 10)
     } else {
       value = Number.parseFloat(input) * 1000
     }
-    this.unix = value
+    parsedElements.unix = value
   }
 }
 
@@ -140,8 +161,8 @@ const parseTokensDefinitions: TokenDefinitions = {
   Q: [
     match1,
     match1,
-    function (input) {
-      this.month = (Number.parseInt(input, 10) - 1) * 3 + 1
+    (parsedElements: ParsedElements, input: string) => {
+      parsedElements.month = (Number.parseInt(input, 10) - 1) * 3 + 1
     },
   ],
   S: [matchUnsigned, match1, addMillisecondsToInput()],
@@ -162,36 +183,36 @@ const parseTokensDefinitions: TokenDefinitions = {
   Y: [
     matchSigned,
     matchSigned,
-    function (input) {
-      this.year = Number.parseInt(input, 10)
+    (parsedElements: ParsedElements, input: string) => {
+      parsedElements.year = Number.parseInt(input, 10)
     },
   ],
   YY: [
     match1to4,
     match2,
-    function (input) {
-      this.year = parseTwoDigitYear(input)
+    (parsedElements: ParsedElements, input: string) => {
+      parsedElements.year = parseTwoDigitYear(input)
     },
   ],
   YYYY: [
     match1to4,
     match4,
-    function (input) {
-      this.year = parseFourDigitYear(input)
+    (parsedElements: ParsedElements, input: string) => {
+      parsedElements.year = parseFourDigitYear(input)
     },
   ],
   Z: [
     matchOffset,
     matchOffset,
-    function (input) {
-      this.zoneOffset = offsetFromString(input)
+    (parsedElements: ParsedElements, input: string) => {
+      parsedElements.zoneOffset = offsetFromString(input)
     },
   ],
   ZZ: [
     matchOffset,
     matchOffset,
-    function (input) {
-      this.zoneOffset = offsetFromString(input)
+    (parsedElements: ParsedElements, input: string) => {
+      parsedElements.zoneOffset = offsetFromString(input)
     },
   ],
 }
@@ -233,22 +254,24 @@ function formattingTokensRegexFromDefinitions() {
  * Build a parser that will parse an input string an return an
  * object with the components of a date&time, the number of characters in input
  * not parsed and the number of unused token (i.e. not enough characters in input).
+ * Must be called in the context of an EsDay instance.
+ * @param this - context for this function (required by updater function of parsed element definition)
  * @param format - format to parse
  * @param isStrict - must input match format exactly?
  * @returns function that will parse an input string to a 'parsedResultRaw' object
  */
-function makeParser(
-  format: string,
-  isStrict: boolean,
-): (input: string, isStrict: boolean) => parsedResultRaw {
+function makeParser(format: string, isStrict: boolean): { parser: Parser; postParser: PostParser } {
   const splittedFormat: Array<string> =
     (format.match(formattingTokensRegex) as Array<string>) || ([] as Array<string>)
   const length = splittedFormat.length
   const parsingDefinitions = Array<string | ParserDefinition>(length)
+  const postParseHandlers = Array<PostParser>()
+
   for (let i = 0; i < length; i += 1) {
     const token = splittedFormat[i]
     const parseTo = parseTokensDefinitions[token]
     let regex: RegExp | undefined
+
     if (!isStrict) {
       regex = parseTo?.[0]
     } else {
@@ -262,11 +285,22 @@ function makeParser(
       // remove escaped text from input string (e.g. "[H]")
       parsingDefinitions[i] = token.replace(/^\[|\]$/g, '')
     }
+
+    const postParseHandler = parseTo?.[3]
+    if (postParseHandler !== undefined && !postParseHandlers.includes(postParseHandler)) {
+      postParseHandlers.push(postParseHandler)
+    }
   }
-  return (input: string, isStrict: boolean): parsedResultRaw => {
+
+  const parser = (
+    input: string,
+    isStrict: boolean,
+    parseOptions: ParseOptions,
+  ): ParsedResultRaw => {
     let unusedTokens = 0
     let separatorsMatch = true
-    const time: ParsedElements = {}
+    const parsedDateElements: ParsedElements = {}
+
     for (let i = 0, start = 0; i < length; i += 1) {
       if (input.length === 0) {
         unusedTokens = parsingDefinitions
@@ -276,6 +310,7 @@ function makeParser(
       }
 
       const token = parsingDefinitions[i]
+
       // is this a separator (i.e. has typeof string)?
       if (isString(token)) {
         const separatorLength = token.length
@@ -293,28 +328,44 @@ function makeParser(
           const value = match[0]
           // biome-ignore lint/style/noParameterAssign: <explanation>
           input = input.replace(value, '')
-          updater.call(time, value)
+          updater(parsedDateElements, value, parseOptions)
         }
       }
     }
 
-    const result: parsedResultRaw = {
-      dateElements: time,
+    const result: ParsedResultRaw = {
+      dateElements: parsedDateElements,
       charsLeftOver: input.length,
       unusedTokens,
       separatorsMatch,
     }
     return result
   }
+
+  const postParser = (
+    parsedDate: Date,
+    parsedElements: ParsedElements,
+    parseOptions: ParseOptions,
+  ): Date => {
+    let modifiedParsedDate = parsedDate
+    for (let i = 0; i < postParseHandlers.length; i++) {
+      modifiedParsedDate = postParseHandlers[i](parsedDate, parsedElements, parseOptions)
+    }
+
+    return modifiedParsedDate
+  }
+
+  return { parser, postParser }
 }
 
 /**
  * Create a Date from the tags generated by parsing the input string.
- * @param that - context for this function (required by dateFromDateComponents)
+ * Must be called in the context of an EsDay instance.
+ * @param this - context for this function (required by dateFromDateComponents)
  * @param elements - object containing the tags generated by parsing the input string
  * @returns Date object created from the parsed data
  */
-function parsedElementsToDate(that: EsDay, elements: ParsedElements) {
+function parsedElementsToDate(this: EsDay, elements: ParsedElements) {
   const { year, month, day, hours, minutes, seconds, milliseconds, zoneOffset, unix } = elements
 
   if (Object.keys(elements).length === 0) {
@@ -331,7 +382,7 @@ function parsedElementsToDate(that: EsDay, elements: ParsedElements) {
   }
 
   return dateFromDateComponents.call(
-    that,
+    this,
     year,
     month,
     day,
@@ -346,21 +397,25 @@ function parsedElementsToDate(that: EsDay, elements: ParsedElements) {
 /**
  * Parse the given input using the given format and create a Date
  * object from the parsed elements.
- * @param that - context for this function (required by parsedElementsToDate)
+ * Must be called in the context of an EsDay instance.
+ * @param this - context for this function (required by parsedElementsToDate)
  * @param input - string to be parsed
  * @param format - format to use
  * @param isStrict - must input match format exactly?
+ * @param parseOptions - options for parser and postParser
  * @returns Date object generated from the given data
  */
 function parseFormattedInput(
-  that: EsDay,
+  this: EsDay,
   input: string,
   format: string,
   isStrict: boolean,
-): parsedResult {
-  const parser = makeParser(format, isStrict)
-  const parsedElements = parser(input, isStrict)
-  const parsedDate = parsedElementsToDate(that, parsedElements.dateElements)
+  parseOptions: ParseOptions,
+): ParsedResult {
+  const { parser, postParser } = makeParser(format, isStrict)
+  const parsedElements = parser(input, isStrict, parseOptions)
+  let parsedDate = parsedElementsToDate.call(this, parsedElements.dateElements)
+  parsedDate = postParser(parsedDate, parsedElements.dateElements, parseOptions)
 
   return {
     date: parsedDate,
@@ -400,6 +455,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (
     const format = this['$conf'].args_1
     const arg2 = this['$conf'].args_2
     const arg3 = this['$conf'].args_3
+    const parseOptions: ParseOptions = (this['$conf'].parseOptions as ParseOptions) ?? {}
 
     let isStrict = false
     if (typeof arg2 === 'boolean') {
@@ -411,7 +467,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (
     if (isString(d)) {
       // format as single string
       if (isString(format)) {
-        const parsingResult = parseFormattedInput(this, d, format, isStrict)
+        const parsingResult = parseFormattedInput.call(this, d, format, isStrict, parseOptions)
         this['$d'] = parsingResult.date
         if (
           isStrict &&
@@ -431,7 +487,13 @@ const advancedParsePlugin: EsDayPlugin<{}> = (
           let validFormatFound = false
 
           const formatUnderInspection = format[i]
-          const parsingResult = parseFormattedInput(this, d, formatUnderInspection, isStrict)
+          const parsingResult = parseFormattedInput.call(
+            this,
+            d,
+            formatUnderInspection,
+            isStrict,
+            parseOptions,
+          )
           if (
             isStrict &&
             (parsingResult.charsLeftOver > 0 ||

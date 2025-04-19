@@ -1,10 +1,10 @@
 import { esday } from 'esday'
 import moment from 'moment'
-import type { TokenDefinitions } from '~/plugins/advancedParse/types'
+import type { ParsedElements, TokenDefinitions } from '~/plugins'
 
 import { describe, expect, it } from 'vitest'
+import { utcPlugin } from '~/plugins/'
 import advancedParsePlugin from '~/plugins/advancedParse'
-import utcPlugin from '~/plugins/utc'
 import { expectSame, expectSameResult } from '../util'
 
 esday.extend(utcPlugin)
@@ -380,10 +380,10 @@ describe('advancedParse plugin - utc mode', () => {
           PP: [
             /\d\d?/,
             /\d{2}/,
-            function (input) {
-              // don't use parsed value ('input')
+            (parsedElements: ParsedElements, input: string) => {
+              // we don't use parsed value ('input')
               if (input.length > 0) {
-                this.milliseconds = 987
+                parsedElements.milliseconds = 987
               }
             },
           ],
@@ -403,10 +403,10 @@ describe('advancedParse plugin - utc mode', () => {
           PP: [
             /\d\d?/,
             /\d{2}/,
-            function (input) {
-              // don't use parsed value ('input')
+            (parsedElements: ParsedElements, input: string) => {
+              // we don't use parsed value ('input')
               if (input.length > 0) {
-                this.milliseconds = 987
+                parsedElements.milliseconds = 987
               }
             },
           ],
@@ -426,10 +426,10 @@ describe('advancedParse plugin - utc mode', () => {
           PP: [
             /\d\d?/,
             /\d{2}/,
-            function (input) {
-              // don't use parsed value ('input')
+            (parsedElements: ParsedElements, input: string) => {
+              // we don't use parsed value ('input')
               if (input.length > 0) {
-                this.milliseconds = 987
+                parsedElements.milliseconds = 987
               }
             },
           ],
@@ -449,10 +449,10 @@ describe('advancedParse plugin - utc mode', () => {
           PP: [
             /\d\d?/,
             /\d{2}/,
-            function (input) {
-              // don't use parsed value ('input')
+            (parsedElements: ParsedElements, input: string) => {
+              // we don't use parsed value ('input')
               if (input.length > 0) {
-                this.milliseconds = 987
+                parsedElements.milliseconds = 987
               }
             },
           ],
@@ -469,10 +469,10 @@ describe('advancedParse plugin - utc mode', () => {
         YYYY: [
           /\d\d?/,
           /\d{2}/,
-          function (input) {
-            // don't use parsed value ('input')
+          (parsedElements: ParsedElements, input: string) => {
+            // we don't use parsed value ('input')
             if (input.length > 0) {
-              this.milliseconds = 987
+              parsedElements.milliseconds = 987
             }
           },
         ],

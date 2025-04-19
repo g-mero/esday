@@ -40,7 +40,9 @@ export class EsDay {
    */
   private $conf: SimpleObject = {}
   constructor(d: Exclude<DateType, EsDay>, conf?: SimpleObject) {
-    this.$conf = { ...conf }
+    if (!isUndefined(conf)) {
+      this.$conf = structuredClone<SimpleObject>(conf)
+    }
     this.parse(d)
   }
 

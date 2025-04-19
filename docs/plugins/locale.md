@@ -1,6 +1,8 @@
 # Locale
 
-Locale extends `esday` to support locales. The locale to use can be loaded from the corresponding locale file.
+Locale extends `esday` to support locales. The locale to use can be loaded from the corresponding locale file ([list of supported locales](../locales/locales.md)).
+
+**Note**: the name of the locale (e.g. used for setting the locale) is case sensitive.
 
 ## Method signatures
 For esday (`esday`)
@@ -59,7 +61,7 @@ esday.extend(localePlugin)
 esday.registerLocale(localeZhCn)
 
 // set global locale
-esday.locale('zh-cn')
+esday.locale('zh-CN')
 
 // get global locale
 console.log(esday.locale()) // 'zh-cn'

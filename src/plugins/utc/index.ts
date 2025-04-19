@@ -1,4 +1,3 @@
-import type { EsDay } from 'esday'
 /**
  * utc plugin
  *
@@ -10,6 +9,7 @@ import type { EsDay } from 'esday'
  *   timezoneOffset   timezone offset (with DST handling)
  */
 
+import type { EsDay } from 'esday'
 import type { UnitDay } from '~/common'
 import {
   C,

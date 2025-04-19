@@ -48,6 +48,19 @@ export interface MonthNamesFunction<T = MonthNames<string>> {
   format: T // for use in a format method
   standalone: T // for use as standalone month name
 }
+
+export type LocaleFormatKeys =
+  | 'LT'
+  | 'LTS'
+  | 'L'
+  | 'LL'
+  | 'LLL'
+  | 'LLLL'
+  | 'l'
+  | 'll'
+  | 'lll'
+  | 'llll'
+
 export type RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
@@ -55,8 +68,7 @@ export type RelativeTimeElementFunction = (
   isFuture: boolean,
 ) => string
 
-type Format = 'LT' | 'LTS' | 'L' | 'LL' | 'LLL' | 'LLLL' | 'l' | 'll' | 'lll' | 'llll'
-type Relative =
+export type RelativeTimeKeys =
   | 'future'
   | 'past'
   | 's'
@@ -98,8 +110,8 @@ export interface Locale {
   readonly ordinal: (number: number, period?: 'W') => string
   readonly weekStart: number
   readonly yearStart: number
-  readonly formats: Partial<Record<Format, string>>
-  readonly relativeTime: Record<Relative, string | RelativeTimeElementFunction>
+  readonly formats: Record<LocaleFormatKeys, string>
+  readonly relativeTime: Record<RelativeTimeKeys, string | RelativeTimeElementFunction>
   readonly meridiem: (hour: number, minute: number, isLowercase: boolean) => string
   readonly preParse?: (dateString: string) => string
   readonly postFormat?: (formattedDate: string) => string

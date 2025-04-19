@@ -1,26 +1,21 @@
 import { esday } from 'esday'
-import moment from 'moment'
-import { describe, expect, it } from 'vitest'
+import moment from 'moment/min/moment-with-locales'
+import { beforeEach, describe, expect, it } from 'vitest'
 import localeDe from '~/locales/de'
 import { localePlugin, weekPlugin } from '~/plugins'
 import { expectSame } from '../util'
 
 esday.extend(localePlugin).extend(weekPlugin)
 esday.registerLocale(localeDe)
-esday.locale('de')
-
-//make the default moment locale use the required settings compatible
-// with locale 'de', as in vitest browser mode we cannot load a moment
-// locale in the head element.
-moment.updateLocale('en', {
-  week: {
-    dow: 1, // First day of week is Monday
-    doy: 4, // First week of year must contain 4 January (7 + 1 - 4)
-  },
-})
 
 // Tests with Monday as start of week
 describe('week plugin - locale "de"', () => {
+  beforeEach(() => {
+    // set global locale
+    esday.locale('de')
+    moment.locale('de')
+  })
+
   it.each([
     { sourceDate: '2024-03-22', expected: 12, weekday: 'Friday' },
     { sourceDate: '2024-03-23', expected: 12, weekday: 'Saturday' },
