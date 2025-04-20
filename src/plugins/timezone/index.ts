@@ -41,7 +41,7 @@ const typeToPos = {
 } as Record<string, number>
 
 const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
-  const defaultTimezone = ''
+  let defaultTimezone = ''
 
   const tzOffset = (timestamp: number, timezone: string) => {
     const formatResult = makeFormatParts(timestamp, timezone)
@@ -137,6 +137,25 @@ const timezonePLugin: EsDayPlugin<{}> = (_, dayClass, esdayFactory) => {
     const withoutTz = esdayFactory(this.format('YYYY-MM-DD HH:mm:ss:SSS')).locale(this.locale())
     const endOfWithoutTz = oldEndOf.call(withoutTz, units)
     return endOfWithoutTz.tz(this['$conf']['$timezone'] as string, true)
+  }
+
+  // @ts-expect-error "implement tz method"
+  esdayFactory.tz = (input: string, timezoneStr: string) => {
+    const timezone = timezoneStr || defaultTimezone
+    const previousOffset = tzOffset(+esdayFactory(), timezone)
+    if (typeof input !== 'string') {
+      return esdayFactory(input).tz(timezone)
+    }
+    const localTs = esdayFactory.utc(input).valueOf()
+    const [targetTs, targetOffset] = fixOffset(localTs, previousOffset, timezone)
+    const ins = esdayFactory(targetTs).utcOffset(targetOffset)
+    ins['$conf'].timezone = timezone
+    return ins
+  }
+
+  esdayFactory.tz.guess = () => Intl.DateTimeFormat().resolvedOptions().timeZone
+  esdayFactory.tz.setDefault = (timezone: string) => {
+    defaultTimezone = timezone
   }
 }
 
