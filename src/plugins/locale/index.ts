@@ -38,7 +38,6 @@ function setObjectProperty(target: object, propName: string, newValue: any) {
  * @param propName - name of the property to create or set
  * @param newValue - new value of the property
  */
-
 // biome-ignore lint/suspicious/noExplicitAny: generic function
 export function setLocaleProperty(targetLocale: Locale, propName: string, newValue: any) {
   setObjectProperty(targetLocale, propName, newValue)

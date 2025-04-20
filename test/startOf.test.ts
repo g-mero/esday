@@ -1,22 +1,24 @@
-import moment from 'moment'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import moment from 'moment/min/moment-with-locales'
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { DATE_OF_WEEK, DAY, HOUR, MIN, MONTH, SECOND, WEEK, YEAR } from '~/common/constants'
 import { esday } from '~/core'
 import { expectSameResult } from './util'
 
-//make the default moment locale use the required settings compatible
-// with ISO 8601, as in vitest browser mode we cannot load a moment
-// locale in the head element.
-moment.updateLocale('en', {
-  week: {
-    dow: 1, // First day of week is Monday
-    doy: 4, // First week of year must contain 4 January (7 + 1 - 4)
-  },
-})
-
 describe('startOf', () => {
   // => format uses null as offset
   const fakeTimeAsString = '2023-11-17T03:24:46.234'
+  let momentDefaultLocale: string
+
+  beforeAll(() => {
+    momentDefaultLocale = moment.locale()
+
+    // Change firstDayOfWeek to SIO 8601 used by esday
+    moment.updateLocale('en', {
+      week: {
+        dow: 1,
+      },
+    })
+  })
 
   beforeEach(() => {
     vi.useFakeTimers()
@@ -25,6 +27,10 @@ describe('startOf', () => {
 
   afterEach(() => {
     vi.useRealTimers()
+  })
+
+  afterAll(() => {
+    moment.locale(momentDefaultLocale)
   })
 
   // First day of the week is calculated for the locales starting a week on Monday
@@ -57,6 +63,18 @@ describe('startOf', () => {
 
 describe('endOf', () => {
   const fakeTimeAsString = '2023-11-17T03:24:46.234'
+  let momentDefaultLocale: string
+
+  beforeAll(() => {
+    momentDefaultLocale = moment.locale()
+
+    // Change firstDayOfWeek to SIO 8601 used by esday
+    moment.updateLocale('en', {
+      week: {
+        dow: 1,
+      },
+    })
+  })
 
   beforeEach(() => {
     vi.useFakeTimers()
@@ -65,6 +83,10 @@ describe('endOf', () => {
 
   afterEach(() => {
     vi.useRealTimers()
+  })
+
+  afterAll(() => {
+    moment.locale(momentDefaultLocale)
   })
 
   it.each([
