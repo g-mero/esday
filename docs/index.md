@@ -30,8 +30,7 @@ Currently there are the following plugins:
 - ToArray (ToArray adds .toArray() API - get an array with the components of a date)
 - ToObject (ToObject adds .toObject() API - get an object with the components of a date)
 - Utc (UTC adds .utc(), .local() and .isUTC APIs - handle dates as UTC)
-- [WeekOfYear](./plugins/weekOfYear.md) (WeekOfYear adds .week() API - get the week of the year of a date)
-- [WeekYear](./plugins/weekYear.md) (WeekYear adds .weekYear() API - get locale aware week-year of a date)
+- [Week](./plugins/week.md) (Week adds .week() and .weekYear() API - locale aware)
 
 ## Differences to Day.js
 
