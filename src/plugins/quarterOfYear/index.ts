@@ -3,32 +3,23 @@ import { C, prettyUnit } from '~/common'
 
 declare module 'esday' {
   interface EsDay {
-    /**
-     * overloads for getter / setter of locale of instance
-     * quarter(): number
-     * quarter(quarterNumber: number): EsDay
-     */
-    quarter: <T extends number | undefined = undefined>(
-      quarterNumber?: T,
-    ) => T extends number ? EsDay : number
+    quarter(): number
+    quarter(quarterNumber: number): EsDay
   }
 }
 
 const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory: EsDayFactory) => {
   const proto = dayClass.prototype
 
-  proto.quarter = function <T extends number | undefined = undefined>(
-    quarterNumber?: T,
-  ): T extends number ? EsDay : number {
-    // Setter
-    if (quarterNumber !== undefined) {
-      // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
-      return this.month((this.month() % 3) + (quarterNumber - 1) * 3) as any
+  // @ts-expect-error function is compatible with its overload
+  proto.quarter = function (quarterNumber?: number) {
+    if (quarterNumber === undefined) {
+      // Getter
+      return Math.ceil((this.month() + 1) / 3)
     }
 
-    // Getter
-    // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
-    return Math.ceil((this.month() + 1) / 3) as any
+    // Setter
+    return this.month((this.month() % 3) + (quarterNumber - 1) * 3)
   }
 
   const oldAdd = proto.add
