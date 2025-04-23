@@ -75,9 +75,9 @@ const localeDe: Readonly<Locale> = {
     LLL: 'D. MMMM YYYY HH:mm',
     LLLL: 'dddd, D. MMMM YYYY HH:mm',
     l: 'DD.MM.YYYY',
-    ll: 'D. MMMM YYYY',
-    lll: 'D. MMMM YYYY HH:mm',
-    llll: 'dddd, D. MMMM YYYY HH:mm',
+    ll: 'D. MMM YYYY',
+    lll: 'D. MMM YYYY HH:mm',
+    llll: 'ddd, D. MMM YYYY HH:mm',
   },
   relativeTime: {
     future: 'in %s',
