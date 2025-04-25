@@ -1,4 +1,4 @@
-import type { DateType, EsDay, EsDayFactory, EsDayPlugin, UnitType } from 'esday'
+import type { DateType, EsDay, EsDayPlugin, UnitType } from 'esday'
 import { C, prettyUnit, undefinedOr } from '~/common'
 import en from '~/locales/en'
 import type { Locale } from './types'
@@ -94,19 +94,18 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return getLocale(getSetPrivateLocaleName(this))
   }
 
-  // add locale getter / setter
-  dayClass.prototype.locale = function <T extends string | undefined>(
-    localeName?: T,
-  ): T extends string ? EsDay : string {
+  // @ts-expect-error function is compatible with its overload
+  dayClass.prototype.locale = function (localeName?: string) {
     // dayClass.prototype.locale = function (localeName?: string): any {
-    if (localeName !== undefined && typeof localeName === 'string') {
-      const inst = this.clone()
-      getSetPrivateLocaleName(inst, localeName)
-      // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
-      return inst as any
+    if (localeName === undefined) {
+      // Getter
+      return getSetPrivateLocaleName(this)
     }
-    // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
-    return getSetPrivateLocaleName(this) as any
+
+    // Setter
+    const inst = this.clone()
+    getSetPrivateLocaleName(inst, localeName)
+    return inst
   }
 
   // set $l in clone method
@@ -153,17 +152,16 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return fixDiff(inst, this, unit, true)
   }
 
-  // setter / getter for global locale
-  dayFactory.locale = <T extends string | undefined>(
-    localeName?: T,
-  ): T extends string ? EsDayFactory : string => {
-    if (localeName !== undefined && typeof localeName === 'string') {
-      $localeGlobal = localeName
-      // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
-      return dayFactory as any
+  // @ts-expect-error function is compatible with its overload
+  dayFactory.locale = (localeName?: string) => {
+    if (localeName === undefined) {
+      // Getter
+      return $localeGlobal
     }
-    // biome-ignore lint/suspicious/noExplicitAny: required to enable getter/setter function
-    return $localeGlobal as any
+
+    // Setter
+    $localeGlobal = localeName
+    return dayFactory
   }
 
   dayFactory.registerLocale = (locale: Locale, newName?: string) => {

@@ -7,30 +7,17 @@ type ReadonlyTuple<T, N extends number, R extends readonly T[] = []> = R['length
 
 declare module 'esday' {
   interface EsDay {
-    /**
-     * overloads for getter / setter of locale of instance
-     * locale(): string
-     * locale(localeName: string): EsDay
-     */
-    locale: <T extends string | undefined = undefined>(
-      localeName?: T,
-    ) => T extends string ? EsDay : string
-
+    locale(): string
+    locale(localeName: string): EsDay
     localeObject: () => Locale
   }
 
   interface EsDayFactory {
-    /**
-     * overloads for getter / setter of locale of prototype
-     * locale(): string
-     * locale(localeName: string): EsDay
-     */
-    locale: <T extends string | undefined = undefined>(
-      localeName?: T,
-    ) => T extends string ? EsDayFactory : string
+    locale(): string
+    locale(localeName: string): EsDay
 
     /**
-     * register locale
+     * add locale to list of available Locales
      */
     registerLocale: (locale: Locale, newName?: string) => EsDayFactory
   }
