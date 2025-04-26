@@ -15,6 +15,7 @@ import localePlugin from './locale'
 import { getLocale } from './locale'
 import type {
   DayNames,
+  DayNamesStandaloneFormat,
   Locale,
   LocaleFormatKeys,
   MonthNames,
@@ -23,6 +24,7 @@ import type {
   RelativeTimeElementFunction,
   RelativeTimeKeys,
 } from './locale'
+import localizedFormatPlugin from './localizedFormat'
 import localizedParsePlugin from './localizedParse'
 import minMaxPlugin from './minMax'
 import quarterOfYearPlugin from './quarterOfYear'
@@ -40,6 +42,7 @@ export {
   isSameOrBeforePlugin,
   isTodayPlugin,
   localePlugin,
+  localizedFormatPlugin,
   localizedParsePlugin,
   minMaxPlugin,
   quarterOfYearPlugin,
@@ -56,6 +59,7 @@ export type {
   UpdateParsedElement,
   TokenDefinitions,
   DayNames,
+  DayNamesStandaloneFormat,
   MonthNames,
   MonthNamesStandaloneFormat,
   MonthNamesFunction,
