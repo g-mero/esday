@@ -24,6 +24,12 @@ declare module 'esday' {
 }
 
 export type DayNames<T = string> = ReadonlyTuple<T, 7>
+export interface DayNamesStandaloneFormat<T = DayNames<string>> {
+  format: T // for use as standalone day name
+  standalone: T // for use in a format method
+  isFormat: RegExp
+}
+
 export type MonthNames<T = string> = ReadonlyTuple<T, 12>
 export interface MonthNamesStandaloneFormat<T = MonthNames<string>> {
   format: T // for use as standalone month name
@@ -81,7 +87,7 @@ export interface Locale {
    * Array of full day names
    * @example ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
    */
-  readonly weekdays: DayNames
+  readonly weekdays: DayNames | DayNamesStandaloneFormat
   /**
    * Array of short versions of day names
    * @example ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']

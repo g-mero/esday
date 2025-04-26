@@ -1,5 +1,5 @@
 /**
- * Test for locale 'Maltese (Malta) [mt]'
+ * Test for locale 'Konkani Devanagari script [gom-DEVA]'
  *
  * This is a minimal test for a locale without preParse / postFormat.
  * This file should aso be used as a template for tests for
@@ -7,11 +7,11 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import locale from '~/locales/mt'
+import locale from '~/locales/gom-deva'
 
-describe('locale mt', () => {
+describe('locale gom-DEVA', () => {
   it('should have the correct name', () => {
-    expect(locale.name).toBe('mt')
+    expect(locale.name).toBe('gom-DEVA')
   })
 
   it('should have 7 weekday names', () => {
@@ -38,7 +38,7 @@ describe('locale mt', () => {
     if (Array.isArray(locale.months)) {
       expect(locale.months.length).toBe(12)
     } else {
-      expect(locale.months).toBeTypeOf('function')
+      expect(locale.months).toBeTypeOf('object')
     }
   })
 

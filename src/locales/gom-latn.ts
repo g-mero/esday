@@ -2,7 +2,41 @@
  * Konkani Latin script [gom-LATN]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
+
+const monthFormat: MonthNames = [
+  'Janerachea',
+  'Febrerachea',
+  'Marsachea',
+  'Abrilachea',
+  'Maiachea',
+  'Junachea',
+  'Julaiachea',
+  'Agostachea',
+  'Setembrachea',
+  'Otubrachea',
+  'Novembrachea',
+  'Dezembrachea',
+]
+const monthStandalone: MonthNames = [
+  'Janer',
+  'Febrer',
+  'Mars',
+  'Abril',
+  'Mai',
+  'Jun',
+  'Julai',
+  'Agost',
+  'Setembr',
+  'Otubr',
+  'Novembr',
+  'Dezembr',
+]
+const months: MonthNamesStandaloneFormat = {
+  standalone: monthStandalone,
+  format: monthFormat,
+  isFormat: /MMMM(\s)+D[oD]?/,
+}
 
 function processRelativeTime(
   timeValue: string | number,
@@ -34,20 +68,7 @@ const localeGomLatn: Readonly<Locale> = {
   weekdays: ['Aitar', 'Somar', 'Mongllar', 'Budvar', 'Brestar', 'Sukrar', "Son'var"],
   weekdaysShort: ['Ait.', 'Som.', 'Mon.', 'Bud.', 'Bre.', 'Suk.', 'Son.'],
   weekdaysMin: ['Ai', 'Sm', 'Mo', 'Bu', 'Br', 'Su', 'Sn'],
-  months: [
-    'Janer',
-    'Febrer',
-    'Mars',
-    'Abril',
-    'Mai',
-    'Jun',
-    'Julai',
-    'Agost',
-    'Setembr',
-    'Otubr',
-    'Novembr',
-    'Dezembr',
-  ],
+  months,
   monthsShort: [
     'Jan.',
     'Feb.',

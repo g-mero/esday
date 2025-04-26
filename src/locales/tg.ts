@@ -2,27 +2,47 @@
  * Tajik [tg]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
+
+const monthFormat: MonthNames = [
+  'январи',
+  'феврали',
+  'марти',
+  'апрели',
+  'майи',
+  'июни',
+  'июли',
+  'августи',
+  'сентябри',
+  'октябри',
+  'ноябри',
+  'декабри',
+]
+const monthStandalone: MonthNames = [
+  'январ',
+  'феврал',
+  'март',
+  'апрел',
+  'май',
+  'июн',
+  'июл',
+  'август',
+  'сентябр',
+  'октябр',
+  'ноябр',
+  'декабр',
+]
+const months: MonthNamesStandaloneFormat = {
+  standalone: monthStandalone,
+  format: monthFormat,
+}
 
 const localeTg: Readonly<Locale> = {
   name: 'tg',
   weekdays: ['якшанбе', 'душанбе', 'сешанбе', 'чоршанбе', 'панҷшанбе', 'ҷумъа', 'шанбе'],
   weekdaysShort: ['яшб', 'дшб', 'сшб', 'чшб', 'пшб', 'ҷум', 'шнб'],
   weekdaysMin: ['яш', 'дш', 'сш', 'чш', 'пш', 'ҷм', 'шб'],
-  months: [
-    'январ',
-    'феврал',
-    'март',
-    'апрел',
-    'май',
-    'июн',
-    'июл',
-    'август',
-    'сентябр',
-    'октябр',
-    'ноябр',
-    'декабр',
-  ],
+  months,
   monthsShort: ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'],
   ordinal: (n) => `${n}`,
   weekStart: 1, // Monday is the first day of the week.
