@@ -18,9 +18,11 @@
 import type { DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
 import { C, isArray, isString, isUndefined } from '~/common'
 import type {
+  DayNames,
+  DayNamesStandaloneFormat,
   Locale,
-  LocaleFormatKeys,
-  MonthNamesFunction,
+  MonthNames,
+  MonthNamesStandaloneFormat,
   ParseOptions,
   ParsedElements,
   TokenDefinitions,
@@ -161,9 +163,13 @@ function addMonth(property: 'months' | 'monthsShort') {
     options: ParseOptions,
   ) {
     const localeName = options['locale'] as string
-    let monthNames = getLocale(localeName)[property]
-    if (!isArray(monthNames)) {
-      monthNames = (monthNames as MonthNamesFunction).standalone
+    const months = getLocale(localeName)[property]
+    let monthNames: MonthNames
+
+    if (isArray(months)) {
+      monthNames = months as MonthNames
+    } else {
+      monthNames = (months as MonthNamesStandaloneFormat).standalone
     }
 
     const matchIndex = monthNames.indexOf(input) + 1
@@ -185,7 +191,15 @@ function addDayOfWeek(property: 'weekdays' | 'weekdaysShort' | 'weekdaysMin') {
     options: ParseOptions,
   ) {
     const localeName = options['locale'] as string
-    const weekdayNames = getLocale(localeName)[property]
+    const weekdays = getLocale(localeName)[property]
+    let weekdayNames: DayNames
+
+    if (isArray(weekdays)) {
+      weekdayNames = weekdays as DayNames
+    } else {
+      weekdayNames = (weekdays as DayNamesStandaloneFormat).standalone
+    }
+
     parsedElements.dayOfWeek = weekdayNames.indexOf(input)
   }
 }
@@ -242,35 +256,6 @@ const parseTokensDefinitions: TokenDefinitions = {
 }
 
 /**
- * Compare 2 parsing tokens for sorting.
- * Longer tokens and upper case tokens are sorted to the top.
- * @param a - token 1
- * @param b - token 2
- * @returns -1 (a<b), 0 (a==b), 1 (a>b)
- */
-function compareTokens(a: string, b: string) {
-  if (a.length < b.length) {
-    return 1
-  }
-
-  if (a.length > b.length) {
-    return -1
-  }
-
-  // length are equal, so compare values
-  if (a < b) {
-    return 1
-  }
-
-  if (a > b) {
-    return -1
-  }
-
-  // are equal
-  return 0
-}
-
-/**
  * Replace locale dependent token in given format with values from locale definition
  * e.g. 'LTS' with 'h:mm:ss A'
  * @param format - original format (with locale dependent tokens)
@@ -278,19 +263,12 @@ function compareTokens(a: string, b: string) {
  * @returns format with locale dependent tokens replaced
  */
 function replaceLocaleTokens(format: string, currentLocale: Locale) {
-  let newFormat = format
-  const currentLocaleFormats = currentLocale.formats
-
-  // replace format tokens from locale; we have to sort
-  // the keys to always catch the longest matches first
-  const tokenKeys = Object.keys(currentLocaleFormats).sort(compareTokens)
-
-  for (let i = 0; i < tokenKeys.length; i++) {
-    const tokenToReplace: LocaleFormatKeys = tokenKeys[i] as LocaleFormatKeys
-    const newValue = currentLocaleFormats[tokenToReplace]
-    newFormat = newFormat.replace(tokenToReplace, newValue)
+  const localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g
+  function replaceLongDateFormatTokens(input: string) {
+    return currentLocale.formats[input as keyof typeof currentLocale.formats] ?? input
   }
-  return newFormat
+
+  return format.replace(localFormattingTokens, replaceLongDateFormatTokens)
 }
 
 const localizedParsePlugin: EsDayPlugin<{}> = (

@@ -24,6 +24,7 @@ Currently there are the following plugins:
 - IsSameOrBefore (IsSameOrBefore adds .isSameOrBefore() API - is date the same or before another date)
 - IsToday (IsToday adds .isToday() API is date today)
 - [Locale](./plugins/locale.md) (add locale functions to EsDay)
+- [LocalizedFormat](./plugins/localizedFormat.md) (for formatting with locale dependant tokens in template)
 - [LocalizedParse](./plugins/localizedParse.md) (for parsing locale dependant tokens in arbitrary formatted date and time strings)
 - MinMax (MinMax adds .min() and .max() APIs - find the minimum or maximum of several dates)
 - [QuarterOfYear](./plugins/quarterOfYear.md) (QuarterOfYear adds .quarter() getter and setter APIs and formatter token 'Q' - handle quarter of year)

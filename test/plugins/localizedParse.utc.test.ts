@@ -54,6 +54,7 @@ describe('localizedParse plugin - parsed as utc for "en"', () => {
     { sourceString: '4 [de] December [de] 2024', formatString: 'll' },
     { sourceString: '4 [de] December [de] 2024 4:25 PM', formatString: 'lll' },
     { sourceString: 'Wednesday, 4 [de] December [de] 2024 4:25 PM', formatString: 'llll' },
+    { sourceString: '2024 12 24 [L lll ka] 4:25:36 PM', formatString: 'YYYY MM DD [L lll ka] LTS' },
   ])(
     'parse date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
@@ -124,9 +125,10 @@ describe('localizedParse plugin - parsed as utc for "de"', () => {
     { sourceString: '24. Dezember 2024 14:25', formatString: 'LLL' },
     { sourceString: 'Mittwoch, 24. Dezember 2024 14:25', formatString: 'LLLL' },
     { sourceString: '24.12.2024', formatString: 'l' },
-    { sourceString: '24. Dezember 2024', formatString: 'll' },
-    { sourceString: '24. Dezember 2024 14:25', formatString: 'lll' },
-    { sourceString: 'Mittwoch, 24. Dezember 2024 14:25', formatString: 'llll' },
+    { sourceString: '24. Dez. 2024', formatString: 'll' },
+    { sourceString: '24. Dez. 2024 14:25', formatString: 'lll' },
+    { sourceString: 'Mittwoch, 24. Dez. 2024 14:25', formatString: 'llll' },
+    { sourceString: '2024 12 24 [L lll ka] 14:25:36', formatString: 'YYYY MM DD [L lll ka] LTS' },
   ])(
     'parse date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
@@ -190,6 +192,17 @@ describe('localizedParse plugin - parsed as utc for "hr"', () => {
     { sourceString: '2024-02-29 15:26:37 pm', formatString: 'YYYY-MM-DD hh:mm:SS a' },
     { sourceString: '2024-02-29 15:26:37 am', formatString: 'YYYY-MM-DD hh:mm:SS a' },
     { sourceString: '2024-02-29 8:10:21 xy', formatString: 'YYYY-MM-DD h:mm:SS A' },
+    { sourceString: '2024 12 24 14:25', formatString: 'YYYY MM DD LT' },
+    { sourceString: '2024 12 24 24:25:36', formatString: 'YYYY MM DD LTS' },
+    { sourceString: '24.12.2024', formatString: 'L' },
+    { sourceString: '24. prosinac 2024', formatString: 'LL' },
+    { sourceString: '24. prosinac 2024 8:25', formatString: 'LLL' },
+    { sourceString: 'utorak, 24. prosinac 2024 14:25', formatString: 'LLLL' },
+    { sourceString: '24.12.2024', formatString: 'l' },
+    { sourceString: '24. pro. 2024', formatString: 'll' },
+    { sourceString: '24. pro. 2024 4:25', formatString: 'lll' },
+    { sourceString: 'uto., 24. pro. 2024 9:25', formatString: 'llll' },
+    { sourceString: '2024 12 24 [L lll ka] 4:25:36 PM', formatString: 'YYYY MM DD [L lll ka] LTS' },
   ])(
     'parse date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {

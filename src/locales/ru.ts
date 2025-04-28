@@ -1,9 +1,34 @@
-/**
- * Russian [ru]
- */
+import type {
+  DayNames,
+  DayNamesStandaloneFormat,
+  Locale,
+  MonthNames,
+  MonthNamesStandaloneFormat,
+} from '~/plugins/locale'
 
-import type { EsDay } from 'esday'
-import type { Locale, MonthNames, MonthNamesFunction } from '~/plugins/locale'
+const dayNamesFormat: DayNames = [
+  'воскресенье',
+  'понедельник',
+  'вторник',
+  'среду',
+  'четверг',
+  'пятницу',
+  'субботу',
+]
+const dayNamesStandalone: DayNames = [
+  'воскресенье',
+  'понедельник',
+  'вторник',
+  'среда',
+  'четверг',
+  'пятница',
+  'суббота',
+]
+const weekdays: DayNamesStandaloneFormat = {
+  standalone: dayNamesStandalone,
+  format: dayNamesFormat,
+  isFormat: /\[ ?[Вв] ?(?:прошлую|следующую|эту)? ?] ?dddd/,
+}
 
 const monthFormat: MonthNames = [
   'января',
@@ -33,6 +58,10 @@ const monthStandalone: MonthNames = [
   'ноябрь',
   'декабрь',
 ]
+const months: MonthNamesStandaloneFormat = {
+  standalone: monthStandalone,
+  format: monthFormat,
+}
 
 const monthShortFormat: MonthNames = [
   'янв.',
@@ -62,26 +91,10 @@ const monthShortStandalone: MonthNames = [
   'нояб.',
   'дек.',
 ]
-
-const MONTHS_IN_FORMAT = /D[oD]?(?:\[[^[\]]*\]|\s)+MMMM?/
-
-const months: MonthNamesFunction = (esdayInstance: EsDay, format: string) => {
-  if (MONTHS_IN_FORMAT.test(format)) {
-    return monthFormat[esdayInstance.month()]
-  }
-  return monthStandalone[esdayInstance.month()]
+const monthsShort: MonthNamesStandaloneFormat = {
+  standalone: monthShortStandalone,
+  format: monthShortFormat,
 }
-months.format = monthFormat
-months.standalone = monthStandalone
-
-const monthsShort: MonthNamesFunction = (esdayInstance: EsDay, format: string) => {
-  if (MONTHS_IN_FORMAT.test(format)) {
-    return monthShortFormat[esdayInstance.month()]
-  }
-  return monthShortStandalone[esdayInstance.month()]
-}
-monthsShort.format = monthShortFormat
-monthsShort.standalone = monthShortStandalone
 
 function plural(timeStrings: string[], timeValue: number) {
   const forms = timeStrings
@@ -112,7 +125,7 @@ function relativeTimeWithPlural(
 
 const localeRu: Readonly<Locale> = {
   name: 'ru',
-  weekdays: ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'],
+  weekdays,
   weekdaysShort: ['вск', 'пнд', 'втр', 'срд', 'чтв', 'птн', 'сбт'],
   weekdaysMin: ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
   months,

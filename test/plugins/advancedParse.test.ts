@@ -1,5 +1,5 @@
 import { esday } from 'esday'
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 import type { ParsedElements, TokenDefinitions } from '~/plugins'
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'

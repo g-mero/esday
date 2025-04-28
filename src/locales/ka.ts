@@ -2,11 +2,35 @@
  * Georgian [ka]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { DayNames, DayNamesStandaloneFormat, Locale } from '~/plugins/locale'
+
+const dayNamesFormat: DayNames = [
+  'კვირას',
+  'ორშაბათს',
+  'სამშაბათს',
+  'ოთხშაბათს',
+  'ხუთშაბათს',
+  'პარასკევს',
+  'შაბათს',
+]
+const dayNamesStandalone: DayNames = [
+  'ვირა',
+  'ორშაბათი',
+  'სამშაბათი',
+  'ოთხშაბათი',
+  'ხუთშაბათი',
+  'პარასკევი',
+  'შაბათი',
+]
+const weekdays: DayNamesStandaloneFormat = {
+  standalone: dayNamesStandalone,
+  format: dayNamesFormat,
+  isFormat: /(წინა|შემდეგ)/,
+}
 
 const localeKa: Readonly<Locale> = {
   name: 'ka',
-  weekdays: ['კვირა', 'ორშაბათი', 'სამშაბათი', 'ოთხშაბათი', 'ხუთშაბათი', 'პარასკევი', 'შაბათი'],
+  weekdays: weekdays,
   weekdaysShort: ['კვი', 'ორშ', 'სამ', 'ოთხ', 'ხუთ', 'პარ', 'შაბ'],
   weekdaysMin: ['კვ', 'ორ', 'სა', 'ოთ', 'ხუ', 'პა', 'შა'],
   months: [
