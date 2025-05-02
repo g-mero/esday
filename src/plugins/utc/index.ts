@@ -207,7 +207,7 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     if (utc) {
       const $date = this['$d']
       if (prettyUnit(unit) === C.DAY) {
-        setUnitInDateUTC($date, C.DATE_OF_WEEK, this.date() + (values[0] - this.day()))
+        setUnitInDateUTC($date, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
       } else {
         setUnitInDateUTC($date, unit as Exclude<typeof unit, UnitDay>, values)
       }

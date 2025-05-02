@@ -598,14 +598,14 @@ describe('plugin utc', () => {
       moment.locale(momentDefaultLocale)
     })
 
-    it.each([C.YEAR, C.MONTH, C.DAY, C.DATE_OF_WEEK, C.WEEK, C.HOUR, C.MIN, C.SECOND])(
+    it.each([C.YEAR, C.MONTH, C.DAY, C.DAY_OF_MONTH, C.WEEK, C.HOUR, C.MIN, C.SECOND])(
       'startOf in UTC mode for "%s"',
       (unit) => {
         expectSameResult((esday) => esday().utc().startOf(unit))
       },
     )
 
-    it.each([C.YEAR, C.MONTH, C.DAY, C.DATE_OF_WEEK, C.WEEK, C.HOUR, C.MIN, C.SECOND])(
+    it.each([C.YEAR, C.MONTH, C.DAY, C.DAY_OF_MONTH, C.WEEK, C.HOUR, C.MIN, C.SECOND])(
       'endOf in UTC mode for "%s"',
       (unit) => {
         expectSameResult((esday) => esday().utc().endOf(unit))

@@ -39,6 +39,7 @@ describe('get', () => {
     expect(testDate.get('date')).toBe(testDay)
     expect(testDate.get('D')).toBe(testDay)
   })
+
   it.each([
     { sourceString: '2024-02-03T13:14:15.678', expected: 6 },
     { sourceString: '2024-11-06T00:00:00', expected: 3 },
@@ -46,7 +47,7 @@ describe('get', () => {
   ])('day of week for "$sourceString"', ({ sourceString, expected }) => {
     expect(esday(sourceString).day()).toBe(expected)
     expect(esday(sourceString).get('day')).toBe(expected)
-    expectSame((esday) => esday(sourceString).get(C.DATE_OF_WEEK))
+    expectSame((esday) => esday(sourceString).get(C.DAY))
     expectSame((esday) => esday(sourceString).day())
   })
 

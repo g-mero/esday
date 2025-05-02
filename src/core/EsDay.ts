@@ -279,13 +279,13 @@ export class EsDay {
 
   private $set(unit: Exclude<UnitType, UnitWeek | UnitQuarter>, values: number[]) {
     if (prettyUnit(unit) === C.DAY) {
-      setUnitInDate(this.$d, C.DATE_OF_WEEK, this.date() + (values[0] - this.day()))
+      setUnitInDate(this.$d, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
     } else if (prettyUnit(unit) === C.MONTH) {
       const originalDate = values.length === 1 ? this.date() : values[1]
       setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values)
       if (originalDate > 0 && this.date() !== originalDate) {
         // reset date to last day of previous month
-        setUnitInDate(this.$d, C.DATE_OF_WEEK, 0)
+        setUnitInDate(this.$d, C.DAY_OF_MONTH, 0)
       }
     } else {
       setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values)

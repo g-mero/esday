@@ -38,12 +38,12 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
       const weekStart = C.INDEX_MONDAY
       const diff = ($dayOfWeek < weekStart ? $dayOfWeek + 7 : $dayOfWeek) - weekStart
       const newDate = reverse ? $date + (6 - diff) : $date - diff
-      setterFunc.call(result, C.DATE_OF_WEEK, [newDate])
+      setterFunc.call(result, C.DAY_OF_MONTH, [newDate])
       instanceFactorySet(C.HOUR, 0)
       break
     }
     case C.DAY:
-    case C.DATE_OF_WEEK:
+    case C.DAY_OF_MONTH:
       instanceFactorySet(C.HOUR, 0)
       break
     case C.HOUR:
