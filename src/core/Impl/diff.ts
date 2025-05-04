@@ -3,7 +3,9 @@ import type { EsDay } from '~/core'
 import type { UnitType } from '~/types'
 
 /**
- * get difference between 2 dates as months
+ * get difference between 2 dates as months.
+ * As implemented by moment.js, the algorithm is optimized to ensure that two months
+ * with the same date are always a whole number apart.
  * @param a - date 1
  * @param b - date 2
  * @returns b - a in months
