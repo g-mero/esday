@@ -1,7 +1,6 @@
 import { C, isUndefined, prettyUnit } from '~/common'
-import type { UnitIsoWeek } from '~/common'
 import type { EsDay } from '~/core'
-import type { UnitType } from '~/types'
+import type { UnitIsoWeek, UnitType } from '~/types'
 
 /**
  * get difference between 2 dates as months

@@ -1,7 +1,6 @@
 import type { EsDay } from 'esday'
-import type { UnitTypeCore } from '~/common'
 import { C, prettyUnit } from '~/common'
-import type { UnitType } from '~/types'
+import type { UnitType, UnitTypeCore } from '~/types'
 
 export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
   const result = that.clone()

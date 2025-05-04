@@ -10,7 +10,6 @@
  */
 
 import type { EsDay } from 'esday'
-import type { UnitDay } from '~/common'
 import {
   C,
   getUnitInDate,
@@ -19,7 +18,7 @@ import {
   prettyUnit,
   setUnitInDateUTC,
 } from '~/common'
-import type { DateType, EsDayPlugin, SimpleType } from '~/types'
+import type { DateType, EsDayPlugin, SimpleType, UnitDay } from '~/types'
 
 const REGEX_VALID_OFFSET_FORMAT = /[+-]\d\d(?::?\d\d)?/g
 const REGEX_OFFSET_HOURS_MINUTES_FORMAT = /[+-]|\d\d/g
