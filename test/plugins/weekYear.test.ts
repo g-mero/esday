@@ -1,5 +1,5 @@
 import { esday } from 'esday'
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 import { describe, expect, it } from 'vitest'
 import localeEnUs from '~/locales/en-us'
 import { localePlugin, weekPlugin } from '~/plugins'
@@ -7,7 +7,9 @@ import { localePlugin, weekPlugin } from '~/plugins'
 // Extend esday with required plugins and locale
 esday.extend(localePlugin).extend(weekPlugin)
 esday.registerLocale(localeEnUs, 'en-us')
+
 esday.locale('en-us')
+moment.locale('en-us')
 
 describe('weekYear plugin', () => {
   it('should return the correct week year for a date', () => {

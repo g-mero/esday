@@ -16,7 +16,11 @@ describe('locale fo', () => {
 
   it('should have 7 weekday names', () => {
     expect(locale.weekdays).toBeDefined()
-    expect(locale.weekdays?.length).toBe(7)
+    if (Array.isArray(locale.weekdays)) {
+      expect(locale.weekdays.length).toBe(7)
+    } else {
+      expect(locale.weekdays).toBeTypeOf('function')
+    }
   })
 
   it('should have 7 short weekday names', () => {

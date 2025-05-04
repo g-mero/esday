@@ -2,7 +2,41 @@
  * Czech [cs]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
+
+const monthFormat: MonthNames = [
+  'ledna',
+  'února',
+  'března',
+  'dubna',
+  'května',
+  'června',
+  'července',
+  'srpna',
+  'září',
+  'října',
+  'listopadu',
+  'prosince',
+]
+const monthStandalone: MonthNames = [
+  'leden',
+  'únor',
+  'březen',
+  'duben',
+  'květen',
+  'červen',
+  'červenec',
+  'srpen',
+  'září',
+  'říjen',
+  'listopad',
+  'prosinec',
+]
+const months: MonthNamesStandaloneFormat = {
+  standalone: monthStandalone,
+  format: monthFormat,
+  isFormat: /DD?[o.]?(\[[^\[\]]*\]|\s)+MMMM/,
+}
 
 function usePlural(timeValue: number): boolean {
   return timeValue > 1 && timeValue < 5 && ~~(timeValue / 10) !== 1
@@ -68,20 +102,7 @@ const localeCs: Readonly<Locale> = {
   weekdays: ['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'],
   weekdaysShort: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
   weekdaysMin: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
-  months: [
-    'leden',
-    'únor',
-    'březen',
-    'duben',
-    'květen',
-    'červen',
-    'červenec',
-    'srpen',
-    'září',
-    'říjen',
-    'listopad',
-    'prosinec',
-  ],
+  months,
   monthsShort: ['led', 'úno', 'bře', 'dub', 'kvě', 'čvn', 'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'],
   ordinal: (n) => `${n}.`,
   weekStart: 1, // Monday is the first day of the week.
@@ -90,13 +111,13 @@ const localeCs: Readonly<Locale> = {
     LT: 'H:mm',
     LTS: 'H:mm:ss',
     L: 'DD.MM.YYYY',
-    LL: 'D. MMMM YYYY',
-    LLL: 'D. MMMM YYYY H:mm',
-    LLLL: 'dddd D. MMMM YYYY H:mm',
-    l: 'D. M. YYYY',
-    ll: 'D. MMMM YYYY',
-    lll: 'D. MMMM YYYY H:mm',
-    llll: 'dddd D. MMMM YYYY H:mm',
+    LL: 'Do MMMM YYYY',
+    LLL: 'Do MMMM YYYY H:mm',
+    LLLL: 'dddd Do MMMM YYYY H:mm',
+    l: 'Do M. YYYY',
+    ll: 'Do MMMM YYYY',
+    lll: 'Do MMMM YYYY H:mm',
+    llll: 'dddd Do MMMM YYYY H:mm',
   },
   relativeTime: {
     future: 'za %s',

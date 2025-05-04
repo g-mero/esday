@@ -1,4 +1,4 @@
-import type { EsDay, UnitType } from 'esday'
+import type { UnitType } from 'esday'
 import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 
@@ -387,7 +387,7 @@ describe('plugin utc', () => {
     })
 
     it('returns a number', () => {
-      const offsetValue: number = esday().utcOffset()
+      const offsetValue = esday().utcOffset()
 
       expect(offsetValue).toBeTypeOf('number')
     })
@@ -421,7 +421,7 @@ describe('plugin utc', () => {
     })
 
     it('returns an instance of EsDay', () => {
-      const newDate: EsDay = esday().utcOffset(5)
+      const newDate = esday().utcOffset(5)
 
       expect(newDate).toHaveProperty('valueOf')
     })

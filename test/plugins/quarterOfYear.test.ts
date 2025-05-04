@@ -1,5 +1,5 @@
 import { esday } from 'esday'
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { quarterOfYearPlugin } from '~/plugins'
 import { expectSame, expectSameResult } from '../util'

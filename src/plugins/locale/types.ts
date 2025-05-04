@@ -7,36 +7,29 @@ type ReadonlyTuple<T, N extends number, R extends readonly T[] = []> = R['length
 
 declare module 'esday' {
   interface EsDay {
-    /**
-     * overloads for getter / setter of locale of instance
-     * locale(): string
-     * locale(localeName: string): EsDay
-     */
-    locale: <T extends string | undefined = undefined>(
-      localeName?: T,
-    ) => T extends string ? EsDay : string
-
+    locale(): string
+    locale(localeName: string): EsDay
     localeObject: () => Locale
   }
 
   interface EsDayFactory {
-    /**
-     * overloads for getter / setter of locale of prototype
-     * locale(): string
-     * locale(localeName: string): EsDay
-     */
-    locale: <T extends string | undefined = undefined>(
-      localeName?: T,
-    ) => T extends string ? EsDayFactory : string
+    locale(): string
+    locale(localeName: string): EsDay
 
     /**
-     * register locale
+     * add locale to list of available Locales
      */
     registerLocale: (locale: Locale, newName?: string) => EsDayFactory
   }
 }
 
 export type DayNames<T = string> = ReadonlyTuple<T, 7>
+export interface DayNamesStandaloneFormat<T = DayNames<string>> {
+  format: T // for use as standalone day name
+  standalone: T // for use in a format method
+  isFormat: RegExp
+}
+
 export type MonthNames<T = string> = ReadonlyTuple<T, 12>
 export interface MonthNamesStandaloneFormat<T = MonthNames<string>> {
   format: T // for use as standalone month name
@@ -94,7 +87,7 @@ export interface Locale {
    * Array of full day names
    * @example ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
    */
-  readonly weekdays: DayNames
+  readonly weekdays: DayNames | DayNamesStandaloneFormat
   /**
    * Array of short versions of day names
    * @example ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']

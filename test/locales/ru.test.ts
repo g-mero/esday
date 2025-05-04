@@ -16,7 +16,11 @@ describe('locale ru', () => {
 
   it('should have 7 weekday names', () => {
     expect(locale.weekdays).toBeDefined()
-    expect(locale.weekdays?.length).toBe(7)
+    if (Array.isArray(locale.weekdays)) {
+      expect(locale.weekdays.length).toBe(7)
+    } else {
+      expect(locale.weekdays).toBeTypeOf('object')
+    }
   })
 
   it('should have 7 short weekday names', () => {
@@ -34,7 +38,7 @@ describe('locale ru', () => {
     if (Array.isArray(locale.months)) {
       expect(locale.months.length).toBe(12)
     } else {
-      expect(locale.months).toBeTypeOf('function')
+      expect(locale.months).toBeTypeOf('object')
     }
   })
 
@@ -43,7 +47,7 @@ describe('locale ru', () => {
     if (Array.isArray(locale.monthsShort)) {
       expect(locale.monthsShort.length).toBe(12)
     } else {
-      expect(locale.monthsShort).toBeTypeOf('function')
+      expect(locale.monthsShort).toBeTypeOf('object')
     }
   })
 
