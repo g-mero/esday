@@ -1,3 +1,9 @@
+/**
+ * advancedFormat plugin
+ *
+ * This plugin adds format definitions to date formatting
+ */
+
 import type { EsDay, EsDayFactory, EsDayPlugin, FormattingTokenDefinitions } from 'esday'
 import { padStart, padZoneStr } from '~/common'
 

@@ -92,7 +92,7 @@ export function formatImpl(that: EsDay, formatStr?: string) {
 
   const matches = (match: string) => {
     const formatter = formatTokensDefinitions[match]
-    return !isUndefined(formatter) ? formatter(that) : unknownTokenOutput
+    return !isUndefined(formatter) ? formatter(that, formatStr) : unknownTokenOutput
   }
 
   // replace format tokens with corresponding values

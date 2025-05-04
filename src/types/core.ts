@@ -30,4 +30,7 @@ export type DateFromDateComponents = (
 ) => Date
 
 // Types for for formatting
-export type FormattingTokenDefinitions = Record<string, (sourceDate: EsDay) => string>
+export type FormattingTokenDefinitions = Record<
+  string,
+  (sourceDate: EsDay, formatStr?: string) => string
+>

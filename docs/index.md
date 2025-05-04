@@ -24,12 +24,14 @@ Currently there are the following plugins:
 - IsSameOrBefore (IsSameOrBefore adds .isSameOrBefore() API - is date the same or before another date)
 - IsToday (IsToday adds .isToday() API is date today)
 - [Locale](./plugins/locale.md) (add locale functions to EsDay)
+- [LocalizedFormat](./plugins/localizedFormat.md) (for formatting with locale dependant tokens in template)
+- [LocalizedParse](./plugins/localizedParse.md) (for parsing locale dependant tokens in arbitrary formatted date and time strings)
 - MinMax (MinMax adds .min() and .max() APIs - find the minimum or maximum of several dates)
+- [QuarterOfYear](./plugins/quarterOfYear.md) (QuarterOfYear adds .quarter() getter and setter APIs and formatter token 'Q' - handle quarter of year)
 - ToArray (ToArray adds .toArray() API - get an array with the components of a date)
 - ToObject (ToObject adds .toObject() API - get an object with the components of a date)
 - Utc (UTC adds .utc(), .local() and .isUTC APIs - handle dates as UTC)
-- [WeekOfYear](./plugins/weekOfYear.md) (WeekOfYear adds .week() API - get the week of the year of a date)
-- [WeekYear](./plugins/weekYear.md) (WeekYear adds .weekYear() API - get locale aware week-year of a date)
+- [Week](./plugins/week.md) (Week adds .week() and .weekYear() API - locale aware)
 
 ## Differences to Day.js
 

@@ -34,9 +34,8 @@ const monthStandalone: MonthNames = [
   'prosinac',
 ]
 
-const MONTHS_IN_FORMAT = /D[oD]?(?:\[[^[\]]*\]|\s)+MMMM?/
-
-const months: MonthNamesFunction = (esdayInstance: EsDay, format: string): string => {
+const months: MonthNamesFunction = (esdayInstance: EsDay, format: string) => {
+  const MONTHS_IN_FORMAT = /D[oD]?(?:\[[^[\]]*\]|\s)+MMMM?/
   if (MONTHS_IN_FORMAT.test(format)) {
     return monthFormat[esdayInstance.month()]
   }
@@ -142,13 +141,13 @@ const localeHr: Readonly<Locale> = {
     LT: 'H:mm',
     LTS: 'H:mm:ss',
     L: 'DD.MM.YYYY',
-    LL: 'D. MMMM YYYY',
-    LLL: 'D. MMMM YYYY H:mm',
-    LLLL: 'dddd, D. MMMM YYYY H:mm',
+    LL: 'Do MMMM YYYY',
+    LLL: 'Do MMMM YYYY H:mm',
+    LLLL: 'dddd, Do MMMM YYYY H:mm',
     l: 'DD.MM.YYYY',
-    ll: 'D. MMMM YYYY',
-    lll: 'D. MMMM YYYY H:mm',
-    llll: 'dddd, D. MMMM YYYY H:mm',
+    ll: 'Do MMM YYYY',
+    lll: 'Do MMM YYYY H:mm',
+    llll: 'ddd, Do MMM YYYY H:mm',
   },
   relativeTime: {
     future: 'za %s',

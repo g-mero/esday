@@ -1,7 +1,7 @@
 import type { EsDay, EsDayFactory } from 'esday'
 import { esday } from 'esday'
 import type { Moment } from 'moment'
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 import { expect } from 'vitest'
 
 /**

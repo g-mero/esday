@@ -3,12 +3,52 @@
 The `esday().format()` function returns a string representing an `esday` object.
 
 ## Method signatures
+### formatting using a given format template:
 ```
-esday().format(formatTemplate?: string): string
+esday().format(formatTemplate: string): string
 ```
+
 | parameter      | description                                   |
 | -------------- | --------------------------------------------- |
 | formatTemplate | template used for formatting the EsDay object |
+
+### Adding new formatting tokens:
+```
+esday.addTokenDefinitions(newTokens: TokenDefinitions)
+```
+
+**Format of TokenDefinitions**
+```typescript
+type TokenDefinitions = Record<string, [RegExp, RegExp, (this: ParsedElements, input: string) => void]>
+```
+
+| parameter          | type     | description                                      |
+| ------------------ | -------- | ------------------------------------------------ |
+| token              | string   | token to be parsed (e.g. 'Q')                    |
+| regex default mode | RegExp   | regex used for parsing in default mode           |
+| regex strict mode  | RegExp   | regex used for parsing in strict mode            |
+| setter             | function | function to add parsed value to result in 'this' |
+
+**Parameters of setter**
+| parameter | type           | description                   |
+| --------- | -------------- | ----------------------------- |
+| this      | ParsedElements | object for results of parsing |
+| input     | string         | parsed value                  |
+
+**Format of ParsedElements**
+```typescript
+interface ParsedElements {
+  year?: number
+  month?: number
+  day?: number
+  hours?: number
+  minutes?: number
+  seconds?: number
+  milliseconds?: number
+  zoneOffset?: number
+  unix?: number
+}
+```
 
 ## Parsing tokens
 | **Token** | **Example**                       | **Description**                                            |
@@ -37,5 +77,20 @@ An example for a formatting string with escaped test is `YYY-MM-DD [MM] HH [any 
 import { esday } from 'esday'
 
 esday('08-2023-14 21:43:12.123').format('MM-YYYY-DD HH:mm:ss.SSS')
+// Returns '2023-08-14T21:43:12.123'
+```
+
+### Adding new formatting tokens
+This functionality is above all for plugin developers
+```typescript
+const additionalTokens: TokenDefinitions = {
+  PP: [/\d\d?/, /\d{2}/, function (input) {
+    // in this example we don't use the parsed value ('input')
+    this.milliseconds = 987
+  }],
+}
+esday.addTokenDefinitions(additionalTokens)
+
+esday('2024 3').format('YYYY PP')
 // Returns '2023-08-14T21:43:12.123'
 ```

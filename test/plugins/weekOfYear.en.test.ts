@@ -1,18 +1,21 @@
 import { esday } from 'esday'
-import moment from 'moment'
-import { describe, expect, it } from 'vitest'
+import moment from 'moment/min/moment-with-locales'
+import { beforeEach, describe, expect, it } from 'vitest'
 import localeEn from '~/locales/en'
-// We expect moment to have 'en' as default locale that cannot be imported
-import { localePlugin, weekOfYearPlugin } from '~/plugins'
+import { localePlugin, weekPlugin } from '~/plugins'
 import { expectSame } from '../util'
 
-esday.extend(localePlugin).extend(weekOfYearPlugin)
+esday.extend(localePlugin).extend(weekPlugin)
 esday.registerLocale(localeEn)
-esday.locale('en')
-moment.locale('en')
 
 // Tests with Sunday as start of week
 describe('week plugin - locale "en"', () => {
+  beforeEach(() => {
+    // set global locale
+    esday.locale('en')
+    // we do not have to call 'moment.locale('en')' as this is the default locale
+  })
+
   it.each([
     { sourceDate: '2024-03-29', expected: 13, weekday: 'Friday' },
     { sourceDate: '2024-03-30', expected: 13, weekday: 'Saturday' },

@@ -1,9 +1,4 @@
-/**
- * Lithuanian [lt]
- */
-
-import type { EsDay } from 'esday'
-import type { Locale, MonthNames, MonthNamesFunction } from '~/plugins/locale'
+import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
 
 const monthFormat: MonthNames = [
   'sausio',
@@ -33,17 +28,11 @@ const monthStandalone: MonthNames = [
   'lapkritis',
   'gruodis',
 ]
-
-const MONTHS_IN_FORMAT = /D[oD]?(?:\[[^[\]]*\]|\s)+MMMM?|MMMM?(?:\[[^[\]]*\]|\s)+D[oD]?/
-
-const months: MonthNamesFunction = (esdayInstance: EsDay, format: string) => {
-  if (MONTHS_IN_FORMAT.test(format)) {
-    return monthFormat[esdayInstance.month()]
-  }
-  return monthStandalone[esdayInstance.month()]
+const months: MonthNamesStandaloneFormat = {
+  standalone: monthStandalone,
+  format: monthFormat,
+  isFormat: /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?|MMMM?(\[[^\[\]]*\]|\s)+D[oD]?/,
 }
-months.format = monthFormat
-months.standalone = monthStandalone
 
 const localeLt: Locale = {
   name: 'lt',
