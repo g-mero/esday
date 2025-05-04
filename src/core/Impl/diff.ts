@@ -1,4 +1,5 @@
 import { C, isUndefined, prettyUnit } from '~/common'
+import type { UnitIsoWeek } from '~/common'
 import type { EsDay } from '~/core'
 import type { UnitType } from '~/types'
 
@@ -49,7 +50,12 @@ function utcOffset(date: EsDay): number {
   return 'utcOffset' in date ? date.utcOffset() : defaultOffset
 }
 
-export function diffImpl(that: EsDay, date: EsDay, units?: UnitType, asFloat = false): number {
+export function diffImpl(
+  that: EsDay,
+  date: EsDay,
+  units?: Exclude<UnitType, UnitIsoWeek>,
+  asFloat = false,
+): number {
   const diffInMs = that.valueOf() - date.valueOf()
   const diffInMonths = monthDiff(that, date)
   const zoneDelta = (utcOffset(that) - utcOffset(date)) * C.MILLISECONDS_A_MINUTE

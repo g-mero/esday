@@ -2,17 +2,18 @@ import type {
   UnitDate,
   UnitDay,
   UnitHour,
+  UnitIsoWeek,
   UnitMin,
   UnitMonth,
   UnitMs,
-  UnitQuarter,
   UnitSecond,
-  UnitWeek,
+  UnitType,
+  UnitTypeCore,
   UnitYear,
 } from '~/common'
 import { C, isEmptyObject, isUndefined, isValidDate, prettyUnit } from '~/common'
 import { getUnitInDate, prettyUnits, setUnitInDate } from '~/common/date-fields'
-import type { DateType, UnitType } from '~/types'
+import type { DateType } from '~/types'
 import type { SimpleObject } from '~/types/util-types'
 import { esday } from '.'
 import { addImpl } from './Impl/add'
@@ -229,19 +230,19 @@ export class EsDay {
     return startOfImpl(this, units, true)
   }
 
-  add(number: number, units: UnitType) {
+  add(number: number, units: Exclude<UnitType, UnitIsoWeek>) {
     return addImpl(this, number, units)
   }
 
-  subtract(number: number, units: UnitType) {
+  subtract(number: number, units: Exclude<UnitType, UnitIsoWeek>) {
     return this.add(-number, units)
   }
 
-  diff(date: EsDay, units?: UnitType, asFloat = false): number {
+  diff(date: EsDay, units?: Exclude<UnitType, UnitIsoWeek>, asFloat = false): number {
     return diffImpl(this, date, units, asFloat)
   }
 
-  get(units: Exclude<UnitType, UnitWeek | UnitQuarter>) {
+  get(units: UnitTypeCore) {
     return getUnitInDate(this.$d, units)
   }
 
@@ -253,7 +254,7 @@ export class EsDay {
   set(unit: UnitMin, min: number, sec?: number, ms?: number): EsDay
   set(unit: UnitSecond, sec: number, ms?: number): EsDay
   set(unit: UnitMs, ms: number): EsDay
-  set(unit: Exclude<UnitType, UnitWeek | UnitQuarter>, ...values: number[]) {
+  set(unit: UnitTypeCore, ...values: number[]) {
     return this.clone().$set(unit, values)
   }
 
@@ -277,7 +278,7 @@ export class EsDay {
     return this.$d.toUTCString()
   }
 
-  private $set(unit: Exclude<UnitType, UnitWeek | UnitQuarter>, values: number[]) {
+  private $set(unit: UnitTypeCore, values: number[]) {
     if (prettyUnit(unit) === C.DAY) {
       setUnitInDate(this.$d, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
     } else if (prettyUnit(unit) === C.MONTH) {

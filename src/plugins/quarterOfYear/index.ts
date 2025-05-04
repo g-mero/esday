@@ -1,5 +1,6 @@
 import type { EsDay, EsDayFactory, EsDayPlugin, FormattingTokenDefinitions, UnitType } from 'esday'
 import { C, prettyUnit } from '~/common'
+import type { UnitIsoWeek } from '~/common'
 
 declare module 'esday' {
   interface EsDay {
@@ -23,7 +24,7 @@ const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory: EsDayFact
   }
 
   const oldAdd = proto.add
-  proto.add = function (number: number, units: UnitType) {
+  proto.add = function (number: number, units: Exclude<UnitType, UnitIsoWeek>) {
     const unit = prettyUnit(units)
     if (unit === C.QUARTER) {
       return this.add(number * 3, C.MONTH)
