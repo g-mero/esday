@@ -4,7 +4,7 @@
  * This plugin adds localized formats to advancedFormat plugin and date formatting
  */
 
-import type { EsDay, EsDayFactory, EsDayPlugin, FormattingTokenDefinitions } from 'esday'
+import type { EsDay, EsDayPlugin, FormattingTokenDefinitions } from 'esday'
 import { isArray, isString, padNumberWithLeadingZeros } from '~/common'
 import type {
   DayNamesStandaloneFormat,
@@ -97,11 +97,7 @@ function replaceLocaleTokens(format: string, currentLocale: Locale) {
   return format.replace(localFormattingTokens, replaceLongDateFormatTokens)
 }
 
-const localizedFormatPlugin: EsDayPlugin<{}> = (
-  _,
-  dayClass: typeof EsDay,
-  dayFactory: EsDayFactory,
-) => {
+const localizedFormatPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const proto = dayClass.prototype
 
   // add new parsing tokens to existing list of parsing tokens
@@ -131,7 +127,10 @@ const localizedFormatPlugin: EsDayPlugin<{}> = (
     }
 
     const newFormat = replaceLocaleTokens(formatStr, this.localeObject())
-    return oldFormat.call(this, newFormat)
+    const formattedValue = oldFormat.call(this, newFormat)
+
+    // run postFormat if exists
+    return this.localeObject?.().postFormat?.(formattedValue) ?? formattedValue
   }
 }
 
