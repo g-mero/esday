@@ -5,9 +5,11 @@ import moment from 'moment/min/moment-with-locales'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import utcPlugin from '~/plugins/utc'
+import weekPlugin from '~/plugins/week'
 import { expectSame, expectSameResult } from '../util'
 
 esday.extend(utcPlugin)
+esday.extend(weekPlugin)
 
 describe('plugin utc', () => {
   describe('get', () => {
