@@ -15,7 +15,7 @@
  *   isUtc            evaluate date as utc
  */
 
-import type { DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
+import type { DateType, EsDay, EsDayPlugin } from 'esday'
 import { C, isArray, isString, isUndefined } from '~/common'
 import type {
   DayNames,
@@ -70,7 +70,7 @@ function meridiemMatch(locale: Locale, input: string, isLowerCase: boolean): boo
 /**
  * Create a function that will parse the input string as meridiem string and
  * add it to the given 'parsedElements' containing the date&time components.
- * @param isLowerCase - parse the meridiem string as lowercase)
+ * @param isLowerCase - parse the meridiem string as lowercase
  * @returns function that will add the given value to date&time component as 'afternoon'
  */
 function addAfternoon(isLowerCase: boolean) {
@@ -271,11 +271,7 @@ function replaceLocaleTokens(format: string, currentLocale: Locale) {
   return format.replace(localFormattingTokens, replaceLongDateFormatTokens)
 }
 
-const localizedParsePlugin: EsDayPlugin<{}> = (
-  _,
-  dayClass: typeof EsDay,
-  dayFactory: EsDayFactory,
-) => {
+const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const proto = dayClass.prototype
 
   // add new parsing tokens to existing list of parsing tokens
