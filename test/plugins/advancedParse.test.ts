@@ -74,6 +74,18 @@ describe('advancedParse plugin - local mode', () => {
     })
 
     it.each([
+      { formatString: 'D', sourceString: '8' },
+      { formatString: 'D', sourceString: '08' },
+      { formatString: 'D', sourceString: '11' },
+    ])(
+      'parse day of month "$sourceString" with "$formatString"',
+      ({ sourceString, formatString }) => {
+        expectSameResult((esday) => esday(sourceString, formatString))
+        expect(esday(sourceString, formatString).isValid()).toBeTruthy()
+      },
+    )
+
+    it.each([
       { formatString: 'S', sourceString: '0', expectedMS: 0 },
       { formatString: 'S', sourceString: '3', expectedMS: 300 },
       { formatString: 'S', sourceString: '14', expectedMS: 140 },
@@ -105,6 +117,7 @@ describe('advancedParse plugin - local mode', () => {
       { formatString: 'MM-YYYY-DD HH:mm:ss.SSS', sourceString: '8-2023-4 1:3:2.3' },
       { formatString: 'M-YY-D H:m:s.SS', sourceString: '08-2023-14 21:43:12.123' },
       { formatString: 'M-YY-D H:m:s.SS', sourceString: '8-23-4 1:3:2.3' },
+      { formatString: 'YYYY DD', sourceString: '2025 14' },
       { formatString: 'Q YYYY', sourceString: '1 2023' },
       { formatString: 'Q YYYY', sourceString: '2 2023' },
       { formatString: 'Q YYYY', sourceString: '3 2023' },
