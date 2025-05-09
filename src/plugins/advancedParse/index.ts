@@ -12,7 +12,7 @@
  *   parseOptions     ParseOptions object containing parsing options
  */
 
-import type { DateFromDateComponents, DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
+import type { DateFromDateComponents, DateType, EsDay, EsDayPlugin } from 'esday'
 import { isArray, isString, isUndefined, isValidDate } from '~/common'
 import type {
   ParseOptions,
@@ -440,11 +440,7 @@ function addParseTokenDefinitions(newTokens: TokenDefinitions) {
   formattingTokensRegexFromDefinitions()
 }
 
-const advancedParsePlugin: EsDayPlugin<{}> = (
-  _,
-  dayClass: typeof EsDay,
-  dayFactory: EsDayFactory,
-) => {
+const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const proto = dayClass.prototype
 
   // get regexp to separate format into formatting tokens and separators
@@ -464,7 +460,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (
       isStrict = arg3
     }
 
-    if (isString(d)) {
+    if (isString(d) && !isUndefined(format)) {
       // format as single string
       if (isString(format)) {
         const parsingResult = parseFormattedInput.call(this, d, format, isStrict, parseOptions)
