@@ -349,7 +349,7 @@ function makeParser(format: string, isStrict: boolean): { parser: Parser; postPa
   ): Date => {
     let modifiedParsedDate = parsedDate
     for (let i = 0; i < postParseHandlers.length; i++) {
-      modifiedParsedDate = postParseHandlers[i](parsedDate, parsedElements, parseOptions)
+      modifiedParsedDate = postParseHandlers[i](modifiedParsedDate, parsedElements, parseOptions)
     }
 
     return modifiedParsedDate
