@@ -451,7 +451,8 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     const format = this['$conf'].args_1
     const arg2 = this['$conf'].args_2
     const arg3 = this['$conf'].args_3
-    const parseOptions: ParseOptions = (this['$conf'].parseOptions as ParseOptions) ?? {}
+    this['$conf'].parseOptions ??= {} as ParseOptions
+    const parseOptions: ParseOptions = this['$conf'].parseOptions as ParseOptions
 
     let isStrict = false
     if (typeof arg2 === 'boolean') {
