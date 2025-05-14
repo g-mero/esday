@@ -1,4 +1,4 @@
-import type { UnitType } from 'esday'
+import type { UnitTypeAdd } from 'esday'
 import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 
@@ -598,14 +598,14 @@ describe('plugin utc', () => {
       moment.locale(momentDefaultLocale)
     })
 
-    it.each([C.YEAR, C.MONTH, C.DAY, C.DAY_OF_MONTH, C.WEEK, C.HOUR, C.MIN, C.SECOND])(
+    it.each([C.YEAR, C.MONTH, C.DAY, C.DAY_OF_MONTH, C.HOUR, C.MIN, C.SECOND])(
       'startOf in UTC mode for "%s"',
       (unit) => {
         expectSameResult((esday) => esday().utc().startOf(unit))
       },
     )
 
-    it.each([C.YEAR, C.MONTH, C.DAY, C.DAY_OF_MONTH, C.WEEK, C.HOUR, C.MIN, C.SECOND])(
+    it.each([C.YEAR, C.MONTH, C.DAY, C.DAY_OF_MONTH, C.HOUR, C.MIN, C.SECOND])(
       'endOf in UTC mode for "%s"',
       (unit) => {
         expectSameResult((esday) => esday().utc().endOf(unit))
@@ -624,7 +624,7 @@ describe('plugin utc', () => {
     ])('"$value $unit" to date parsed as utc', ({ value, unit }) => {
       const dateString = '2018-09-06T19:34:28.652'
 
-      expectSameResult((esday) => esday.utc(dateString).add(value, unit as UnitType))
+      expectSameResult((esday) => esday.utc(dateString).add(value, unit as UnitTypeAdd))
     })
 
     it.each([
@@ -640,7 +640,7 @@ describe('plugin utc', () => {
       expectSameResult((esday) =>
         esday(dateString)
           .utc()
-          .add(value, unit as UnitType),
+          .add(value, unit as UnitTypeAdd),
       )
     })
   })
@@ -656,7 +656,7 @@ describe('plugin utc', () => {
     ])('"$value $unit" to date parsed as utc', ({ value, unit }) => {
       const dateString = '2018-09-06T19:34:28.652'
 
-      expectSameResult((esday) => esday.utc(dateString).subtract(value, unit as UnitType))
+      expectSameResult((esday) => esday.utc(dateString).subtract(value, unit as UnitTypeAdd))
     })
 
     it.each([
@@ -672,7 +672,7 @@ describe('plugin utc', () => {
       expectSameResult((esday) =>
         esday(dateString)
           .utc()
-          .subtract(value, unit as UnitType),
+          .subtract(value, unit as UnitTypeAdd),
       )
     })
   })

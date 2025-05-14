@@ -1,9 +1,8 @@
 import { C, createInstanceFromExist, prettyUnit } from '~/common'
-import type { UnitIsoWeek } from '~/common'
 import type { EsDay } from '~/core'
-import type { UnitType } from '~/types'
+import type { UnitTypeAdd } from '~/types'
 
-export function addImpl(that: EsDay, value: number, units: Exclude<UnitType, UnitIsoWeek>) {
+export function addImpl(that: EsDay, value: number, units: UnitTypeAdd) {
   const $d = that['$d']
   const unit = prettyUnit(units)
 

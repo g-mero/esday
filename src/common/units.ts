@@ -30,6 +30,7 @@ export type ShortUnit = keyof typeof UNIT_MAP
 export type PrettyUnitType = (typeof UNIT_MAP)[ShortUnit]
 export type UnitType = ShortUnit | PrettyUnitType
 export type UnitTypeCore = Exclude<UnitType, UnitWeek | UnitIsoWeek | UnitQuarter>
+export type UnitTypeAdd = Exclude<UnitType, UnitIsoWeek>
 export type PrettyUnit<T extends UnitType> = T extends ShortUnit ? (typeof UNIT_MAP)[T] : T
 type UnionUnit<T extends ShortUnit> = T | PrettyUnit<T>
 export type UnitYear = UnionUnit<'y'>
