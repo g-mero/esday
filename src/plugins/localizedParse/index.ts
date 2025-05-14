@@ -29,6 +29,8 @@ import type {
 } from '../index'
 import { getLocale } from '../locale'
 
+const DEFAULT_LOCALE = 'en'
+
 // Regular expressions for parsing
 const match2 = /\d{2}/
 const match1to2 = /\d\d?/
@@ -295,7 +297,7 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     // handle locale name(s) as argument; use the locale of 'this'
     // as the default value, if no locale is given as 3rd calling
     // parameter (1st parameter is the date string).
-    let currentLocale = this.localeObject()
+    let currentLocale = this.localeObject?.() ?? DEFAULT_LOCALE
     const arg2 = this['$conf'].args_2
     if (!isUndefined(arg2) && typeof arg2 === 'string') {
       currentLocale = getLocale(arg2)
