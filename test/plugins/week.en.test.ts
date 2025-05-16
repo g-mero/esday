@@ -1,20 +1,33 @@
 import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import localeEn from '~/locales/en'
-import { localePlugin, localizedFormatPlugin, weekPlugin } from '~/plugins'
+import { advancedParsePlugin, localePlugin, localizedFormatPlugin, weekPlugin } from '~/plugins'
 import { expectSame, expectSameResult } from '../util'
 
-esday.extend(localizedFormatPlugin).extend(localePlugin).extend(weekPlugin)
+esday
+  .extend(localePlugin)
+  .extend(advancedParsePlugin)
+  .extend(localizedFormatPlugin)
+  .extend(weekPlugin)
 esday.registerLocale(localeEn)
 
 // Tests with Sunday as start of week
 describe('week plugin - locale "en"', () => {
+  const fakeTimeAsString = '2023-12-17T03:24:46.234'
+
   beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
+
     // set global locale
     esday.locale('en')
     // we do not have to call 'moment.locale('en')' as this is the default locale
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it.each([
@@ -39,9 +52,9 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2025-06-18', expected: 25, weekday: 'Tuesday' },
     { sourceString: '2025-06-19', expected: 25, weekday: 'Wednesday' },
     { sourceString: '2025-06-20', expected: 25, weekday: 'Thursday' },
-  ])('should return the week number for "$sourceString"', ({ sourceString, expected }) => {
-    expect(esday(sourceString).week()).toBe(expected)
+  ])('should get week number for "$sourceString"', ({ sourceString, expected }) => {
     expectSame((esday) => esday(sourceString).week())
+    expect(esday(sourceString).week()).toBe(expected)
   })
 
   it.each([
@@ -66,13 +79,10 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2025-06-18T07:18:29', expected: 25, weekday: 'Tuesday' },
     { sourceString: '2025-06-19T07:18:29', expected: 25, weekday: 'Wednesday' },
     { sourceString: '2025-06-20T07:18:29', expected: 25, weekday: 'Thursday' },
-  ])(
-    'should return the week number for "$sourceString" with time part',
-    ({ sourceString, expected }) => {
-      expect(esday(sourceString).week()).toBe(expected)
-      expectSame((esday) => esday(sourceString).week())
-    },
-  )
+  ])('should get week number for "$sourceString" with time part', ({ sourceString, expected }) => {
+    expectSame((esday) => esday(sourceString).week())
+    expect(esday(sourceString).week()).toBe(expected)
+  })
 
   it.each([
     { sourceString: '2022-12-31', expected: 53, weekday: 'Saturday' },
@@ -84,20 +94,27 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2024-12-31', expected: 1, weekday: 'Tuesday' },
     { sourceString: '2025-01-01', expected: 1, weekday: 'Wednesday' },
   ])(
-    'should handle year transition correctly for "$sourceString"',
+    'should get week number for year transition for "$sourceString"',
     ({ sourceString, expected }) => {
-      expect(esday(sourceString).week()).toBe(expected)
       expectSame((esday) => esday(sourceString).week())
+      expect(esday(sourceString).week()).toBe(expected)
     },
   )
 
-  it('should set the week number and adjust the date', () => {
-    const date = esday('2024-06-15')
-    const weekNumber = 10
-    const adjustedDate = date.week(weekNumber)
-    expect(adjustedDate.week()).toBe(weekNumber)
-    expect(moment(adjustedDate.toISOString()).week()).toBe(weekNumber)
-  })
+  it.each([
+    { sourceString: '2025-05-01', newWeek: 1 },
+    { sourceString: '2024-06-15', newWeek: 10 },
+    { sourceString: '2022-05-16', newWeek: 53 },
+  ])(
+    'should set the week number  for "$sourceString" to "$newWeek"',
+    ({ sourceString, newWeek }) => {
+      const esdaySourceDate = esday(sourceString)
+      const esdayTargetDate = esdaySourceDate.week(newWeek)
+
+      expectSameResult((esday) => esday(sourceString).week(newWeek))
+      expect(esdaySourceDate.day()).toBe(esdayTargetDate.day())
+    },
+  )
 
   it.each([
     { sourceString: '2025-01-05', expected: 0 },
@@ -107,7 +124,7 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2025-10-16', expected: 4 },
     { sourceString: '2025-07-11', expected: 5 },
     { sourceString: '2025-04-12', expected: 6 },
-  ])('should get the weekday for "$sourceString"', ({ sourceString, expected }) => {
+  ])('should get weekday for "$sourceString"', ({ sourceString, expected }) => {
     expectSame((esday) => esday(sourceString).weekday())
     expect(esday(sourceString).weekday()).toBe(expected)
   })
@@ -127,19 +144,17 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2025-05-15', newWeekday: 4 },
     { sourceString: '2025-05-15', newWeekday: 5 },
     { sourceString: '2025-05-15', newWeekday: 6 },
-  ])(
-    'should set the weekday to "$newWeekday" for "$sourceString"',
-    ({ sourceString, newWeekday }) => {
-      expectSameResult((esday) => esday(sourceString).weekday(newWeekday))
-    },
-  )
+    { sourceString: '2025-03-10', newWeekday: -7 },
+  ])('should set weekday to "$newWeekday" for "$sourceString"', ({ sourceString, newWeekday }) => {
+    expectSameResult((esday) => esday(sourceString).weekday(newWeekday))
+  })
 
   it.each([
     { sourceString: '2025-01-01', expected: 2025 },
     { sourceString: '2025-12-27', expected: 2025 },
     { sourceString: '2025-12-28', expected: 2026 },
     { sourceString: '2026-12-31', expected: 2027 },
-  ])('should get the weekYear for "$sourceString"', ({ sourceString, expected }) => {
+  ])('should get weekYear for "$sourceString"', ({ sourceString, expected }) => {
     expectSame((esday) => esday(sourceString).weekYear())
     expect(esday(sourceString).weekYear()).toBe(expected)
   })
@@ -171,7 +186,7 @@ describe('week plugin - locale "en"', () => {
     { sourceDate: '2027-04-25T00:00:00', expected: 52, weekday: 'Friday' },
     { sourceDate: '2028-04-25T00:00:00', expected: 53, weekday: 'Saturday' }, // Saturday ********
     { sourceDate: '2044-04-25T00:00:00', expected: 53, weekday: 'Friday' }, // Friday in leap year ********
-  ])('should get the weeksInYear for "$sourceDate"', ({ sourceDate, expected }) => {
+  ])('should get weeksInYear for "$sourceDate"', ({ sourceDate, expected }) => {
     expect(moment(sourceDate).weeksInYear()).toBe(expected)
     expect(esday(sourceDate).weeksInYear()).toBe(expected)
   })
@@ -218,7 +233,7 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2023-11-13T00:00:00' },
     { sourceString: '2023-11-14T00:00:00' },
     { sourceString: '2023-05-07T00:00:00' },
-  ])('should handle edge case for ebdOf week for "$sourceString"', ({ sourceString }) => {
+  ])('should handle edge case for endOf week for "$sourceString"', ({ sourceString }) => {
     expectSameResult((esday) => esday(sourceString).endOf(C.WEEK))
   })
 
@@ -231,9 +246,72 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2024-12-24T14:25:36', formatString: 'gg' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'gggg' },
   ])(
-    'format date string "$sourceString" with format "$formatString"',
+    'should format date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
       expectSame((esday) => esday(sourceString).format(formatString))
+    },
+  )
+
+  it.each([
+    { sourceString: '2025-10-24 2', formatString: 'YYYY-MM-DD w' },
+    { sourceString: '2025 2', formatString: 'YYYY w' },
+    { sourceString: '2025 02', formatString: 'YYYY w' },
+    { sourceString: '2025 02', formatString: 'YYYY ww' },
+    { sourceString: '2025 12', formatString: 'YYYY ww' },
+  ])(
+    'should parse "$sourceString" with week token in "$formatString"',
+    ({ sourceString, formatString }) => {
+      expectSameResult((esday) => esday(sourceString, formatString))
+    },
+  )
+
+  it.each([
+    { sourceString: '2025-10-24 2', formatString: 'YYYY-MM-DD e' },
+    { sourceString: '2025 0', formatString: 'YYYY e' },
+    { sourceString: '2025 1', formatString: 'YYYY e' },
+    { sourceString: '2025 2', formatString: 'YYYY e' },
+    { sourceString: '2025 3', formatString: 'YYYY e' },
+    { sourceString: '2025 4', formatString: 'YYYY e' },
+    { sourceString: '2025 5', formatString: 'YYYY e' },
+    { sourceString: '2025 6', formatString: 'YYYY e' },
+  ])(
+    'parse "$sourceString" with weekday token in "$formatString"',
+    ({ sourceString, formatString }) => {
+      expectSameResult((esday) => esday(sourceString, formatString))
+    },
+  )
+
+  it('parse illegal weekday value', () => {
+    const sourceString = '2025 7'
+    const formatString = 'YYYY e'
+
+    expectSame((esday) => esday(sourceString, formatString).isValid())
+    expect(esday(sourceString, formatString).isValid()).toBeFalsy()
+  })
+
+  it.each([
+    { sourceString: '24', formatString: 'gg' },
+    { sourceString: '2024', formatString: 'gg' },
+    { sourceString: '2025 2', formatString: 'gg M' },
+    { sourceString: '25-10-24', formatString: 'gg-MM-DD' },
+    { sourceString: '2025-10-24', formatString: 'gg-MM-DD' },
+    { sourceString: '25 22', formatString: 'gg DD' },
+    { sourceString: '2025 22', formatString: 'gg DD' },
+    { sourceString: '22 2025', formatString: 'ww gg' },
+    { sourceString: '22 25', formatString: 'ww gg' },
+    { sourceString: '2025 22 4', formatString: 'gg ww e' },
+    { sourceString: '2020', formatString: 'gggg' },
+    { sourceString: '2024', formatString: 'gggg' },
+    { sourceString: '2025 2', formatString: 'gggg M' },
+    { sourceString: '2025 06-24', formatString: 'gggg MM-DD' },
+    { sourceString: '2025-10-24', formatString: 'gggg-MM-DD' },
+    { sourceString: '2025 22', formatString: 'gggg DD' },
+    { sourceString: '22 2025', formatString: 'ww gggg' },
+    { sourceString: '2025 22 4', formatString: 'gggg ww e' },
+  ])(
+    'should parse "$sourceString" with weekYear token in "$formatString"',
+    ({ sourceString, formatString }) => {
+      expectSameResult((esday) => esday(sourceString, formatString))
     },
   )
 })
