@@ -1,5 +1,12 @@
-import type { EsDay, EsDayFactory, EsDayPlugin, FormattingTokenDefinitions, UnitType } from 'esday'
+/**
+ * quarterOfYear plugin
+ *
+ * This plugin adds 'quarter' and the formatting token 'Q' to EsDay.
+ */
+
+import type { EsDay, EsDayPlugin, FormattingTokenDefinitions } from 'esday'
 import { C, prettyUnit } from '~/common'
+import type { UnitIsoWeek, UnitType } from '~/types'
 
 declare module 'esday' {
   interface EsDay {
@@ -8,7 +15,7 @@ declare module 'esday' {
   }
 }
 
-const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory: EsDayFactory) => {
+const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const proto = dayClass.prototype
 
   // @ts-expect-error function is compatible with its overload
@@ -23,7 +30,7 @@ const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory: EsDayFact
   }
 
   const oldAdd = proto.add
-  proto.add = function (number: number, units: UnitType) {
+  proto.add = function (number: number, units: Exclude<UnitType, UnitIsoWeek>) {
     const unit = prettyUnit(units)
     if (unit === C.QUARTER) {
       return this.add(number * 3, C.MONTH)

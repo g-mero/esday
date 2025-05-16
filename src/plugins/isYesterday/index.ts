@@ -1,4 +1,5 @@
 import type { EsDayPlugin } from 'esday'
+import { C } from '~/common'
 
 declare module 'esday' {
   interface EsDay {
@@ -9,7 +10,7 @@ declare module 'esday' {
 const isYesterdayPlugin: EsDayPlugin<{}> = (_, dayClass, d) => {
   dayClass.prototype.isYesterday = function () {
     const comparisonTemplate = 'YYYY-MM-DD'
-    const yesterday = d().subtract(1, 'day')
+    const yesterday = d().subtract(1, C.DAY)
 
     return this.format(comparisonTemplate) === yesterday.format(comparisonTemplate)
   }
