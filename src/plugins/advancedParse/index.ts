@@ -12,7 +12,7 @@
  *   parseOptions     ParseOptions object containing parsing options
  */
 
-import type { DateFromDateComponents, DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
+import type { DateFromDateComponents, DateType, EsDay, EsDayPlugin } from 'esday'
 import { isArray, isString, isUndefined, isValidDate } from '~/common'
 import type {
   ParseOptions,
@@ -349,7 +349,7 @@ function makeParser(format: string, isStrict: boolean): { parser: Parser; postPa
   ): Date => {
     let modifiedParsedDate = parsedDate
     for (let i = 0; i < postParseHandlers.length; i++) {
-      modifiedParsedDate = postParseHandlers[i](parsedDate, parsedElements, parseOptions)
+      modifiedParsedDate = postParseHandlers[i](modifiedParsedDate, parsedElements, parseOptions)
     }
 
     return modifiedParsedDate
@@ -440,11 +440,7 @@ function addParseTokenDefinitions(newTokens: TokenDefinitions) {
   formattingTokensRegexFromDefinitions()
 }
 
-const advancedParsePlugin: EsDayPlugin<{}> = (
-  _,
-  dayClass: typeof EsDay,
-  dayFactory: EsDayFactory,
-) => {
+const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const proto = dayClass.prototype
 
   // get regexp to separate format into formatting tokens and separators
@@ -455,7 +451,8 @@ const advancedParsePlugin: EsDayPlugin<{}> = (
     const format = this['$conf'].args_1
     const arg2 = this['$conf'].args_2
     const arg3 = this['$conf'].args_3
-    const parseOptions: ParseOptions = (this['$conf'].parseOptions as ParseOptions) ?? {}
+    this['$conf'].parseOptions ??= {} as ParseOptions
+    const parseOptions: ParseOptions = this['$conf'].parseOptions as ParseOptions
 
     let isStrict = false
     if (typeof arg2 === 'boolean') {
@@ -464,7 +461,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (
       isStrict = arg3
     }
 
-    if (isString(d)) {
+    if (isString(d) && !isUndefined(format)) {
       // format as single string
       if (isString(format)) {
         const parsingResult = parseFormattedInput.call(this, d, format, isStrict, parseOptions)

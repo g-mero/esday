@@ -6,8 +6,7 @@ AdvancedParse extends the `esday` constructor to support custom formats of input
 
 If used together with plugin utc, the plugin utc must be activated before the plugin AdvancedParse.
 
-## Method signatures
-### Parsing with a given format:
+### Method signatures
 ```typescript
 esday(date: string, format: string): EsDay
 esday(date: string, format: string[]): EsDay
@@ -92,6 +91,11 @@ interface ParsedElements {
 | ZZ        | \-0500        | Compact offset from UTC, 2-digits  as `+-HH:mm`, `+-HHmm`, or `Z`    |
 | X         | 1410715640579 | Unix timestamp                                                       |
 | x         | 1410715640579 | Unix ms timestamp                                                    |
+
+## Dependencies
+AdvancedParse requires no other plugin.
+
+AdvancedParse can be used together with the plugin Utc that must be loaded using esday.extend(...) before the plugin AdvancedParse.
 
 ## Examples
 ### Parsing
