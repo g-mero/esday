@@ -146,15 +146,16 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       return oldDateFromDateComponents(Y, M, D, h, m, s, ms, offsetMs)
     }
 
-    const parsedYearOrDefault = Y === undefined ? new Date().getFullYear() : Y
+    const parsedYearOrDefault = Y ?? new Date().getFullYear()
+    const parsedMonthOrDefault = M ?? (Y !== undefined ? 1 : new Date().getMonth() + 1)
     const dateComponents = {
       Y: parsedYearOrDefault,
-      M: (M || 1) - 1,
-      D: D || 1,
-      h: h || 0,
-      m: m || 0,
-      s: s || 0,
-      ms: ms || 0,
+      M: parsedMonthOrDefault - 1,
+      D: D ?? 1,
+      h: h ?? 0,
+      m: m ?? 0,
+      s: s ?? 0,
+      ms: ms ?? 0,
     }
 
     const yearWithoutCentury = Math.abs(parsedYearOrDefault) < 100
