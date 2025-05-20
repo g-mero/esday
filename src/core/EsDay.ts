@@ -295,6 +295,17 @@ export class EsDay {
   }
 }
 
+/**
+ * Getter / Setter for date components:
+ * esday().year(...args)
+ * esday().month(...args)
+ * esday().date(...args)
+ * esday().day(...args)
+ * esday().hour(...args)
+ * esday().minute(...args)
+ * esday().second(...args)
+ * esday().millisecond(...args)
+ */
 for (const key of prettyUnits) {
   // @ts-expect-error it's compatible with the overload
   EsDay.prototype[key] = function (...args: number[]): EsDay | number {
