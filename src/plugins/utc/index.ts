@@ -1,4 +1,3 @@
-import type { EsDay } from 'esday'
 /**
  * utc plugin
  *
@@ -10,6 +9,7 @@ import type { EsDay } from 'esday'
  *   timezoneOffset   timezone offset (with DST handling)
  */
 
+import type { EsDay } from 'esday'
 import type { UnitDay } from '~/common'
 import {
   C,
@@ -48,7 +48,8 @@ declare module 'esday' {
     local: () => EsDay
     isUTC: () => boolean
     utcOffset(): number
-    utcOffset(offset: number | string, keepLocalTime?: boolean): EsDay
+    utcOffset(offset: number | string): EsDay
+    utcOffset(offset: number | string, keepLocalTime: boolean): EsDay
   }
 
   interface EsDayFactory {
@@ -99,12 +100,15 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return C.INVALID_DATE_STRING
   }
 
-  // biome-ignore lint/suspicious/noExplicitAny: did not find a conditional return type a a replacement for 'any'
-  proto.utcOffset = function (offset?: number | string, keepLocalTime?: boolean): any {
+  // @ts-expect-error function is compatible with its overload
+  proto.utcOffset = function (offset?: number | string, keepLocalTime?: boolean) {
     if (offset === undefined) {
+      // Getter
       const defaultOffset = -Math.round(this['$d'].getTimezoneOffset())
       return utcOffsetGetImpl(this, defaultOffset)
     }
+
+    // Setter
     return utcOffsetSetImpl(this, offset, keepLocalTime)
   }
 
@@ -142,15 +146,16 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       return oldDateFromDateComponents(Y, M, D, h, m, s, ms, offsetMs)
     }
 
-    const parsedYearOrDefault = Y === undefined ? new Date().getFullYear() : Y
+    const parsedYearOrDefault = Y ?? new Date().getFullYear()
+    const parsedMonthOrDefault = M ?? (Y !== undefined ? 1 : new Date().getMonth() + 1)
     const dateComponents = {
       Y: parsedYearOrDefault,
-      M: (M || 1) - 1,
-      D: D || 1,
-      h: h || 0,
-      m: m || 0,
-      s: s || 0,
-      ms: ms || 0,
+      M: parsedMonthOrDefault - 1,
+      D: D ?? 1,
+      h: h ?? 0,
+      m: m ?? 0,
+      s: s ?? 0,
+      ms: ms ?? 0,
     }
 
     const yearWithoutCentury = Math.abs(parsedYearOrDefault) < 100

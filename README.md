@@ -25,6 +25,7 @@ esday('2024-12-10').set('year', 2025).add(1, 'month').isToday()
 - **Locale is a Plugin**: no default locale!
 - **default value for 'Start of Week' is 1 (as in ISO 8601)**: 'Start of Week' is 1 ('Monday').
 - **default value for 'Start of Year' is 4 (as in ISO 8601)**: 'Start of Year' is 4.
+- **clamping month on set**: when changing the month and the new month does not have enough days to keep the current day of month, esday behaves like moment.js and clamps to the end of the target month
 
 ## Differences to Moment.js
 

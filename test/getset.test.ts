@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it } from 'vitest'
+import { C } from '~/common'
 import type { EsDay } from '~/core'
 import { esday } from '~/core'
+import { expectSame, expectSameResult } from './util'
 
 describe('get', () => {
   const testYear = 2024
@@ -37,11 +39,15 @@ describe('get', () => {
     expect(testDate.get('date')).toBe(testDay)
     expect(testDate.get('D')).toBe(testDay)
   })
-
-  it('day of week', () => {
-    const dayOfWeek = 6
-    expect(testDate.day()).toBe(dayOfWeek)
-    expect(testDate.get('day')).toBe(dayOfWeek)
+  it.each([
+    { sourceString: '2024-02-03T13:14:15.678', expected: 6 },
+    { sourceString: '2024-11-06T00:00:00', expected: 3 },
+    { sourceString: '2024-11-14T00:00:00', expected: 4 },
+  ])('day of week for "$sourceString"', ({ sourceString, expected }) => {
+    expect(esday(sourceString).day()).toBe(expected)
+    expect(esday(sourceString).get('day')).toBe(expected)
+    expectSame((esday) => esday(sourceString).get(C.DATE_OF_WEEK))
+    expectSame((esday) => esday(sourceString).day())
   })
 
   it('hour', () => {
@@ -148,6 +154,14 @@ describe('set', () => {
       const modifiedDate = testDate.set('M', 5)
 
       expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
+    })
+
+    it.each([
+      { sourceString: '2024-03-15T17:16:15', newMonth: 7 },
+      { sourceString: '2023-01-31T23:59:59', newMonth: 1 },
+      { sourceString: '2023-01-31T23:59:59', newMonth: 2 },
+    ])('set month of "$sourceString" to "$newMonth"', ({ sourceString, newMonth }) => {
+      expectSameResult((esday) => esday(sourceString).month(newMonth - 1))
     })
   })
 

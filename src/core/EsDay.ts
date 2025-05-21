@@ -24,8 +24,8 @@ import { startOfImpl } from './Impl/startOf'
 export declare interface EsDay {
   year: (() => number) & ((year: number, month?: number, date?: number) => EsDay)
   month: (() => number) & ((month: number, date?: number) => EsDay)
-  date: (() => number) & ((date: number) => EsDay)
-  day: (() => number) & ((day: number) => EsDay)
+  date: (() => number) & ((date: number) => EsDay) // day of month
+  day: (() => number) & ((day: number) => EsDay) // day of week
   hour: (() => number) & ((hours: number, min?: number, sec?: number, ms?: number) => EsDay)
   minute: (() => number) & ((min: number, sec?: number, ms?: number) => EsDay)
   second: (() => number) & ((sec: number, ms?: number) => EsDay)
@@ -40,7 +40,9 @@ export class EsDay {
    */
   private $conf: SimpleObject = {}
   constructor(d: Exclude<DateType, EsDay>, conf?: SimpleObject) {
-    this.$conf = { ...conf }
+    if (!isUndefined(conf)) {
+      this.$conf = structuredClone<SimpleObject>(conf)
+    }
     this.parse(d)
   }
 
@@ -71,15 +73,16 @@ export class EsDay {
     ms: number | undefined,
     offsetMs?: number,
   ) {
-    const parsedYearOrDefault = Y === undefined ? new Date().getFullYear() : Y
+    const parsedYearOrDefault = Y ?? new Date().getFullYear()
+    const parsedMonthOrDefault = M ?? (Y !== undefined ? 1 : new Date().getMonth() + 1)
     const dateComponents = {
       Y: parsedYearOrDefault,
-      M: (M || 1) - 1,
-      D: D || 1,
-      h: h || 0,
-      m: m || 0,
-      s: s || 0,
-      ms: ms || 0,
+      M: parsedMonthOrDefault - 1,
+      D: D ?? 1,
+      h: h ?? 0,
+      m: m ?? 0,
+      s: s ?? 0,
+      ms: ms ?? 0,
     }
 
     const yearWithoutCentury = Math.abs(parsedYearOrDefault) < 100
@@ -278,6 +281,13 @@ export class EsDay {
   private $set(unit: Exclude<UnitType, UnitWeek | UnitQuarter>, values: number[]) {
     if (prettyUnit(unit) === C.DAY) {
       setUnitInDate(this.$d, C.DATE_OF_WEEK, this.date() + (values[0] - this.day()))
+    } else if (prettyUnit(unit) === C.MONTH) {
+      const originalDate = values.length === 1 ? this.date() : values[1]
+      setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values)
+      if (originalDate > 0 && this.date() !== originalDate) {
+        // reset date to last day of previous month
+        setUnitInDate(this.$d, C.DATE_OF_WEEK, 0)
+      }
     } else {
       setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values)
     }
@@ -286,6 +296,17 @@ export class EsDay {
   }
 }
 
+/**
+ * Getter / Setter for date components:
+ * esday().year(...args)
+ * esday().month(...args)
+ * esday().date(...args)
+ * esday().day(...args)
+ * esday().hour(...args)
+ * esday().minute(...args)
+ * esday().second(...args)
+ * esday().millisecond(...args)
+ */
 for (const key of prettyUnits) {
   // @ts-expect-error it's compatible with the overload
   EsDay.prototype[key] = function (...args: number[]): EsDay | number {

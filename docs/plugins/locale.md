@@ -1,6 +1,8 @@
 # Locale
 
-Locale extends `esday` to support locales. The locale to use can be loaded from the corresponding locale file.
+Locale extends `esday` to support locales. The locale to use can be loaded from the corresponding locale file ([list of supported locales](../locales/locales.md)).
+
+**Note**: the name of the locale (e.g. used for setting the locale) is case sensitive.
 
 ## Method signatures
 For esday (`esday`)
@@ -28,13 +30,14 @@ locale(name: string): EsDay
 | locale    | Locale | locale object to use |
 
 ## Locale object
+### Properties
 
 Properties of the `Locale` object:
 
 | Property      | Type     | Description                                                                                                                |
 | ------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------|
 | name          | string   | Name of the locale (e.g. `en-US`)                                                                                          |
-| weekdays      | DayNames | Array of the full day names (e.g. `['Sunday', 'Monday', ... ]`)                                                            |
+| weekdays \| DayNamesStandaloneFormat | DayNames | Array of the full day names (e.g. `['Sunday', 'Monday', ... ]`)                                                            |
 | weekdaysShort | DayNames | Array of the short day names (e.g. `['Sun', 'Mon', ... ]`)                                                                 |
 | weekdaysMin   | DayNames | Array of the short day names (e.g. `['Su', 'Mo', ... ]`)                                                                   |
 | months        | MonthNames \| MonthNamesStandaloneFormat \| MonthNamesFunction | Array of the full month names (e.g. `['January', 'February', ... ]`) |
@@ -48,6 +51,21 @@ Properties of the `Locale` object:
 
 All properties are readonly.
 
+### Months / MonthsShort / Weekdays
+
+`months`, `monthsShort` and `weekdays` can have several formats.
++ Array of strings
++ Object with properties 'format', 'standalone' and 'isFormat'. For `months` and `monthsShort` 'isFormat' is optional.
++ A function object with properties 'format' and 'standalone'. The signature of this function is `(esdayInstance: EsDay, format: string): string`.
+
+The object and function variants are for cases, when more processing is required, to get the name of a month / weekday  (e.g., if the grammar is different for different formats).
++ `standalone` is the subjective form.
++ `format` is the nominative form.
+
+`isFormat` is a regular expression that is used to check, whether a 'format' string conforms to the requirements to use the `format` list of names. The default value is `/D[oD]?(\[[^\[\]]*\]|\s+)+MMMM?/`.
+
+The function variant of `months` and `monthsShort` return the name of the month that matches the 'month' property of the given esdayInstance.
+
 ## Examples
 
 ```typescript
@@ -59,7 +77,7 @@ esday.extend(localePlugin)
 esday.registerLocale(localeZhCn)
 
 // set global locale
-esday.locale('zh-cn')
+esday.locale('zh-CN')
 
 // get global locale
 console.log(esday.locale()) // 'zh-cn'
