@@ -16,6 +16,9 @@ LocalizedFormat extends `esday.format()` to support localized tokens in a format
 | a         | am            | Meridiem of hour (lower case)      |
 | A         | PM            | Meridiem of hour (upper case)      |
 
+## Dependencies
+LocalizedFormat requires the plugin Locale and at least 1 registered and activated locale.
+
 ## Examples
 ### Formatting
 ```typescript

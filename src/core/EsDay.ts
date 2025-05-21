@@ -74,15 +74,16 @@ export class EsDay {
     ms: number | undefined,
     offsetMs?: number,
   ) {
-    const parsedYearOrDefault = Y === undefined ? new Date().getFullYear() : Y
+    const parsedYearOrDefault = Y ?? new Date().getFullYear()
+    const parsedMonthOrDefault = M ?? (Y !== undefined ? 1 : new Date().getMonth() + 1)
     const dateComponents = {
       Y: parsedYearOrDefault,
-      M: (M || 1) - 1,
-      D: D || 1,
-      h: h || 0,
-      m: m || 0,
-      s: s || 0,
-      ms: ms || 0,
+      M: parsedMonthOrDefault - 1,
+      D: D ?? 1,
+      h: h ?? 0,
+      m: m ?? 0,
+      s: s ?? 0,
+      ms: ms ?? 0,
     }
 
     const yearWithoutCentury = Math.abs(parsedYearOrDefault) < 100
@@ -296,6 +297,17 @@ export class EsDay {
   }
 }
 
+/**
+ * Getter / Setter for date components:
+ * esday().year(...args)
+ * esday().month(...args)
+ * esday().date(...args)
+ * esday().day(...args)
+ * esday().hour(...args)
+ * esday().minute(...args)
+ * esday().second(...args)
+ * esday().millisecond(...args)
+ */
 for (const key of prettyUnits) {
   // @ts-expect-error it's compatible with the overload
   EsDay.prototype[key] = function (...args: number[]): EsDay | number {
