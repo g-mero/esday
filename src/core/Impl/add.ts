@@ -1,8 +1,8 @@
 import { C, createInstanceFromExist, prettyUnit } from '~/common'
 import type { EsDay } from '~/core'
-import type { UnitType } from '~/types'
+import type { UnitTypeAdd } from '~/types'
 
-export function addImpl(that: EsDay, value: number, units: UnitType) {
+export function addImpl(that: EsDay, value: number, units: UnitTypeAdd) {
   const $d = that['$d']
   const unit = prettyUnit(units)
 
@@ -20,7 +20,7 @@ export function addImpl(that: EsDay, value: number, units: UnitType) {
     case C.WEEK:
       return instanceFactorySet(7)
     case C.DAY:
-    case C.DATE_OF_WEEK:
+    case C.DAY_OF_MONTH:
       return instanceFactorySet(1)
     case C.HOUR:
     case C.MIN:

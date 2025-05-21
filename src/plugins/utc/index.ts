@@ -10,7 +10,6 @@
  */
 
 import type { EsDay } from 'esday'
-import type { UnitDay } from '~/common'
 import {
   C,
   getUnitInDate,
@@ -19,7 +18,7 @@ import {
   prettyUnit,
   setUnitInDateUTC,
 } from '~/common'
-import type { DateType, EsDayPlugin, SimpleType } from '~/types'
+import type { DateType, EsDayPlugin, SimpleType, UnitDay } from '~/types'
 
 const REGEX_VALID_OFFSET_FORMAT = /[+-]\d\d(?::?\d\d)?/g
 const REGEX_OFFSET_HOURS_MINUTES_FORMAT = /[+-]|\d\d/g
@@ -208,7 +207,7 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     if (utc) {
       const $date = this['$d']
       if (prettyUnit(unit) === C.DAY) {
-        setUnitInDateUTC($date, C.DATE_OF_WEEK, this.date() + (values[0] - this.day()))
+        setUnitInDateUTC($date, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
       } else {
         setUnitInDateUTC($date, unit as Exclude<typeof unit, UnitDay>, values)
       }
