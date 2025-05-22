@@ -11,7 +11,7 @@ export interface EsDayFactory {
   addFormatTokenDefinitions: (newTokens: FormattingTokenDefinitions) => void
 }
 export type EsDayPlugin<T extends {} = {}> = (
-  option: T,
+  option: Partial<T>,
   esdayClass: typeof EsDay,
   esday: EsDayFactory,
 ) => void
