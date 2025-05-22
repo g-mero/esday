@@ -1,6 +1,6 @@
 # QuarterOfYear
 
-QuarterOfYear gets or sets the quarter and adds support for formatting Token `Q`.
+QuarterOfYear gets or sets the quarter and adds support for the formatting Token `Q`.
 Setting the quarter does not affect the time of an EsDay instance.
 
 ## Method signatures
@@ -13,11 +13,10 @@ esday().quarter(quarterNumber: number): EsDay
 | ------------- | ---------------------------------------- |
 | quarterNumber | date string to be parsed                 |
 
-
-## Parsing tokens
+## Formatting tokens
 | **Token** | **Example** | **Description**                                        |
 | --------- | ----------- | ------------------------------------------------------ |
-| Q         | 1-4         | Quarter of year. Sets month to first month in quarter. |
+| Q         | 1-4         | Quarter of year. |
 
 ## Examples
 ### quarter method
