@@ -11,6 +11,7 @@ import isBetweenPlugin from './isBetween'
 import isSameOrAfterPlugin from './isSameOrAfter'
 import isSameOrBeforePlugin from './isSameOrBefore'
 import isTodayPlugin from './isToday'
+import isoWeekPlugin from './isoWeek'
 import localePlugin from './locale'
 import { getLocale } from './locale'
 import type {
@@ -38,6 +39,7 @@ export {
   advancedParsePlugin,
   getLocale,
   isBetweenPlugin,
+  isoWeekPlugin,
   isSameOrAfterPlugin,
   isSameOrBeforePlugin,
   isTodayPlugin,
