@@ -1,70 +1,49 @@
 import { esday } from 'esday'
-import moment from 'moment/min/moment-with-locales'
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, it, vi } from 'vitest'
+import { expectSame } from '../util'
+
 import relativeTimePlugin from '~/plugins/relativeTime'
+import { C } from '~/common'
 
 esday.extend(relativeTimePlugin)
 
 describe('relativeTime plugin', () => {
-  it.each([
-    { input: esday().subtract(30, 'second') },
-    { input: esday().subtract(1, 'minute') },
-    { input: esday().subtract(5, 'minute') },
-    { input: esday().subtract(1, 'hour') },
-    { input: esday().subtract(3, 'hour') },
-    { input: esday().subtract(1, 'day') },
-    { input: esday().subtract(10, 'day') },
-    { input: esday().add(30, 'second') },
-    { input: esday().add(1, 'minute') },
-    { input: esday().add(5, 'day') },
-    { input: esday().add(1, 'year') },
-  ])('fromNow() output should match moment.fromNow()', ({ input }) => {
-    const esResult = input.fromNow()
-    const momentResult = moment(input.toDate()).fromNow()
+  const fakeTimeAsString = '2023-12-17T03:24:46.234'
+  const targeTimeAsString = '2024-08-14T12:00:00.000Z'
 
-    expect(esResult).toBe(momentResult)
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
   })
 
-  it('toNow() should match moment.toNow()', () => {
-    const input = esday().add(3, 'hour')
-    const esResult = esday().to(input)
-    const momentResult = moment().to(moment(input.toDate()))
-
-    expect(esResult).toBe(momentResult)
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
-  it('from() and to() should match moment results', () => {
-    const now = esday()
-    const past = now.subtract(2, 'day')
-    const future = now.add(3, 'day')
-
-    expect(now.from(past)).toBe(moment(now.toDate()).from(moment(past.toDate())))
-    expect(now.to(future)).toBe(moment(now.toDate()).to(moment(future.toDate())))
+  it('fromNow', () => {
+    expectSame((esday) => esday().fromNow())
+    expectSame((esday) => esday().fromNow(true))
   })
 
-  it('should match moment when using withoutSuffix = true', () => {
-    const now = esday()
-    const future = now.add(1, 'hour')
-
-    const esResult = now.to(future, true)
-    const momentResult = moment(now.toDate()).to(moment(future.toDate()), true)
-
-    expect(esResult).toBe(momentResult)
+  it('toNow', () => {
+    expectSame((esday) => esday().toNow())
+    expectSame((esday) => esday().toNow(true))
   })
 
-  it('should match moment with invalid inputs', () => {
-    const invalidEs = esday('invalid')
-    const validEs = esday()
-    const invalidMoment = moment.invalid()
-    const validMoment = moment()
+  it('from', () => {
+    expectSame((esday) => esday().from(targeTimeAsString))
+    expectSame((esday) => esday().from(targeTimeAsString, true))
+  })
 
-    expect(invalidEs.from(validEs).toLowerCase()).toBe(
-      invalidMoment.from(validMoment).toLowerCase(),
-    )
-    expect(invalidEs.to(validEs).toLowerCase()).toBe(invalidMoment.to(validMoment).toLowerCase())
-    expect(validEs.from(invalidEs).toLowerCase()).toBe(
-      validMoment.from(invalidMoment).toLowerCase(),
-    )
-    expect(validEs.to(invalidEs).toLowerCase()).toBe(validMoment.to(invalidMoment).toLowerCase())
+  it('to', () => {
+    expectSame((esday) => esday().to(targeTimeAsString))
+    expectSame((esday) => esday().to(targeTimeAsString, true))
+  })
+
+  it('invalid input', () => {
+    expectSame((esday) => esday(C.INVALID_DATE).fromNow().toLowerCase())
+    expectSame((esday) => esday(C.INVALID_DATE).toNow().toLowerCase())
+    expectSame((esday) => esday(C.INVALID_DATE).from(targeTimeAsString).toLowerCase())
+    expectSame((esday) => esday(C.INVALID_DATE).to(targeTimeAsString).toLowerCase())
   })
 })

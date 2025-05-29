@@ -1,3 +1,18 @@
+/**
+ * RelativeTime adds .from .to .fromNow .toNow APIs to formats date to relative time strings (e.g. 3 hours ago).
+ *
+ * Time from now .fromNow(withoutSuffix?: boolean)
+ * Returns the string of relative time from now.
+ *
+ * Time from X .from(compared: Dayjs, withoutSuffix?: boolean)
+ * Returns the string of relative time from X.
+ *
+ * Time to now .toNow(withoutSuffix?: boolean)
+ * Returns the string of relative time to now.
+ *
+ * Time to X .to(compared: Dayjs, withoutSuffix?: boolean)
+ * Returns the string of relative time to X.
+ */
 import type { DateType, EsDay, EsDayPlugin } from 'esday'
 import { C } from '~/common'
 import type { Locale, RelativeTimeKeys } from '../locale'
@@ -23,7 +38,9 @@ const plugin: EsDayPlugin<{
 }> = (options, Class, esday) => {
   const proto = Class.prototype
 
-  const relObj: Locale['relativeTime'] = {
+  // Default relative time strings
+  // copy from locales/en.ts
+  const defaultRTDef: Locale['relativeTime'] = {
     future: 'in %s',
     past: '%s ago',
     s: 'a few seconds',
@@ -40,7 +57,7 @@ const plugin: EsDayPlugin<{
     yy: '%d years',
   }
 
-  const thresholds: Threshold[] = options.thresholds || [
+  const thresholds: Threshold[] = options.thresholds ?? [
     { l: 's', r: 44, d: C.SECOND },
     { l: 'm', r: 89 },
     { l: 'mm', r: 44, d: C.MIN },
@@ -54,7 +71,7 @@ const plugin: EsDayPlugin<{
     { l: 'yy', d: C.YEAR },
   ]
 
-  const rounding = options.rounding || Math.round
+  const rounding = options.rounding ?? Math.round
 
   function fromToBase(
     input: DateType,
@@ -68,7 +85,7 @@ const plugin: EsDayPlugin<{
       return C.INVALID_DATE_STRING
     }
 
-    const locale = instance.localeObject?.()?.relativeTime || relObj
+    const locale = instance.localeObject?.()?.relativeTime ?? defaultRTDef
     let result = 0
     let out = ''
     let isFuture = false
