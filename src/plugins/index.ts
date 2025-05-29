@@ -29,6 +29,7 @@ import localizedFormatPlugin from './localizedFormat'
 import localizedParsePlugin from './localizedParse'
 import minMaxPlugin from './minMax'
 import quarterOfYearPlugin from './quarterOfYear'
+import relativeTimePlugin from './relativeTime'
 import toArrayPlugin from './toArray'
 import toObjectPlugin from './toObject'
 import utcPlugin from './utc'
@@ -52,6 +53,7 @@ export {
   toObjectPlugin,
   utcPlugin,
   weekPlugin,
+  relativeTimePlugin,
 }
 
 export type {
