@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, it, vi } from 'vitest'
 import { expectSame } from '../util'
 
 import { C } from '~/common'
-import { utcPlugin, relativeTimePlugin } from '~/plugins'
+import { relativeTimePlugin, utcPlugin } from '~/plugins'
 
 esday.extend(utcPlugin).extend(relativeTimePlugin)
 

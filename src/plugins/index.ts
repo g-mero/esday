@@ -29,11 +29,11 @@ import localizedFormatPlugin from './localizedFormat'
 import localizedParsePlugin from './localizedParse'
 import minMaxPlugin from './minMax'
 import quarterOfYearPlugin from './quarterOfYear'
+import relativeTimePlugin from './relativeTime'
 import toArrayPlugin from './toArray'
 import toObjectPlugin from './toObject'
 import utcPlugin from './utc'
 import weekPlugin from './week'
-import relativeTimePlugin from './relativeTime'
 
 export {
   advancedFormatPlugin,
