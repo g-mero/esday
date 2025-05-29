@@ -33,6 +33,7 @@ import toArrayPlugin from './toArray'
 import toObjectPlugin from './toObject'
 import utcPlugin from './utc'
 import weekPlugin from './week'
+import relativeTimePlugin from './relativeTime'
 
 export {
   advancedFormatPlugin,
@@ -52,6 +53,7 @@ export {
   toObjectPlugin,
   utcPlugin,
   weekPlugin,
+  relativeTimePlugin,
 }
 
 export type {

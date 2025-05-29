@@ -32,7 +32,7 @@ type Threshold = {
   d?: typeof C.SECOND | typeof C.MIN | typeof C.HOUR | typeof C.DAY | typeof C.MONTH | typeof C.YEAR
 }
 
-const plugin: EsDayPlugin<{
+const relativeTimePlugin: EsDayPlugin<{
   thresholds?: Threshold[]
   rounding?: (n: number) => number
 }> = (options, Class, esday) => {
@@ -142,4 +142,4 @@ const plugin: EsDayPlugin<{
   }
 }
 
-export default plugin
+export default relativeTimePlugin
