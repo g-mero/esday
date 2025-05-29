@@ -7,8 +7,8 @@ The `isoWeekDay` method gets the ISO day of week of a date.
 The `isoWeekYear` method gets the ISO week-year of a date.
 The `isoWeeksInYear` method gets the number of weeks in a year according to the ISO 8601.
 
-IsoWeek adds support for parsing Token `Q`.
-IsoWeek adds support for formatting Token `Q`.
+IsoWeek adds support for parsing tokens `W`, `WW`, `E`, `GG` and `GGGG`.
+IsoWeek adds support for formatting tokens `W`, `WW`, `Wo`, `E`, `GG` and `GGGG`.
 
 **isoWeek**
 The ISO week of the year depends on the first day of the week (Monday), and with which day (of the month) the first week of the year starts. According to the ISO 8601 the first week of the year is the the week containing January 4th.
@@ -20,7 +20,7 @@ Because the first day of the first week of a year does not always fall on the fi
 
 For example, in 2022 Jan 1 was a Saturday. Because of this, the first ISO week of the year 2022 starts on Monday Jan 3 and Jan 1 belongs to ISO week year 2021 (ISO week 52).
 
-IsoWeek can be used together with the Utc plugin too.
+IsoWeek can also be used together with the Utc plugin.
 
 ## Method signatures
 ```typescript
@@ -45,7 +45,7 @@ isoWeeksInYear(): number
 | GG        | 00-99       | ISO week-year (2 digits).           |
 | GGGG      | 0000-9999   | ISO week-year.                      |
 
-When no locale is loaded the token 'Wo' returns th ISO week number as number (instead of ordinal number).
+When no locale is loaded the token 'Wo' returns the ISO week number as number (instead of an ordinal number).
 
 ## Parsing tokens
 | **Token** | **Example** | **Description**                                                          |
@@ -117,6 +117,8 @@ esday('22024-12-24T14:25:36').format('GGGG')
 // Returns '2024'
 ```
 
+and with a locale loaded:
+
 ```typescript
 import { esday } from 'esday'
 import { localePlugin, isoWeekPlugin } from 'esday/plugins'
@@ -136,6 +138,11 @@ esday('22024-12-24T14:25:36').format('Wo')
 
 ### Parsing date using IsoWeek tokens
 ```typescript
+import { esday } from 'esday'
+import isoWeekPlugin from 'esday/plugins/isoWeek'
+
+esday.extend(isoWeekPlugin)
+
 esday('2025 2', 'YYYY W')
 // Returns esday for '2025-01-06'
 
@@ -145,15 +152,31 @@ esday('2025-10-24 2', 'YYYY-MM-DD W')
 esday('2025-09-23 2', 'YYYY-MM-DD W')
 // Returns esday for '2025-09-23'
 
-esday('2025 02', 'YYYY WW')
-// Returns esday for '2025-01-06'
-
 esday('2025 12', 'YYYY WW')
-// Returns esday for '2025-01-01'
+// Returns esday for '2025-01-01' as we don't have a locale
 
 esday('2025 4', 'YYYY E')
 // Returns esday for '2025-01-02'
 
 esday("24", "GG")
 // Returns esday for '2024-01-01'
+```
+
+and with a locale loaded:
+
+```typescript
+import { esday } from 'esday'
+import { localePlugin, isoWeekPlugin } from 'esday/plugins'
+import localeEn from 'esday/locales/en'
+
+esday.extend(localePlugin)
+esday.extend(isoWeekPlugin)
+
+esday.registerLocale(localeEn)
+
+// set global locale
+esday.locale('en')
+
+esday('2025 12', 'YYYY WW')
+// Returns esday for '2025-03-17'
 ```

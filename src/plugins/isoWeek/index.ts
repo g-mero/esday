@@ -193,6 +193,7 @@ function postParseIsoYear(
     const parsedIsoWeekYear = parsedElements.isoWeekYear as number
 
     if (Object.keys(parsedElements).length === 1) {
+      // we parsed isoYear only ('GG' or 'GGGG')
       let modifiedEsday = newEsday.isoWeekYear(parsedIsoWeekYear)
       modifiedEsday = modifiedEsday.year(parsedIsoWeekYear).month(0).date(1).isoWeekday(1)
       modifiedDate = modifiedEsday.toDate()
