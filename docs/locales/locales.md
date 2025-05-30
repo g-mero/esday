@@ -53,6 +53,7 @@
 | eu       | Basque                        | `import locale from 'esday/locales/eu'`       |
 | fa       | Persian                       | `import locale from 'esday/locales/fa'`       |
 | fi       | Finnish                       | `import locale from 'esday/locales/fi'`       |
+| fil      | Filipino                      | `import locale from 'esday/locales/fil'`       |
 | fo       | Faroese                       | `import locale from 'esday/locales/fo'`       |
 | fr-CA    | French (Canada)               | `import locale from 'esday/locales/fr-ca'`    |
 | fr-CH    | French (Switzerland)          | `import locale from 'esday/locales/fr-ch'`    |
@@ -144,5 +145,6 @@
 | yo       | Yoruba Nigeria                | `import locale from 'esday/locales/yo'`       |
 | zh-CN    | Chinese (China)               | `import locale from 'esday/locales/zh-cn'`    |
 | zh-HK    | Chinese (Hong Kong)           | `import locale from 'esday/locales/zh-hk'`    |
+| zh-MO    | Chinese (Macau)               | `import locale from 'esday/locales/zh-mo'`    |
 | zh-TW    | Chinese (Taiwan)              | `import locale from 'esday/locales/zh-tw'`    |
 | zh       | Chinese                       | `import locale from 'esday/locales/zh'`       |
