@@ -59,6 +59,14 @@ const localeTg: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Имрӯз соати] LT',
+    nextDay: '[Фардо соати] LT',
+    lastDay: '[Дирӯз соати] LT',
+    nextWeek: 'dddd[и] [ҳафтаи оянда соати] LT',
+    lastWeek: 'dddd[и] [ҳафтаи гузашта соати] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'баъди %s',
     past: '%s пеш',

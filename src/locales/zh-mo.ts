@@ -2,8 +2,8 @@
  * Chinese (Macau) [zh-MO]
  */
 
-import localeZh from '~/locales/zh';
-import { cloneLocale, setLocaleProperty } from '~/plugins/locale';
+import localeZh from '~/locales/zh'
+import { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 
 const calendar = {
   sameDay: '[今天]LT',
@@ -12,12 +12,12 @@ const calendar = {
   lastDay: '[昨天]LT',
   lastWeek: '[上]ddddLT',
   sameElse: 'L',
-};
+}
 
-const localeZhHk = cloneLocale(localeZh);
+const localeZhHk = cloneLocale(localeZh)
 
 // Use 'setLocaleProperty' as all properties are 'readonly'
-setLocaleProperty(localeZhHk, 'name', 'zh-MO');
-setLocaleProperty(localeZhHk, 'calendar', calendar);
+setLocaleProperty(localeZhHk, 'name', 'zh-MO')
+setLocaleProperty(localeZhHk, 'calendar', calendar)
 
-export default localeZhHk;
+export default localeZhHk

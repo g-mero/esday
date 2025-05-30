@@ -60,6 +60,14 @@ const localeCy: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Heddiw am] LT',
+    nextDay: '[Yfory am] LT',
+    nextWeek: 'dddd [am] LT',
+    lastDay: '[Ddoe am] LT',
+    lastWeek: 'dddd [diwethaf am] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'mewn %s',
     past: '%s yn ôl',

@@ -63,6 +63,14 @@ const localeKa: Readonly<Locale> = {
     lll: 'D MMMM YYYY h:mm A',
     llll: 'dddd, D MMMM YYYY h:mm A',
   },
+  calendar: {
+    sameDay: '[დღეს] LT[-ზე]',
+    nextDay: '[ხვალ] LT[-ზე]',
+    lastDay: '[გუშინ] LT[-ზე]',
+    nextWeek: '[შემდეგ] dddd LT[-ზე]',
+    lastWeek: '[წინა] dddd LT-ზე',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s შემდეგ',
     past: '%s წინ',

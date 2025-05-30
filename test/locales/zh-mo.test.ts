@@ -70,10 +70,16 @@ describe('locale zh-MO', () => {
     expect(Object.keys(locale.formats ?? {})).toHaveLength(10)
   })
 
+  it('should have an object named "calendar"', () => {
+    expect(locale.calendar).toBeDefined()
+    expect(locale.calendar).toBeTypeOf('object')
+    expect(Object.keys(locale.calendar ?? {}).length).toBe(6)
+  })
+
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(locale.relativeTime ?? {}).length).toBeGreaterThan(0)
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(14)
   })
 
   it('should have a method named "meridiem"', () => {

@@ -15,6 +15,8 @@ import isoWeekPlugin from './isoWeek'
 import localePlugin from './locale'
 import { getLocale } from './locale'
 import type {
+  Calendar,
+  CalendarPartial,
   DayNames,
   DayNamesStandaloneFormat,
   Locale,
@@ -57,18 +59,20 @@ export {
 }
 
 export type {
+  Calendar,
+  CalendarPartial,
+  DayNames,
+  DayNamesStandaloneFormat,
+  Locale,
+  LocaleFormatKeys,
+  MonthNames,
+  MonthNamesStandaloneFormat,
+  MonthNamesFunction,
   ParsedElements,
   ParseOptions,
   PostParser as PostParse,
   UpdateParsedElement,
   TokenDefinitions,
-  DayNames,
-  DayNamesStandaloneFormat,
-  MonthNames,
-  MonthNamesStandaloneFormat,
-  MonthNamesFunction,
   RelativeTimeElementFunction,
   RelativeTimeKeys,
-  LocaleFormatKeys,
-  Locale,
 }

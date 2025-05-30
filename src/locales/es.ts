@@ -2,6 +2,7 @@
  * Spanish [es]
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
 
 const localeEs: Readonly<Locale> = {
@@ -38,6 +39,24 @@ const localeEs: Readonly<Locale> = {
     ll: 'D [de] MMMM [de] YYYY',
     lll: 'D [de] MMMM [de] YYYY H:mm',
     llll: 'dddd, D [de] MMMM [de] YYYY H:mm',
+  },
+  calendar: {
+    sameDay: function (this: EsDay) {
+      return `[hoy a la${this.hour() !== 1 ? 's' : ''}] LT`
+    },
+    nextDay: function (this: EsDay) {
+      return `[mañana a la${this.hour() !== 1 ? 's' : ''}] LT`
+    },
+    nextWeek: function (this: EsDay) {
+      return `dddd [a la${this.hour() !== 1 ? 's' : ''}] LT`
+    },
+    lastDay: function (this: EsDay) {
+      return `[ayer a la${this.hour() !== 1 ? 's' : ''}] LT`
+    },
+    lastWeek: function () {
+      return `[el] dddd [pasado a la${this.hour() !== 1 ? 's' : ''}] LT`
+    },
+    sameElse: 'L',
   },
   relativeTime: {
     future: 'en %s',

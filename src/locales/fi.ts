@@ -130,6 +130,14 @@ const localeFi: Readonly<Locale> = {
     lll: 'D. MMM YYYY, [klo] HH.mm',
     llll: 'ddd, D. MMM YYYY, [klo] HH.mm',
   },
+  calendar: {
+    sameDay: '[tänään] [klo] LT',
+    nextDay: '[huomenna] [klo] LT',
+    nextWeek: 'dddd [klo] LT',
+    lastDay: '[eilen] [klo] LT',
+    lastWeek: '[viime] dddd[na] [klo] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s päästä',
     past: '%s sitten',

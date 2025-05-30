@@ -2,7 +2,52 @@
  * Slovak [sk]
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
+
+const calendar = {
+  sameDay: '[dnes o] LT',
+  nextDay: '[zajtra o] LT',
+  nextWeek: function (this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[v nedeľu o] LT'
+      case 1:
+      case 2:
+        return '[v] dddd [o] LT'
+      case 3:
+        return '[v stredu o] LT'
+      case 4:
+        return '[vo štvrtok o] LT'
+      case 5:
+        return '[v piatok o] LT'
+      case 6:
+        return '[v sobotu o] LT'
+      default:
+        return ''
+    }
+  },
+  lastDay: '[včera o] LT',
+  lastWeek: function (this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[minulú nedeľu o] LT'
+      case 1:
+      case 2:
+        return '[minulý] dddd [o] LT'
+      case 3:
+        return '[minulú stredu o] LT'
+      case 4:
+      case 5:
+        return '[minulý] dddd [o] LT'
+      case 6:
+        return '[minulú sobotu o] LT'
+      default:
+        return ''
+    }
+  },
+  sameElse: 'L',
+}
 
 function usePlural(timeValue: number) {
   return timeValue > 1 && timeValue < 5 && ~~(timeValue / 10) !== 1
@@ -98,6 +143,7 @@ const localeSk: Readonly<Locale> = {
     lll: 'D. MMMM YYYY H:mm',
     llll: 'dddd D. MMMM YYYY H:mm',
   },
+  calendar,
   relativeTime: {
     future: 'za %s', // Should be `o %s` (change when moment/moment#5408 is fixed)
     past: 'pred %s',

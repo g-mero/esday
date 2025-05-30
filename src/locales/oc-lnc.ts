@@ -73,6 +73,14 @@ const localeOcLnc: Readonly<Locale> = {
     lll: 'D MMMM [de] YYYY [a] H:mm',
     llll: 'dddd D MMMM [de] YYYY [a] H:mm',
   },
+  calendar: {
+    sameDay: '[uèi a] LT',
+    nextDay: '[deman a] LT',
+    nextWeek: 'dddd [a] LT',
+    lastDay: '[ièr a] LT',
+    lastWeek: 'dddd [passat a] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: "d'aquí %s",
     past: 'fa %s',

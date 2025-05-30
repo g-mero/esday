@@ -60,6 +60,14 @@ const localeRn: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Uyu musi kuri] LT',
+    nextDay: '[Ejo ku] LT',
+    nextWeek: 'dddd [ku] LT',
+    lastDay: '[Ejo kuri] LT',
+    lastWeek: '[Inyuma] dddd [ku] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'mu %s',
     past: '%s',

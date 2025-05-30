@@ -1,3 +1,4 @@
+import type { EsDay } from 'esday'
 import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
 
 const monthFormat: MonthNames = [
@@ -31,6 +32,12 @@ const monthStandalone: MonthNames = [
 const months: MonthNamesStandaloneFormat = {
   standalone: monthStandalone,
   format: monthFormat,
+}
+
+function processHoursFunction(str: string) {
+  return function (this: EsDay) {
+    return `${str}о${this.hour() === 11 ? 'б' : ''}] LT`
+  }
 }
 
 function plural(timeStrings: string[], timeValue: number) {
@@ -98,6 +105,28 @@ const localeUk: Readonly<Locale> = {
     ll: 'D MMMM YYYY р.',
     lll: 'D MMMM YYYY р., HH:mm',
     llll: 'dddd, D MMMM YYYY р., HH:mm',
+  },
+  calendar: {
+    sameDay: processHoursFunction('[Сьогодні '),
+    nextDay: processHoursFunction('[Завтра '),
+    lastDay: processHoursFunction('[Вчора '),
+    nextWeek: processHoursFunction('[У] dddd ['),
+    lastWeek: function () {
+      switch (this.day()) {
+        case 0:
+        case 3:
+        case 5:
+        case 6:
+          return processHoursFunction('[Минулої] dddd [').call(this)
+        case 1:
+        case 2:
+        case 4:
+          return processHoursFunction('[Минулого] dddd [').call(this)
+        default:
+          return ''
+      }
+    },
+    sameElse: 'L',
   },
   relativeTime: {
     future: 'за %s',

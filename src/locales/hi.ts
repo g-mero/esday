@@ -72,6 +72,14 @@ const localeHi: Readonly<Locale> = {
     lll: 'D MMMM YYYY, A h:mm बजे',
     llll: 'dddd, D MMMM YYYY, A h:mm बजे',
   },
+  calendar: {
+    sameDay: '[आज] LT',
+    nextDay: '[कल] LT',
+    nextWeek: 'dddd, LT',
+    lastDay: '[कल] LT',
+    lastWeek: '[पिछले] dddd, LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s में',
     past: '%s पहले',

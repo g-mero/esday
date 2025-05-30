@@ -51,6 +51,14 @@ const mlLocale: Readonly<Locale> = {
     lll: 'D MMMM YYYY, A h:mm -നു',
     llll: 'dddd, D MMMM YYYY, A h:mm -നു',
   },
+  calendar: {
+    sameDay: '[ഇന്ന്] LT',
+    nextDay: '[നാളെ] LT',
+    nextWeek: 'dddd, LT',
+    lastDay: '[ഇന്നലെ] LT',
+    lastWeek: '[കഴിഞ്ഞ] dddd, LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s കഴിഞ്ഞ്',
     past: '%s മുൻപ്',

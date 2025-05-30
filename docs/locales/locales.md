@@ -148,3 +148,5 @@
 | zh-MO    | Chinese (Macau)               | `import locale from 'esday/locales/zh-mo'`    |
 | zh-TW    | Chinese (Taiwan)              | `import locale from 'esday/locales/zh-tw'`    |
 | zh       | Chinese                       | `import locale from 'esday/locales/zh'`       |
+
+The locale 'ja', 'ru' and 'zh' (and its country versions) require the week plugin to be loaded.

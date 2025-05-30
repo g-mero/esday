@@ -64,6 +64,14 @@ const localeLt: Locale = {
     lll: 'YYYY [m.] MMMM D [d.], HH:mm [val.]',
     llll: 'YYYY [m.] MMMM D [d.], ddd, HH:mm [val.]',
   },
+  calendar: {
+    sameDay: '[Šiandien] LT',
+    nextDay: '[Rytoj] LT',
+    nextWeek: 'dddd LT',
+    lastDay: '[Vakar] LT',
+    lastWeek: '[Praėjusį] dddd LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'už %s',
     past: 'prieš %s',

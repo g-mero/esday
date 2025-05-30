@@ -5,7 +5,7 @@
 import type { Locale } from '~/plugins/locale'
 
 const localeFil: Readonly<Locale> = {
-  name: 'en',
+  name: 'fil',
   weekdays: ['Linggo', 'Lunes', 'Martes', 'Miyerkules', 'Huwebes', 'Biyernes', 'Sabado'],
   weekdaysShort: ['Lin', 'Lun', 'Mar', 'Miy', 'Huw', 'Biy', 'Sab'],
   weekdaysMin: ['Li', 'Lu', 'Ma', 'Mi', 'Hu', 'Bi', 'Sab'],

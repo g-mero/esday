@@ -2,6 +2,7 @@
  * Breton [br]
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
 
 function lastNumber(number: number): number {
@@ -127,6 +128,45 @@ const localeBr: Readonly<Locale> = {
     ll: 'D [a viz] MMMM YYYY',
     lll: 'D [a viz] MMMM YYYY h[e]mm A',
     llll: 'dddd, D [a viz] MMMM YYYY h[e]mm A',
+  },
+  calendar: {
+    sameDay: '[danas u] LT',
+    nextDay: '[sutra u] LT',
+    nextWeek: function () {
+      switch (this.day()) {
+        case 0:
+          return '[u] [nedjelju] [u] LT'
+        case 3:
+          return '[u] [srijedu] [u] LT'
+        case 6:
+          return '[u] [subotu] [u] LT'
+        case 1:
+        case 2:
+        case 4:
+        case 5:
+          return '[u] dddd [u] LT'
+        default:
+          return ''
+      }
+    },
+    lastDay: '[jučer u] LT',
+    lastWeek: function (this: EsDay) {
+      switch (this.day()) {
+        case 0:
+        case 3:
+          return '[prošlu] dddd [u] LT'
+        case 6:
+          return '[prošle] [subote] [u] LT'
+        case 1:
+        case 2:
+        case 4:
+        case 5:
+          return '[prošli] dddd [u] LT'
+        default:
+          return ''
+      }
+    },
+    sameElse: 'L',
   },
   relativeTime: {
     future: 'a-benn %s',

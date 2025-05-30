@@ -60,6 +60,14 @@ const locale: Locale = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[امروز ساعت] LT',
+    nextDay: '[فردا ساعت] LT',
+    nextWeek: 'dddd [ساعت] LT',
+    lastDay: '[دیروز ساعت] LT',
+    lastWeek: 'dddd [پیش] [ساعت] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'در %s',
     past: '%s پیش',
