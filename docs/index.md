@@ -18,6 +18,7 @@ EsDay is extensible by plugins.
 Currently there are the following plugins:
 - [AdvancedParse](./plugins/advancedParse.md) (for parsing arbitrary formatted date and time strings)
 - [AdvancedFormat](./plugins/advancedFormat.md) (for formatting using a custom template)
+- [Calendar](./plugins/calendar.md) (Calendar adds .calendar() API - for formatting time relative to a given reference day)
 - DayOfYear (DayOfYear adds .dayOfYear() API - number indicating the day of the year)
 - [IsBetween](./plugins/isBetween.md) (IsBetween adds .isBetween() API - is date between two other dates)
 - [IsLeapYear](./plugins/isLeapYear.md) (IsLeapYear adds .isLeapYear() API - is year a leap year)

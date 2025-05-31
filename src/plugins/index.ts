@@ -7,6 +7,7 @@ import type {
   TokenDefinitions,
   UpdateParsedElement,
 } from './advancedParse/types'
+import calendarPlugin from './calendar'
 import dayOfYearPlugin from './dayOfYear'
 import isBetweenPlugin from './isBetween'
 import isLeapYearPlugin from './isLeapYear'
@@ -42,6 +43,7 @@ import weekPlugin from './week'
 export {
   advancedFormatPlugin,
   advancedParsePlugin,
+  calendarPlugin,
   dayOfYearPlugin,
   getLocale,
   isBetweenPlugin,
