@@ -82,6 +82,14 @@ const localeEt: Readonly<Locale> = {
     lll: 'D. MMMM YYYY H:mm',
     llll: 'dddd, D. MMMM YYYY H:mm',
   },
+  calendar: {
+    sameDay: '[Täna,] LT',
+    nextDay: '[Homme,] LT',
+    nextWeek: '[Järgmine] dddd LT',
+    lastDay: '[Eile,] LT',
+    lastWeek: '[Eelmine] dddd LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s pärast',
     past: '%s tagasi',

@@ -69,6 +69,14 @@ const localePaIn: Readonly<Locale> = {
     lll: 'D MMMM YYYY, A h:mm ਵਜੇ',
     llll: 'dddd, D MMMM YYYY, A h:mm ਵਜੇ',
   },
+  calendar: {
+    sameDay: '[ਅਜ] LT',
+    nextDay: '[ਕਲ] LT',
+    nextWeek: '[ਅਗਲਾ] dddd, LT',
+    lastDay: '[ਕਲ] LT',
+    lastWeek: '[ਪਿਛਲੇ] dddd, LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'بعد %s',
     past: 'منذ %s',

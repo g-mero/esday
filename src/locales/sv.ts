@@ -43,6 +43,14 @@ const localeSv: Readonly<Locale> = {
     lll: 'D MMM YYYY HH:mm',
     llll: 'ddd D MMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Idag] LT',
+    nextDay: '[Imorgon] LT',
+    lastDay: '[Igår] LT',
+    nextWeek: '[På] dddd LT',
+    lastWeek: '[I] dddd[s] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'om %s',
     past: 'för %s sedan',

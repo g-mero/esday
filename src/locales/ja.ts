@@ -1,8 +1,19 @@
 /**
  * Japanese [ja]
+ *
+ * This locale requires the week plugin, when the calendar property
+ * is used (e.g. in the calendar plugin).
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
+
+declare module 'esday' {
+  interface EsDay {
+    week(): number
+    week(newWeek: number): EsDay
+  }
+}
 
 const localeJa: Readonly<Locale> = {
   name: 'ja',
@@ -38,6 +49,24 @@ const localeJa: Readonly<Locale> = {
     ll: 'YYYY年M月D日',
     lll: 'YYYY年M月D日 HH:mm',
     llll: 'YYYY年M月D日(ddd) HH:mm',
+  },
+  calendar: {
+    sameDay: '[今日] LT',
+    nextDay: '[明日] LT',
+    nextWeek: function (this: EsDay, refDate?: EsDay) {
+      if (refDate?.week?.() !== this.week?.()) {
+        return '[来週]dddd LT'
+      }
+      return 'dddd LT'
+    },
+    lastDay: '[昨日] LT',
+    lastWeek: function (this: EsDay, refDate?: EsDay) {
+      if (this.week?.() !== refDate?.week?.()) {
+        return '[先週]dddd LT'
+      }
+      return 'dddd LT'
+    },
+    sameElse: 'L',
   },
   relativeTime: {
     future: '%s後',

@@ -2,6 +2,7 @@
  * Serbian Cyrillic [sr-CYRL]
  */
 
+import type { EsDay } from 'esday'
 import localeSr from '~/locales/sr'
 import { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 
@@ -39,6 +40,42 @@ const monthsShort = [
   'Дец.',
 ]
 
+const calendar = {
+  sameDay: '[данас у] LT',
+  nextDay: '[сутра у] LT',
+  nextWeek: function (this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[у] [недељу] [у] LT'
+      case 3:
+        return '[у] [среду] [у] LT'
+      case 6:
+        return '[у] [суботу] [у] LT'
+      case 1:
+      case 2:
+      case 4:
+      case 5:
+        return '[у] dddd [у] LT'
+      default:
+        return ''
+    }
+  },
+  lastDay: '[јуче у] LT',
+  lastWeek: function (this: EsDay) {
+    const lastWeekDays = [
+      '[прошле] [недеље] [у] LT',
+      '[прошлог] [понедељка] [у] LT',
+      '[прошлог] [уторка] [у] LT',
+      '[прошле] [среде] [у] LT',
+      '[прошлог] [четвртка] [у] LT',
+      '[прошлог] [петка] [у] LT',
+      '[прошле] [суботе] [у] LT',
+    ]
+    return lastWeekDays[this.day()]
+  },
+  sameElse: 'L',
+}
+
 function plural(timeValue: number, wordKey: string[]) {
   if (
     timeValue % 10 >= 1 &&
@@ -56,7 +93,8 @@ function relativeTimeFormatter(
   isFuture: boolean,
 ): string {
   const formats = {
-    ss: ['секунда', 'секунде', 'секунди'],
+    s: ['секунда', 'секунде', 'секунди'],
+    ss: ['%d секунди', '%d секунде', '%d секунди'],
     m: ['један минут', 'једног минута'],
     mm: ['%d минут', '%d минута', '%d минута'],
     h: ['један сат', 'једног сата'],
@@ -87,6 +125,7 @@ const relativeTime = {
   future: 'за %s',
   past: 'пре %s',
   s: 'неколико секунди',
+  ss: relativeTimeFormatter,
   m: relativeTimeFormatter,
   mm: relativeTimeFormatter,
   h: relativeTimeFormatter,
@@ -106,6 +145,7 @@ setLocaleProperty(localeSrCyrl, 'weekdaysShort', weekdaysShort)
 setLocaleProperty(localeSrCyrl, 'weekdaysMin', weekdaysMin)
 setLocaleProperty(localeSrCyrl, 'months', months)
 setLocaleProperty(localeSrCyrl, 'monthsShort', monthsShort)
+setLocaleProperty(localeSrCyrl, 'calendar', calendar)
 setLocaleProperty(localeSrCyrl, 'relativeTime', relativeTime)
 
 export default localeSrCyrl

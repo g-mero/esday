@@ -3,7 +3,44 @@
  * Serbian [sr]
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
+
+const calendar = {
+  sameDay: '[danas u] LT',
+  nextDay: '[sutra u] LT',
+  nextWeek: function (this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[u] [nedelju] [u] LT'
+      case 3:
+        return '[u] [sredu] [u] LT'
+      case 6:
+        return '[u] [subotu] [u] LT'
+      case 1:
+      case 2:
+      case 4:
+      case 5:
+        return '[u] dddd [u] LT'
+      default:
+        return ''
+    }
+  },
+  lastDay: '[juče u] LT',
+  lastWeek: function (this: EsDay) {
+    const lastWeekDays = [
+      '[prošle] [nedelje] [u] LT',
+      '[prošlog] [ponedeljka] [u] LT',
+      '[prošlog] [utorka] [u] LT',
+      '[prošle] [srede] [u] LT',
+      '[prošlog] [četvrtka] [u] LT',
+      '[prošlog] [petka] [u] LT',
+      '[prošle] [subote] [u] LT',
+    ]
+    return lastWeekDays[this.day()]
+  },
+  sameElse: 'L',
+}
 
 function plural(timeValue: number, wordKey: string[]) {
   if (
@@ -98,6 +135,7 @@ const localeSr: Readonly<Locale> = {
     lll: 'D. MMMM YYYY. H:mm',
     llll: 'dddd, D. MMMM YYYY. H:mm',
   },
+  calendar,
   relativeTime: {
     future: 'za %s',
     past: 'pre %s',

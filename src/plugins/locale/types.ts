@@ -54,6 +54,17 @@ export type LocaleFormatKeys =
   | 'lll'
   | 'llll'
 
+export type CalendarSpecVal = string | ((this: EsDay, refDate?: EsDay) => string)
+export interface Calendar {
+  sameDay: CalendarSpecVal
+  nextDay: CalendarSpecVal
+  nextWeek: CalendarSpecVal
+  lastDay: CalendarSpecVal
+  lastWeek: CalendarSpecVal
+  sameElse: CalendarSpecVal
+}
+export type CalendarPartial = Partial<Calendar>
+
 export type RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
@@ -104,6 +115,7 @@ export interface Locale {
   readonly weekStart: number
   readonly yearStart: number
   readonly formats: Record<LocaleFormatKeys, string>
+  readonly calendar: Calendar
   readonly relativeTime: Record<RelativeTimeKeys, string | RelativeTimeElementFunction>
   readonly meridiem: (hour: number, minute: number, isLowercase: boolean) => string
   readonly preParse?: (dateString: string) => string

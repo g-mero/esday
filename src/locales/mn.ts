@@ -51,6 +51,14 @@ const localeMn: Readonly<Locale> = {
     lll: 'YYYY оны MMMMын D HH:mm',
     llll: 'dddd, YYYY оны MMMMын D HH:mm',
   },
+  calendar: {
+    sameDay: '[Өнөөдөр] LT',
+    nextDay: '[Маргааш] LT',
+    nextWeek: '[Ирэх] dddd LT',
+    lastDay: '[Өчигдөр] LT',
+    lastWeek: '[Өнгөрсөн] dddd LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s',
     past: '%s',

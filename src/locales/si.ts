@@ -26,6 +26,14 @@ const localeSi: Readonly<Locale> = {
     lll: 'YYYY MMMM D, a h:mm',
     llll: 'YYYY MMMM D [වැනි] dddd, a h:mm:ss',
   },
+  calendar: {
+    sameDay: '[අද] LT[ට]',
+    nextDay: '[හෙට] LT[ට]',
+    nextWeek: 'dddd LT[ට]',
+    lastDay: '[ඊයේ] LT[ට]',
+    lastWeek: '[පසුගිය] dddd LT[ට]',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%sකින්',
     past: '%sකට පෙර',

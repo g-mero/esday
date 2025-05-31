@@ -52,6 +52,14 @@ const localeTh: Readonly<Locale> = {
     lll: 'D MMMM YYYY เวลา H:mm',
     llll: 'วันddddที่ D MMMM YYYY เวลา H:mm',
   },
+  calendar: {
+    sameDay: '[วันนี้ เวลา] LT',
+    nextDay: '[พรุ่งนี้ เวลา] LT',
+    nextWeek: 'dddd[หน้า เวลา] LT',
+    lastDay: '[เมื่อวานนี้ เวลา] LT',
+    lastWeek: '[วัน]dddd[ที่แล้ว เวลา] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'อีก %s',
     past: '%sที่แล้ว',

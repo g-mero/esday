@@ -123,6 +123,14 @@ const localeTlh: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[DaHjaj] LT',
+    nextDay: '[wa’leS] LT',
+    nextWeek: 'LLL',
+    lastDay: '[wa’Hu’] LT',
+    lastWeek: 'LLL',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: translateFuture,
     past: translatePast,

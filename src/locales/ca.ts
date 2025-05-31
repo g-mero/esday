@@ -2,6 +2,7 @@
  * Catalan [ca]
  */
 
+import type { EsDay } from 'esday'
 import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
 
 const monthFormat: MonthNames = [
@@ -81,6 +82,24 @@ const localeCa: Readonly<Locale> = {
     ll: 'D MMM YYYY',
     lll: 'D MMM YYYY, H:mm',
     llll: 'ddd D MMM YYYY, H:mm',
+  },
+  calendar: {
+    sameDay: function (this: EsDay) {
+      return `[avui a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
+    },
+    nextDay: function () {
+      return `[demà a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
+    },
+    nextWeek: function () {
+      return `dddd [a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
+    },
+    lastDay: function () {
+      return `[ahir a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
+    },
+    lastWeek: function () {
+      return `[el] dddd [passat a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
+    },
+    sameElse: 'L',
   },
   relativeTime: {
     future: "d'aquí %s",

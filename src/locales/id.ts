@@ -39,6 +39,14 @@ const localeId: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH.mm',
     llll: 'dddd, D MMMM YYYY HH.mm',
   },
+  calendar: {
+    sameDay: '[Hari ini pukul] LT',
+    nextDay: '[Besok pukul] LT',
+    nextWeek: 'dddd [pukul] LT',
+    lastDay: '[Kemarin pukul] LT',
+    lastWeek: 'dddd [lalu pukul] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'dalam %s',
     past: '%s yang lalu',

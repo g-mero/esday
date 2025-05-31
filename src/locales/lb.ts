@@ -141,6 +141,23 @@ const localeLb: Readonly<Locale> = {
     lll: 'D. MMMM YYYY H:mm [Auer]',
     llll: 'dddd, D. MMMM YYYY H:mm [Auer]',
   },
+  calendar: {
+    sameDay: '[Haut um] LT',
+    sameElse: 'L',
+    nextDay: '[Muer um] LT',
+    nextWeek: 'dddd [um] LT',
+    lastDay: '[Gëschter um] LT',
+    lastWeek: function () {
+      // Different date string for 'Dënschdeg' (Tuesday) and 'Donneschdeg' (Thursday) due to phonological rule
+      switch (this.day()) {
+        case 2:
+        case 4:
+          return '[Leschten] dddd [um] LT'
+        default:
+          return '[Leschte] dddd [um] LT'
+      }
+    },
+  },
   relativeTime: {
     future: processFutureTime,
     past: processPastTime,

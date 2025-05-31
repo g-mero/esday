@@ -88,6 +88,14 @@ const localeTa: Readonly<Locale> = {
     lll: 'D MMMM YYYY, HH:mm',
     llll: 'dddd, D MMMM YYYY, HH:mm',
   },
+  calendar: {
+    sameDay: '[இன்று] LT',
+    nextDay: '[நாளை] LT',
+    nextWeek: 'dddd, LT',
+    lastDay: '[நேற்று] LT',
+    lastWeek: '[கடந்த வாரம்] dddd, LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s இல்',
     past: '%s முன்',

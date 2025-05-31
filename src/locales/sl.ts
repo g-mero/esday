@@ -2,7 +2,49 @@
  * Slovenian [sl]
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
+
+const calendar = {
+  sameDay: '[danes ob] LT',
+  nextDay: '[jutri ob] LT',
+  nextWeek: function (this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[v] [nedeljo] [ob] LT'
+      case 3:
+        return '[v] [sredo] [ob] LT'
+      case 6:
+        return '[v] [soboto] [ob] LT'
+      case 1:
+      case 2:
+      case 4:
+      case 5:
+        return '[v] dddd [ob] LT'
+      default:
+        return ''
+    }
+  },
+  lastDay: '[včeraj ob] LT',
+  lastWeek: function (this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[prejšnjo] [nedeljo] [ob] LT'
+      case 3:
+        return '[prejšnjo] [sredo] [ob] LT'
+      case 6:
+        return '[prejšnjo] [soboto] [ob] LT'
+      case 1:
+      case 2:
+      case 4:
+      case 5:
+        return '[prejšnji] dddd [ob] LT'
+      default:
+        return ''
+    }
+  },
+  sameElse: 'L',
+}
 
 function dual(timeValue: number) {
   return timeValue % 100 === 2
@@ -134,6 +176,7 @@ const localeSl: Readonly<Locale> = {
     lll: 'D. MMMM YYYY H:mm',
     llll: 'dddd, D. MMMM YYYY H:mm',
   },
+  calendar,
   relativeTime: {
     future: 'čez %s',
     past: 'pred %s',

@@ -73,6 +73,14 @@ const localeTr: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[bugün saat] LT',
+    nextDay: '[yarın saat] LT',
+    nextWeek: '[gelecek] dddd [saat] LT',
+    lastDay: '[dün] LT',
+    lastWeek: '[geçen] dddd [saat] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s sonra',
     past: '%s önce',

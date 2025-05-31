@@ -60,6 +60,14 @@ const localeSe: Readonly<Locale> = {
     lll: 'MMMM D. [b.] YYYY [ti.] HH:mm',
     llll: 'dddd, MMMM D. [b.] YYYY [ti.] HH:mm',
   },
+  calendar: {
+    sameDay: '[otne ti] LT',
+    nextDay: '[ihttin ti] LT',
+    nextWeek: 'dddd [ti] LT',
+    lastDay: '[ikte ti] LT',
+    lastWeek: '[ovddit] dddd [ti] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s geažes',
     past: 'maŋit %s',

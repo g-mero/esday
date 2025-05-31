@@ -80,6 +80,14 @@ const localeBn: Readonly<Locale> = {
     lll: 'D MMMM YYYY, A h:mm সময়',
     llll: 'dddd, D MMMM YYYY, A h:mm সময়',
   },
+  calendar: {
+    sameDay: '[আজ] LT',
+    nextDay: '[আগামীকাল] LT',
+    nextWeek: 'dddd, LT',
+    lastDay: '[গতকাল] LT',
+    lastWeek: '[গত] dddd, LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s পরে',
     past: '%s আগে',

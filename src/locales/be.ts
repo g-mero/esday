@@ -102,6 +102,14 @@ const localeBe: Readonly<Locale> = {
     lll: 'D MMMM YYYY г., HH:mm',
     llll: 'dddd, D MMMM YYYY г., HH:mm',
   },
+  calendar: {
+    sameDay: '[Сёння ў] LT',
+    nextDay: '[Заўтра ў] LT',
+    nextWeek: '[У] dddd [ў] LT',
+    lastDay: '[Учора ў] LT',
+    lastWeek: '[апошні] dddd [ў] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'праз %s',
     past: '%s таму',

@@ -79,6 +79,14 @@ const localeDe: Readonly<Locale> = {
     lll: 'Do MMM YYYY HH:mm',
     llll: 'ddd, Do MMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[heute um] LT [Uhr]',
+    sameElse: 'L',
+    nextDay: '[morgen um] LT [Uhr]',
+    nextWeek: 'dddd [um] LT [Uhr]',
+    lastDay: '[gestern um] LT [Uhr]',
+    lastWeek: '[letzten] dddd [um] LT [Uhr]',
+  },
   relativeTime: {
     future: 'in %s',
     past: 'vor %s',

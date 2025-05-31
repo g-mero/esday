@@ -70,6 +70,14 @@ const localeHe: Readonly<Locale> = {
     lll: 'D MMM YYYY HH:mm',
     llll: 'ddd, D MMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[היום ב־]LT',
+    nextDay: '[מחר ב־]LT',
+    nextWeek: 'dddd [בשעה] LT',
+    lastDay: '[אתמול ב־]LT',
+    lastWeek: '[ביום] dddd [האחרון בשעה] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'בעוד %s',
     past: 'לפני %s',

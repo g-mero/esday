@@ -66,6 +66,14 @@ const localeTzl: Readonly<Locale> = {
     lll: 'D. MMMM [dallas] YYYY HH.mm',
     llll: 'dddd, [li] D. MMMM [dallas] YYYY HH.mm',
   },
+  calendar: {
+    sameDay: '[oxhi à] LT',
+    nextDay: '[demà à] LT',
+    nextWeek: 'dddd [à] LT',
+    lastDay: '[ieiri à] LT',
+    lastWeek: '[sür el] dddd [lasteu à] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'osprei %s',
     past: 'ja%s',

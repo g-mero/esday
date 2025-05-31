@@ -1,3 +1,11 @@
+/**
+ * Russian [ru]
+ *
+ * This locale requires the week plugin, when the calendar property
+ * is used (e.g. in the calendar plugin).
+ */
+
+import type { EsDay } from 'esday'
 import type {
   DayNames,
   DayNamesStandaloneFormat,
@@ -5,6 +13,13 @@ import type {
   MonthNames,
   MonthNamesStandaloneFormat,
 } from '~/plugins/locale'
+
+declare module 'esday' {
+  interface EsDay {
+    week(): number
+    week(newWeek: number): EsDay
+  }
+}
 
 const dayNamesFormat: DayNames = [
   'воскресенье',
@@ -96,6 +111,57 @@ const monthsShort: MonthNamesStandaloneFormat = {
   format: monthShortFormat,
 }
 
+const calendar = {
+  sameDay: '[Сегодня, в] LT',
+  nextDay: '[Завтра, в] LT',
+  nextWeek: function (this: EsDay, refDate?: EsDay) {
+    if (refDate?.week?.() !== this.week?.()) {
+      switch (this.day()) {
+        case 0:
+          return '[В следующее] dddd, [в] LT'
+        case 1:
+        case 2:
+        case 4:
+          return '[В следующий] dddd, [в] LT'
+        case 3:
+        case 5:
+        case 6:
+          return '[В следующую] dddd, [в] LT'
+        default:
+          return ''
+      }
+    }
+    if (this.day() === 2) {
+      return '[Во] dddd, [в] LT'
+    }
+    return '[В] dddd, [в] LT'
+  },
+  lastDay: '[Вчера, в] LT',
+  lastWeek: function (this: EsDay, refDate?: EsDay) {
+    if (refDate?.week?.() !== this.week?.()) {
+      switch (this.day()) {
+        case 0:
+          return '[В прошлое] dddd, [в] LT'
+        case 1:
+        case 2:
+        case 4:
+          return '[В прошлый] dddd, [в] LT'
+        case 3:
+        case 5:
+        case 6:
+          return '[В прошлую] dddd, [в] LT'
+        default:
+          return ''
+      }
+    }
+    if (this.day() === 2) {
+      return '[Во] dddd, [в] LT'
+    }
+    return '[В] dddd, [в] LT'
+  },
+  sameElse: 'L',
+}
+
 function plural(timeStrings: string[], timeValue: number) {
   const forms = timeStrings
   return timeValue % 10 === 1 && timeValue % 100 !== 11
@@ -145,6 +211,7 @@ const localeRu: Readonly<Locale> = {
     lll: 'D MMMM YYYY г., H:mm',
     llll: 'dddd, D MMMM YYYY г., H:mm',
   },
+  calendar,
   relativeTime: {
     future: 'через %s',
     past: '%s назад',

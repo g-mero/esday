@@ -44,6 +44,14 @@ const localeEn: Readonly<Locale> = {
     lll: 'MMM D, YYYY h:mm A',
     llll: 'ddd, MMM D, YYYY h:mm A',
   },
+  calendar: {
+    sameDay: '[Today at] LT',
+    nextDay: '[Tomorrow at] LT',
+    nextWeek: 'dddd [at] LT',
+    lastDay: '[Yesterday at] LT',
+    lastWeek: '[Last] dddd [at] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'in %s',
     past: '%s ago',

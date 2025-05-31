@@ -39,6 +39,14 @@ const localeKo: Readonly<Locale> = {
     lll: 'YYYY년 MMMM D일 A h:mm',
     llll: 'YYYY년 MMMM D일 dddd A h:mm',
   },
+  calendar: {
+    sameDay: '오늘 LT',
+    nextDay: '내일 LT',
+    nextWeek: 'dddd LT',
+    lastDay: '어제 LT',
+    lastWeek: '지난주 dddd LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s 후',
     past: '%s 전',

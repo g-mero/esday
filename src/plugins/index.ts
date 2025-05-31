@@ -7,7 +7,10 @@ import type {
   TokenDefinitions,
   UpdateParsedElement,
 } from './advancedParse/types'
+import calendarPlugin from './calendar'
+import dayOfYearPlugin from './dayOfYear'
 import isBetweenPlugin from './isBetween'
+import isLeapYearPlugin from './isLeapYear'
 import isSameOrAfterPlugin from './isSameOrAfter'
 import isSameOrBeforePlugin from './isSameOrBefore'
 import isTodayPlugin from './isToday'
@@ -15,6 +18,8 @@ import isoWeekPlugin from './isoWeek'
 import localePlugin from './locale'
 import { getLocale } from './locale'
 import type {
+  Calendar,
+  CalendarPartial,
   DayNames,
   DayNamesStandaloneFormat,
   Locale,
@@ -38,8 +43,11 @@ import weekPlugin from './week'
 export {
   advancedFormatPlugin,
   advancedParsePlugin,
+  calendarPlugin,
+  dayOfYearPlugin,
   getLocale,
   isBetweenPlugin,
+  isLeapYearPlugin,
   isoWeekPlugin,
   isSameOrAfterPlugin,
   isSameOrBeforePlugin,
@@ -57,18 +65,20 @@ export {
 }
 
 export type {
+  Calendar,
+  CalendarPartial,
+  DayNames,
+  DayNamesStandaloneFormat,
+  Locale,
+  LocaleFormatKeys,
+  MonthNames,
+  MonthNamesStandaloneFormat,
+  MonthNamesFunction,
   ParsedElements,
   ParseOptions,
   PostParser as PostParse,
   UpdateParsedElement,
   TokenDefinitions,
-  DayNames,
-  DayNamesStandaloneFormat,
-  MonthNames,
-  MonthNamesStandaloneFormat,
-  MonthNamesFunction,
   RelativeTimeElementFunction,
   RelativeTimeKeys,
-  LocaleFormatKeys,
-  Locale,
 }

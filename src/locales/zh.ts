@@ -1,8 +1,19 @@
 /**
  * Chinese [zh]
+ *
+ * This locale requires the week plugin, when the calendar property
+ * is used (e.g. in the calendar plugin).
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
+
+declare module 'esday' {
+  interface EsDay {
+    week(): number
+    week(newWeek: number): EsDay
+  }
+}
 
 const localeZh: Readonly<Locale> = {
   name: 'zh',
@@ -58,6 +69,24 @@ const localeZh: Readonly<Locale> = {
     ll: 'YYYY年M月D日',
     lll: 'YYYY年M月D日 HH:mm',
     llll: 'YYYY年M月D日dddd HH:mm',
+  },
+  calendar: {
+    sameDay: '[今天]LT',
+    nextDay: '[明天]LT',
+    nextWeek: function (this: EsDay, refDate?: EsDay) {
+      if (refDate?.week?.() !== this.week?.()) {
+        return '[下]dddLT'
+      }
+      return '[本]dddLT'
+    },
+    lastDay: '[昨天]LT',
+    lastWeek: function (this: EsDay, refDate?: EsDay) {
+      if (this.week?.() !== refDate?.week?.()) {
+        return '[上]dddLT'
+      }
+      return '[本]dddLT'
+    },
+    sameElse: 'L',
   },
   relativeTime: {
     future: '%s后',

@@ -59,6 +59,14 @@ const localeHyAm: Readonly<Locale> = {
     lll: 'D MMMM YYYY թ., HH:mm',
     llll: 'dddd, D MMMM YYYY թ., HH:mm',
   },
+  calendar: {
+    sameDay: '[այսօր] LT',
+    nextDay: '[վաղը] LT',
+    lastDay: '[երեկ] LT',
+    nextWeek: 'dddd [օրը ժամը] LT',
+    lastWeek: '[անցած] dddd [օրը ժամը] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s հետո',
     past: '%s առաջ',

@@ -2,6 +2,7 @@
  * Czech [cs]
  */
 
+import type { EsDay } from 'esday'
 import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
 
 const monthFormat: MonthNames = [
@@ -36,6 +37,50 @@ const months: MonthNamesStandaloneFormat = {
   standalone: monthStandalone,
   format: monthFormat,
   isFormat: /DD?[o.]?(\[[^\[\]]*\]|\s)+MMMM/,
+}
+
+const calendar = {
+  sameDay: '[dnes v] LT',
+  nextDay: '[zítra v] LT',
+  nextWeek: function (this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[v neděli v] LT'
+      case 1:
+      case 2:
+        return '[v] dddd [v] LT'
+      case 3:
+        return '[ve středu v] LT'
+      case 4:
+        return '[ve čtvrtek v] LT'
+      case 5:
+        return '[v pátek v] LT'
+      case 6:
+        return '[v sobotu v] LT'
+      default:
+        return ''
+    }
+  },
+  lastDay: '[včera v] LT',
+  lastWeek: function (this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[minulou neděli v] LT'
+      case 1:
+      case 2:
+        return '[minulé] dddd [v] LT'
+      case 3:
+        return '[minulou středu v] LT'
+      case 4:
+      case 5:
+        return '[minulý] dddd [v] LT'
+      case 6:
+        return '[minulou sobotu v] LT'
+      default:
+        return ''
+    }
+  },
+  sameElse: 'L',
 }
 
 function usePlural(timeValue: number): boolean {
@@ -119,6 +164,7 @@ const localeCs: Readonly<Locale> = {
     lll: 'Do MMMM YYYY H:mm',
     llll: 'dddd Do MMMM YYYY H:mm',
   },
+  calendar,
   relativeTime: {
     future: 'za %s',
     past: 'před %s',
