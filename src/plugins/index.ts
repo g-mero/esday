@@ -7,7 +7,9 @@ import type {
   TokenDefinitions,
   UpdateParsedElement,
 } from './advancedParse/types'
+import dayOfYearPlugin from './dayOfYear'
 import isBetweenPlugin from './isBetween'
+import isLeapYearPlugin from './isLeapYear'
 import isSameOrAfterPlugin from './isSameOrAfter'
 import isSameOrBeforePlugin from './isSameOrBefore'
 import isTodayPlugin from './isToday'
@@ -40,8 +42,10 @@ import weekPlugin from './week'
 export {
   advancedFormatPlugin,
   advancedParsePlugin,
+  dayOfYearPlugin,
   getLocale,
   isBetweenPlugin,
+  isLeapYearPlugin,
   isoWeekPlugin,
   isSameOrAfterPlugin,
   isSameOrBeforePlugin,

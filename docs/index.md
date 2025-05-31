@@ -32,6 +32,7 @@ Currently there are the following plugins:
 - [LocalizedParse](./plugins/localizedParse.md) (for parsing locale dependant tokens in arbitrary formatted date and time strings)
 - [MinMax](./plugins/minMay.md) (MinMax adds .min() and .max() APIs - find the minimum or maximum of several dates)
 - [QuarterOfYear](./plugins/quarterOfYear.md) (QuarterOfYear adds .quarter() getter and setter APIs and formatter token 'Q' - handle quarter of year)
+- RelativeTime (RelativeTime adds .to(), .from(), .toNow(), .fromNow() API - for formatting time relative to a given date)
 - [ToArray](./plugins/toArray.md) (ToArray adds .toArray() API - get an array with the components of a date)
 - [ToObject](./plugins/toObject.md) (ToObject adds .toObject() API - get an object with the components of a date)
 - [Utc](./plugins/utc.md) (UTC adds .utc(), .local() and .isUTC APIs - handle dates as UTC)
