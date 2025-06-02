@@ -1,13 +1,15 @@
 import path from 'node:path'
-import { defineConfig } from 'vitest/config'
+import { configDefaults, defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
+    exclude: [...configDefaults.exclude, 'dev/*'],
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`,
       esday: `${path.resolve(__dirname, 'src')}`,
     },
     coverage: {
+      exclude: [...configDefaults.exclude, 'dev/*'],
       reporter: ['text', 'json', 'html'],
     },
     browser: {

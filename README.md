@@ -34,6 +34,10 @@ Esday uses moment@2.30.1 as api reference.
 - **toString**: conforms to Day.js and uses Date.toUTCString() (returning the date in RFC 7231 format 'ddd, DD MMM YYYY HH:mm:ss [GMT]') while moment uses the format 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ'.
 - **toISOString**: conforms to Day.js and returns 'Invalid Date' when called on an invalid date. In that case moment returns null (see [moment pr#3710](https://github.com/moment/moment/pull/3710)).
 
+## Contribute
+
+In the folder `dev` there is a template for creating new plugins and a template for new locale definitions.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
