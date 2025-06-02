@@ -26,13 +26,14 @@ esday('2024-12-10').set('year', 2025).add(1, 'month').isToday()
 - **default value for 'Start of Week' is 1 (as in ISO 8601)**: 'Start of Week' is 1 ('Monday').
 - **default value for 'Start of Year' is 4 (as in ISO 8601)**: 'Start of Year' is 4.
 - **clamping month on set**: when changing the month and the new month does not have enough days to keep the current day of month, esday behaves like moment.js and clamps to the end of the target month
+- **Invalid Date**: conforms to Moment.js and uses `Invalid date` instead of `Invalid Date`.
 
 ## Differences to Moment.js
 
 Esday uses moment@2.30.1 as api reference.
 
 - **toString**: conforms to Day.js and uses Date.toUTCString() (returning the date in RFC 7231 format 'ddd, DD MMM YYYY HH:mm:ss [GMT]') while moment uses the format 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ'.
-- **toISOString**: conforms to Day.js and returns 'Invalid Date' when called on an invalid date. In that case moment returns null (see [moment pr#3710](https://github.com/moment/moment/pull/3710)).
+- **toISOString**: conforms to Day.js and returns 'Invalid date' when called on an invalid date. In that case moment returns null (see [moment pr#3710](https://github.com/moment/moment/pull/3710)).
 
 ## Contribute
 

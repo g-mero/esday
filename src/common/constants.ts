@@ -30,7 +30,7 @@ export const DAY_OF_MONTH = 'date' as const
 export const FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ'
 
 export const INVALID_DATE = new Date('')
-export const INVALID_DATE_STRING = 'Invalid Date'
+export const INVALID_DATE_STRING = 'Invalid date'
 
 // regex
 export const REGEX_PARSE_DEFAULT =

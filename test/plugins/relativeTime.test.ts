@@ -32,8 +32,6 @@ describe('relativeTime plugin', () => {
   })
 
   it('invalid input', () => {
-    // moment.js will return 'Invalid date' for invalid input
-    // esday will return 'Invalid Date' for invalid input (align to Date.toString())
     expectSame((esday) => esday(C.INVALID_DATE).fromNow().toLowerCase())
     expectSame((esday) => esday(C.INVALID_DATE).toNow().toLowerCase())
     expectSame((esday) => esday(C.INVALID_DATE).from(targeTimeAsString).toLowerCase())

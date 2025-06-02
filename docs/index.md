@@ -44,10 +44,11 @@ Currently there are the following plugins:
 - **Locale**: Locale  is a Plugin; no default locale! Dayjs uses 'en-US' as default.
 - **'Start of Week'**: Default 'Start of Week' is 1 ('Monday') as defined by ISO 8601. Dayjs uses 0 ('Sunday') as (as defined by the dafault locale 'en-US').
 - **'Start of Year'**: Default 'Start of Year' is 4 (Jan 4th must be in the 1st week of the year) as defined by ISO 8601. Dayjs uses 1 (Jan 1st) as (as defined by the dafault locale 'en-US').
+- **Invalid Date**: conforms to Moment.js and uses `Invalid date` instead of `Invalid Date`.
 
 ## Differences to Moment.js
 
 Esday uses moment@2.30.1 as api reference.
 
 - **toString**: conforms to Day.js and uses Date.toUTCString() (returning the date in RFC 7231 format 'ddd, DD MMM YYYY HH:mm:ss [GMT]') while moment uses the format 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ'.
-- **toISOString**: conforms to Day.js and returns 'Invalid Date' when called on an invalid date. In that case moment returns null (see [moment pr#3710](https://github.com/moment/moment/pull/3710)).
+- **toISOString**: conforms to Day.js and returns 'Invalid date' when called on an invalid date. In that case moment returns null (see [moment pr#3710](https://github.com/moment/moment/pull/3710)).
