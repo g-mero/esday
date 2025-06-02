@@ -15,7 +15,7 @@
 
 import type { EsDay, EsDayPlugin, FormattingTokenDefinitions, UnitType } from 'esday'
 import { C } from '~/common'
-import type { ParseOptions, ParsedElements, TokenDefinitions } from '../advancedParse/types'
+import type { ParseOptions, ParsedElements, TokenDefinitions } from '~/plugins/advancedParse/types'
 
 const match1to2 = /\d\d?/ // 0 - 99
 
