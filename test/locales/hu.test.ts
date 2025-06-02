@@ -1,9 +1,5 @@
 /**
  * Test for locale 'Hungarian [hu]'
- *
- * This is a minimal test for a locale without preParse / postFormat.
- * This file should aso be used as a template for tests for
- * other locales without preParse / postFormat.
  */
 
 import { describe, expect, it } from 'vitest'
