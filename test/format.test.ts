@@ -1,5 +1,6 @@
 import type { EsDay, FormattingTokenDefinitions } from 'esday'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { C } from '~/common'
 import { esday } from '~/core'
 
 describe('format', () => {
@@ -20,7 +21,7 @@ describe('format', () => {
   })
 
   it.each(['', 'otherString'])('invalid date created from "%s"', (value) => {
-    expect(esday(value).format()).toBe('Invalid Date')
+    expect(esday(value).format()).toBe(C.INVALID_DATE_STRING)
   })
 
   it.each([
