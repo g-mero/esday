@@ -44,6 +44,47 @@ const months: MonthNamesFunction = (esdayInstance: EsDay, format: string) => {
 months.format = monthFormat
 months.standalone = monthStandalone
 
+const calendar = {
+  sameDay: '[danas u] LT',
+  nextDay: '[sutra u] LT',
+  nextWeek: function (this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[u] [nedjelju] [u] LT'
+      case 3:
+        return '[u] [srijedu] [u] LT'
+      case 6:
+        return '[u] [subotu] [u] LT'
+      case 1:
+      case 2:
+      case 4:
+      case 5:
+        return '[u] dddd [u] LT'
+      default:
+        return ''
+    }
+  },
+  lastDay: '[jučer u] LT',
+  lastWeek: function (this: EsDay) {
+    switch (this.day()) {
+      case 0:
+        return '[prošlu] [nedjelju] [u] LT'
+      case 3:
+        return '[prošlu] [srijedu] [u] LT'
+      case 6:
+        return '[prošle] [subote] [u] LT'
+      case 1:
+      case 2:
+      case 4:
+      case 5:
+        return '[prošli] dddd [u] LT'
+      default:
+        return ''
+    }
+  },
+  sameElse: 'L',
+}
+
 function relativeTimeFormatter(
   timeValue: string | number,
   withoutSuffix: boolean,
@@ -149,6 +190,7 @@ const localeHr: Readonly<Locale> = {
     lll: 'Do MMM YYYY H:mm',
     llll: 'ddd, Do MMM YYYY H:mm',
   },
+  calendar,
   relativeTime: {
     future: 'za %s',
     past: 'prije %s',

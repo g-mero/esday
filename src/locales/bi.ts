@@ -39,6 +39,14 @@ const localeBi: Readonly<Locale> = {
     lll: 'D MMMM YYYY h:mm A',
     llll: 'dddd, D MMMM YYYY h:mm A',
   },
+  calendar: {
+    sameDay: '[Tede long] LT',
+    nextDay: '[Tumora long] LT',
+    nextWeek: 'dddd [long] LT',
+    lastDay: '[Yestede long] LT',
+    lastWeek: '[Las] dddd [long] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'lo %s',
     past: '%s bifo',

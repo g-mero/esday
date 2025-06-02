@@ -2,6 +2,7 @@
  * Greek [el]
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
 
 const localeEl: Readonly<Locale> = {
@@ -51,6 +52,27 @@ const localeEl: Readonly<Locale> = {
     ll: 'D MMMM YYYY',
     lll: 'D MMMM YYYY h:mm A',
     llll: 'dddd, D MMMM YYYY h:mm A',
+  },
+  calendar: {
+    sameDay: '[Σήμερα {}] LT',
+    nextDay: '[Αύριο {}] LT',
+    nextWeek: 'dddd [{}] LT',
+    lastDay: '[Χθες {}] LT',
+    lastWeek: function (this: EsDay) {
+      switch (this.day()) {
+        case 6:
+          if (this.hour() % 12 === 1) {
+            return '[το προηγούμενο] dddd [στη] LT'
+          }
+          return '[το προηγούμενο] dddd [στις] LT'
+        default:
+          if (this.hour() % 12 === 1) {
+            return '[την προηγούμενη] dddd [στη] LT'
+          }
+          return '[την προηγούμενη] dddd [στις] LT'
+      }
+    },
+    sameElse: 'L',
   },
   relativeTime: {
     future: 'σε %s',

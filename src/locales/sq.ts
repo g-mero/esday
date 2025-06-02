@@ -39,6 +39,14 @@ const localeSq: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Sot në] LT',
+    nextDay: '[Nesër në] LT',
+    nextWeek: 'dddd [në] LT',
+    lastDay: '[Dje në] LT',
+    lastWeek: 'dddd [e kaluar në] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'në %s',
     past: '%s më parë',

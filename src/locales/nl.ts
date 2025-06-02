@@ -39,6 +39,14 @@ const localeNl: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[vandaag om] LT',
+    nextDay: '[morgen om] LT',
+    nextWeek: 'dddd [om] LT',
+    lastDay: '[gisteren om] LT',
+    lastWeek: '[afgelopen] dddd [om] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'over %s',
     past: '%s geleden',

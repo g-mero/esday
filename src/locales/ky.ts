@@ -52,6 +52,14 @@ const localeKy: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Бүгүн саат] LT',
+    nextDay: '[Эртең саат] LT',
+    nextWeek: 'dddd [саат] LT',
+    lastDay: '[Кечээ саат] LT',
+    lastWeek: '[Өткөн аптанын] dddd [күнү] [саат] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s ичинде',
     past: '%s мурун',

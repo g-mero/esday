@@ -52,6 +52,14 @@ const localeTzm: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[ⴰⵙⴷⵅ ⴴ] LT',
+    nextDay: '[ⴰⵙⴽⴰ ⴴ] LT',
+    nextWeek: 'dddd [ⴴ] LT',
+    lastDay: '[ⴰⵚⴰⵏⵜ ⴴ] LT',
+    lastWeek: 'dddd [ⴴ] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'ⴷⴰⴷⵅ ⵙ ⵢⴰⵏ %s',
     past: 'ⵢⴰⵏ %s',

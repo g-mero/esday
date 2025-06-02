@@ -67,6 +67,14 @@ const localeMy: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[ယနေ.] LT [မှာ]',
+    nextDay: '[မနက်ဖြန်] LT [မှာ]',
+    nextWeek: 'dddd LT [မှာ]',
+    lastDay: '[မနေ.က] LT [မှာ]',
+    lastWeek: '[ပြီးခဲ့သော] dddd LT [မှာ]',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'လာမည့် %s မှာ',
     past: 'လွန်ခဲ့သော %s က',

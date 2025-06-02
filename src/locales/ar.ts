@@ -80,6 +80,14 @@ const locale: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[اليوم عند الساعة] LT',
+    nextDay: '[غدًا عند الساعة] LT',
+    nextWeek: 'dddd [عند الساعة] LT',
+    lastDay: '[أمس عند الساعة] LT',
+    lastWeek: 'dddd [عند الساعة] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'بعد %s',
     past: 'منذ %s',

@@ -98,6 +98,14 @@ const localeGomLatn: Readonly<Locale> = {
     lll: 'D MMMM YYYY A h:mm [vazta]',
     llll: 'ddd, D MMM YYYY, A h:mm [vazta]',
   },
+  calendar: {
+    sameDay: '[Aiz] LT',
+    nextDay: '[Faleam] LT',
+    nextWeek: '[Fuddlo] dddd[,] LT',
+    lastDay: '[Kal] LT',
+    lastWeek: '[Fattlo] dddd[,] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s',
     past: '%s adim',

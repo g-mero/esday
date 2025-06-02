@@ -2,7 +2,22 @@
  * Hungarian [hu]
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
+
+const weekEndings = [
+  'vasárnap',
+  'hétfőn',
+  'kedden',
+  'szerdán',
+  'csütörtökön',
+  'pénteken',
+  'szombaton',
+]
+
+function week(this: EsDay, isFuture: boolean) {
+  return `${isFuture ? '' : '[múlt] '}[${weekEndings[this.day()]}] LT[-kor]`
+}
 
 function relativeTimeFormatter(
   timeValue: string | number,
@@ -87,6 +102,18 @@ const localeHu: Readonly<Locale> = {
     ll: 'YYYY. MMMM D.',
     lll: 'YYYY. MMMM D. H:mm',
     llll: 'YYYY. MMMM D., dddd H:mm',
+  },
+  calendar: {
+    sameDay: '[ma] LT[-kor]',
+    nextDay: '[holnap] LT[-kor]',
+    nextWeek: function (this: EsDay) {
+      return week.call(this, true)
+    },
+    lastDay: '[tegnap] LT[-kor]',
+    lastWeek: function (this: EsDay) {
+      return week.call(this, false)
+    },
+    sameElse: 'L',
   },
   relativeTime: {
     future: '%s múlva',

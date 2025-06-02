@@ -2,6 +2,7 @@
  * Galician [gl]
  */
 
+import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
 
 const localeGl: Readonly<Locale> = {
@@ -51,6 +52,24 @@ const localeGl: Readonly<Locale> = {
     ll: 'D [de] MMMM [de] YYYY', // Added for consistency with cy.ts
     lll: 'D [de] MMMM [de] YYYY H:mm', // Added for consistency with cy.ts
     llll: 'dddd, D [de] MMMM [de] YYYY H:mm', // Added for consistency with cy.ts
+  },
+  calendar: {
+    sameDay: function (this: EsDay) {
+      return `[hoxe ${this.hour() !== 1 ? 'ás' : 'á'}] LT`
+    },
+    nextDay: function (this: EsDay) {
+      return `[mañá ${this.hour() !== 1 ? 'ás' : 'á'}] LT`
+    },
+    nextWeek: function (this: EsDay) {
+      return `dddd [${this.hour() !== 1 ? 'ás' : 'a'}] LT`
+    },
+    lastDay: function (this: EsDay) {
+      return `[onte ${this.hour() !== 1 ? 'á' : 'a'}] LT`
+    },
+    lastWeek: function (this: EsDay) {
+      return `[o] dddd [pasado ${this.hour() !== 1 ? 'ás' : 'a'}] LT`
+    },
+    sameElse: 'L',
   },
   relativeTime: {
     future: 'en %s',

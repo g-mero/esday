@@ -39,6 +39,14 @@ const localeSw: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[leo saa] LT',
+    nextDay: '[kesho saa] LT',
+    nextWeek: '[wiki ijayo] dddd [saat] LT',
+    lastDay: '[jana] LT',
+    lastWeek: '[wiki iliyopita] dddd [saat] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s baadaye',
     past: 'tokea %s',

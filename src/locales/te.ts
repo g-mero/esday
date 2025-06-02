@@ -52,6 +52,14 @@ const localeTe: Readonly<Locale> = {
     lll: 'D MMMM YYYY, A h:mm',
     llll: 'dddd, D MMMM YYYY, A h:mm',
   },
+  calendar: {
+    sameDay: '[నేడు] LT',
+    nextDay: '[రేపు] LT',
+    nextWeek: 'dddd, LT',
+    lastDay: '[నిన్న] LT',
+    lastWeek: '[గత] dddd, LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: '%s లో',
     past: '%s క్రితం',

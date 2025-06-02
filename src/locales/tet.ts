@@ -52,6 +52,14 @@ const localeTet: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Ohin iha] LT',
+    nextDay: '[Aban iha] LT',
+    nextWeek: 'dddd [iha] LT',
+    lastDay: '[Horiseik iha] LT',
+    lastWeek: 'dddd [semana kotuk] [iha] LT',
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'iha %s',
     past: '%s liuba',

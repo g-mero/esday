@@ -97,6 +97,42 @@ const localePl: Readonly<Locale> = {
     lll: 'D MMMM YYYY HH:mm',
     llll: 'dddd, D MMMM YYYY HH:mm',
   },
+  calendar: {
+    sameDay: '[Dziś o] LT',
+    nextDay: '[Jutro o] LT',
+    nextWeek: function (this: EsDay) {
+      switch (this.day()) {
+        case 0:
+          return '[W niedzielę o] LT'
+
+        case 2:
+          return '[We wtorek o] LT'
+
+        case 3:
+          return '[W środę o] LT'
+
+        case 6:
+          return '[W sobotę o] LT'
+
+        default:
+          return '[W] dddd [o] LT'
+      }
+    },
+    lastDay: '[Wczoraj o] LT',
+    lastWeek: function (this: EsDay) {
+      switch (this.day()) {
+        case 0:
+          return '[W zeszłą niedzielę o] LT'
+        case 3:
+          return '[W zeszłą środę o] LT'
+        case 6:
+          return '[W zeszłą sobotę o] LT'
+        default:
+          return '[W zeszły] dddd [o] LT'
+      }
+    },
+    sameElse: 'L',
+  },
   relativeTime: {
     future: 'za %s',
     past: '%s temu',
