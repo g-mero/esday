@@ -264,8 +264,6 @@ function formattingTokensRegexFromDefinitions() {
  * Build a parser that will parse an input string an return an
  * object with the components of a date&time, the number of characters in input
  * not parsed and the number of unused token (i.e. not enough characters in input).
- * Must be called in the context of an EsDay instance.
- * @param this - context for this function (required by updater function of parsed element definition)
  * @param format - format to parse
  * @param isStrict - must input match format exactly?
  * @returns function that will parse an input string to a 'parsedResultRaw' object
@@ -299,6 +297,7 @@ function makeParser(format: string, isStrict: boolean): { parser: Parser; postPa
     }
   }
 
+  // Function that evaluates all parsing tokens
   const parser = (
     input: string,
     isStrict: boolean,
@@ -351,15 +350,21 @@ function makeParser(format: string, isStrict: boolean): { parser: Parser; postPa
     return result
   }
 
-  const postParser = (
+  // Function that calls all post-parse handlers
+  function postParser(
+    this: EsDay,
     parsedDate: Date,
     parsedElements: ParsedElements,
     parseOptions: ParseOptions,
-  ): Date => {
+  ): Date {
     let modifiedParsedDate = parsedDate
     for (let i = 0; i < postParseHandlers.length; i++) {
-      // TODO how could we set the context for the postParse handlers to 'this'?
-      modifiedParsedDate = postParseHandlers[i](modifiedParsedDate, parsedElements, parseOptions)
+      modifiedParsedDate = postParseHandlers[i].call(
+        this,
+        modifiedParsedDate,
+        parsedElements,
+        parseOptions,
+      )
     }
 
     return modifiedParsedDate
@@ -407,8 +412,8 @@ function parsedElementsToDate(this: EsDay, elements: ParsedElements) {
 /**
  * Parse the given input using the given format and create a Date
  * object from the parsed elements.
- * Must be called in the context of an EsDay instance.
- * @param this - context for this function (required by parsedElementsToDate)
+ * Must be called in the context of an EsDay instance (required by parsedElementsToDate and postParser).
+ * @param this - context for this function
  * @param input - string to be parsed
  * @param format - format to use
  * @param isStrict - must input match format exactly?
@@ -425,7 +430,7 @@ function parseFormattedInput(
   const { parser, postParser } = makeParser(format, isStrict)
   const parsedElements = parser(input, isStrict, parseOptions)
   let parsedDate = parsedElementsToDate.call(this, parsedElements.dateElements)
-  parsedDate = postParser(parsedDate, parsedElements.dateElements, parseOptions)
+  parsedDate = postParser.call(this, parsedDate, parsedElements.dateElements, parseOptions)
 
   return {
     date: parsedDate,
