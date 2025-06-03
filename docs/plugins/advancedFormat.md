@@ -2,7 +2,12 @@
 
 AdvancedFormat extends `esday.format()` to support custom tokens in a formatting template.
 
-## Added formatting tokens
+## Usage
+
+### Dependencies
+AdvancedFormat has no dependencies on other plugins.
+
+### Formatting tokens
 | **Token** | **Example**   | **Description**                    |
 | --------- | --------------| ---------------------------------- |
 | d         | 0-6           | Day of the week, with Sunday as 0  |

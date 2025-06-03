@@ -1,8 +1,13 @@
 # DayOfYear
 
-DayOfYear adds the `dayOfYear` method to EsDay to get or set the day of the year.
+DayOfYear adds the `dayOfYear` getter and setter to EsDay to get or set the day of the year of a date. DayOfYear accepts numbers from 1 to 366. If the range is exceeded, it will bubble up to the following year.
 
-## Method signatures
+## Usage
+
+### Dependencies
+DayOfYear has no dependencies on other plugins.
+
+### Method signatures
 ```typescript
 esday().dayOfYear(): number
 esday().dayOfYear(dayOfYear: number): EsDay

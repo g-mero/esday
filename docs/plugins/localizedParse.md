@@ -4,7 +4,16 @@ LocalizedParse extends the `esday` constructor to support localized formats of i
 
 The locale to use for parsing can be defined as 3rd parameter. If no locale is given, then the current global locale is used (defaults to 'en', which is a duplicate of 'en-US').
 
-## Method signatures
+## Usage
+
+### Dependencies
+LocalizedParse requires the plugins AdvancedParse and Locale and at least 1 registered and activated locale.
+
+The plugin AdvancedParse must be loaded using esday.extend(...) before the plugin LocalizedParse.
+
+LocalizedParse can be used together with the plugin Utc which must be loaded using esday.extend(...) before the plugin AdvancedParse.
+
+### Method signatures
 ```typescript
 esday(date: string, format: string): EsDay
 esday(date: string, format: string[]): EsDay
@@ -35,7 +44,7 @@ esday.utc(date: string, format: string[], locale: string, strict: boolean): EsDa
 
 If an array of formats is used, `date` will be parsed with the best matching format in this array.
 
-## Parsing tokens
+### Parsing tokens
 | **Token** | **Example**                         | **Description**                                   |
 | --------- | ----------------------------------- | ------------------------------------------------- |
 | h         | 1...12                              | Hours, 12-hour clock                              |
@@ -58,13 +67,6 @@ If an array of formats is used, `date` will be parsed with the best matching for
 | ll        | Sep 4, 1986                         | Month name, day of month, year                    |
 | lll       | Sep 4, 1986 8:30 PM                 | Month name, day of month, year, time              |
 | llll      | Thu, Sep 4, 1986 8:30 PM            | Month name, day of month, day of week, year, time |
-
-## Dependencies
-LocalizedParse requires the plugins AdvancedParse and Locale and at least 1 registered and activated locale.
-
-The plugin AdvancedParse must be loaded using esday.extend(...) before the plugin LocalizedParse.
-
-LocalizedParse can be used together with the plugin Utc that must be loaded using esday.extend(...) before the plugin AdvancedParse.
 
 ## Examples
 Basic example with some localized tokens.

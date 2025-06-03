@@ -2,7 +2,13 @@
 
 LocalizedFormat extends `esday.format()` to support localized tokens in a formatting template.
 
-## Added formatting tokens
+## Usage
+
+### Dependencies
+# LocalizedFormat
+LocalizedFormat requires the plugin Locale and at least 1 registered and activated locale.
+
+### Formatting tokens
 | **Token** | **Example**   | **Description**                    |
 | --------- | --------------| ---------------------------------- |
 | MMM       | Jan           | Short form of the name of a month  |
@@ -16,14 +22,10 @@ LocalizedFormat extends `esday.format()` to support localized tokens in a format
 | a         | am            | Meridiem of hour (lower case)      |
 | A         | PM            | Meridiem of hour (upper case)      |
 
-## Dependencies
-LocalizedFormat requires the plugin Locale and at least 1 registered and activated locale.
-
 ## Examples
 ### Formatting
 ```typescript
 import { esday } from 'esday'
-import localizedFormatPlugin from 'esday/plugins/localizedFormat'
 import { localePlugin, localizedFormatPlugin } from 'esday/plugins'
 import localeDe from 'esday/locales/de'
 
