@@ -15,8 +15,10 @@ IsoWeek adds support for formatting tokens `W`, `WW`, `Wo`, `E`, `GG` and `GGGG`
 
 ### Dependencies
 In most cases IsoWeek requires no other plugin.
-Only when using the 'Wo' formatting token, IsoWeek requires the plugins Locale and LocalizedFormat and at least 1 registered and activated locale.
 
+When using the 'Wo' formatting token, IsoWeek requires the plugins Locale and LocalizedFormat and at least 1 registered and activated locale.
+
+When using the parsing tokens, the plugin AdvancedParse is required and must be activated using esday.extend(...) before the plugin IsoWeek.
 
 IsoWeek can be used together with the plugin Utc. If used together with the plugin Utc, the plugin Utc must be activated using esday.extend(...) before the plugin IsoWeek.
 
