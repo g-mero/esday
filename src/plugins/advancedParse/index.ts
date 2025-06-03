@@ -10,10 +10,11 @@
  *
  * new esday parameters in '$conf':
  *   parseOptions     ParseOptions object containing parsing options
+ *                    used by parser and postParser
  */
 
 import type { DateFromDateComponents, DateType, EsDay, EsDayPlugin } from 'esday'
-import { isArray, isString, isUndefined, isValidDate } from '~/common'
+import { C, isArray, isString, isUndefined, isValidDate } from '~/common'
 import type {
   ParseOptions,
   ParsedElements,
@@ -24,9 +25,11 @@ import type {
   UpdateParsedElement,
 } from './types'
 
-// Function to create a Date object from its date components
-// is set to the corresponding function in the core module and
-// requires the correct this context (e.g. for the utc plugin)!
+/**
+ * Function to create a Date object from its date components
+ * is set to the corresponding function in the core module and
+ * requires the correct this context (e.g. for the utc plugin)!
+ */
 let dateFromDateComponents: DateFromDateComponents
 
 const invalidDate = new Date('')
@@ -68,7 +71,13 @@ interface ParsedResult {
   separatorsMatch: boolean
 }
 
-// Helper functions
+/**
+ * Convert 2-digit year to 4-digit year.
+ * Years > 68 are converted to 19xx;
+ * else they are converted to 20xx.
+ * @param input value to convert to a year
+ * @returns converted 4-digit year
+ */
 function parseTwoDigitYear(input: string): number {
   // 2-digitYears : use year+2000
   const inputLimited = input.slice(0, 2)
@@ -83,6 +92,11 @@ function parseFourDigitYear(input: string): number {
   return +input
 }
 
+/**
+ * Convert offset as string to offset as minutes (number)
+ * @param offset - parsed string representing the offset (e.g. '+10:00)
+ * @returns offset in minutes
+ */
 function offsetFromString(offset: string): number {
   if (!offset) return 0
   if (offset === 'Z') return 0
@@ -94,12 +108,13 @@ function offsetFromString(offset: string): number {
 
 /**
  * Create a function that will add a value from the input string
- * to the given object ('this') containing the date&time components.
+ * to parsedElements, containing the date&time components.
  * @param property - name of the date&time component to add
  * @returns function that will add the given value to date&time component
  */
 function addInput(property: keyof ParsedElements) {
   return (parsedElements: ParsedElements, input: string) => {
+    // this 'if' is required, to avoid type errors
     if (property !== 'afternoon') {
       parsedElements[property] = +input
     }
@@ -108,7 +123,7 @@ function addInput(property: keyof ParsedElements) {
 
 /**
  * Create a function that will add a milliseconds value from the input
- * string to the given object ('this') containing the date&time components.
+ * string to parsedElements, containing the date&time components.
  * If the input string has more than 3 characters, only the first 3 characters
  * get evaluated.
  * @returns function that will add the given value to the milliseconds property of date&time component
@@ -126,25 +141,6 @@ function addMillisecondsToInput() {
         break
     }
     parsedElements.milliseconds = value
-  }
-}
-
-/**
- * Create a function that will add a unix timestamp value from the input
- * string to the given object ('this') containing the date&time components.
- * If the input string contains a dot character, the value is interpreted as
- * seconds and converted to milliseconds.
- * @returns function that will add the given value to the milliseconds property of date&time component
- */
-function addUnixInput(isMilliseconds: boolean) {
-  return (parsedElements: ParsedElements, input: string) => {
-    let value = +input
-    if (isMilliseconds) {
-      value = Number.parseInt(input, 10)
-    } else {
-      value = Number.parseFloat(input) * 1000
-    }
-    parsedElements.unix = value
   }
 }
 
@@ -176,8 +172,20 @@ const parseTokensDefinitions: TokenDefinitions = {
   HH: [match1to2, match2, addInput('hours')],
   D: [match1to2, match1to2, addInput('day')],
   DD: [match1to2, match2, addInput('day')],
-  x: [matchSigned, matchSigned, addUnixInput(true)],
-  X: [matchTimestamp, matchTimestamp, addUnixInput(false)],
+  x: [
+    matchSigned,
+    matchSigned,
+    (parsedElements: ParsedElements, input: string) => {
+      parsedElements.unix = Number.parseInt(input, 10)
+    },
+  ],
+  X: [
+    matchTimestamp,
+    matchTimestamp,
+    (parsedElements: ParsedElements, input: string) => {
+      parsedElements.unix = Number.parseFloat(input) * 1000
+    },
+  ],
   M: [match1to2, match1to2, addInput('month')],
   MM: [match1to2, match2, addInput('month')],
   Y: [
@@ -217,7 +225,6 @@ const parseTokensDefinitions: TokenDefinitions = {
   ],
 }
 
-// Get regex from list of supported tokens
 /**
  * Compare 2 tokens for sorting.
  * Longer token and upper case token are sorted to the top.
@@ -244,6 +251,9 @@ function compareTokens(a: string, b: string) {
   // are equal
   return 0
 }
+/**
+ * Get regex from list of supported tokens.
+ */
 function formattingTokensRegexFromDefinitions() {
   // we have to sort the keys to always catch the longest matches
   const tokenKeys = Object.keys(parseTokensDefinitions).sort(compareTokens)
@@ -261,24 +271,21 @@ function formattingTokensRegexFromDefinitions() {
  * @returns function that will parse an input string to a 'parsedResultRaw' object
  */
 function makeParser(format: string, isStrict: boolean): { parser: Parser; postParser: PostParser } {
+  // Step 1: create list of steps that will analyze the input string based on given parsing format
   const splittedFormat: Array<string> =
-    (format.match(formattingTokensRegex) as Array<string>) || ([] as Array<string>)
+    (format.match(formattingTokensRegex) as Array<string>) ?? ([] as Array<string>)
   const length = splittedFormat.length
   const parsingDefinitions = Array<string | ParserDefinition>(length)
   const postParseHandlers = Array<PostParser>()
 
+  // Evaluate input using all parsing tokens
   for (let i = 0; i < length; i += 1) {
     const token = splittedFormat[i]
+    // get definition of current token to use
     const parseTo = parseTokensDefinitions[token]
-    let regex: RegExp | undefined
-
-    if (!isStrict) {
-      regex = parseTo?.[0]
-    } else {
-      regex = parseTo?.[1]
-    }
-
+    const regex = !isStrict ? parseTo?.[0] : parseTo?.[1]
     const updater = parseTo?.[2]
+
     if (!isUndefined(updater)) {
       parsingDefinitions[i] = { regex, updater }
     } else {
@@ -297,10 +304,12 @@ function makeParser(format: string, isStrict: boolean): { parser: Parser; postPa
     isStrict: boolean,
     parseOptions: ParseOptions,
   ): ParsedResultRaw => {
+    // Step 2: use the created list to extract the date parts from the input string
     let unusedTokens = 0
     let separatorsMatch = true
     const parsedDateElements: ParsedElements = {}
 
+    // Evaluate input using all parsing tokens
     for (let i = 0, start = 0; i < length; i += 1) {
       if (input.length === 0) {
         unusedTokens = parsingDefinitions
@@ -369,7 +378,7 @@ function parsedElementsToDate(this: EsDay, elements: ParsedElements) {
   const { year, month, day, hours, minutes, seconds, milliseconds, zoneOffset, unix } = elements
 
   if (Object.keys(elements).length === 0) {
-    return invalidDate
+    return C.INVALID_DATE
   }
 
   if (!isUndefined(unix)) {
@@ -378,7 +387,7 @@ function parsedElementsToDate(this: EsDay, elements: ParsedElements) {
 
   let offsetMs: number | undefined
   if (zoneOffset !== undefined) {
-    offsetMs = (zoneOffset || 0) * 60000
+    offsetMs = (zoneOffset ?? 0) * 60000
   }
 
   return dateFromDateComponents.call(
@@ -466,6 +475,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       if (isString(format)) {
         const parsingResult = parseFormattedInput.call(this, d, format, isStrict, parseOptions)
         this['$d'] = parsingResult.date
+
         if (
           isStrict &&
           (parsingResult.charsLeftOver > 0 ||
@@ -479,6 +489,8 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
         let bestDate = invalidDate
         let scoreToBeat = 0
         let bestFormatIsValid = false
+
+        // look for best matching format from array of formats
         for (let i = 0; i < format.length; i++) {
           let currentScore = 0
           let validFormatFound = false
@@ -491,6 +503,7 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
             isStrict,
             parseOptions,
           )
+
           if (
             isStrict &&
             (parsingResult.charsLeftOver > 0 ||
