@@ -7,11 +7,17 @@ declare module 'esday' {
   }
 }
 
-const dayOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, d) => {
+const SECONDS_A_DAY = 86400
+
+const dayOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   // @ts-expect-error function is compatible with its overload
   dayClass.prototype.dayOfYear = function (input?: number) {
     const dayOfYear =
-      Math.round((d(this).startOf('day').valueOf() - d(this).startOf('year').valueOf()) / 864e5) + 1
+      Math.round(
+        (dayFactory(this).startOf('day').valueOf() - dayFactory(this).startOf('year').valueOf()) /
+          SECONDS_A_DAY /
+          1000,
+      ) + 1
     return input === undefined ? dayOfYear : this.add(input - dayOfYear, 'day')
   }
 }
