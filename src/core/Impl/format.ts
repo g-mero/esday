@@ -4,18 +4,6 @@ import { C, isUndefined, padStart, padZoneStr } from '~/common'
 const formattingSeparatorsRegex = '\\[([^\\]]+)\\]'
 let formattingTokensRegex: RegExp
 
-/**
- * Get the utcOffset of date.
- * Use the utcOffset method from the utc plugin if that is loaded;
- * otherwise get it from the javascript Date object of date.
- * @param date - EsDay instance to inspect
- * @returns utcOffset of date
- */
-function utcOffset(date: EsDay): number {
-  const defaultOffset = -Math.round(date['$d'].getTimezoneOffset()) || 0
-  return 'utcOffset' in date ? date.utcOffset() : defaultOffset
-}
-
 export const formatTokensDefinitions: FormattingTokenDefinitions = {
   YY: (sourceDate: EsDay) => padStart(sourceDate.year(), 2, '0').slice(-2),
   YYYY: (sourceDate: EsDay) => padStart(sourceDate.year(), 4, '0'),
@@ -30,10 +18,9 @@ export const formatTokensDefinitions: FormattingTokenDefinitions = {
   s: (sourceDate: EsDay) => String(sourceDate.second()),
   ss: (sourceDate: EsDay) => padStart(sourceDate.second(), 2, '0'),
   SSS: (sourceDate: EsDay) => padStart(sourceDate.millisecond(), 3, '0'),
-  Z: (sourceDate: EsDay) => padZoneStr(utcOffset(sourceDate)),
+  Z: (sourceDate: EsDay) => padZoneStr(sourceDate.utcOffset()),
 }
 
-// Get regex from list of supported tokens
 /**
  * Compare 2 tokens for sorting.
  * Longer token and upper case token are sorted to the top.
@@ -60,6 +47,7 @@ function compareTokens(a: string, b: string) {
   // are equal
   return 0
 }
+// Get regex from list of supported tokens
 export function formattingTokensRegexFromDefinitions() {
   // we have to sort the keys to always catch the longest matches
   const tokenKeys = Object.keys(formatTokensDefinitions).sort(compareTokens)

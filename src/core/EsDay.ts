@@ -243,6 +243,27 @@ export class EsDay {
     return diffImpl(this, date, units, asFloat)
   }
 
+  /**
+   * Get the utcOffset of date in minutes.
+   * "Proxy" implementation (getter only); the full functionality including
+   * the setters is implemented in the plugin Utc.
+   * @param offset - offset to be set
+   * @param keepLocalTime - keep the current time when setting the offset
+   * @returns utcOffset of date in minutes (getter) or invalid date (setter)
+   */
+  utcOffset(): number
+  utcOffset(offset: number | string): EsDay
+  utcOffset(offset: number | string, keepLocalTime?: boolean): EsDay
+  utcOffset(offset?: number | string, _keepLocalTime?: boolean) {
+    if (offset !== undefined) {
+      // this is only here to satisfy the setter overload; setting the
+      // utcOffset requires the plugin Utc
+      return new EsDay(C.INVALID_DATE)
+    }
+
+    return -Math.round(this['$d'].getTimezoneOffset())
+  }
+
   get(units: UnitTypeCore) {
     return getUnitInDate(this.$d, units)
   }
