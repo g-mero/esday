@@ -7,6 +7,8 @@
  * For the 'Wo' formatting token, the plugins 'locale' and 'localizedFormat'
  * and a loaded locale are required.
  *
+ * To use the parsing tokens, the plugin AdvancedParse is required.
+ *
  * esday parameters in '$conf' defined in isoWeek plugin:
  *   parseOptions  ParseOptions object containing parsing options
  *
@@ -73,7 +75,13 @@ function addIsoWeekProperty(property: 'isoWeek' | 'isoWeekday' | 'isoWeekYear') 
   }
 }
 
-// Helper functions
+/**
+ * Convert 2-digit year to 4-digit year.
+ * Years > 68 are converted to 19xx;
+ * else they are converted to 20xx.
+ * @param input value to convert to a year
+ * @returns converted 4-digit year
+ */
 function parseTwoDigitYear(input: string): number {
   // 2-digitYears : use year+2000
   const inputLimited = input.slice(0, 2)
@@ -95,6 +103,7 @@ function twoDigitsIsoYearUpdater(
   parsedElements['isoWeekYear'] = parseTwoDigitYear(input)
 }
 
+// TODO can we avoid this by using dayFactory(d, ...options)?
 /**
  * Create new esday from parsed Date object.
  * @param parsedDate - Date object returned by parsing function
@@ -111,36 +120,6 @@ function parsedDateToEsday(parsedDate: Date, parseOptions: ParseOptions) {
     newEsday['$conf']['$locale_name'] = localeName
   }
   return newEsday
-}
-
-/**
- * Set the isoWeek of the parsed date.
- * @param parsedDate - Date object returned by parsing function
- * @param parsedElements - object containing the components of a parsed date
- * @param parseOptions - parsing options e.g. containing the locale to use
- * @returns parsedDate with iso week set to parsed value
- */
-function postParseIsoWeek(
-  parsedDate: Date,
-  parsedElements: ParsedElements,
-  parseOptions: ParseOptions,
-) {
-  let modifiedDate = parsedDate
-
-  // is this a valid date and do we have parsed the iso week?
-  // if the source string contains a valid day of month, the isoWeek
-  // is ignored (like moment.js does).
-  if (
-    !Number.isNaN(parsedDate.valueOf()) &&
-    !isUndefined(parsedElements.isoWeek) &&
-    isUndefined(parsedElements.day)
-  ) {
-    const newEsday: EsDay = parsedDateToEsday(parsedDate, parseOptions)
-    const parsedIsoWeek = parsedElements.isoWeek as number
-    const modifiedEsday = newEsday.isoWeek(parsedIsoWeek).isoWeekday(weekStart)
-    modifiedDate = modifiedEsday.toDate()
-  }
-  return modifiedDate
 }
 
 /**
@@ -208,6 +187,39 @@ function postParseIsoYear(
 const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const proto = dayClass.prototype
 
+  /**
+   * Set the isoWeek of the parsed date.
+   * @param parsedDate - Date object returned by parsing function
+   * @param parsedElements - object containing the components of a parsed date
+   * @param parseOptions - parsing options e.g. containing the locale to use
+   * @returns parsedDate with iso week set to parsed value
+   */
+  function _postParseIsoWeek(
+    parsedDate: Date,
+    parsedElements: ParsedElements,
+    parseOptions: ParseOptions,
+  ) {
+    let modifiedDate = parsedDate
+
+    // is this a valid date and do we have parsed the iso week?
+    // if the source string contains a valid day of month, the isoWeek
+    // is ignored (like moment.js does).
+    if (
+      !Number.isNaN(parsedDate.valueOf()) &&
+      !isUndefined(parsedElements.isoWeek) &&
+      isUndefined(parsedElements.day)
+    ) {
+      // const newEsday: EsDay = parsedDateToEsday(parsedDate, parseOptions)
+      // TODO I do not have a 'this' at this place, required to avoid the parseOptions!
+      const newEsday = dayFactory(parsedDate, { utc: parseOptions.isUtc })
+
+      const parsedIsoWeek = parsedElements.isoWeek as number
+      const modifiedEsday = newEsday.isoWeek(parsedIsoWeek).isoWeekday(weekStart)
+      modifiedDate = modifiedEsday.toDate()
+    }
+    return modifiedDate
+  }
+
   // @ts-expect-error function is compatible with its overload
   proto.isoWeek = function (newIsoWeek?: number) {
     // Setter
@@ -248,7 +260,7 @@ const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       return this.day(this.day() % 7 ? newIsoWeekday : newIsoWeekday - 7)
     }
 
-    // Getter - default value is 'Sunday' (7)
+    // Getter - default value is 'Sunday' represented by 7 not 0
     return this.day() || 7
   }
 
@@ -329,8 +341,8 @@ const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
   // Add IsoWeek related parsing tokens
   const parseTokensDefinitions: TokenDefinitions = {
-    W: [match1to2, match1to2NoLeadingZero, addIsoWeekProperty('isoWeek'), postParseIsoWeek], // isoWeek 1..52
-    WW: [match1to2, match2, addIsoWeekProperty('isoWeek'), postParseIsoWeek], // isoWeek 01..52
+    W: [match1to2, match1to2NoLeadingZero, addIsoWeekProperty('isoWeek'), _postParseIsoWeek], // isoWeek 1..52
+    WW: [match1to2, match2, addIsoWeekProperty('isoWeek'), _postParseIsoWeek], // isoWeek 01..52
     E: [match1to2, match1, addIsoWeekProperty('isoWeekday'), postParseIsoDayOfWeek], // isoWeekday 1..7
     GG: [match1to4, match2, twoDigitsIsoYearUpdater, postParseIsoYear], // isoWeekYear 70 .. 30
     GGGG: [match1to4, match4, addIsoWeekProperty('isoWeekYear'), postParseIsoYear], // isoWeekYear 1970 .. 2030

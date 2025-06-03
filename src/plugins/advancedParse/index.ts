@@ -358,6 +358,7 @@ function makeParser(format: string, isStrict: boolean): { parser: Parser; postPa
   ): Date => {
     let modifiedParsedDate = parsedDate
     for (let i = 0; i < postParseHandlers.length; i++) {
+      // TODO how could we set the context for the postParse handlers to 'this'?
       modifiedParsedDate = postParseHandlers[i](modifiedParsedDate, parsedElements, parseOptions)
     }
 
