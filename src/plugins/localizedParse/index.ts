@@ -12,7 +12,6 @@
  *
  * new esday parameters in '$conf.parseOptions':
  *   locale           name of the locale to use when parsing
- *   isUtc            evaluate date as utc
  */
 
 import type { DateType, EsDay, EsDayPlugin } from 'esday'
@@ -198,27 +197,21 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
    * @returns parsedDate with hours converted to 24h format
    */
   function _postParseMeridiem(this: EsDay, parsedDate: Date, parsedElements: ParsedElements) {
-    const modifiedDate = parsedDate
+    let modifiedDate = parsedDate
 
     // is this a valid date and do we have parsed a meridiem?
     if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.afternoon)) {
       let parsedHours: number
-      // @ts-expect-error isUtc method is only available when plugin Utc is loaded
-      if (!this.isUtc?.()) {
-        parsedHours = parsedDate.getHours()
-        if (parsedHours < 12 && parsedElements.afternoon) {
-          modifiedDate.setHours(parsedHours + 12)
-        } else if (parsedHours === 12 && !parsedElements.afternoon) {
-          modifiedDate.setHours(0)
-        }
-      } else {
-        parsedHours = parsedDate.getUTCHours()
-        if (parsedHours < 12 && parsedElements.afternoon) {
-          modifiedDate.setUTCHours(parsedHours + 12)
-        } else if (parsedHours === 12 && !parsedElements.afternoon) {
-          modifiedDate.setUTCHours(0)
-        }
+      let newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
+      newEsday['$conf'] = structuredClone(this['$conf'])
+
+      parsedHours = newEsday.hour()
+      if (parsedHours < 12 && parsedElements.afternoon) {
+        newEsday = newEsday.hour(parsedHours + 12)
+      } else if (parsedHours === 12 && !parsedElements.afternoon) {
+        newEsday = newEsday.hour(0)
       }
+      modifiedDate = newEsday.toDate()
     }
     return modifiedDate
   }
@@ -236,14 +229,10 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
     // is this a valid date and do we have parsed the day of week?
     if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.dayOfWeek)) {
-      let parsedDay: number
-      // HACK if (!parseOptions.isUtc) {
-      if (!this['$conf'].utc) {
-        parsedDay = parsedDate.getDay()
-      } else {
-        parsedDay = parsedDate.getUTCDay()
-      }
-      if (parsedDay !== parsedElements.dayOfWeek) {
+      const newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
+      newEsday['$conf'] = structuredClone(this['$conf'])
+
+      if (newEsday.day() !== parsedElements.dayOfWeek) {
         modifiedDate = C.INVALID_DATE
       }
     }
@@ -285,20 +274,18 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     // only string dates can be parsed
     const format = this['$conf'].args_1
 
-    // create required parseOptions
-    const isUtc = this['$conf'].utc as boolean
-    const parseOptions: ParseOptions = (this['$conf'].parseOptions as ParseOptions) ?? {}
-    parseOptions.isUtc = isUtc
-
     // handle locale name(s) as argument; use the locale of 'this'
     // as the default value, if no locale is given as 3rd calling
-    // parameter (1st parameter is the date string).
+    // parameter (1st parameter is the date string, 2nd is the format
+    // to use, 3rd may also be the strict flag).
     let currentLocale = this.localeObject?.() ?? DEFAULT_LOCALE
     const arg2 = this['$conf'].args_2
     if (!isUndefined(arg2) && typeof arg2 === 'string') {
       currentLocale = getLocale(arg2)
     }
 
+    // create required parseOptions
+    const parseOptions: ParseOptions = (this['$conf'].parseOptions as ParseOptions) ?? {}
     parseOptions.locale = currentLocale.name
     this['$conf'].parseOptions = parseOptions
 
