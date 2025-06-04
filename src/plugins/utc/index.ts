@@ -46,9 +46,6 @@ declare module 'esday' {
     utc: (keepLocalTime?: boolean) => EsDay
     local: () => EsDay
     isUTC: () => boolean
-    utcOffset(): number
-    utcOffset(offset: number | string): EsDay
-    utcOffset(offset: number | string, keepLocalTime: boolean): EsDay
   }
 
   interface EsDayFactory {
@@ -70,13 +67,14 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   const proto = dayClass.prototype
+
   // convert a date to utc
   proto.utc = function (keepLocalTime?: boolean) {
     const inst = this.clone()
     inst['$d'] = this.toDate()
     inst['$conf'].utc = true
     if (keepLocalTime) {
-      // TODO maybe the generated time does not exits in the current timezone; see momentjs
+      // TODO maybe the generated time does not exits in the current timezone; see moment.js
       return inst.add(this.utcOffset(), C.MIN)
     }
     return inst

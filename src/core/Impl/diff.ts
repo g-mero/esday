@@ -39,18 +39,6 @@ function absFloor(n: number): number {
   return n < 0 ? Math.ceil(n) || 0 : Math.floor(n)
 }
 
-/**
- * Get the utcOffset of date in minutes.
- * Use the utcOffset method from the utc plugin if that is loaded;
- * otherwise get it from the javascript Date object of date.
- * @param date - EsDay instance to inspect
- * @returns utcOffset of date in minutes
- */
-function utcOffset(date: EsDay): number {
-  const defaultOffset = -Math.round(date['$d'].getTimezoneOffset()) || 0
-  return 'utcOffset' in date ? date.utcOffset() : defaultOffset
-}
-
 export function diffImpl(
   that: EsDay,
   date: EsDay,
@@ -59,7 +47,7 @@ export function diffImpl(
 ): number {
   const diffInMs = that.valueOf() - date.valueOf()
   const diffInMonths = monthDiff(that, date)
-  const zoneDelta = (utcOffset(that) - utcOffset(date)) * C.MILLISECONDS_A_MINUTE
+  const zoneDelta = (that.utcOffset() - date.utcOffset()) * C.MILLISECONDS_A_MINUTE
   let result: number
 
   if (!isUndefined(units)) {
