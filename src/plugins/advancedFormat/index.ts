@@ -4,7 +4,7 @@
  * This plugin adds format definitions to date formatting
  */
 
-import type { EsDay, EsDayFactory, EsDayPlugin, FormattingTokenDefinitions } from 'esday'
+import type { EsDay, EsDayPlugin, FormattingTokenDefinitions } from 'esday'
 import { padStart, padZoneStr } from '~/common'
 
 /**
@@ -19,11 +19,7 @@ function utcOffset(date: EsDay): number {
   return 'utcOffset' in date ? date.utcOffset() : defaultOffset
 }
 
-const advancedFormatPlugin: EsDayPlugin<{}> = (
-  _,
-  _dayClass: typeof EsDay,
-  dayFactory: EsDayFactory,
-) => {
+const advancedFormatPlugin: EsDayPlugin<{}> = (_, _dayClass, dayFactory) => {
   // Extend formatting tokens
   const additionalTokens: FormattingTokenDefinitions = {
     d: (sourceDate: EsDay) => sourceDate.day().toString(),
