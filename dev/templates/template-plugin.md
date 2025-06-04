@@ -11,7 +11,7 @@ The `method2` method gets a new date in the middle of the next week for a date.
 ### Dependencies
 // TODO describe dependencies from other plugins and sequence of plugins, if applicable
 
-<NewPluginName> requires no other plugin.
+<NewPluginName> has no dependencies on other plugins.
 
 <NewPluginName> can be used together with the plugin Utc that must be loaded using esday.extend(...) before the plugin <NewPluginName>.
 

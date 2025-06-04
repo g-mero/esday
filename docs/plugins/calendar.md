@@ -4,6 +4,9 @@ Calendar adds the `calendar` method to EsDay to format a date relative to a give
 
 ## Usage
 
+### Dependencies
+Calendar requires the plugin Locale and at least 1 registered and activated locale.
+
 ### Method signatures
 ```typescript
 calendar(referenceDate?: EsDay | null, formats?: CalendarPartial): string

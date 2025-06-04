@@ -1,9 +1,11 @@
 # Formatting
 
-The `esday().format()` function returns a string representing an `esday` object.
+The `format()` method returns a string representing an `esday` object.
 
-## Method signatures
-### formatting using a given format template:
+## Usage
+
+### Method signatures
+#### Formatting using a given format template
 ```
 esday().format(formatTemplate: string): string
 ```
@@ -12,22 +14,27 @@ esday().format(formatTemplate: string): string
 | -------------- | --------------------------------------------- |
 | formatTemplate | template used for formatting the EsDay object |
 
-### Adding new formatting tokens:
+#### Adding new formatting tokens
 ```
 esday.addTokenDefinitions(newTokens: TokenDefinitions)
 ```
 
 **Format of TokenDefinitions**
 ```typescript
-type TokenDefinitions = Record<string, [RegExp, RegExp, (this: ParsedElements, input: string) => void]>
+type TokenDefinitions = Record<token, [regexDefaultMode, regexStrictMode, setterFn]>
 ```
 
 | parameter          | type     | description                                      |
 | ------------------ | -------- | ------------------------------------------------ |
 | token              | string   | token to be parsed (e.g. 'Q')                    |
-| regex default mode | RegExp   | regex used for parsing in default mode           |
-| regex strict mode  | RegExp   | regex used for parsing in strict mode            |
-| setter             | function | function to add parsed value to result in 'this' |
+| regexDefaultMode   | RegExp   | regex used for parsing in default mode           |
+| regexStrictMode    | RegExp   | regex used for parsing in strict mode            |
+| setterFn           | function | function to add parsed value to result in 'this' |
+
+Signature of `setterFn`
+```typescript
+(this: ParsedElements, input: string) => void
+```
 
 **Parameters of setter**
 | parameter | type           | description                   |

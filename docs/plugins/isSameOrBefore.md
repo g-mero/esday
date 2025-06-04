@@ -2,7 +2,12 @@
 
 IsSameOrBefore adds the `isSameOrBefore` method to EsDay indicating, if a date is the same as or before another date.
 
-## Method signatures
+## Usage
+
+### Dependencies
+IsSameOrBefore has no dependencies on other plugins.
+
+### Method signatures
 ```typescript
 esday().isSameOrBefore(date: DateType, unit?: UnitType): boolean
 ```

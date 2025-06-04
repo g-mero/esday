@@ -2,7 +2,12 @@
 
 ToArray adds the `toArray` method to EsDay to get an array containing the parts that make up a date.
 
-## Method signatures
+## Usage
+
+### Dependencies
+ToArray has no dependencies on other plugins.
+
+### Method signatures
 ```typescript
 esday().toArray(): [number, number, number, number, number, number, number]
 ```

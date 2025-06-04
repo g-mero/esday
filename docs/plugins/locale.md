@@ -1,28 +1,34 @@
 # Locale
 
-Locale extends `esday` to support locales. The locale to use can be loaded from the corresponding locale file ([list of supported locales](../locales/locales.md)).
+Locale extends `esday` to support locales by adding the `locale`, the `registerLocale` and  the `localeObject` methods to EsDay.
+The locale to use can be loaded from the corresponding locale file ([list of supported locales](../locales/locales.md)).
 
 **Note**: the name of the locale (e.g. used for setting the locale) is case sensitive.
 
-## Method signatures
-For esday (`esday`)
+## Usage
+
+### Dependencies
+Locale has no dependencies on other plugins.
+
+### Method signatures
+For esday ('global')
 ```
 // get / set name of global locale
-locale(): string
-locale(localeName: string): EsDay
+esday.locale(): string
+esday.locale(localeName: string): EsDay
 
 // add a locale to the list of available locales
-registerLocale(locale: Locale, newName?: string): EsDay
+esday.registerLocale(locale: Locale, newName?: string): EsDay
 
 // get the locale object from the name of the locale
-localeObject(name: string): Locale
+esday.localeObject(name: string): Locale
 ```
 
-For esday instance (`esday()`)
+For esday instance ('local')
 ```
 // get / set the locale of an esday instance
-locale(): string
-locale(name: string): EsDay
+esday().locale(): string
+esday().locale(name: string): EsDay
 ```
 
 | Parameter | Type   | Description          |
@@ -30,6 +36,8 @@ locale(name: string): EsDay
 | locale    | Locale | locale object to use |
 
 ## Locale object
+Locales are defined in locale files that contain an object with all required Properties.
+
 ### Properties
 
 Properties of the `Locale` object:
@@ -46,8 +54,11 @@ Properties of the `Locale` object:
 | weekStart     | number   | Which is the 1st day of the week - 0=Sunday, 1=Monday etc. (e.g. `1` for Monday)                                           |
 | yearStart     | number   | Which date **must** be part of the 1st week of the year (e.g. `4` for Jan 4th)                                             |
 | formats       | object   | Localized format tokens for parsing and formatting (e.g. `LT` or `LL`)                                                     |
+| calendar      | object   | Object containing the required format definitions                                                                          |
 | relativeTime  | <Relative, string | RelativeTimeElementFunction>[] \| Replacement strings for relative time values (e.g. `future: 'in %s'`)           |
 | meridiem      | function | Get meridiem string for a time value (e.g. `pm`)                                                                           |
+| preParse      | function | Optional function that gets called before the input gets parsed                                                            |
+| postFormat    | function | Optional function that gets called after the date got formatted                                                            |
 
 All properties are readonly.
 

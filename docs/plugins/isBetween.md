@@ -2,7 +2,12 @@
 
 IsBetween adds the `isBetween` method to EsDay indicating, if a date is between two other dates.
 
-## Method signatures
+## Usage
+
+### Dependencies
+IsBetween has no dependencies on other plugins.
+
+### Method signatures
 ```typescript
 esday().isBetween(
       from: DateType,

@@ -2,7 +2,12 @@
 
 IsYesterday adds the `isYesterday` method to EsDay indicating, if a date is tomorrow.
 
-## Method signatures
+## Usage
+
+### Dependencies
+IsYesterday has no dependencies on other plugins.
+
+### Method signatures
 ```typescript
 esday().isYesterday(): boolean
 ```

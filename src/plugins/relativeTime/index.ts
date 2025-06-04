@@ -19,8 +19,8 @@ import type { Locale, RelativeTimeKeys } from '../locale'
 
 declare module 'esday' {
   interface EsDay {
-    to: (input: DateType, withoutSuffix?: boolean) => string
-    from: (input: DateType, withoutSuffix?: boolean) => string
+    to: (referenceDate: DateType, withoutSuffix?: boolean) => string
+    from: (referenceDate: DateType, withoutSuffix?: boolean) => string
     toNow: (withoutSuffix?: boolean) => string
     fromNow: (withoutSuffix?: boolean) => string
   }
@@ -74,13 +74,13 @@ const relativeTimePlugin: EsDayPlugin<{
   const rounding = options.rounding ?? Math.round
 
   function fromToBase(
-    input: DateType,
+    referenceDate: DateType,
     withoutSuffix: boolean,
     instance: EsDay,
     isFrom: boolean,
-    postFormat?: (s: string) => string,
+    postFormat?: (formattedDate: string) => string,
   ): string {
-    const inputInstance = esday(input)
+    const inputInstance = esday(referenceDate)
     if (!instance.isValid() || !inputInstance.isValid()) {
       return C.INVALID_DATE_STRING
     }
@@ -125,12 +125,12 @@ const relativeTimePlugin: EsDayPlugin<{
 
   const getNow = (self: EsDay) => (self['$conf'].utc ? esday.utc() : esday())
 
-  proto.to = function (this: EsDay, input: DateType, withoutSuffix?: boolean) {
-    return fromToBase(input, withoutSuffix ?? false, this, true)
+  proto.to = function (this: EsDay, referenceDate: DateType, withoutSuffix?: boolean) {
+    return fromToBase(referenceDate, withoutSuffix ?? false, this, true)
   }
 
-  proto.from = function (this: EsDay, input: DateType, withoutSuffix?: boolean) {
-    return fromToBase(input, withoutSuffix ?? false, this, false)
+  proto.from = function (this: EsDay, referenceDate: DateType, withoutSuffix?: boolean) {
+    return fromToBase(referenceDate, withoutSuffix ?? false, this, false)
   }
 
   proto.toNow = function (this: EsDay, withoutSuffix?: boolean) {

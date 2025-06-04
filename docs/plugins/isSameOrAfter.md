@@ -2,7 +2,12 @@
 
 IsSameOrAfter adds the `isSameOrAfter` method to EsDay indicating, if a date is the same as or after another date.
 
-## Method signatures
+## Usage
+
+### Dependencies
+IsSameOrAfter has no dependencies on other plugins.
+
+### Method signatures
 ```typescript
 esday().isSameOrAfter(date: DateType, unit?: UnitType): boolean
 ```

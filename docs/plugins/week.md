@@ -1,6 +1,7 @@
 # Week
 
 Week adds the `week`, the `weeks`, the `weekDay`, the `wWeekYear` and the `weeksInYear` methods to EsDay.
+
 The `week` method gets or sets the week of the year of a date according to the active locale.
 The `weeks` method is just an alias for the `week` method.
 The `weekDay` method gets the day of week of a date according to the active locale.
@@ -9,6 +10,30 @@ The `weeksInYear` method gets the number of weeks in a year according to the act
 
 Week adds support for parsing tokens `w`, `ww`, `e`, `gg` and `gggg`.
 Week adds support for formatting tokens `w`, `ww`, `wo`, `e`, `gg` and `gggg`.
+
+## Usage
+
+### Dependencies
+Week requires the plugin Locale and at least 1 registered and activated locale.
+
+When using the week formatting tokens together with other formatting tokens, the plugin localizedFormat is required and must be loaded using esday.extend(...) before the plugin Week.
+
+When using the week parsing tokens, the plugin advancedParse is required and must be loaded using esday.extend(...) before the plugin Week.
+
+Week can be used together with the plugin Utc. If used together with the plugin Utc, the plugin Utc must be activated using esday.extend(...) before the plugin Week.
+
+### Method signatures
+```typescript
+esday().week(): number
+esday().week(week: number): EsDay
+esday().weeks(): number
+esday().weeks(week: number): EsDay
+esday().weekday(): number
+esday().weekday(newIsoWeekday: number): EsDay
+esday().weekYear(): number
+esday().weekYear(newIsoWeekYear: number): EsDay
+weeksInYear(): number
+```
 
 **week**
 The week of the year varies depending on which day is the first day of the week (Sunday, Monday, etc), and with which day (of the month) starts the first week of the year.
@@ -27,22 +52,7 @@ For example, in the US, the week that contains Jan 1st is always the first week.
 If Jan 1 was a Monday, Dec 31 would belong to the same week as Jan 1, and thus the same week-year as Jan 1 (e.g. 2024).
 Dec 30 would have a different week-year than Dec 31 (in the previous case it would be 2023).
 
-Week can also be used together with the Utc plugin.
-
-## Method signatures
-```typescript
-esday().week(): number
-esday().week(week: number): EsDay
-esday().weeks(): number
-esday().weeks(week: number): EsDay
-esday().weekday(): number
-esday().weekday(newIsoWeekday: number): EsDay
-esday().weekYear(): number
-esday().weekYear(newIsoWeekYear: number): EsDay
-weeksInYear(): number
-```
-
-## Formatting tokens
+### Formatting tokens
 | **Token** | **Example** | **Description**                 |
 | --------- | ----------- | --------------------------------|
 | w         | 1-53        | week of year.                   |
@@ -54,7 +64,7 @@ weeksInYear(): number
 
 When no locale is loaded the token 'wo' returns the week number as number (instead of an ordinal number).
 
-## Parsing tokens
+### Parsing tokens
 | **Token** | **Example** | **Description**                                               |
 | --------- | ----------- | ------------------------------------------------------------- |
 | w         | 1-53        | week of year.  Sets day of week to 1st day of week.           |
@@ -67,7 +77,7 @@ If the source string (and the format to use) contains a valid day of month, the 
 
 If the source string (and the format to use) contains a valid month, the weekday is ignored (like moment.js does).
 
-## Differences to Moment.js
+**Differences to Moment.js**
 
 When parsing a string consisting of a year only with a weekYear token ('gg' or 'gggg') or a year and day-of-week ('2022 2) with a weekday token ('YYYY e'), moment.js returns the start of the week before the expected date on the first 4 days of a week (when start-of-year is not '1').
 

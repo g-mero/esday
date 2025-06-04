@@ -2,7 +2,12 @@
 
 ToObject adds the `toObject` method to EsDay to get an object containing the parts that make up a date.
 
-## Method signatures
+## Usage
+
+### Dependencies
+ToObject has no dependencies on other plugins.
+
+### Method signatures
 ```typescript
 esday().toObject(): { years, months, date, hours, minutes, seconds, milliseconds }
 ```

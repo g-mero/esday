@@ -1,6 +1,7 @@
 # IsoWeek
 
 IsoWeek adds the `isoWeek`, the `isoWeeks`, the `isoWeekDay`, the `isoWeekYear` and the `isoWeeksInYear` methods to EsDay.
+
 The `isoWeek` method gets or sets the ISO week of the year of a date according to the ISO 8601.
 The `isoWeeks` method is just an alias for the `isoWeek` method.
 The `isoWeekDay` method gets the ISO day of week of a date.
@@ -10,19 +11,18 @@ The `isoWeeksInYear` method gets the number of weeks in a year according to the 
 IsoWeek adds support for parsing tokens `W`, `WW`, `E`, `GG` and `GGGG`.
 IsoWeek adds support for formatting tokens `W`, `WW`, `Wo`, `E`, `GG` and `GGGG`.
 
-**isoWeek**
-The ISO week of the year depends on the first day of the week (Monday), and with which day (of the month) the first week of the year starts. According to the ISO 8601 the first week of the year is the the week containing January 4th.
+## Usage
 
-When **setting** the ISO week of the year, the day of the week is retained.
+### Dependencies
+In most cases IsoWeek requires no other plugin.
 
-**isoWeekYear**
-Because the first day of the first week of a year does not always fall on the first day of the year, sometimes the ISO week-year will differ from the "month year".
+When using the 'Wo' formatting token, IsoWeek requires the plugins Locale and LocalizedFormat and at least 1 registered and activated locale.
 
-For example, in 2022 Jan 1 was a Saturday. Because of this, the first ISO week of the year 2022 starts on Monday Jan 3 and Jan 1 belongs to ISO week year 2021 (ISO week 52).
+When using the parsing tokens, the plugin AdvancedParse is required and must be activated using esday.extend(...) before the plugin IsoWeek.
 
-IsoWeek can also be used together with the Utc plugin.
+IsoWeek can be used together with the plugin Utc. If used together with the plugin Utc, the plugin Utc must be activated using esday.extend(...) before the plugin IsoWeek.
 
-## Method signatures
+### Method signatures
 ```typescript
 esday().isoWeek(): number
 esday().isoWeek(newIsoWeek: number): EsDay
@@ -35,7 +35,17 @@ esday().isoWeekYear(newIsoWeekYear: number): EsDay
 isoWeeksInYear(): number
 ```
 
-## Formatting tokens
+**isoWeek**
+The ISO week of the year depends on the first day of the week (Monday), and with which day (of the month) the first week of the year starts. According to the ISO 8601 the first week of the year is the the week containing January 4th.
+
+When **setting** the ISO week of the year, the day of the week is retained.
+
+**isoWeekYear**
+Because the first day of the first week of a year does not always fall on the first day of the year, sometimes the ISO week-year will differ from the "month year".
+
+For example, in 2022 Jan 1 was a Saturday. Because of this, the first ISO week of the year 2022 starts on Monday Jan 3 and Jan 1 belongs to ISO week year 2021 (ISO week 52).
+
+### Formatting tokens
 | **Token** | **Example** | **Description**                     |
 | --------- | ----------- | ------------------------------------|
 | W         | 1-53        | ISO week of year.                   |
@@ -47,7 +57,7 @@ isoWeeksInYear(): number
 
 When no locale is loaded the token 'Wo' returns the ISO week number as number (instead of an ordinal number).
 
-## Parsing tokens
+### Parsing tokens
 | **Token** | **Example** | **Description**                                                          |
 | --------- | ----------- | ------------------------------------------------------------------------ |
 | W         | 1-53        | ISO week of year.  Sets day of week to Monday (1st day of week).         |

@@ -2,7 +2,12 @@
 
 IsTomorrow adds the `isTomorrow` method to EsDay indicating, if a date is tomorrow.
 
-## Method signatures
+## Usage
+
+### Dependencies
+IsTomorrow has no dependencies on other plugins.
+
+### Method signatures
 ```typescript
 esday().isTomorrow(): boolean
 ```
