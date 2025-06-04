@@ -91,42 +91,6 @@ function addAfternoon(isLowerCase: boolean) {
 }
 
 /**
- * Convert the hours to 24h format.
- * @param parsedDate - Date object returned by parsing function
- * @param parsedElements - object containing the components of a parsed date
- * @param parseOptions - parsing options e.g. containing the locale to use
- * @returns parsedDate with hours converted to 24h format
- */
-function postParseMeridiem(
-  parsedDate: Date,
-  parsedElements: ParsedElements,
-  parseOptions: ParseOptions,
-) {
-  const modifiedDate = parsedDate
-
-  // is this a valid date and do we have parsed a meridiem?
-  if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.afternoon)) {
-    let parsedHours: number
-    if (!parseOptions.isUtc) {
-      parsedHours = parsedDate.getHours()
-      if (parsedHours < 12 && parsedElements.afternoon) {
-        modifiedDate.setHours(parsedHours + 12)
-      } else if (parsedHours === 12 && !parsedElements.afternoon) {
-        modifiedDate.setHours(0)
-      }
-    } else {
-      parsedHours = parsedDate.getUTCHours()
-      if (parsedHours < 12 && parsedElements.afternoon) {
-        modifiedDate.setUTCHours(parsedHours + 12)
-      } else if (parsedHours === 12 && !parsedElements.afternoon) {
-        modifiedDate.setUTCHours(0)
-      }
-    }
-  }
-  return modifiedDate
-}
-
-/**
  * Parse day of month as ordinal number.
  * @param parsedElements - object containing the components of a parsed date
  * @param input - parsed component of a date, to be transformed and inserted in parsedElements
@@ -207,57 +171,6 @@ function addDayOfWeek(property: 'weekdays' | 'weekdaysShort' | 'weekdaysMin') {
 }
 
 /**
- * Verify that parsed date is the expected day of week.
- * @param parsedDate - Date object returned by parsing function
- * @param parsedElements - object containing the components of a parsed date
- * @param parseOptions - parsing options e.g. containing the locale to use
- * @returns parsedDate or invalid date (if day of week does not match)
- */
-function postParseDayOfWeek(
-  parsedDate: Date,
-  parsedElements: ParsedElements,
-  parseOptions: ParseOptions,
-) {
-  let modifiedDate = parsedDate
-
-  // is this a valid date and do we have parsed the day of week?
-  if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.dayOfWeek)) {
-    let parsedDay: number
-    if (!parseOptions.isUtc) {
-      parsedDay = parsedDate.getDay()
-    } else {
-      parsedDay = parsedDate.getUTCDay()
-    }
-    if (parsedDay !== parsedElements.dayOfWeek) {
-      modifiedDate = C.INVALID_DATE
-    }
-  }
-  return modifiedDate
-}
-
-/**
- * List of parsing tokens; the key of an entry in this list is
- * the token to be parsed and the value is a 3-entries-array with
- * the 1st entry being the regex for parsing in 'standard' mode,
- * the 2nd entry being the regex for parsing in 'strict' mode and
- * the 3rd entry being a function that will add the corresponding
- * value to an object containing all the date&time elements (year,
- * month, day, ...).
- */
-const parseTokensDefinitions: TokenDefinitions = {
-  h: [match1to2, match1to2, addHour],
-  hh: [match1to2, match2, addHour],
-  a: [matchWord, matchWord, addAfternoon(true), postParseMeridiem],
-  A: [matchWord, matchWord, addAfternoon(false), postParseMeridiem],
-  dd: [matchWord, matchWord, addDayOfWeek('weekdaysMin'), postParseDayOfWeek],
-  ddd: [matchWord, matchWord, addDayOfWeek('weekdaysShort'), postParseDayOfWeek],
-  dddd: [matchWord, matchWord, addDayOfWeek('weekdays'), postParseDayOfWeek],
-  Do: [matchWord, matchWord, addDayOfMonthOrdinal],
-  MMM: [matchWord, matchWord, addMonth('monthsShort')],
-  MMMM: [matchWord, matchWord, addMonth('months')],
-}
-
-/**
  * Replace locale dependent token in given format with values from locale definition
  * e.g. 'LTS' with 'h:mm:ss A'
  * @param format - original format (with locale dependent tokens)
@@ -275,6 +188,89 @@ function replaceLocaleTokens(format: string, currentLocale: Locale) {
 
 const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const proto = dayClass.prototype
+
+  /**
+   * Convert the hours to 24h format.
+   * Must be called in the context of an EsDay instance.
+   * @param this - context for this function (required for getting the $conf settings)
+   * @param parsedDate - Date object returned by parsing function
+   * @param parsedElements - object containing the components of a parsed date
+   * @returns parsedDate with hours converted to 24h format
+   */
+  function _postParseMeridiem(this: EsDay, parsedDate: Date, parsedElements: ParsedElements) {
+    const modifiedDate = parsedDate
+
+    // is this a valid date and do we have parsed a meridiem?
+    if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.afternoon)) {
+      let parsedHours: number
+      // @ts-expect-error isUtc method is only available when plugin Utc is loaded
+      if (!this.isUtc?.()) {
+        parsedHours = parsedDate.getHours()
+        if (parsedHours < 12 && parsedElements.afternoon) {
+          modifiedDate.setHours(parsedHours + 12)
+        } else if (parsedHours === 12 && !parsedElements.afternoon) {
+          modifiedDate.setHours(0)
+        }
+      } else {
+        parsedHours = parsedDate.getUTCHours()
+        if (parsedHours < 12 && parsedElements.afternoon) {
+          modifiedDate.setUTCHours(parsedHours + 12)
+        } else if (parsedHours === 12 && !parsedElements.afternoon) {
+          modifiedDate.setUTCHours(0)
+        }
+      }
+    }
+    return modifiedDate
+  }
+
+  /**
+   * Verify that parsed date is the expected day of week.
+   * Must be called in the context of an EsDay instance.
+   * @param this - context for this function (required for getting the $conf settings)
+   * @param parsedDate - Date object returned by parsing function
+   * @param parsedElements - object containing the components of a parsed date
+   * @returns parsedDate or invalid date (if day of week does not match)
+   */
+  function _postParseDayOfWeek(this: EsDay, parsedDate: Date, parsedElements: ParsedElements) {
+    let modifiedDate = parsedDate
+
+    // is this a valid date and do we have parsed the day of week?
+    if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.dayOfWeek)) {
+      let parsedDay: number
+      // HACK if (!parseOptions.isUtc) {
+      if (!this['$conf'].utc) {
+        parsedDay = parsedDate.getDay()
+      } else {
+        parsedDay = parsedDate.getUTCDay()
+      }
+      if (parsedDay !== parsedElements.dayOfWeek) {
+        modifiedDate = C.INVALID_DATE
+      }
+    }
+    return modifiedDate
+  }
+
+  /**
+   * List of parsing tokens; the key of an entry in this list is
+   * the token to be parsed and the value is a 3-entries-array with
+   * the 1st entry being the regex for parsing in 'standard' mode,
+   * the 2nd entry being the regex for parsing in 'strict' mode and
+   * the 3rd entry being a function that will add the corresponding
+   * value to an object containing all the date&time elements (year,
+   * month, day, ...).
+   */
+  const parseTokensDefinitions: TokenDefinitions = {
+    h: [match1to2, match1to2, addHour],
+    hh: [match1to2, match2, addHour],
+    a: [matchWord, matchWord, addAfternoon(true), _postParseMeridiem],
+    A: [matchWord, matchWord, addAfternoon(false), _postParseMeridiem],
+    dd: [matchWord, matchWord, addDayOfWeek('weekdaysMin'), _postParseDayOfWeek],
+    ddd: [matchWord, matchWord, addDayOfWeek('weekdaysShort'), _postParseDayOfWeek],
+    dddd: [matchWord, matchWord, addDayOfWeek('weekdays'), _postParseDayOfWeek],
+    Do: [matchWord, matchWord, addDayOfMonthOrdinal],
+    MMM: [matchWord, matchWord, addMonth('monthsShort')],
+    MMMM: [matchWord, matchWord, addMonth('months')],
+  }
 
   // add new parsing tokens to existing list of parsing tokens
   dayFactory.addParseTokenDefinitions(parseTokensDefinitions)
