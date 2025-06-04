@@ -8,16 +8,9 @@
  * and a loaded locale are required.
  *
  * To use the parsing tokens, the plugin AdvancedParse is required.
- *
- * esday parameters in '$conf' defined in isoWeek plugin:
- *   parseOptions  ParseOptions object containing parsing options
- *
- * new esday parameters in '$conf.parseOptions':
- *   isUtc         evaluate date as utc
  */
 
-import { esday } from 'esday'
-import type { DateType, EsDay, EsDayPlugin, FormattingTokenDefinitions, UnitType } from 'esday'
+import type { EsDay, EsDayPlugin, FormattingTokenDefinitions, UnitType } from 'esday'
 import { C, isUndefined, padStart } from '~/common'
 import type { ParseOptions, ParsedElements, TokenDefinitions } from '../advancedParse/types'
 
@@ -103,105 +96,20 @@ function twoDigitsIsoYearUpdater(
   parsedElements['isoWeekYear'] = parseTwoDigitYear(input)
 }
 
-// TODO can we avoid this by using dayFactory(d, ...options)?
-/**
- * Create new esday from parsed Date object.
- * @param parsedDate - Date object returned by parsing function
- * @param parseOptions  - parsing options e.g. containing the locale to use
- * @returns Esday object matching the parsedDate
- */
-function parsedDateToEsday(parsedDate: Date, parseOptions: ParseOptions) {
-  let newEsday: EsDay
-  newEsday = esday(parsedDate, { utc: parseOptions.isUtc })
-
-  // add locale name if exists
-  const localeName = parseOptions['locale']
-  if (!isUndefined(localeName)) {
-    newEsday['$conf']['$locale_name'] = localeName
-  }
-  return newEsday
-}
-
-/**
- * Set the isoWeekDay of the parsed date.
- * @param parsedDate - Date object returned by parsing function
- * @param parsedElements - object containing the components of a parsed date
- * @param parseOptions - parsing options e.g. containing the locale to use
- * @returns parsedDate or invalid date (if iso day of week does not match)
- */
-function postParseIsoDayOfWeek(
-  parsedDate: Date,
-  parsedElements: ParsedElements,
-  parseOptions: ParseOptions,
-) {
-  let modifiedDate = parsedDate
-
-  // is this a valid date and do we have parsed the iso day of week?
-  // if the source string contains a valid month, the isoWeekday
-  // is ignored (like moment.js does).
-  if (
-    !Number.isNaN(parsedDate.valueOf()) &&
-    !isUndefined(parsedElements.isoWeekday) &&
-    isUndefined(parsedElements.month)
-  ) {
-    const newEsday: EsDay = parsedDateToEsday(parsedDate, parseOptions)
-    const newIsoWeekday = parsedElements.isoWeekday as number
-    const modifiedEsday = newEsday.isoWeekday(newIsoWeekday)
-    modifiedDate = modifiedEsday.toDate()
-  }
-  return modifiedDate
-}
-
-/**
- * Set isoWeekYear of parsed date.
- * @param parsedDate - Date object returned by parsing function
- * @param parsedElements - object containing the components of a parsed date
- * @param parseOptions - parsing options e.g. containing the locale to use
- * @returns parsedDate with isoWeekYear set to parsed value
- */
-function postParseIsoYear(
-  parsedDate: Date,
-  parsedElements: ParsedElements,
-  parseOptions: ParseOptions,
-) {
-  let modifiedDate = parsedDate
-
-  // is this a valid date and do we have parsed the isoWeekYear?
-  if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.isoWeekYear)) {
-    const newEsday: EsDay = parsedDateToEsday(parsedDate, parseOptions)
-    const parsedIsoWeekYear = parsedElements.isoWeekYear as number
-
-    if (Object.keys(parsedElements).length === 1) {
-      // we parsed isoYear only ('GG' or 'GGGG')
-      let modifiedEsday = newEsday.isoWeekYear(parsedIsoWeekYear)
-      modifiedEsday = modifiedEsday.year(parsedIsoWeekYear).month(0).date(1).isoWeekday(1)
-      modifiedDate = modifiedEsday.toDate()
-    } else if (!isUndefined(parsedElements.isoWeek)) {
-      const modifiedEsday = newEsday.isoWeekYear(parsedIsoWeekYear)
-      modifiedDate = modifiedEsday.toDate()
-    }
-  }
-  return modifiedDate
-}
-
 const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const proto = dayClass.prototype
 
   /**
    * Set the isoWeek of the parsed date.
+   * Must be called in the context of an EsDay instance.
+   * @param this - context for this function (required for getting the $conf settings)
    * @param parsedDate - Date object returned by parsing function
    * @param parsedElements - object containing the components of a parsed date
-   * @param parseOptions - parsing options e.g. containing the locale to use
    * @returns parsedDate with iso week set to parsed value
    */
-  function _postParseIsoWeek(
-    parsedDate: Date,
-    parsedElements: ParsedElements,
-    parseOptions: ParseOptions,
-  ) {
+  function _postParseIsoWeek(this: EsDay, parsedDate: Date, parsedElements: ParsedElements) {
     let modifiedDate = parsedDate
 
-    // is this a valid date and do we have parsed the iso week?
     // if the source string contains a valid day of month, the isoWeek
     // is ignored (like moment.js does).
     if (
@@ -209,9 +117,8 @@ const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       !isUndefined(parsedElements.isoWeek) &&
       isUndefined(parsedElements.day)
     ) {
-      // const newEsday: EsDay = parsedDateToEsday(parsedDate, parseOptions)
-      // TODO I do not have a 'this' at this place, required to avoid the parseOptions!
-      const newEsday = dayFactory(parsedDate, { utc: parseOptions.isUtc })
+      const newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
+      newEsday['$conf'] = structuredClone(this['$conf'])
 
       const parsedIsoWeek = parsedElements.isoWeek as number
       const modifiedEsday = newEsday.isoWeek(parsedIsoWeek).isoWeekday(weekStart)
@@ -220,11 +127,74 @@ const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return modifiedDate
   }
 
+  /**
+   * Set the isoWeekDay of the parsed date.
+   * Must be called in the context of an EsDay instance.
+   * @param this - context for this function (required for getting the $conf settings)
+   * @param parsedDate - Date object returned by parsing function
+   * @param parsedElements - object containing the components of a parsed date
+   * @returns parsedDate or invalid date (if iso day of week does not match)
+   */
+  function _postParseIsoDayOfWeek(this: EsDay, parsedDate: Date, parsedElements: ParsedElements) {
+    let modifiedDate = parsedDate
+
+    // if the source string contains a valid month, the isoWeekday
+    // is ignored (like moment.js does).
+    if (
+      !Number.isNaN(parsedDate.valueOf()) &&
+      !isUndefined(parsedElements.isoWeekday) &&
+      isUndefined(parsedElements.month)
+    ) {
+      const newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
+      newEsday['$conf'] = structuredClone(this['$conf'])
+
+      const newIsoWeekday = parsedElements.isoWeekday as number
+      const modifiedEsday = newEsday.isoWeekday(newIsoWeekday)
+      modifiedDate = modifiedEsday.toDate()
+    }
+    return modifiedDate
+  }
+
+  /**
+   * Set isoWeekYear of parsed date.
+   * Must be called in the context of an EsDay instance.
+   * @param this - context for this function (required for getting the $conf settings)
+   * @param parsedDate - Date object returned by parsing function
+   * @param parsedElements - object containing the components of a parsed date
+   * @returns parsedDate with isoWeekYear set to parsed value
+   */
+  function _postParseIsoYear(this: EsDay, parsedDate: Date, parsedElements: ParsedElements) {
+    let modifiedDate = parsedDate
+
+    // is this a valid date and do we have parsed the isoWeekYear?
+    if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.isoWeekYear)) {
+      const newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
+      newEsday['$conf'] = structuredClone(this['$conf'])
+
+      const parsedIsoWeekYear = parsedElements.isoWeekYear as number
+
+      if (Object.keys(parsedElements).length === 1) {
+        // we parsed isoYear only ('GG' or 'GGGG')
+        let modifiedEsday = newEsday.isoWeekYear(parsedIsoWeekYear)
+        modifiedEsday = modifiedEsday.year(parsedIsoWeekYear).month(0).date(1).isoWeekday(1)
+        modifiedDate = modifiedEsday.toDate()
+      } else if (!isUndefined(parsedElements.isoWeek)) {
+        const modifiedEsday = newEsday.isoWeekYear(parsedIsoWeekYear)
+        modifiedDate = modifiedEsday.toDate()
+      }
+    }
+    return modifiedDate
+  }
+
+  /**
+   * Gets or sets the ISO week keeping the time.
+   */
   // @ts-expect-error function is compatible with its overload
   proto.isoWeek = function (newIsoWeek?: number) {
     // Setter
     if (newIsoWeek !== undefined) {
-      // 'add(...,  C.DAY)' may change time, if we switch between DST and non-DST
+      // 'add(...,  C.DAY)' may change time, if we switch between DST and non-DST;
+      // therefore we have to set time again after setting the date.
       const currentWeekday = this.isoWeekday()
       const h = this.hour()
       const m = this.minute()
@@ -343,21 +313,11 @@ const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const parseTokensDefinitions: TokenDefinitions = {
     W: [match1to2, match1to2NoLeadingZero, addIsoWeekProperty('isoWeek'), _postParseIsoWeek], // isoWeek 1..52
     WW: [match1to2, match2, addIsoWeekProperty('isoWeek'), _postParseIsoWeek], // isoWeek 01..52
-    E: [match1to2, match1, addIsoWeekProperty('isoWeekday'), postParseIsoDayOfWeek], // isoWeekday 1..7
-    GG: [match1to4, match2, twoDigitsIsoYearUpdater, postParseIsoYear], // isoWeekYear 70 .. 30
-    GGGG: [match1to4, match4, addIsoWeekProperty('isoWeekYear'), postParseIsoYear], // isoWeekYear 1970 .. 2030
+    E: [match1to2, match1, addIsoWeekProperty('isoWeekday'), _postParseIsoDayOfWeek], // isoWeekday 1..7
+    GG: [match1to4, match2, twoDigitsIsoYearUpdater, _postParseIsoYear], // isoWeekYear 70 .. 30
+    GGGG: [match1to4, match4, addIsoWeekProperty('isoWeekYear'), _postParseIsoYear], // isoWeekYear 1970 .. 2030
   }
   dayFactory.addParseTokenDefinitions?.(parseTokensDefinitions)
-
-  const oldParse = proto['parse']
-  proto['parse'] = function (d?: Exclude<DateType, EsDay>) {
-    // create required parseOptions
-    const isUtc = this['$conf'].utc as boolean
-    const parseOptions: ParseOptions = (this['$conf'].parseOptions as ParseOptions) ?? {}
-    parseOptions.isUtc = isUtc
-    this['$conf'].parseOptions = parseOptions
-    oldParse.call(this, d)
-  }
 }
 
 export default isoWeekPlugin
