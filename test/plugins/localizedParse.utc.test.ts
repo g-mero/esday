@@ -258,7 +258,7 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
   ])(
     'parse in "en" with "$locale" as locale parameter',
     ({ sourceString, formatString, locale }) => {
-      expect(esday(sourceString, formatString, locale).isValid()).toBeTruthy()
+      expect(esday.utc(sourceString, formatString, locale).isValid()).toBeTruthy()
       expectSameResult((esday) => esday.utc(sourceString, formatString, locale))
     },
   )
