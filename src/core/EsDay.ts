@@ -215,7 +215,7 @@ export class EsDay {
 
   clone() {
     const newInst = new EsDay(this.$d)
-    newInst.$conf = { ...this.$conf }
+    newInst.$conf = structuredClone(this.$conf)
     return newInst
   }
 
