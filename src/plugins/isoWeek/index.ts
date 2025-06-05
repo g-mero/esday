@@ -11,7 +11,7 @@
  */
 
 import type { EsDay, EsDayPlugin, FormattingTokenDefinitions, UnitType } from 'esday'
-import { C, isUndefined, padStart } from '~/common'
+import { C, createInstanceFromExist, isUndefined, padStart } from '~/common'
 import type { ParseOptions, ParsedElements, TokenDefinitions } from '../advancedParse/types'
 
 declare module 'esday' {
@@ -117,9 +117,7 @@ const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       !isUndefined(parsedElements.isoWeek) &&
       isUndefined(parsedElements.day)
     ) {
-      const newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
-      newEsday['$conf'] = structuredClone(this['$conf'])
-
+      const newEsday = createInstanceFromExist(parsedDate, this)
       const parsedIsoWeek = parsedElements.isoWeek as number
       const modifiedEsday = newEsday.isoWeek(parsedIsoWeek).isoWeekday(weekStart)
       modifiedDate = modifiedEsday.toDate()
@@ -145,9 +143,7 @@ const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       !isUndefined(parsedElements.isoWeekday) &&
       isUndefined(parsedElements.month)
     ) {
-      const newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
-      newEsday['$conf'] = structuredClone(this['$conf'])
-
+      const newEsday = createInstanceFromExist(parsedDate, this)
       const newIsoWeekday = parsedElements.isoWeekday as number
       const modifiedEsday = newEsday.isoWeekday(newIsoWeekday)
       modifiedDate = modifiedEsday.toDate()
@@ -168,9 +164,7 @@ const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
     // is this a valid date and do we have parsed the isoWeekYear?
     if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.isoWeekYear)) {
-      const newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
-      newEsday['$conf'] = structuredClone(this['$conf'])
-
+      const newEsday = createInstanceFromExist(parsedDate, this)
       const parsedIsoWeekYear = parsedElements.isoWeekYear as number
 
       if (Object.keys(parsedElements).length === 1) {

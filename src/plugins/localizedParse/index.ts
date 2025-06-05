@@ -15,7 +15,7 @@
  */
 
 import type { DateType, EsDay, EsDayPlugin } from 'esday'
-import { C, isArray, isString, isUndefined } from '~/common'
+import { C, createInstanceFromExist, isArray, isString, isUndefined } from '~/common'
 import type {
   DayNames,
   DayNamesStandaloneFormat,
@@ -229,8 +229,7 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
     // is this a valid date and do we have parsed the day of week?
     if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.dayOfWeek)) {
-      const newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
-      newEsday['$conf'] = structuredClone(this['$conf'])
+      const newEsday = createInstanceFromExist(parsedDate, this)
 
       if (newEsday.day() !== parsedElements.dayOfWeek) {
         modifiedDate = C.INVALID_DATE

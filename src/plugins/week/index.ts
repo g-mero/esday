@@ -11,7 +11,7 @@
  */
 
 import type { EsDay, EsDayPlugin, FormattingTokenDefinitions, UnitType } from 'esday'
-import { C, isUndefined, padStart } from '~/common'
+import { C, createInstanceFromExist, isUndefined, padStart } from '~/common'
 import type { ParseOptions, ParsedElements, TokenDefinitions } from '../advancedParse/types'
 
 const match1to2NoLeadingZero = /^[1-9]\d?/ // 1-99
@@ -107,9 +107,7 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       !isUndefined(parsedElements.week) &&
       isUndefined(parsedElements.day)
     ) {
-      const newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
-      newEsday['$conf'] = structuredClone(this['$conf'])
-
+      const newEsday = createInstanceFromExist(parsedDate, this)
       const parsedWeek = parsedElements.week as number
       const modifiedEsday = newEsday.week(parsedWeek).weekday(0)
       modifiedDate = modifiedEsday.toDate()
@@ -166,9 +164,7 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
     // is this a valid date and do we have parsed the weekYear?
     if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.weekYear)) {
-      const newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
-      newEsday['$conf'] = structuredClone(this['$conf'])
-
+      const newEsday = createInstanceFromExist(parsedDate, this)
       const parsedWeekYear = parsedElements.weekYear as number
 
       if (Object.keys(parsedElements).length === 1) {
