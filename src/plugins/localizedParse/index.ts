@@ -264,8 +264,8 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   // add new parsing tokens to existing list of parsing tokens
   dayFactory.addParseTokenDefinitions(parseTokensDefinitions)
 
-  const oldParse = proto['parse']
-  proto['parse'] = function (d?: Exclude<DateType, EsDay>) {
+  const oldParse = proto['$parse']
+  proto['$parse'] = function (d?: Exclude<DateType, EsDay>) {
     if (!isString(d)) {
       oldParse.call(this, d)
       return

@@ -35,20 +35,22 @@ export declare interface EsDay {
 
 export class EsDay {
   protected $d!: Date
+
   /**
    * mainly for plugin compatibility
    * store data such as locale name, utc mode, etc.
    */
   private $conf: SimpleObject = {}
+
   constructor(d: Exclude<DateType, EsDay>, conf?: SimpleObject) {
     if (!isUndefined(conf)) {
       this.$conf = structuredClone<SimpleObject>(conf)
     }
-    this.parse(d)
+    this.$parse(d)
   }
 
-  private parse(d: Exclude<DateType, EsDay>) {
-    this.$d = this.$parseImpl(d)
+  protected $parse(d: Exclude<DateType, EsDay>) {
+    this.$d = this.#parseImpl(d)
   }
 
   /**
@@ -129,7 +131,7 @@ export class EsDay {
    * @param parsedElement - element to be converted
    * @returns parsed element as number
    */
-  private $toNumber(parsedElement: string | number | undefined) {
+  #toNumber(parsedElement: string | number | undefined) {
     if (
       parsedElement === undefined ||
       (typeof parsedElement === 'string' && parsedElement.trim().length === 0)
@@ -147,7 +149,7 @@ export class EsDay {
    * @param parsedElement - element to be converted
    * @returns parsed element as number
    */
-  private $toMsNumber(parsedElement: string | number | undefined) {
+  #toMsNumber(parsedElement: string | number | undefined) {
     if (parsedElement === undefined) {
       return undefined
     }
@@ -163,7 +165,7 @@ export class EsDay {
     return parsedElement
   }
 
-  private $parseImpl(date?: Exclude<DateType, EsDay>): Date {
+  #parseImpl(date?: Exclude<DateType, EsDay>): Date {
     if (date instanceof Date) return new Date(date)
     if (date === null) return new Date(Number.NaN)
     if (isUndefined(date)) return new Date()
@@ -172,13 +174,13 @@ export class EsDay {
     if (typeof date === 'string' && !/Z$/i.test(date)) {
       const d = date.match(C.REGEX_PARSE_DEFAULT)
       if (d) {
-        const Y = this.$toNumber(d[1])
-        const M = this.$toNumber(d[2])
-        const D = this.$toNumber(d[3])
-        const h = this.$toNumber(d[4])
-        const m = this.$toNumber(d[5])
-        const s = this.$toNumber(d[6])
-        const ms = this.$toMsNumber(d[7])
+        const Y = this.#toNumber(d[1])
+        const M = this.#toNumber(d[2])
+        const D = this.#toNumber(d[3])
+        const h = this.#toNumber(d[4])
+        const m = this.#toNumber(d[5])
+        const s = this.#toNumber(d[6])
+        const ms = this.#toMsNumber(d[7])
         return this.dateFromDateComponents(Y, M, D, h, m, s, ms)
       }
     }
@@ -300,7 +302,7 @@ export class EsDay {
     return this.$d.toUTCString()
   }
 
-  private $set(unit: UnitTypeCore, values: number[]) {
+  protected $set(unit: UnitTypeCore, values: number[]) {
     if (prettyUnit(unit) === C.DAY) {
       setUnitInDate(this.$d, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
     } else if (prettyUnit(unit) === C.MONTH) {

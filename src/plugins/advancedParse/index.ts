@@ -461,8 +461,8 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   // get regexp to separate format into formatting tokens and separators
   formattingTokensRegexFromDefinitions()
 
-  const oldParse = proto['parse']
-  proto['parse'] = function (d?: Exclude<DateType, EsDay>) {
+  const oldParse = proto['$parse']
+  proto['$parse'] = function (d?: Exclude<DateType, EsDay>) {
     const format = this['$conf'].args_1
     const arg2 = this['$conf'].args_2
     const arg3 = this['$conf'].args_3
