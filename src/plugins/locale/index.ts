@@ -116,8 +116,8 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return inst
   }
 
-  const oldParse = dayClass.prototype['parse']
-  dayClass.prototype['parse'] = function (d: Exclude<DateType, EsDay>) {
+  const oldParse = dayClass.prototype['$parse']
+  dayClass.prototype['$parse'] = function (d: Exclude<DateType, EsDay>) {
     oldParse.call(this, d)
 
     // set locale name
