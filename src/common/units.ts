@@ -34,7 +34,6 @@ export type UnitType = ShortUnit | LongUnit
 export type UnitTypePlurals = UnitType | LongUnitPlurals
 export type UnitTypeCore = Exclude<UnitType, UnitWeek | UnitIsoWeek | UnitQuarter>
 export type UnitTypeAddSub = Exclude<UnitTypePlurals, UnitIsoWeeks>
-// TODO weeks and quarters are part of the corresponding plugins
 export type UnitTypeGetSet = Exclude<UnitTypePlurals, UnitWeeks | UnitIsoWeeks | UnitQuarters>
 
 // Type as long unit from short or long unit (e.g. 'y' -> 'year')
