@@ -1,5 +1,5 @@
 import type { DateType, EsDay, EsDayPlugin, UnitType } from 'esday'
-import { C, prettyUnit, undefinedOr } from '~/common'
+import { C, normalizeUnit, undefinedOr } from '~/common'
 import en from '~/locales/en'
 import type { Locale } from './types'
 
@@ -128,7 +128,7 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const oldStartOf = dayClass.prototype['startOf']
   const oldEndOf = dayClass.prototype['endOf']
   const fixDiff = (inst: EsDay, origin: EsDay, unit: UnitType, reverse = false) => {
-    if (prettyUnit(unit) === C.WEEK) {
+    if (normalizeUnit(unit) === C.WEEK) {
       // default start of week is Monday
       const defaultStartOfWeek = C.INDEX_MONDAY
       const weekStart = undefinedOr(inst.localeObject().weekStart, defaultStartOfWeek)

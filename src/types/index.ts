@@ -2,7 +2,7 @@ export * from './core'
 export type { SimpleType, SimpleObject } from './util-types'
 export type {
   ShortUnit,
-  PrettyUnitType,
+  LongUnit,
   UnitType,
   UnitTypeAdd,
   UnitTypeCore,

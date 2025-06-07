@@ -1,10 +1,10 @@
-import { C, createInstanceFromExist, prettyUnit } from '~/common'
+import { C, createInstanceFromExist, normalizeUnitWithPlurals } from '~/common'
 import type { EsDay } from '~/core'
 import type { UnitTypeAdd } from '~/types'
 
 export function addImpl(that: EsDay, value: number, units: UnitTypeAdd) {
   const $d = that['$d']
-  const unit = prettyUnit(units)
+  const unit = normalizeUnitWithPlurals(units)
 
   const instanceFactorySet = (multiplier: number) => {
     const newInstance = that.clone()
@@ -12,7 +12,7 @@ export function addImpl(that: EsDay, value: number, units: UnitTypeAdd) {
     return newInstance
   }
 
-  switch (prettyUnit(unit)) {
+  switch (normalizeUnitWithPlurals(unit)) {
     case C.YEAR:
       return that.set('year', that.get('year') + value)
     case C.MONTH:

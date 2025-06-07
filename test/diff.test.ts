@@ -1,6 +1,7 @@
 import { esday } from 'esday'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
+import type { UnitTypeAdd } from '~/common/units'
 import { expectSame } from './util'
 
 describe('Difference', () => {
@@ -69,7 +70,19 @@ describe('Difference', () => {
       sourceString: '2013-02-08T13:24:35.789',
       sourceDiffValue: 1000,
       sourceDiffUnit: C.DAY,
+      resultUnit: 'months',
+    },
+    {
+      sourceString: '2013-02-08T13:24:35.789',
+      sourceDiffValue: 1000,
+      sourceDiffUnit: C.DAY,
       resultUnit: C.QUARTER,
+    },
+    {
+      sourceString: '2013-02-08T13:24:35.789',
+      sourceDiffValue: 1000,
+      sourceDiffUnit: C.DAY,
+      resultUnit: 'quarters',
     },
     {
       sourceString: '2013-02-08T13:24:35.789',
@@ -77,13 +90,19 @@ describe('Difference', () => {
       sourceDiffUnit: C.DAY,
       resultUnit: C.YEAR,
     },
+    {
+      sourceString: '2013-02-08T13:24:35.789',
+      sourceDiffValue: 1000,
+      sourceDiffUnit: C.DAY,
+      resultUnit: 'years',
+    },
   ])(
     'diff for B > A in unit "$resultUnit"',
     ({ sourceString, sourceDiffValue, sourceDiffUnit, resultUnit }) => {
       expectSame((esday) =>
         esday(sourceString).diff(
           esday(sourceString).add(sourceDiffValue, sourceDiffUnit),
-          resultUnit,
+          resultUnit as UnitTypeAdd,
         ),
       )
     },
@@ -250,6 +269,9 @@ describe('Difference', () => {
   ])('diff in unit "$resultUnit" as float', ({ sourceString1, sourceString2, resultUnit }) => {
     expectSame((esday) => esday(sourceString1).diff(esday(sourceString2), resultUnit, true))
   })
+
+  it.todo('test plural units')
+  it('should handle plural units', () => {})
 
   it.each([
     { sourceString1: '2024-08-08', sourceString2: '2024-08-08', expected: 0 },

@@ -1,16 +1,16 @@
-import { C, isEmptyObject, isUndefined, isValidDate, prettyUnit } from '~/common'
+import { C, isEmptyObject, isUndefined, isValidDate, normalizeUnit } from '~/common'
 import { getUnitInDate, prettyUnits, setUnitInDate } from '~/common/date-fields'
 import type {
   DateType,
   UnitDate,
   UnitDay,
   UnitHour,
-  UnitIsoWeek,
   UnitMin,
   UnitMonth,
   UnitMs,
   UnitSecond,
   UnitType,
+  UnitTypeAdd,
   UnitTypeCore,
   UnitYear,
 } from '~/types'
@@ -233,15 +233,15 @@ export class EsDay {
     return startOfImpl(this, units, true)
   }
 
-  add(number: number, units: Exclude<UnitType, UnitIsoWeek>) {
+  add(number: number, units: UnitTypeAdd) {
     return addImpl(this, number, units)
   }
 
-  subtract(number: number, units: Exclude<UnitType, UnitIsoWeek>) {
+  subtract(number: number, units: UnitTypeAdd) {
     return this.add(-number, units)
   }
 
-  diff(date: EsDay, units?: Exclude<UnitType, UnitIsoWeek>, asFloat = false): number {
+  diff(date: EsDay, units?: UnitTypeAdd, asFloat = false): number {
     return diffImpl(this, date, units, asFloat)
   }
 
@@ -303,9 +303,9 @@ export class EsDay {
   }
 
   protected $set(unit: UnitTypeCore, values: number[]) {
-    if (prettyUnit(unit) === C.DAY) {
+    if (normalizeUnit(unit) === C.DAY) {
       setUnitInDate(this.$d, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
-    } else if (prettyUnit(unit) === C.MONTH) {
+    } else if (normalizeUnit(unit) === C.MONTH) {
       const originalDate = values.length === 1 ? this.date() : values[1]
       setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values)
       if (originalDate > 0 && this.date() !== originalDate) {
