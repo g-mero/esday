@@ -1,6 +1,7 @@
-import { type UnitTypeAdd, esday } from 'esday'
+import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { UnitTypeAdd } from '~/common/units'
 import { quarterOfYearPlugin } from '~/plugins'
 import { expectSame, expectSameResult } from '../util'
 

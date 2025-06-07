@@ -1,6 +1,7 @@
 import { esday } from 'esday'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
+import type { UnitTypeAdd } from '~/common/units'
 import { expectSame } from './util'
 
 describe('Difference', () => {
@@ -101,7 +102,7 @@ describe('Difference', () => {
       expectSame((esday) =>
         esday(sourceString).diff(
           esday(sourceString).add(sourceDiffValue, sourceDiffUnit),
-          resultUnit,
+          resultUnit as UnitTypeAdd,
         ),
       )
     },
