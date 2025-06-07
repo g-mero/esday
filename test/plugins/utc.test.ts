@@ -1,4 +1,4 @@
-import type { UnitTypeAdd } from 'esday'
+import type { UnitTypeAddSub } from 'esday'
 import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 
@@ -626,7 +626,7 @@ describe('plugin utc', () => {
     ])('"$value $unit" to date parsed as utc', ({ value, unit }) => {
       const dateString = '2018-09-06T19:34:28.652'
 
-      expectSameResult((esday) => esday.utc(dateString).add(value, unit as UnitTypeAdd))
+      expectSameResult((esday) => esday.utc(dateString).add(value, unit as UnitTypeAddSub))
     })
 
     it.each([
@@ -642,7 +642,7 @@ describe('plugin utc', () => {
       expectSameResult((esday) =>
         esday(dateString)
           .utc()
-          .add(value, unit as UnitTypeAdd),
+          .add(value, unit as UnitTypeAddSub),
       )
     })
   })
@@ -658,7 +658,7 @@ describe('plugin utc', () => {
     ])('"$value $unit" to date parsed as utc', ({ value, unit }) => {
       const dateString = '2018-09-06T19:34:28.652'
 
-      expectSameResult((esday) => esday.utc(dateString).subtract(value, unit as UnitTypeAdd))
+      expectSameResult((esday) => esday.utc(dateString).subtract(value, unit as UnitTypeAddSub))
     })
 
     it.each([
@@ -674,7 +674,7 @@ describe('plugin utc', () => {
       expectSameResult((esday) =>
         esday(dateString)
           .utc()
-          .subtract(value, unit as UnitTypeAdd),
+          .subtract(value, unit as UnitTypeAddSub),
       )
     })
   })

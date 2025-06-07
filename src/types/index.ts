@@ -4,7 +4,7 @@ export type {
   ShortUnit,
   LongUnit,
   UnitType,
-  UnitTypeAdd,
+  UnitTypeAddSub,
   UnitTypeCore,
   PrettyUnit,
   UnitYear,

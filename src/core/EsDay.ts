@@ -10,7 +10,7 @@ import type {
   UnitMs,
   UnitSecond,
   UnitType,
-  UnitTypeAdd,
+  UnitTypeAddSub,
   UnitTypeCore,
   UnitYear,
 } from '~/types'
@@ -233,15 +233,15 @@ export class EsDay {
     return startOfImpl(this, units, true)
   }
 
-  add(number: number, units: UnitTypeAdd) {
+  add(number: number, units: UnitTypeAddSub) {
     return addImpl(this, number, units)
   }
 
-  subtract(number: number, units: UnitTypeAdd) {
+  subtract(number: number, units: UnitTypeAddSub) {
     return this.add(-number, units)
   }
 
-  diff(date: EsDay, units?: UnitTypeAdd, asFloat = false): number {
+  diff(date: EsDay, units?: UnitTypeAddSub, asFloat = false): number {
     return diffImpl(this, date, units, asFloat)
   }
 

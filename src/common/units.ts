@@ -33,7 +33,7 @@ export type LongUnitPlurals = `${(typeof UNIT_MAP)[ShortUnit]}${'s'}`
 export type UnitType = ShortUnit | LongUnit
 export type UnitTypePlurals = UnitType | LongUnitPlurals
 export type UnitTypeCore = Exclude<UnitType, UnitWeek | UnitIsoWeek | UnitQuarter>
-export type UnitTypeAdd = Exclude<UnitTypePlurals, UnitIsoWeeks>
+export type UnitTypeAddSub = Exclude<UnitTypePlurals, UnitIsoWeeks>
 
 // Type as long unit from short unit (e.g. 'y' -> 'year')
 export type PrettyUnit<T extends UnitType> = T extends ShortUnit ? (typeof UNIT_MAP)[T] : T
