@@ -1,4 +1,11 @@
-import { C, isEmptyObject, isUndefined, isValidDate, normalizeUnitWithPlurals } from '~/common'
+import {
+  C,
+  isEmptyObject,
+  isObject,
+  isUndefined,
+  isValidDate,
+  normalizeUnitWithPlurals,
+} from '~/common'
 import { getUnitInDate, prettyUnits, setUnitInDate } from '~/common/date-fields'
 import type {
   UnitDates,
@@ -10,7 +17,7 @@ import type {
   UnitSeconds,
   UnitYears,
 } from '~/common/units'
-import type { DateType, UnitType, UnitTypeAddSub, UnitTypeGetSet } from '~/types'
+import type { DateType, UnitsObjectType, UnitType, UnitTypeAddSub, UnitTypeGetSet } from '~/types'
 import type { SimpleObject } from '~/types/util-types'
 import { esday } from '.'
 import { addImpl } from './Impl/add'
@@ -230,12 +237,32 @@ export class EsDay {
     return startOfImpl(this, units, true)
   }
 
-  add(number: number, units: UnitTypeAddSub) {
-    return addImpl(this, number, units)
+  // using an object as value to add is implemented in the plugin ObjectSupport.
+  // As overloads cannot be added in another module, we have to define all
+  // overloads here, even if they are implemented in a plugin.
+  add(value: number, unit: UnitTypeAddSub): EsDay
+  add(value: UnitsObjectType): EsDay
+  add(value: number | UnitsObjectType, unit?: UnitTypeAddSub) {
+    if (!isObject(value) && unit !== undefined) {
+      return addImpl(this, value, unit)
+    }
+    // UnitsObjectType is implemented in plugin ObjectSupport
+    // therefore we ignore request it here.
+    return this.clone()
   }
 
-  subtract(number: number, units: UnitTypeAddSub) {
-    return this.add(-number, units)
+  // using an object as value to add is implemented in the plugin ObjectSupport.
+  // As overloads cannot be added in another module, we have to define all
+  // overloads here, even if they are implemented in a plugin.
+  subtract(value: number, unit: UnitTypeAddSub): EsDay
+  subtract(value: UnitsObjectType): EsDay
+  subtract(value: number | UnitsObjectType, unit?: UnitTypeAddSub) {
+    if (!isObject(value) && unit !== undefined) {
+      return this.add(-value, unit as UnitTypeAddSub)
+    }
+    // UnitsObjectType is implemented in plugin ObjectSupport
+    // therefore we ignore request it here.
+    return this.clone()
   }
 
   diff(date: EsDay, units?: UnitTypeAddSub, asFloat = false): number {

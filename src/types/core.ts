@@ -34,3 +34,16 @@ export type FormattingTokenDefinitions = Record<
   string,
   (sourceDate: EsDay, formatStr?: string) => string
 >
+
+// Types for using  multiple values in add, subtract
+export type UnitsObjectType = {
+  years?: number
+  quarters?: number
+  months?: number
+  weeks?: number
+  days?: number
+  hours?: number
+  mins?: number
+  seconds?: number
+  milliseconds?: number
+}
