@@ -1,6 +1,6 @@
 import { isArray } from './is'
 import type { PrettyUnit, UnitDay, UnitTypeCore } from './units'
-import { prettyUnit } from './units'
+import { normalizeUnit } from './units'
 
 const UNIT_FIELD_MAP = {
   year: 'FullYear',
@@ -19,7 +19,7 @@ type DateField<T extends DateUnit> = (typeof UNIT_FIELD_MAP)[T]
 export const prettyUnits = Object.keys(UNIT_FIELD_MAP) as (keyof typeof UNIT_FIELD_MAP)[]
 
 export function unitToField<T extends UnitTypeCore>(unit: T): DateField<PrettyUnit<T>> {
-  const p = prettyUnit(unit)
+  const p = normalizeUnit(unit)
   return UNIT_FIELD_MAP[p]
 }
 

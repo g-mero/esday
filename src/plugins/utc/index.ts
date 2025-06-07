@@ -15,7 +15,7 @@ import {
   getUnitInDate,
   getUnitInDateUTC,
   isUndefined,
-  prettyUnit,
+  normalizeUnit,
   setUnitInDateUTC,
 } from '~/common'
 import type { DateType, EsDayPlugin, SimpleType, UnitDay } from '~/types'
@@ -204,7 +204,7 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     const utc = !!this['$conf'].utc
     if (utc) {
       const $date = this['$d']
-      if (prettyUnit(unit) === C.DAY) {
+      if (normalizeUnit(unit) === C.DAY) {
         setUnitInDateUTC($date, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
       } else {
         setUnitInDateUTC($date, unit as Exclude<typeof unit, UnitDay>, values)

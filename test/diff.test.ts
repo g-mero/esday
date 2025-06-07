@@ -69,13 +69,31 @@ describe('Difference', () => {
       sourceString: '2013-02-08T13:24:35.789',
       sourceDiffValue: 1000,
       sourceDiffUnit: C.DAY,
+      resultUnit: 'months',
+    },
+    {
+      sourceString: '2013-02-08T13:24:35.789',
+      sourceDiffValue: 1000,
+      sourceDiffUnit: C.DAY,
       resultUnit: C.QUARTER,
     },
     {
       sourceString: '2013-02-08T13:24:35.789',
       sourceDiffValue: 1000,
       sourceDiffUnit: C.DAY,
+      resultUnit: 'quarters',
+    },
+    {
+      sourceString: '2013-02-08T13:24:35.789',
+      sourceDiffValue: 1000,
+      sourceDiffUnit: C.DAY,
       resultUnit: C.YEAR,
+    },
+    {
+      sourceString: '2013-02-08T13:24:35.789',
+      sourceDiffValue: 1000,
+      sourceDiffUnit: C.DAY,
+      resultUnit: 'years',
     },
   ])(
     'diff for B > A in unit "$resultUnit"',
@@ -250,6 +268,9 @@ describe('Difference', () => {
   ])('diff in unit "$resultUnit" as float', ({ sourceString1, sourceString2, resultUnit }) => {
     expectSame((esday) => esday(sourceString1).diff(esday(sourceString2), resultUnit, true))
   })
+
+  it.todo('test plural units')
+  it('should handle plural units', () => {})
 
   it.each([
     { sourceString1: '2024-08-08', sourceString2: '2024-08-08', expected: 0 },

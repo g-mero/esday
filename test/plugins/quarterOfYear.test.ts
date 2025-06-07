@@ -1,4 +1,4 @@
-import { esday } from 'esday'
+import { type UnitTypeAdd, esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { quarterOfYearPlugin } from '~/plugins'
@@ -52,20 +52,25 @@ describe('quarterOfYear plugin', () => {
   })
 
   it.each([
-    { sourceString: '2023-01-05T09:10:21.456', quarter: 2 },
-    { sourceString: '2023-06-30T09:10:21.456', quarter: 2 },
-    { sourceString: '2023-01-30T09:10:21.456', quarter: 1 },
-    { sourceString: '2023-01-31T09:10:21.456', quarter: 1 },
-  ])('add "$quarter" quarter to "$sourceString"', ({ sourceString, quarter }) => {
-    expectSameResult((esday) => esday(sourceString).add(quarter, 'quarter'))
+    { sourceString: '2023-01-05T09:10:21.456', value: 2, unit: 'quarter' },
+    { sourceString: '2023-06-30T09:10:21.456', value: 2, unit: 'quarter' },
+    { sourceString: '2023-06-30T09:10:21.456', value: 2, unit: 'quarters' },
+    { sourceString: '2023-01-30T09:10:21.456', value: 1, unit: 'q' },
+    { sourceString: '2023-01-30T09:10:21.456', value: 1, unit: 'quarter' },
+    { sourceString: '2023-01-30T09:10:21.456', value: 1, unit: 'quarters' },
+    { sourceString: '2023-01-31T09:10:21.456', value: 1, unit: 'quarter' },
+  ])('add "$value" $unit to "$sourceString"', ({ sourceString, value, unit }) => {
+    expectSameResult((esday) => esday(sourceString).add(value, unit as UnitTypeAdd))
   })
 
   it.each([
-    { sourceString: '2023-01-05T09:10:21.456', quarter: 2 },
-    { sourceString: '2023-08-30T09:10:21.456', quarter: 2 },
-    { sourceString: '2023-01-31T09:10:21.456', quarter: 1 },
-  ])('subtract "$quarter" quarter from "$sourceString"', ({ sourceString, quarter }) => {
-    expectSameResult((esday) => esday(sourceString).subtract(quarter, 'quarter'))
+    { sourceString: '2023-01-05T09:10:21.456', value: 2, unit: 'q' },
+    { sourceString: '2023-01-05T09:10:21.456', value: 2, unit: 'quarter' },
+    { sourceString: '2023-01-05T09:10:21.456', value: 2, unit: 'quarters' },
+    { sourceString: '2023-08-30T09:10:21.456', value: 2, unit: 'quarter' },
+    { sourceString: '2023-01-31T09:10:21.456', value: 1, unit: 'quarter' },
+  ])('subtract "$value" quarter from "$sourceString"', ({ sourceString, value, unit }) => {
+    expectSameResult((esday) => esday(sourceString).subtract(value, unit as UnitTypeAdd))
   })
 
   it.each([

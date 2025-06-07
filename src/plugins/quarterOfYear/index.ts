@@ -5,8 +5,8 @@
  */
 
 import type { EsDay, EsDayPlugin, FormattingTokenDefinitions } from 'esday'
-import { C, prettyUnit } from '~/common'
-import type { UnitIsoWeek, UnitType } from '~/types'
+import { C, normalizeUnitWithPlurals } from '~/common'
+import type { UnitType, UnitTypeAdd } from '~/types'
 
 declare module 'esday' {
   interface EsDay {
@@ -30,8 +30,8 @@ const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   const oldAdd = proto.add
-  proto.add = function (number: number, units: Exclude<UnitType, UnitIsoWeek>) {
-    const unit = prettyUnit(units)
+  proto.add = function (number: number, units: UnitTypeAdd) {
+    const unit = normalizeUnitWithPlurals(units)
     if (unit === C.QUARTER) {
       return this.add(number * 3, C.MONTH)
     }
@@ -41,7 +41,7 @@ const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
   const oldStartOf = proto.startOf
   proto.startOf = function (units: UnitType) {
-    const unit = prettyUnit(units)
+    const unit = normalizeUnitWithPlurals(units)
     if (unit === C.QUARTER) {
       const quarter = this.quarter() - 1
       return this.month(quarter * 3)
@@ -53,7 +53,7 @@ const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
   const oldEndOf = proto.endOf
   proto.endOf = function (units: UnitType) {
-    const unit = prettyUnit(units)
+    const unit = normalizeUnitWithPlurals(units)
     if (unit === C.QUARTER) {
       const quarter = this.quarter() - 1
       return this.month(quarter * 3 + 2)

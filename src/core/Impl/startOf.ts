@@ -1,5 +1,5 @@
 import type { EsDay } from 'esday'
-import { C, prettyUnit } from '~/common'
+import { C, normalizeUnit } from '~/common'
 import type { UnitType, UnitTypeCore } from '~/types'
 
 export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
@@ -21,7 +21,7 @@ export function startOfImpl(that: EsDay, unit: UnitType, reverse = false) {
 
   const $month = result.month()
 
-  switch (prettyUnit(unit)) {
+  switch (normalizeUnit(unit)) {
     case C.YEAR:
       reverse ? instanceFactory(31, 11) : instanceFactory(1, 0)
       instanceFactorySet(C.HOUR, 0)
