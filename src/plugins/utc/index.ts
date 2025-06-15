@@ -15,10 +15,11 @@ import {
   getUnitInDate,
   getUnitInDateUTC,
   isUndefined,
-  normalizeUnit,
+  normalizeUnitWithPlurals,
   setUnitInDateUTC,
 } from '~/common'
-import type { DateType, EsDayPlugin, SimpleType, UnitDay } from '~/types'
+import type { UnitDays } from '~/common/units'
+import type { DateType, EsDayPlugin, SimpleType } from '~/types'
 
 const REGEX_VALID_OFFSET_FORMAT = /[+-]\d\d(?::?\d\d)?/g
 const REGEX_OFFSET_HOURS_MINUTES_FORMAT = /[+-]|\d\d/g
@@ -204,10 +205,10 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     const utc = !!this['$conf'].utc
     if (utc) {
       const $date = this['$d']
-      if (normalizeUnit(unit) === C.DAY) {
+      if (normalizeUnitWithPlurals(unit) === C.DAY) {
         setUnitInDateUTC($date, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
       } else {
-        setUnitInDateUTC($date, unit as Exclude<typeof unit, UnitDay>, values)
+        setUnitInDateUTC($date, unit as Exclude<typeof unit, UnitDays>, values)
       }
 
       return this

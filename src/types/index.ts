@@ -6,6 +6,7 @@ export type {
   UnitType,
   UnitTypeAddSub,
   UnitTypeCore,
+  UnitTypeGetSet,
   PrettyUnit,
   UnitYear,
   UnitQuarter,
