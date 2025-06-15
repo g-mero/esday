@@ -1,6 +1,6 @@
 import { C, isUndefined, normalizeUnitWithPlurals } from '~/common'
 import type { EsDay } from '~/core'
-import type { UnitTypeAdd } from '~/types'
+import type { UnitTypeAddSub } from '~/types'
 
 /**
  * get difference between 2 dates as months.
@@ -39,7 +39,12 @@ function absFloor(n: number): number {
   return n < 0 ? Math.ceil(n) || 0 : Math.floor(n)
 }
 
-export function diffImpl(that: EsDay, date: EsDay, units?: UnitTypeAdd, asFloat = false): number {
+export function diffImpl(
+  that: EsDay,
+  date: EsDay,
+  units?: UnitTypeAddSub,
+  asFloat = false,
+): number {
   const diffInMs = that.valueOf() - date.valueOf()
   const diffInMonths = monthDiff(that, date)
   const zoneDelta = (that.utcOffset() - date.utcOffset()) * C.MILLISECONDS_A_MINUTE

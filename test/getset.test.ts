@@ -115,6 +115,12 @@ describe('set', () => {
       expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
     })
 
+    it('using setter - long plural form', () => {
+      const modifiedDate = testDate.set('years', 2025)
+
+      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
+    })
+
     it('using setter - long form', () => {
       const modifiedDate = testDate.set('year', 2025)
 
@@ -141,6 +147,12 @@ describe('set', () => {
 
     it('using method', () => {
       const modifiedDate = testDate.month(5)
+
+      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
+    })
+
+    it('using setter - long plural form', () => {
+      const modifiedDate = testDate.set('months', 5)
 
       expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
     })
@@ -183,6 +195,12 @@ describe('set', () => {
       expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
     })
 
+    it('using setter - long plural form', () => {
+      const modifiedDate = testDate.set('dates', 23)
+
+      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
+    })
+
     it('using setter - long form', () => {
       const modifiedDate = testDate.set('date', 23)
 
@@ -209,6 +227,12 @@ describe('set', () => {
 
     it('using method', () => {
       const modifiedDate = testDate.day(2)
+
+      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
+    })
+
+    it('using setter - long plural form', () => {
+      const modifiedDate = testDate.set('days', 2)
 
       expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
     })
@@ -243,6 +267,12 @@ describe('set', () => {
       expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
     })
 
+    it('using setter - long plural form', () => {
+      const modifiedDate = testDate.set('hours', 21)
+
+      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
+    })
+
     it('using setter - long form', () => {
       const modifiedDate = testDate.set('hour', 21)
 
@@ -269,6 +299,12 @@ describe('set', () => {
 
     it('using method', () => {
       const modifiedDate = testDate.minute(43)
+
+      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
+    })
+
+    it('using setter - long plural form', () => {
+      const modifiedDate = testDate.set('minutes', 43)
 
       expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
     })
@@ -303,8 +339,14 @@ describe('set', () => {
       expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
     })
 
+    it('using setter - long plural form', () => {
+      const modifiedDate = testDate.set('seconds', 54)
+
+      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
+    })
+
     it('using setter - long form', () => {
-      const modifiedDate = testDate.set('s', 54)
+      const modifiedDate = testDate.set('second', 54)
 
       expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
     })
@@ -329,6 +371,12 @@ describe('set', () => {
 
     it('using method', () => {
       const modifiedDate = testDate.millisecond(273)
+
+      expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
+    })
+
+    it('using setter - long plural form', () => {
+      const modifiedDate = testDate.set('milliseconds', 273)
 
       expect(modifiedDate.toISOString()).toBe(resultDateAsIso)
     })

@@ -1,19 +1,16 @@
-import { C, isEmptyObject, isUndefined, isValidDate, normalizeUnit } from '~/common'
+import { C, isEmptyObject, isUndefined, isValidDate, normalizeUnitWithPlurals } from '~/common'
 import { getUnitInDate, prettyUnits, setUnitInDate } from '~/common/date-fields'
 import type {
-  DateType,
-  UnitDate,
-  UnitDay,
-  UnitHour,
-  UnitMin,
-  UnitMonth,
-  UnitMs,
-  UnitSecond,
-  UnitType,
-  UnitTypeAdd,
-  UnitTypeCore,
-  UnitYear,
-} from '~/types'
+  UnitDates,
+  UnitDays,
+  UnitHours,
+  UnitMins,
+  UnitMonths,
+  UnitMss,
+  UnitSeconds,
+  UnitYears,
+} from '~/common/units'
+import type { DateType, UnitType, UnitTypeAddSub, UnitTypeGetSet } from '~/types'
 import type { SimpleObject } from '~/types/util-types'
 import { esday } from '.'
 import { addImpl } from './Impl/add'
@@ -233,15 +230,15 @@ export class EsDay {
     return startOfImpl(this, units, true)
   }
 
-  add(number: number, units: UnitTypeAdd) {
+  add(number: number, units: UnitTypeAddSub) {
     return addImpl(this, number, units)
   }
 
-  subtract(number: number, units: UnitTypeAdd) {
+  subtract(number: number, units: UnitTypeAddSub) {
     return this.add(-number, units)
   }
 
-  diff(date: EsDay, units?: UnitTypeAdd, asFloat = false): number {
+  diff(date: EsDay, units?: UnitTypeAddSub, asFloat = false): number {
     return diffImpl(this, date, units, asFloat)
   }
 
@@ -266,19 +263,19 @@ export class EsDay {
     return -Math.round(this['$d'].getTimezoneOffset())
   }
 
-  get(units: UnitTypeCore) {
+  get(units: UnitTypeGetSet) {
     return getUnitInDate(this.$d, units)
   }
 
-  set(unit: UnitYear, year: number, month?: number, date?: number): EsDay
-  set(unit: UnitMonth, month: number, date?: number): EsDay
-  set(unit: UnitDate, date: number): EsDay
-  set(unit: UnitDay, day: number): EsDay
-  set(unit: UnitHour, hours: number, min?: number, sec?: number, ms?: number): EsDay
-  set(unit: UnitMin, min: number, sec?: number, ms?: number): EsDay
-  set(unit: UnitSecond, sec: number, ms?: number): EsDay
-  set(unit: UnitMs, ms: number): EsDay
-  set(unit: UnitTypeCore, ...values: number[]) {
+  set(unit: UnitYears, year: number, month?: number, date?: number): EsDay
+  set(unit: UnitMonths, month: number, date?: number): EsDay
+  set(unit: UnitDates, date: number): EsDay
+  set(unit: UnitDays, day: number): EsDay
+  set(unit: UnitHours, hours: number, min?: number, sec?: number, ms?: number): EsDay
+  set(unit: UnitMins, min: number, sec?: number, ms?: number): EsDay
+  set(unit: UnitSeconds, sec: number, ms?: number): EsDay
+  set(unit: UnitMss, ms: number): EsDay
+  set(unit: UnitTypeGetSet, ...values: number[]) {
     return this.clone().$set(unit, values)
   }
 
@@ -302,18 +299,20 @@ export class EsDay {
     return this.$d.toUTCString()
   }
 
-  protected $set(unit: UnitTypeCore, values: number[]) {
-    if (normalizeUnit(unit) === C.DAY) {
+  protected $set(unit: UnitTypeGetSet, values: number[]) {
+    if (normalizeUnitWithPlurals(unit) === C.DAY) {
       setUnitInDate(this.$d, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
-    } else if (normalizeUnit(unit) === C.MONTH) {
+    } else if (normalizeUnitWithPlurals(unit) === C.MONTH) {
       const originalDate = values.length === 1 ? this.date() : values[1]
-      setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values)
+      setUnitInDate(this.$d, C.MONTH, values)
       if (originalDate > 0 && this.date() !== originalDate) {
         // reset date to last day of previous month
         setUnitInDate(this.$d, C.DAY_OF_MONTH, 0)
       }
     } else {
-      setUnitInDate(this.$d, unit as Exclude<typeof unit, UnitDay>, values)
+      // TODO are units week and quarter handled in the plugin?
+      const normalizedUnit = normalizeUnitWithPlurals(unit)
+      setUnitInDate(this.$d, normalizedUnit as Exclude<UnitTypeGetSet, UnitDays>, values)
     }
 
     return this

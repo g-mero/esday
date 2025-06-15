@@ -1,8 +1,8 @@
 import { C, createInstanceFromExist, normalizeUnitWithPlurals } from '~/common'
 import type { EsDay } from '~/core'
-import type { UnitTypeAdd } from '~/types'
+import type { UnitTypeAddSub } from '~/types'
 
-export function addImpl(that: EsDay, value: number, units: UnitTypeAdd) {
+export function addImpl(that: EsDay, value: number, units: UnitTypeAddSub) {
   const $d = that['$d']
   const unit = normalizeUnitWithPlurals(units)
 

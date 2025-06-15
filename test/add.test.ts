@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { C } from '~/common'
-import type { UnitTypeAdd } from '~/common/units'
+import type { UnitTypeAddSub } from '~/common/units'
 import { esday } from '~/core'
 import { expectSameResult } from './util'
 
@@ -48,7 +48,7 @@ describe('add', () => {
   ])('basic - add $value $unit to get $expected', ({ value, unit, format, expected }) => {
     const inst = esday('2021-01-01')
 
-    expect(inst.add(value, unit as UnitTypeAdd).format(format)).toBe(expected)
+    expect(inst.add(value, unit as UnitTypeAddSub).format(format)).toBe(expected)
   })
 
   it.each([

@@ -1,7 +1,7 @@
 import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { UnitTypeAdd } from '~/common/units'
+import type { UnitTypeAddSub } from '~/common/units'
 import { quarterOfYearPlugin } from '~/plugins'
 import { expectSame, expectSameResult } from '../util'
 
@@ -61,7 +61,7 @@ describe('quarterOfYear plugin', () => {
     { sourceString: '2023-01-30T09:10:21.456', value: 1, unit: 'quarters' },
     { sourceString: '2023-01-31T09:10:21.456', value: 1, unit: 'quarter' },
   ])('add "$value" $unit to "$sourceString"', ({ sourceString, value, unit }) => {
-    expectSameResult((esday) => esday(sourceString).add(value, unit as UnitTypeAdd))
+    expectSameResult((esday) => esday(sourceString).add(value, unit as UnitTypeAddSub))
   })
 
   it.each([
@@ -71,7 +71,7 @@ describe('quarterOfYear plugin', () => {
     { sourceString: '2023-08-30T09:10:21.456', value: 2, unit: 'quarter' },
     { sourceString: '2023-01-31T09:10:21.456', value: 1, unit: 'quarter' },
   ])('subtract "$value" quarter from "$sourceString"', ({ sourceString, value, unit }) => {
-    expectSameResult((esday) => esday(sourceString).subtract(value, unit as UnitTypeAdd))
+    expectSameResult((esday) => esday(sourceString).subtract(value, unit as UnitTypeAddSub))
   })
 
   it.each([

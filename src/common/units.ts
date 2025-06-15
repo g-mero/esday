@@ -33,27 +33,43 @@ export type LongUnitPlurals = `${(typeof UNIT_MAP)[ShortUnit]}${'s'}`
 export type UnitType = ShortUnit | LongUnit
 export type UnitTypePlurals = UnitType | LongUnitPlurals
 export type UnitTypeCore = Exclude<UnitType, UnitWeek | UnitIsoWeek | UnitQuarter>
-export type UnitTypeAdd = Exclude<UnitTypePlurals, UnitIsoWeeks>
+export type UnitTypeAddSub = Exclude<UnitTypePlurals, UnitIsoWeeks>
+// TODO weeks and quarters are part of the corresponding plugins
+export type UnitTypeGetSet = Exclude<UnitTypePlurals, UnitWeeks | UnitIsoWeeks | UnitQuarters>
 
-// Type as long unit from short unit (e.g. 'y' -> 'year')
+// Type as long unit from short or long unit (e.g. 'y' -> 'year')
 export type PrettyUnit<T extends UnitType> = T extends ShortUnit ? (typeof UNIT_MAP)[T] : T
-export type PrettyUnitPlurals<T extends UnitTypePlurals> = T extends ShortUnit
-  ? (typeof UNIT_MAP)[T]
-  : T
 
-type UnionUnit<T extends ShortUnit> = T | PrettyUnit<T>
+// Type as plural long unit from short, long or plural unit (e.g. 'years' -> 'year')
+export type PrettyUnitPlurals<T extends UnitTypePlurals> = T extends ShortUnit
+  ? `${(typeof UNIT_MAP)[T]}`
+  : T extends `${infer P}s`
+    ? P
+    : T
+
+type UnionUnit<T extends ShortUnit> = T | PrettyUnit<T> | PrettyUnitPlurals<T>
 export type UnitYear = UnionUnit<'y'>
+export type UnitYears = UnitYear | `${(typeof UNIT_MAP)['y']}${'s'}`
 export type UnitQuarter = UnionUnit<'Q'>
+export type UnitQuarters = UnitQuarter | `${(typeof UNIT_MAP)['Q']}${'s'}`
 export type UnitMonth = UnionUnit<'M'>
+export type UnitMonths = UnitMonth | `${(typeof UNIT_MAP)['M']}${'s'}`
 export type UnitWeek = UnionUnit<'w'>
+export type UnitWeeks = UnitWeek | `${(typeof UNIT_MAP)['w']}${'s'}`
 export type UnitIsoWeek = UnionUnit<'W'>
 export type UnitIsoWeeks = UnitIsoWeek | `${(typeof UNIT_MAP)['W']}${'s'}`
 export type UnitDate = UnionUnit<'D'>
+export type UnitDates = UnitDate | `${(typeof UNIT_MAP)['D']}${'s'}`
 export type UnitDay = UnionUnit<'d'>
+export type UnitDays = UnitDay | `${(typeof UNIT_MAP)['d']}${'s'}`
 export type UnitHour = UnionUnit<'h'>
+export type UnitHours = UnitHour | `${(typeof UNIT_MAP)['h']}${'s'}`
 export type UnitMin = UnionUnit<'m'>
+export type UnitMins = UnitMin | `${(typeof UNIT_MAP)['m']}${'s'}`
 export type UnitSecond = UnionUnit<'s'>
+export type UnitSeconds = UnitSecond | `${(typeof UNIT_MAP)['s']}${'s'}`
 export type UnitMs = UnionUnit<'ms'>
+export type UnitMss = UnitMs | `${(typeof UNIT_MAP)['ms']}${'s'}`
 
 // Convert any unit to its long form (e.g. 'y' or 'year' -> 'year')
 export function normalizeUnit<T extends UnitType>(unit: T): PrettyUnit<T> {
