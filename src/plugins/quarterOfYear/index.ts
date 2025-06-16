@@ -6,7 +6,13 @@
 
 import type { EsDay, EsDayPlugin, FormattingTokenDefinitions } from 'esday'
 import { C, isObject, normalizeUnitWithPlurals } from '~/common'
-import type { UnitType, UnitTypeAddSub, UnitsObjectType } from '~/types'
+import type {
+  UnitType,
+  UnitTypeAddSub,
+  UnitTypeGetSet,
+  UnitsObjectTypeAddSub,
+  UnitsObjectTypeSet,
+} from '~/types'
 
 declare module 'esday' {
   interface EsDay {
@@ -30,7 +36,7 @@ const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   const oldAdd = proto.add
-  proto.add = function (value: number | UnitsObjectType, unit?: UnitTypeAddSub) {
+  proto.add = function (value: number | UnitsObjectTypeAddSub, unit?: UnitTypeAddSub) {
     if (!isObject(value) && unit !== undefined) {
       const unitLong = normalizeUnitWithPlurals(unit)
       if (unitLong === C.QUARTER) {
@@ -64,6 +70,30 @@ const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
         .endOf(C.DAY)
     }
     return oldEndOf.call(this, units)
+  }
+
+  const oldGet = proto.get
+  proto.get = function (unit: UnitTypeGetSet) {
+    const normalizedUnit = normalizeUnitWithPlurals(unit)
+    if (normalizedUnit === C.QUARTER) {
+      return this.quarter()
+    }
+    return oldGet.call(this, unit)
+  }
+
+  const old$set = proto['$set']
+  proto['$set'] = function (unit: UnitTypeGetSet | UnitsObjectTypeSet, values: number[]) {
+    if (isObject(unit)) {
+      // UnitsObjectTypeSet is implemented in plugin ObjectSupport
+      // therefore we ignore the request here.
+      return this.clone()
+    }
+
+    const normalizedUnit = normalizeUnitWithPlurals(unit)
+    if (normalizedUnit === C.QUARTER) {
+      return this.quarter(values[0])
+    }
+    return old$set.call(this, unit, values)
   }
 
   // Add 'Q' for quarter to formatting tokens

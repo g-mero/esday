@@ -1,7 +1,7 @@
 import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { UnitTypeAddSub } from '~/common/units'
+import type { UnitTypeAddSub, UnitTypeGetSet } from '~/common/units'
 import { quarterOfYearPlugin } from '~/plugins'
 import { expectSame, expectSameResult } from '../util'
 
@@ -28,9 +28,19 @@ describe('quarterOfYear plugin', () => {
     { sourceString: '2023-07-01T00:00:00.000', expected: 3 },
     { sourceString: '2023-09-30T23:59:59.999', expected: 3 },
     { sourceString: '2023-10-01T00:00:00.000', expected: 4 },
-  ])('get quarter of "$sourceString"', ({ sourceString, expected }) => {
+  ])('get quarter of "$sourceString" using quarter()', ({ sourceString, expected }) => {
     expect(esday(sourceString).quarter()).toBe(expected)
     expectSame((esday) => esday(sourceString).quarter())
+  })
+
+  it.each([
+    { sourceString: '2023-01-02T00:00:00.000', unit: 'Q', expected: 1 },
+    { sourceString: '2023-04-01T00:00:00.000', unit: 'quarter', expected: 2 },
+    { sourceString: '2023-07-01T00:00:00.000', unit: 'quarters', expected: 3 },
+  ])('get quarter of "$sourceString" using get("$unit")', ({ sourceString, unit, expected }) => {
+    const unitAsUnitType = unit as UnitTypeGetSet
+    expect(esday(sourceString).get(unitAsUnitType)).toBe(expected)
+    expectSame((esday) => esday(sourceString).get(unitAsUnitType))
   })
 
   it('get quarter of invalid date', () => {
@@ -48,9 +58,39 @@ describe('quarterOfYear plugin', () => {
     { sourceString: '2023-01-01T00:00:00.000', quarter: 2, expected: '2023-04-01T00:00:00.000' },
     { sourceString: '2023-02-05T04:05:06.789', quarter: 2, expected: '2023-04-01T00:00:00.000' },
     { sourceString: '2023-11-25T05:06:07.000', quarter: 3, expected: '2023-07-25T00:00:00.000' },
-  ])('set quarter for "$sourceString" to "$quarter"', ({ sourceString, quarter }) => {
-    expectSameResult((esday) => esday(sourceString).quarter(quarter))
-  })
+  ])(
+    'set quarter for "$sourceString" to "$quarter" using quarter()',
+    ({ sourceString, quarter }) => {
+      expectSameResult((esday) => esday(sourceString).quarter(quarter))
+    },
+  )
+
+  it.each([
+    {
+      sourceString: '2023-01-01T00:00:00.000',
+      unit: 'Q',
+      value: 2,
+      expected: '2023-04-01T00:00:00.000',
+    },
+    {
+      sourceString: '2023-02-05T04:05:06.789',
+      unit: 'quarter',
+      value: 2,
+      expected: '2023-04-01T00:00:00.000',
+    },
+    {
+      sourceString: '2023-11-25T05:06:07.000',
+      unit: 'quarters',
+      value: 3,
+      expected: '2023-07-25T00:00:00.000',
+    },
+  ])(
+    'set quarter for "$sourceString" to "$value" using set("$unit")',
+    ({ sourceString, unit, value }) => {
+      const unitAsUnitType = unit as UnitTypeGetSet
+      expectSameResult((esday) => esday(sourceString).set(unitAsUnitType, value))
+    },
+  )
 
   it.each([
     { sourceString: '2023-01-05T09:10:21.456', value: 2, unit: 'quarter' },
