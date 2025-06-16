@@ -6,7 +6,7 @@
 
 import type { EsDay, EsDayPlugin, FormattingTokenDefinitions } from 'esday'
 import { C, normalizeUnitWithPlurals } from '~/common'
-import type { UnitType, UnitTypeAdd } from '~/types'
+import type { UnitType, UnitTypeAddSub } from '~/types'
 
 declare module 'esday' {
   interface EsDay {
@@ -30,7 +30,7 @@ const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   const oldAdd = proto.add
-  proto.add = function (number: number, units: UnitTypeAdd) {
+  proto.add = function (number: number, units: UnitTypeAddSub) {
     const unit = normalizeUnitWithPlurals(units)
     if (unit === C.QUARTER) {
       return this.add(number * 3, C.MONTH)
