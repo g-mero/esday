@@ -25,7 +25,7 @@ import type {
   UnitType,
   UnitTypeAddSub,
   UnitTypeGetSet,
-  UnitsObjectType,
+  UnitsObjectTypeAddSub,
   UnitsObjectTypeSet,
 } from '~/types'
 import type { SimpleObject } from '~/types/util-types'
@@ -251,12 +251,12 @@ export class EsDay {
   // As overloads cannot be added in another module, we have to define all
   // overloads here, even if they are implemented in a plugin.
   add(value: number, unit: UnitTypeAddSub): EsDay
-  add(value: UnitsObjectType): EsDay
-  add(value: number | UnitsObjectType, unit?: UnitTypeAddSub) {
+  add(value: UnitsObjectTypeAddSub): EsDay
+  add(value: number | UnitsObjectTypeAddSub, unit?: UnitTypeAddSub) {
     if (!isObject(value) && unit !== undefined) {
       return addImpl(this, value, unit)
     }
-    // UnitsObjectType is implemented in plugin ObjectSupport
+    // using UnitsObjectTypeAddSub is implemented in plugin ObjectSupport
     // therefore we ignore the request here.
     return this.clone()
   }
@@ -265,12 +265,12 @@ export class EsDay {
   // As overloads cannot be added in another module, we have to define all
   // overloads here, even if they are implemented in a plugin.
   subtract(value: number, unit: UnitTypeAddSub): EsDay
-  subtract(value: UnitsObjectType): EsDay
-  subtract(value: number | UnitsObjectType, unit?: UnitTypeAddSub) {
+  subtract(value: UnitsObjectTypeAddSub): EsDay
+  subtract(value: number | UnitsObjectTypeAddSub, unit?: UnitTypeAddSub) {
     if (!isObject(value) && unit !== undefined) {
       return this.add(-value, unit as UnitTypeAddSub)
     }
-    // UnitsObjectType is implemented in plugin ObjectSupport
+    // using UnitsObjectTypeAddSub is implemented in plugin ObjectSupport
     // therefore we ignore the request here.
     return this.clone()
   }

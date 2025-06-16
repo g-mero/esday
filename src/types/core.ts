@@ -36,7 +36,7 @@ export type FormattingTokenDefinitions = Record<
 >
 
 // Types for using  multiple values in add, subtract
-export type UnitsObjectType = {
+export type UnitsObjectTypeAddSub = {
   years?: number
   quarters?: number
   months?: number
