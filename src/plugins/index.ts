@@ -33,7 +33,6 @@ import type {
 import localizedFormatPlugin from './localizedFormat'
 import localizedParsePlugin from './localizedParse'
 import minMaxPlugin from './minMax'
-import objectSupportPlugin from './objectSupport'
 import quarterOfYearPlugin from './quarterOfYear'
 import relativeTimePlugin from './relativeTime'
 import toArrayPlugin from './toArray'
@@ -57,7 +56,6 @@ export {
   localizedFormatPlugin,
   localizedParsePlugin,
   minMaxPlugin,
-  objectSupportPlugin,
   quarterOfYearPlugin,
   toArrayPlugin,
   toObjectPlugin,

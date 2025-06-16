@@ -34,7 +34,7 @@ export type UnitType = ShortUnit | LongUnit
 export type UnitTypePlurals = UnitType | LongUnitPlurals
 export type UnitTypeCore = Exclude<UnitType, UnitWeek | UnitIsoWeek | UnitQuarter>
 export type UnitTypeAddSub = Exclude<UnitTypePlurals, UnitIsoWeeks>
-export type UnitTypeGetSet = Exclude<UnitTypePlurals, UnitWeeks | UnitIsoWeeks | UnitQuarters>
+export type UnitTypeGetSet = Exclude<UnitTypePlurals, UnitIsoWeeks>
 
 // Type as long unit from short or long unit (e.g. 'y' -> 'year')
 export type PrettyUnit<T extends UnitType> = T extends ShortUnit ? (typeof UNIT_MAP)[T] : T

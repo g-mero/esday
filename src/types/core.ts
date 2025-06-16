@@ -47,3 +47,17 @@ export type UnitsObjectType = {
   seconds?: number
   milliseconds?: number
 }
+
+// Types for using  multiple values in set
+export type UnitsObjectTypeSet = {
+  year?: number
+  quarter?: number
+  month?: number
+  week?: number
+  day?: number // day-of-week
+  date?: number // day-of-month
+  hour?: number
+  min?: number
+  second?: number
+  millisecond?: number
+}

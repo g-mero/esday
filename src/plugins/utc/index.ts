@@ -12,14 +12,15 @@
 import type { EsDay } from 'esday'
 import {
   C,
-  getUnitInDate,
   getUnitInDateUTC,
+  isObject,
   isUndefined,
   normalizeUnitWithPlurals,
   setUnitInDateUTC,
 } from '~/common'
-import type { UnitDays } from '~/common/units'
-import type { DateType, EsDayPlugin, SimpleType } from '~/types'
+import type { UnitForGetDate, UnitForSetDate } from '~/common'
+import type { UnitTypeGetSet } from '~/common/units'
+import type { DateType, EsDayPlugin, SimpleType, UnitsObjectTypeSet } from '~/types'
 
 const REGEX_VALID_OFFSET_FORMAT = /[+-]\d\d(?::?\d\d)?/g
 const REGEX_OFFSET_HOURS_MINUTES_FORMAT = /[+-]|\d\d/g
@@ -195,20 +196,40 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     return result
   }
 
-  proto.get = function (unit) {
-    const utc = !!this['$conf'].utc
-    return utc ? getUnitInDateUTC(this['$d'], unit) : getUnitInDate(this['$d'], unit)
+  const oldGet = proto.get
+  proto.get = function (unit: UnitTypeGetSet) {
+    const normalizedUnit = normalizeUnitWithPlurals(unit)
+    if (normalizedUnit === C.QUARTER || normalizedUnit === C.WEEK) {
+      // Units 'quarter' and 'weeks' are implemented in the corresponding plugins
+      return Number.NaN
+    }
+
+    if (this['$conf'].utc) {
+      return getUnitInDateUTC(this['$d'], unit as UnitForGetDate)
+    }
+
+    return oldGet.call(this, unit)
   }
 
   const old$set = proto['$set']
-  proto['$set'] = function (unit, values) {
+  proto['$set'] = function (unit: UnitTypeGetSet | UnitsObjectTypeSet, values: number[]) {
     const utc = !!this['$conf'].utc
     if (utc) {
+      if (isObject(unit)) {
+        // UnitsObjectTypeSet is implemented in plugin ObjectSupport
+        // therefore we ignore the request here.
+        return this.clone()
+      }
+
       const $date = this['$d']
-      if (normalizeUnitWithPlurals(unit) === C.DAY) {
+      const normalizedUnit = normalizeUnitWithPlurals(unit)
+      if (normalizedUnit === C.DAY) {
+        // change date to the given day of week as setUnitInDate does not have a setDay() method
         setUnitInDateUTC($date, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
-      } else {
-        setUnitInDateUTC($date, unit as Exclude<typeof unit, UnitDays>, values)
+      } else if (normalizedUnit !== C.QUARTER && normalizedUnit !== C.WEEK) {
+        // Units 'quarter' and 'weeks' are implemented in the corresponding plugins
+        const typedUnit = normalizedUnit as UnitForSetDate
+        setUnitInDateUTC($date, typedUnit, values)
       }
 
       return this

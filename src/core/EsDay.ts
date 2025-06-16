@@ -6,7 +6,8 @@ import {
   isValidDate,
   normalizeUnitWithPlurals,
 } from '~/common'
-import { getUnitInDate, prettyUnits, setUnitInDate } from '~/common/date-fields'
+import { getUnitInDate, prettyUnitsDate, setUnitInDate } from '~/common/date-fields'
+import type { UnitForGetDate, UnitForSetDate } from '~/common/date-fields'
 import type {
   UnitDates,
   UnitDays,
@@ -14,10 +15,19 @@ import type {
   UnitMins,
   UnitMonths,
   UnitMss,
+  UnitQuarters,
   UnitSeconds,
+  UnitWeeks,
   UnitYears,
 } from '~/common/units'
-import type { DateType, UnitsObjectType, UnitType, UnitTypeAddSub, UnitTypeGetSet } from '~/types'
+import type {
+  DateType,
+  UnitType,
+  UnitTypeAddSub,
+  UnitTypeGetSet,
+  UnitsObjectType,
+  UnitsObjectTypeSet,
+} from '~/types'
 import type { SimpleObject } from '~/types/util-types'
 import { esday } from '.'
 import { addImpl } from './Impl/add'
@@ -247,7 +257,7 @@ export class EsDay {
       return addImpl(this, value, unit)
     }
     // UnitsObjectType is implemented in plugin ObjectSupport
-    // therefore we ignore request it here.
+    // therefore we ignore the request here.
     return this.clone()
   }
 
@@ -261,7 +271,7 @@ export class EsDay {
       return this.add(-value, unit as UnitTypeAddSub)
     }
     // UnitsObjectType is implemented in plugin ObjectSupport
-    // therefore we ignore request it here.
+    // therefore we ignore the request here.
     return this.clone()
   }
 
@@ -290,19 +300,28 @@ export class EsDay {
     return -Math.round(this['$d'].getTimezoneOffset())
   }
 
-  get(units: UnitTypeGetSet) {
-    return getUnitInDate(this.$d, units)
+  get(unit: UnitTypeGetSet) {
+    const normalizedUnit = normalizeUnitWithPlurals(unit)
+    if (normalizedUnit === C.QUARTER || normalizedUnit === C.WEEK) {
+      // Units 'quarter' and 'weeks' are implemented in the corresponding plugins
+      return Number.NaN
+    }
+    return getUnitInDate(this.$d, unit as UnitForGetDate)
   }
 
   set(unit: UnitYears, year: number, month?: number, date?: number): EsDay
+  set(unit: UnitQuarters, quarter: number): EsDay
   set(unit: UnitMonths, month: number, date?: number): EsDay
+  set(unit: UnitWeeks, week: number): EsDay
   set(unit: UnitDates, date: number): EsDay
   set(unit: UnitDays, day: number): EsDay
   set(unit: UnitHours, hours: number, min?: number, sec?: number, ms?: number): EsDay
   set(unit: UnitMins, min: number, sec?: number, ms?: number): EsDay
   set(unit: UnitSeconds, sec: number, ms?: number): EsDay
   set(unit: UnitMss, ms: number): EsDay
-  set(unit: UnitTypeGetSet, ...values: number[]) {
+  set(unit: UnitTypeGetSet, ...values: number[]): EsDay // generic signature for all types from UnitTypeGetSet
+  set(unit: UnitsObjectTypeSet): EsDay
+  set(unit: UnitTypeGetSet | UnitsObjectTypeSet, ...values: number[]) {
     return this.clone().$set(unit, values)
   }
 
@@ -326,20 +345,28 @@ export class EsDay {
     return this.$d.toUTCString()
   }
 
-  protected $set(unit: UnitTypeGetSet, values: number[]) {
-    if (normalizeUnitWithPlurals(unit) === C.DAY) {
+  protected $set(unit: UnitTypeGetSet | UnitsObjectTypeSet, values: number[]) {
+    if (isObject(unit)) {
+      // UnitsObjectTypeSet is implemented in plugin ObjectSupport
+      // therefore we ignore the request here.
+      return this.clone()
+    }
+
+    const normalizedUnit = normalizeUnitWithPlurals(unit)
+    if (normalizedUnit === C.DAY) {
+      // change date to the given day of week as setUnitInDate does not have a setDay() method
       setUnitInDate(this.$d, C.DAY_OF_MONTH, this.date() + (values[0] - this.day()))
-    } else if (normalizeUnitWithPlurals(unit) === C.MONTH) {
+    } else if (normalizedUnit === C.MONTH) {
       const originalDate = values.length === 1 ? this.date() : values[1]
       setUnitInDate(this.$d, C.MONTH, values)
       if (originalDate > 0 && this.date() !== originalDate) {
         // reset date to last day of previous month
         setUnitInDate(this.$d, C.DAY_OF_MONTH, 0)
       }
-    } else {
-      // TODO are units week and quarter handled in the plugin?
-      const normalizedUnit = normalizeUnitWithPlurals(unit)
-      setUnitInDate(this.$d, normalizedUnit as Exclude<UnitTypeGetSet, UnitDays>, values)
+    } else if (normalizedUnit !== C.QUARTER && normalizedUnit !== C.WEEK) {
+      // Units 'quarter' and 'weeks' are implemented in the corresponding plugins
+      const typedUnit = normalizedUnit as UnitForSetDate
+      setUnitInDate(this.$d, typedUnit, values)
     }
 
     return this
@@ -357,11 +384,10 @@ export class EsDay {
  * esday().second(...args)
  * esday().millisecond(...args)
  */
-for (const key of prettyUnits) {
+for (const key of prettyUnitsDate) {
   // @ts-expect-error it's compatible with the overload
   EsDay.prototype[key] = function (...args: number[]): EsDay | number {
     if (args?.length) {
-      // @ts-expect-error it's compatible with the overload
       return this.set(key, ...(args as [number]))
     }
     return this.get(key)
