@@ -10,8 +10,22 @@
  * To use the parsing tokens, the plugin AdvancedParse is required.
  */
 
-import type { EsDay, EsDayPlugin, FormattingTokenDefinitions, UnitType } from 'esday'
-import { C, createInstanceFromExist, isUndefined, padStart } from '~/common'
+import type {
+  EsDay,
+  EsDayPlugin,
+  FormattingTokenDefinitions,
+  UnitType,
+  UnitTypeGetSet,
+  UnitsObjectTypeSet,
+} from 'esday'
+import {
+  C,
+  createInstanceFromExist,
+  isObject,
+  isUndefined,
+  normalizeUnitWithPlurals,
+  padStart,
+} from '~/common'
 import type { ParseOptions, ParsedElements, TokenDefinitions } from '../advancedParse/types'
 
 const match1to2NoLeadingZero = /^[1-9]\d?/ // 1-99
@@ -328,6 +342,30 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       return newDate['$set'](C.HOUR, [23, 59, 59, 999])
     }
     return oldEndOf.call(this, units)
+  }
+
+  const oldGet = proto.get
+  proto.get = function (unit: UnitTypeGetSet) {
+    const normalizedUnit = normalizeUnitWithPlurals(unit)
+    if (normalizedUnit === C.WEEK) {
+      return this.week()
+    }
+    return oldGet.call(this, unit)
+  }
+
+  const old$set = proto['$set']
+  proto['$set'] = function (unit: UnitTypeGetSet | UnitsObjectTypeSet, values: number[]) {
+    if (isObject(unit)) {
+      // UnitsObjectTypeSet is implemented in plugin ObjectSupport
+      // therefore we ignore the request here.
+      return this.clone()
+    }
+
+    const normalizedUnit = normalizeUnitWithPlurals(unit)
+    if (normalizedUnit === C.WEEK) {
+      return this.week(values[0])
+    }
+    return old$set.call(this, unit, values)
   }
 
   // Add week related formatting tokens
