@@ -39,12 +39,31 @@ const objectSupportPlugin: EsDayPlugin<{}> = (_, dayClass, _dayFactory) => {
       !isEmptyObject(date) &&
       !Array.isArray(date)
     ) {
-      // the default values are the current day, month and year and time 0
-      const now = createInstanceFromExist(new Date(), this)
-      const dateArrayTuple: Tuple<number, 7> = [now.year(), now.month() + 1, now.date(), 0, 0, 0, 0]
+      const dateKeys = Object.keys(date)
 
-      const keys = Object.keys(date)
-      for (const stringKey of keys) {
+      // the default values are: the current year; January, date 1 and time 0
+      const now = createInstanceFromExist(new Date(), this)
+      const dateArrayTuple: Tuple<number, 7> = [now.year(), 1, 1, 0, 0, 0, 0]
+
+      const dateIncludesYear =
+        dateKeys.includes('y') || dateKeys.includes(C.YEAR) || dateKeys.includes(`${C.YEAR}s`)
+
+      const dateIncludesMonth =
+        dateKeys.includes('M') || dateKeys.includes(C.MONTH) || dateKeys.includes(`${C.MONTH}s`)
+
+      const dateIncludesDay =
+        dateKeys.includes('D') ||
+        dateKeys.includes(C.DAY_OF_MONTH) ||
+        dateKeys.includes(`${C.DAY_OF_MONTH}s`) ||
+        dateKeys.includes('d') ||
+        dateKeys.includes(C.DAY) ||
+        dateKeys.includes(`${C.DAY}s`)
+
+      if (dateIncludesDay && !dateIncludesMonth && !dateIncludesYear) {
+        dateArrayTuple[1] = now.month() + 1
+      }
+
+      for (const stringKey of dateKeys) {
         const key = normalizeUnitWithPlurals(stringKey as UnitTypePlurals)
         switch (key) {
           case C.YEAR:

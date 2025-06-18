@@ -19,7 +19,11 @@ describe('objectSupport plugin', () => {
   })
 
   it.each([
-    { value: { y: 2024, M: 4, D: 14 }, expected: '2024-05-14T00:00:00', description: 'y-M-D' },
+    { value: { y: 2024 }, expected: '2024-01-01T00:00:00', description: 'y' },
+    { value: { y: 2024, M: 4 }, expected: '2024-05-01T00:00:00', description: 'y-M' },
+    { value: { y: 2024, D: 14 }, expected: '2024-01-14T00:00:00', description: 'y-D' },
+    { value: { M: 4, D: 14 }, expected: '2025-05-14T00:00:00', description: 'M-D' },
+    { value: { D: 14 }, expected: '2025-07-14T00:00:00', description: 'D' },
     { value: { y: 2024, M: 4, d: 14 }, expected: '2024-05-14T00:00:00', description: 'y-M-d' },
     {
       value: { y: 2024, M: 4, D: 14, h: 15, m: 13, s: 34 },

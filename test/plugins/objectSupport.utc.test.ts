@@ -6,7 +6,7 @@ import { expectSameResult } from '../util'
 
 esday.extend(utcPlugin).extend(objectSupportPlugin)
 
-describe('objectSupport plugin', () => {
+describe('objectSupport plugin with utc - default cases', () => {
   const fakeTimeAsString = '2025-07-17T03:24:46.234Z'
 
   beforeEach(() => {
@@ -213,5 +213,28 @@ describe('objectSupport plugin', () => {
   ])('set object ("$description")', ({ value, expected }) => {
     expect(esday.utc().set(value).format().slice(0, -1)).toBe(expected)
     expectSameResult((esday) => esday.utc().set(value))
+  })
+})
+
+describe('objectSupport plugin with utc - edge cases', () => {
+  const fakeTimeAsString = '2025-07-17T23:59:00.000Z'
+
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it.each([
+    { value: { y: 2024, M: 4, D: 14 }, expected: '2024-05-14T00:00:00', description: 'y-M-D' },
+    { value: { y: 2024, M: 4 }, expected: '2024-05-01T00:00:00', description: 'y-M' },
+    { value: { y: 2024, D: 14 }, expected: '2024-01-14T00:00:00', description: 'y-D' },
+    { value: { D: 14 }, expected: '2025-07-14T00:00:00', description: 'D' },
+  ])('create date from object with short format "$description"', ({ value, expected }) => {
+    expect(esday.utc(value).format().slice(0, -1)).toBe(expected)
+    expectSameResult((esday) => esday.utc(value))
   })
 })

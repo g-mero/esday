@@ -29,7 +29,11 @@ esday().subtract(value: UnitsObjectTypeAddSub): EsDay
 
 `type ParsingObject = ParsingObjectShort | ParsingObjectLong | ParsingObjectPlurals`
 
-Omitted units default to 0 or the current date, month, or year. `day` and `date` key both mean day-of-the-month (in short, long and plural form).
+Omitted time units default to 0.
+A missing year unit defaults to the current year.
+Missing month and day units default to January 1st, except when there is a day, but no month and year value; in this case the current month is used as a default.
+
+Both `day` and `date` key mean day-of-the-month (in short, long and plural form).
 
 **Note**: months are 0 indexed.
 
