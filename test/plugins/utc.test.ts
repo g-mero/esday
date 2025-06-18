@@ -138,6 +138,14 @@ describe('plugin utc', () => {
       expectSameResult((esday) => esday.utc())
     })
 
+    it('parse Date object', () => {
+      expectSameResult((esday) => esday.utc(new Date('2025-12-17T03:24:00')))
+    })
+
+    it('parse utc Date object', () => {
+      expectSameResult((esday) => esday.utc(new Date(Date.UTC(2024, 1, 2, 3, 4, 5))))
+    })
+
     it('now with converted date', () => {
       expectSameResult((esday) => esday().utc())
     })
