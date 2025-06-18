@@ -32,6 +32,7 @@ Currently there are the following plugins:
 - [LocalizedFormat](./plugins/localizedFormat.md) (for formatting with locale dependant tokens in template)
 - [LocalizedParse](./plugins/localizedParse.md) (for parsing locale dependant tokens in arbitrary formatted date and time strings)
 - [MinMax](./plugins/minMay.md) (MinMax adds .min() and .max() APIs - find the minimum or maximum of several dates)
+- [ObjectSupport](./plugins/objectSupport.md) (ObjectSupport adds input of type object to esday(), .add(), .subtract() and .set())
 - [QuarterOfYear](./plugins/quarterOfYear.md) (QuarterOfYear adds .quarter() getter and setter APIs and formatter token 'Q' - handle quarter of year)
 - [RelativeTime](./plugins/relativeTime.md) (RelativeTime adds .to(), .from(), .toNow(), .fromNow() API - for formatting time relative to a given date)
 - [ToArray](./plugins/toArray.md) (ToArray adds .toArray() API - get an array with the components of a date)
