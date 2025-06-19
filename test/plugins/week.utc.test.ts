@@ -1,10 +1,11 @@
 import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
-import { afterEach, beforeEach, describe, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { UnitTypeGetSet } from '~/common/units'
 import localeDe from '~/locales/de'
 import localeEn from '~/locales/en'
 import { advancedParsePlugin, localePlugin, utcPlugin, weekPlugin } from '~/plugins'
-import { expectSameResult } from '../util'
+import { expectSame, expectSameResult } from '../util'
 
 esday.extend(utcPlugin).extend(localePlugin).extend(advancedParsePlugin).extend(weekPlugin)
 
@@ -25,6 +26,35 @@ describe('week plugin - locale en', () => {
   afterEach(() => {
     vi.useRealTimers()
   })
+
+  it.each([
+    { sourceString: '2024-06-10', unit: 'w', expected: 24, weekday: 'Monday' },
+    { sourceString: '2024-06-11', unit: 'week', expected: 24, weekday: 'Tuesday' },
+    { sourceString: '2024-06-12', unit: 'weeks', expected: 24, weekday: 'Wednesday' },
+  ])(
+    'should get week number for "$sourceString" using get("$unit")',
+    ({ sourceString, unit, expected }) => {
+      const unitAsUnitType = unit as UnitTypeGetSet
+      expectSame((esday) => esday.utc(sourceString).get(unitAsUnitType))
+      expect(esday.utc(sourceString).get(unitAsUnitType)).toBe(expected)
+    },
+  )
+
+  it.each([
+    { sourceString: '2025-05-01', unit: 'w', newWeek: 1 },
+    { sourceString: '2024-06-15', unit: 'week', newWeek: 10 },
+    { sourceString: '2022-05-16', unit: 'weeks', newWeek: 53 },
+  ])(
+    'should set the week number  for "$sourceString" to "$newWeek" using set("$unit")',
+    ({ sourceString, unit, newWeek }) => {
+      const unitAsUnitType = unit as UnitTypeGetSet
+      const esdaySourceDate = esday.utc(sourceString)
+      const esdayTargetDate = esdaySourceDate.set(unitAsUnitType, newWeek)
+
+      expectSameResult((esday) => esday.utc(sourceString).set(unitAsUnitType, newWeek))
+      expect(esdaySourceDate.day()).toBe(esdayTargetDate.day())
+    },
+  )
 
   it.each([
     { sourceString: '2025-10-24 2', formatString: 'YYYY-MM-DD w' },
@@ -97,6 +127,35 @@ describe('week plugin - locale de', () => {
   afterEach(() => {
     vi.useRealTimers()
   })
+
+  it.each([
+    { sourceString: '2024-06-10', unit: 'w', expected: 24, weekday: 'Monday' },
+    { sourceString: '2024-06-11', unit: 'week', expected: 24, weekday: 'Tuesday' },
+    { sourceString: '2024-06-12', unit: 'weeks', expected: 24, weekday: 'Wednesday' },
+  ])(
+    'should get week number for "$sourceString" using get("$unit")',
+    ({ sourceString, unit, expected }) => {
+      const unitAsUnitType = unit as UnitTypeGetSet
+      expectSame((esday) => esday.utc(sourceString).get(unitAsUnitType))
+      expect(esday.utc(sourceString).get(unitAsUnitType)).toBe(expected)
+    },
+  )
+
+  it.each([
+    { sourceString: '2025-05-01', unit: 'w', newWeek: 1 },
+    { sourceString: '2024-06-15', unit: 'week', newWeek: 10 },
+    { sourceString: '2022-05-16', unit: 'weeks', newWeek: 53 },
+  ])(
+    'should set the week number  for "$sourceString" to "$newWeek" using set("$unit")',
+    ({ sourceString, unit, newWeek }) => {
+      const unitAsUnitType = unit as UnitTypeGetSet
+      const esdaySourceDate = esday.utc(sourceString)
+      const esdayTargetDate = esdaySourceDate.set(unitAsUnitType, newWeek)
+
+      expectSameResult((esday) => esday.utc(sourceString).set(unitAsUnitType, newWeek))
+      expect(esdaySourceDate.day()).toBe(esdayTargetDate.day())
+    },
+  )
 
   it.each([
     { sourceString: '2025-10-24 2', formatString: 'YYYY-MM-DD w' },

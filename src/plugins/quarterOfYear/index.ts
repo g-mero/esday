@@ -5,8 +5,14 @@
  */
 
 import type { EsDay, EsDayPlugin, FormattingTokenDefinitions } from 'esday'
-import { C, normalizeUnitWithPlurals } from '~/common'
-import type { UnitType, UnitTypeAddSub } from '~/types'
+import { C, isObject, normalizeUnitWithPlurals } from '~/common'
+import type {
+  UnitType,
+  UnitTypeAddSub,
+  UnitTypeGetSet,
+  UnitsObjectTypeAddSub,
+  UnitsObjectTypeSet,
+} from '~/types'
 
 declare module 'esday' {
   interface EsDay {
@@ -30,13 +36,16 @@ const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   const oldAdd = proto.add
-  proto.add = function (number: number, units: UnitTypeAddSub) {
-    const unit = normalizeUnitWithPlurals(units)
-    if (unit === C.QUARTER) {
-      return this.add(number * 3, C.MONTH)
+  proto.add = function (value: number | UnitsObjectTypeAddSub, unit?: UnitTypeAddSub) {
+    if (!isObject(value) && unit !== undefined) {
+      const unitLong = normalizeUnitWithPlurals(unit)
+      if (unitLong === C.QUARTER) {
+        return this.add(value * 3, C.MONTH)
+      }
     }
 
-    return oldAdd.call(this, number, units)
+    // @ts-expect-error it's compatible with the overload
+    return oldAdd.call(this, value, unit)
   }
 
   const oldStartOf = proto.startOf
@@ -61,6 +70,30 @@ const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
         .endOf(C.DAY)
     }
     return oldEndOf.call(this, units)
+  }
+
+  const oldGet = proto.get
+  proto.get = function (unit: UnitTypeGetSet) {
+    const normalizedUnit = normalizeUnitWithPlurals(unit)
+    if (normalizedUnit === C.QUARTER) {
+      return this.quarter()
+    }
+    return oldGet.call(this, unit)
+  }
+
+  const old$set = proto['$set']
+  proto['$set'] = function (unit: UnitTypeGetSet | UnitsObjectTypeSet, values: number[]) {
+    if (isObject(unit)) {
+      // UnitsObjectTypeSet is implemented in plugin ObjectSupport
+      // therefore we ignore the request here.
+      return this.clone()
+    }
+
+    const normalizedUnit = normalizeUnitWithPlurals(unit)
+    if (normalizedUnit === C.QUARTER) {
+      return this.quarter(values[0])
+    }
+    return old$set.call(this, unit, values)
   }
 
   // Add 'Q' for quarter to formatting tokens

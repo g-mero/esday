@@ -1,6 +1,6 @@
 # Week
 
-Week adds the `week`, the `weeks`, the `weekDay`, the `wWeekYear` and the `weeksInYear` methods to EsDay.
+Week adds the `week`, the `weeks`, the `weekDay`, the `wWeekYear` and the `weeksInYear` methods to EsDay.  Extend the `get` and `set` methods to handle the unit 'week'.
 
 The `week` method gets or sets the week of the year of a date according to the active locale.
 The `weeks` method is just an alias for the `week` method.
@@ -52,26 +52,33 @@ For example, in the US, the week that contains Jan 1st is always the first week.
 If Jan 1 was a Monday, Dec 31 would belong to the same week as Jan 1, and thus the same week-year as Jan 1 (e.g. 2024).
 Dec 30 would have a different week-year than Dec 31 (in the previous case it would be 2023).
 
-### Formatting tokens
+### Added units
+| **Unit** | **Example** | **Description** |
+| -------- | ----------- | --------------- |
+| 'w'      | 1-53        | Week of year.   |
+| 'week'   | 1-53        | Week of year.   |
+| 'weeks'  | 1-53        | Week of year.   |
+
+### Added formatting tokens
 | **Token** | **Example** | **Description**                 |
 | --------- | ----------- | --------------------------------|
-| w         | 1-53        | week of year.                   |
-| ww        | 01-53       | week of year (2 digits).        |
-| wo        | 1nd-53rd    | week of year as ordinal number. |
-| e         | 1-7         | day of week.                    |
-| gg        | 00-99       | week-year (2 digits).           |
-| gggg      | 0000-9999   | week-year.                      |
+| w         | 1-53        | Week of year.                   |
+| ww        | 01-53       | Week of year (2 digits).        |
+| wo        | 1nd-53rd    | Week of year as ordinal number. |
+| e         | 1-7         | Day of week.                    |
+| gg        | 00-99       | Week-year (2 digits).           |
+| gggg      | 0000-9999   | Week-year.                      |
 
 When no locale is loaded the token 'wo' returns the week number as number (instead of an ordinal number).
 
-### Parsing tokens
+### Added parsing tokens
 | **Token** | **Example** | **Description**                                               |
 | --------- | ----------- | ------------------------------------------------------------- |
-| w         | 1-53        | week of year.  Sets day of week to 1st day of week.           |
-| ww        | 01-53       | week of year. Sets day of week to 1st day of week (2 digits). |
-| e         | 1-7         | day of week.                                                  |
-| gg        | 00-99       | week-year (2 digits).                                         |
-| gggg      | 0000-9999   | week-year.                                                    |
+| w         | 1-53        | Week of year.  Sets day of week to 1st day of week.           |
+| ww        | 01-53       | Week of year. Sets day of week to 1st day of week (2 digits). |
+| e         | 1-7         | Day of week.                                                  |
+| gg        | 00-99       | Week-year (2 digits).                                         |
+| gggg      | 0000-9999   | Week-year.                                                    |
 
 If the source string (and the format to use) contains a valid day of month, the week is ignored (like moment.js does).
 
@@ -107,7 +114,13 @@ esday.locale('en-US')
 esday('2024-01-01').week()
 // Returns 1
 
+esday('2024-01-01').get('week')
+// Returns 1
+
 esday('2024-02-14').week(1)
+// Returns esday for '2024-01-03'
+
+esday('2024-02-14').set('w', 1)
 // Returns esday for '2024-01-03'
 
 esday('2025-10-01').weekday()

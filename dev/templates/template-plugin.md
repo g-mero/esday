@@ -21,7 +21,6 @@ The `method2` method gets a new date in the middle of the next week for a date.
 esday().myPlugin(): string
 esday().myPlugin(format: string): EsDay
 ```
-```
 
 // TODO describe parameters used in signatures here
 | parameter | description                              |

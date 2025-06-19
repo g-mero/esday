@@ -1,5 +1,16 @@
+/**
+ * Map units to fields of a javascript Date object.
+ */
+
 import { isArray } from './is'
-import type { PrettyUnitPlurals, UnitDays, UnitTypeGetSet } from './units'
+import type {
+  PrettyUnitPlurals,
+  UnitDays,
+  UnitQuarter,
+  UnitTypeGetSet,
+  UnitTypePlurals,
+  UnitWeek,
+} from './units'
 import { normalizeUnitWithPlurals } from './units'
 
 const UNIT_FIELD_MAP = {
@@ -16,40 +27,40 @@ const UNIT_FIELD_MAP = {
 type DateUnit = keyof typeof UNIT_FIELD_MAP
 type DateField<T extends DateUnit> = (typeof UNIT_FIELD_MAP)[T]
 
-export const prettyUnits = Object.keys(UNIT_FIELD_MAP) as (keyof typeof UNIT_FIELD_MAP)[]
+export type UnitForGetDate = Exclude<UnitTypeGetSet, UnitWeek | UnitQuarter>
+export type UnitForSetDate = Exclude<UnitForGetDate, UnitDays>
 
-export function unitToField<T extends UnitTypeGetSet>(unit: T): DateField<PrettyUnitPlurals<T>> {
-  const p = normalizeUnitWithPlurals(unit)
+export type PrettyUnitForSetDate<T extends UnitTypePlurals> = Exclude<
+  PrettyUnitPlurals<T>,
+  UnitWeek | UnitQuarter
+>
+
+export const prettyUnitsDate = Object.keys(UNIT_FIELD_MAP) as DateUnit[]
+
+export function unitToField<T extends UnitForGetDate>(unit: T): DateField<PrettyUnitForSetDate<T>> {
+  const p = normalizeUnitWithPlurals(unit) as PrettyUnitForSetDate<T>
   return UNIT_FIELD_MAP[p]
 }
 
-export function getUnitInDate(date: Date, unit: UnitTypeGetSet): number {
+export function getUnitInDate(date: Date, unit: UnitForGetDate): number {
   const field = unitToField(unit)
   const method = `get${field}` as `get${typeof field}`
   return date[method]()
 }
 
-export function getUnitInDateUTC(date: Date, unit: UnitTypeGetSet): number {
+export function getUnitInDateUTC(date: Date, unit: UnitForGetDate): number {
   const field = unitToField(unit)
   return date[`getUTC${field}` as `getUTC${typeof field}`]()
 }
 
-export function setUnitInDate(
-  date: Date,
-  unit: Exclude<UnitTypeGetSet, UnitDays>,
-  value: number | number[],
-): Date {
+export function setUnitInDate(date: Date, unit: UnitForSetDate, value: number | number[]): Date {
   const field = unitToField(unit)
   const method = `set${field}` as `set${typeof field}`
   date[method](...((isArray(value) ? value : [value]) as [number]))
   return date
 }
 
-export function setUnitInDateUTC(
-  date: Date,
-  unit: Exclude<UnitTypeGetSet, UnitDays>,
-  value: number | number[],
-): Date {
+export function setUnitInDateUTC(date: Date, unit: UnitForSetDate, value: number | number[]): Date {
   const field = unitToField(unit)
   const method = `setUTC${field}` as `setUTC${typeof field}`
   date[method](...((isArray(value) ? value : [value]) as [number]))
