@@ -69,6 +69,7 @@ export class EsDay {
 
   /**
    * Create a Date object from the date components (year, month, ...).
+   * The month is 1 based (1..12).
    * Potential hook for plugins to change the details of Date creation.
    * @param Y - year of date to create
    * @param M - year of date to create
@@ -184,7 +185,7 @@ export class EsDay {
     if (date === null) return new Date(Number.NaN)
     if (isUndefined(date)) return new Date()
     if (isEmptyObject(date)) return new Date()
-    if (Array.isArray(date)) return parseArrayToDate(date)
+    if (Array.isArray(date)) return parseArrayToDate.call(this, date)
     if (typeof date === 'string' && !/Z$/i.test(date)) {
       const d = date.match(C.REGEX_PARSE_DEFAULT)
       if (d) {
