@@ -270,8 +270,30 @@ describe('Difference', () => {
     expectSame((esday) => esday(sourceString1).diff(esday(sourceString2), resultUnit, true))
   })
 
-  it.todo('test plural units')
-  it('should handle plural units', () => {})
+  it.each([
+    { resultUnit: 'milliseconds' },
+    { resultUnit: 'ms' },
+    { resultUnit: 'minutes' },
+    { resultUnit: 'm' },
+    { resultUnit: 'hours' },
+    { resultUnit: 'h' },
+    { resultUnit: 'days' },
+    { resultUnit: 'd' },
+    { resultUnit: 'dates' },
+    { resultUnit: 'D' },
+    { resultUnit: 'months' },
+    { resultUnit: 'M' },
+    { resultUnit: 'quarters' },
+    { resultUnit: 'Q' },
+    { resultUnit: 'years' },
+    { resultUnit: 'y' },
+  ])('should handle plural units "$resultUnit"', ({ resultUnit }) => {
+    const sourceDiffValue = 1000
+
+    expectSame((esday) =>
+      esday().diff(esday().add(sourceDiffValue, C.DAY), resultUnit as UnitTypeAddSub),
+    )
+  })
 
   it.each([
     { sourceString1: '2024-08-08', sourceString2: '2024-08-08', expected: 0 },

@@ -12,7 +12,7 @@ By default `diff` will truncate the result to an integer. If you want a floating
 
 ### Method signatures
 ```typescript
-esday().diff(date: EsDay, unit?: UnitType, asFloat?: boolean): number
+esday().diff(date: EsDay, unit?: UnitTypeAddSub, asFloat?: boolean): number
 ```
 
 | parameter | description                                         |
@@ -21,9 +21,13 @@ esday().diff(date: EsDay, unit?: UnitType, asFloat?: boolean): number
 | unit      | Unit to use for the calculated difference           |
 | asFloat   | return the result as float  (false= return integer) |
 
-### Available Units in UnitType
+### Available Units in UnitTypeAddSub
 
-'year', 'quarter', 'month', 'week', 'day', 'hour', 'minute' and 'second'
+Short form: 'y', 'Q', 'M', 'w', 'd', 'D', 'h', 'm', 's' and 'ms'.
+Long form: 'year', 'quarter', 'month', 'week', 'day', 'date', 'hour', 'minute', 'second' and 'millisecond'.
+Plural form: 'years', 'quarters', 'months', 'weeks', 'days', 'dates', 'hours', 'minutes', 'seconds' and 'milliseconds'.
+
+Both `days` and `dates` (in short, long and plural forms) mean 'days'.
 
 ## Examples
 ```typescript
@@ -38,6 +42,6 @@ esday('2019-01-25').diff(esday('2018-06-05'), 'month')
 // Returns 7
 
 // calculating difference with unit 'months' as float
-esday('2019-01-25').diff(esday('2018-06-05'), 'month', true)
+esday('2019-01-25').diff(esday('2018-06-05'), 'M', true)
 // Returns 7.645161290322581
 ```
