@@ -4,7 +4,7 @@ import { defineConfig } from 'tsup'
 
 function generateConfig(jsx: boolean): Options {
   return {
-    target: 'esnext',
+    target: 'es2020',
     platform: 'browser',
     format: 'esm',
     clean: true,
