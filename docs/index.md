@@ -7,7 +7,9 @@ EsDay has an API largely similar to [Moment.js](https://momentjs.com/docs/) (v2.
 ## Core functions
 EsDay has many integrated functions:
 - [diff](./core/diff.md) calculating the difference between 2 esday objects based on a given unit.
-- [formatting](./core/format.md) an esday object as a string
+- [formatting](./core/format.md) an esday object as a string.
+- [get](./core/get.md) get an element of an esday object.
+- [set](./core/set.md) set an element of an esday object.
 
 ## Locales
 EsDay supports many locales. A list of the supported locales can be found in the [details page](./locales/locales.md).
