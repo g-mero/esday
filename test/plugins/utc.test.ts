@@ -190,6 +190,18 @@ describe('plugin utc', () => {
       expect(esday.utc(dateString).format()).toEqual('2018-09-06T19:34:28Z')
       expect(esday.utc(dateString).format()).toEqual(moment.utc(dateString).format())
     })
+
+    it.each([
+      { dateArray: [2024] },
+      { dateArray: [2024, 5] },
+      { dateArray: [2024, 5, 1] },
+      { dateArray: [2024, 5, 1, 13] },
+      { dateArray: [2024, 5, 1, 13, 52] },
+      { dateArray: [2024, 5, 1, 13, 52, 44] },
+      { dateArray: [2024, 5, 1, 13, 14, 15, 99] },
+    ])('parses $dateArray to date', ({ dateArray }) => {
+      expectSameResult((esday) => esday.utc(dateArray))
+    })
   })
 
   describe('parse (with format)', () => {
