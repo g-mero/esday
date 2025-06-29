@@ -4,12 +4,19 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import type { UnitTypeGetSet } from '~/common/units'
 import localeAr from '~/locales/ar'
-import { advancedParsePlugin, localePlugin, localizedFormatPlugin, weekPlugin } from '~/plugins'
+import {
+  advancedParsePlugin,
+  localePlugin,
+  localizedFormatPlugin,
+  localizedParsePlugin,
+  weekPlugin,
+} from '~/plugins'
 import { expectSame, expectSameResult } from '../util'
 
 esday
   .extend(localePlugin)
   .extend(advancedParsePlugin)
+  .extend(localizedParsePlugin)
   .extend(localizedFormatPlugin)
   .extend(weekPlugin)
 esday.registerLocale(localeAr)
@@ -309,6 +316,38 @@ describe('week plugin - locale "ar"', () => {
       vi.setSystemTime(new Date(newFakeTime))
 
       expectSameResult((esday) => esday(sourceString, formatString))
+    },
+  )
+
+  it.each([
+    { sourceString: '2025 0', formatString: 'YYYY d' },
+    { sourceString: '2025 1', formatString: 'YYYY d' },
+    { sourceString: '2025 2', formatString: 'YYYY d' },
+    { sourceString: '2025 3', formatString: 'YYYY d' },
+    { sourceString: '2025 4', formatString: 'YYYY d' },
+    { sourceString: '2025 5', formatString: 'YYYY d' },
+    { sourceString: '2025 6', formatString: 'YYYY d' },
+    { sourceString: '2025 12 1', formatString: 'YYYY MM d' },
+    { sourceString: '٢٠٢٤ ١٢ ٢٤ ث ١٤:٢٥:٣٦', formatString: 'YYYY MM DD dd HH:mm:ss' },
+    { sourceString: '2024 12 24 ث 14:25:36', formatString: 'YYYY MM DD dd HH:mm:ss' },
+    { sourceString: '2024 12 24 ثلاثاء 14:25:36', formatString: 'YYYY MM DD ddd HH:mm:ss' },
+    { sourceString: '2024 12 24 الثلاثاء 14:25:36', formatString: 'YYYY MM DD dddd HH:mm:ss' },
+    { sourceString: '2024 الإثنين', formatString: 'YYYY dddd' },
+    { sourceString: '2024 الإثنين 15:26', formatString: 'YYYY dddd HH:mm' },
+    { sourceString: '2024 12 الأحد', formatString: 'YYYY MM dddd' },
+  ])(
+    'parse "$sourceString" with day-of-week token in "$formatString"',
+    ({ sourceString, formatString }) => {
+      expectSameResult((esday) => esday(sourceString, formatString))
+      expect(esday(sourceString, formatString).isValid()).toBeTruthy()
+    },
+  )
+
+  it.each([{ sourceString: '2025 12 2', formatString: 'YYYY MM d' }])(
+    'parse illegal day-of-week value',
+    ({ sourceString, formatString }) => {
+      expectSame((esday) => esday(sourceString, formatString).isValid())
+      expect(esday(sourceString, formatString).isValid()).toBeFalsy()
     },
   )
 

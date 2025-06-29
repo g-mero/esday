@@ -169,6 +169,10 @@ describe('objectSupport plugin', () => {
     expectSameResult((esday) => esday().add(value))
   })
 
+  it('add without object should not be changed', () => {
+    expect(esday().add(6, 'days').format().slice(0, -6)).toBe('2025-07-23T03:24:46')
+  })
+
   it.each([
     { value: { years: 1 }, expected: '2024-07-17T03:24:46', description: 'y' },
     { value: { years: -1, month: 2 }, expected: '2026-05-17T03:24:46', description: 'y-M' },
@@ -193,6 +197,10 @@ describe('objectSupport plugin', () => {
   ])('subtract object ("$description")', ({ value, expected }) => {
     expect(esday().subtract(value).format().slice(0, -6)).toBe(expected)
     expectSameResult((esday) => esday().subtract(value))
+  })
+
+  it('subtract without object should not be changed', () => {
+    expect(esday().subtract(6, 'days').format().slice(0, -6)).toBe('2025-07-11T03:24:46')
   })
 
   it.each([

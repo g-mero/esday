@@ -1,15 +1,13 @@
-import type { UnitTypeAddSub } from 'esday'
 import { esday } from 'esday'
+import type { UnitTypeAddSub, UnitsObjectTypeSet } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
-import utcPlugin from '~/plugins/utc'
-import weekPlugin from '~/plugins/week'
+import { advancedParsePlugin, utcPlugin, weekPlugin } from '~/plugins'
 import { expectSame, expectSameResult } from '../util'
 
-esday.extend(utcPlugin)
-esday.extend(weekPlugin)
+esday.extend(utcPlugin).extend(advancedParsePlugin).extend(weekPlugin)
 
 describe('plugin utc', () => {
   describe('get', () => {
@@ -120,6 +118,13 @@ describe('plugin utc', () => {
     it('millisecond to 1234', () => {
       expectSameResult((esday) => esday().utc().set('millisecond', 1234))
     })
+
+    it('set using an object without plugin ObjectSupport', () => {
+      const value = { years: 1, months: 2, days: 3 } as UnitsObjectTypeSet
+      const expected = '2023-12-17'
+
+      expect(esday().utc().set(value).format().slice(0, 10)).toBe(expected)
+    })
   })
 
   describe('parse (without format)', () => {
@@ -199,6 +204,7 @@ describe('plugin utc', () => {
       { dateArray: [2024, 5, 1, 13, 52] },
       { dateArray: [2024, 5, 1, 13, 52, 44] },
       { dateArray: [2024, 5, 1, 13, 14, 15, 99] },
+      { dateArray: [24, 5, 1, 13, 14, 15, 99] },
     ])('parses $dateArray to date', ({ dateArray }) => {
       expectSameResult((esday) => esday.utc(dateArray))
     })
@@ -218,6 +224,7 @@ describe('plugin utc', () => {
 
     it.each([
       { dateString: '2011-02-02 03:04:05', format: 'YYYY-MM-DD HH:mm:ss' },
+      { dateString: '11-02-02 03:04:05', format: 'YY-MM-DD HH:mm:ss' },
       { dateString: '2011-02-02 03:04:05Z', format: 'YYYY-MM-DD HH:mm:ss' },
     ])('"$dateString" using "$format"', ({ dateString, format }) => {
       expectSameResult((esday) => esday.utc(dateString, format))
@@ -462,9 +469,21 @@ describe('plugin utc', () => {
       ({ offset }) => {
         const dateString = '2021-02-28 19:40:10'
 
-        expectSameResult((esday) => esday(dateString).utc().utcOffset(offset))
+        expectSameResult((esday) => esday(dateString).utc().utcOffset(offset, true))
       },
     )
+
+    it('for non-utc date without keepLocalTime', () => {
+      const dateString = '2021-02-28 19:40:10'
+
+      expectSameResult((esday) => esday(dateString).utcOffset(540))
+    })
+
+    it('for non-utc date with keepLocalTime', () => {
+      const dateString = '2021-02-28 19:40:10'
+
+      expectSameResult((esday) => esday(dateString).utcOffset(540, true))
+    })
 
     it('using string offset "-08:00"', () => {
       const dateString = '2021-02-28 19:40:10'
@@ -500,6 +519,12 @@ describe('plugin utc', () => {
       const hoursOffset = 8
 
       expectSameResult((esday) => esday(dateString).utc().utcOffset(`+0${hoursOffset}00`, true))
+    })
+
+    it('using string offset "-08"', () => {
+      const dateString = '2021-02-28 19:40:10'
+
+      expectSameResult((esday) => esday(dateString).utc().utcOffset('-08', true))
     })
 
     it('using an invalid string value ("random")', () => {
@@ -696,6 +721,35 @@ describe('plugin utc', () => {
           .utc()
           .subtract(value, unit as UnitTypeAddSub),
       )
+    })
+  })
+
+  describe('core methods', () => {
+    const fakeTimeAsString = '2023-12-17T03:24:46.234Z'
+
+    beforeEach(() => {
+      vi.useFakeTimers()
+      vi.setSystemTime(new Date(fakeTimeAsString))
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
+    it('valid date toISOString', () => {
+      expect(esday.utc().toISOString()).toBe('2023-12-17T03:24:46.234Z')
+    })
+
+    it('invalid date toISOString', () => {
+      expect(esday.utc(C.INVALID_DATE).toISOString()).toBe(C.INVALID_DATE_STRING)
+    })
+
+    it('valueOf without tzOffset', () => {
+      const dateEsday = esday.utc().utcOffset(540)
+      // remove tzOffset for testing default value for utcOffset
+      dateEsday['$conf'].tzOffset = undefined
+
+      expect(dateEsday.valueOf()).toBe(1702783486234)
     })
   })
 })

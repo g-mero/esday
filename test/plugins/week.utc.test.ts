@@ -187,6 +187,26 @@ describe('week plugin - locale de', () => {
   )
 
   it.each([
+    { sourceString: '2025 0', formatString: 'YYYY d' },
+    { sourceString: '2025 1', formatString: 'YYYY d' },
+    { sourceString: '2025 12 1', formatString: 'YYYY MM d' },
+  ])(
+    'parse "$sourceString" with day-of-week token in "$formatString"',
+    ({ sourceString, formatString }) => {
+      expectSameResult((esday) => esday(sourceString, formatString))
+      expect(esday(sourceString, formatString).isValid()).toBeTruthy()
+    },
+  )
+
+  it('parse illegal day-of-week value', () => {
+    const sourceString = '2025 12 2'
+    const formatString = 'YYYY MM d'
+
+    expectSame((esday) => esday(sourceString, formatString).isValid())
+    expect(esday(sourceString, formatString).isValid()).toBeFalsy()
+  })
+
+  it.each([
     { sourceString: '24', formatString: 'gg' },
     { sourceString: '2024', formatString: 'gg' },
     { sourceString: '2025 2', formatString: 'gg M' },

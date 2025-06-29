@@ -117,6 +117,7 @@ describe('advancedParse plugin - local mode', () => {
       { formatString: 'MM-YYYY-DD HH:mm:ss.SSS', sourceString: '8-2023-4 1:3:2.3' },
       { formatString: 'M-YY-D H:m:s.SS', sourceString: '08-2023-14 21:43:12.123' },
       { formatString: 'M-YY-D H:m:s.SS', sourceString: '8-23-4 1:3:2.3' },
+      { formatString: 'YYYY', sourceString: '2025' },
       { formatString: 'YYYY DD', sourceString: '2025 14' },
       { formatString: 'Q YYYY', sourceString: '1 2023' },
       { formatString: 'Q YYYY', sourceString: '2 2023' },

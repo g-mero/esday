@@ -69,9 +69,11 @@ describe('isoWeek plugin - default locale ("en")', () => {
   )
 
   it.each([
+    { sourceString: '84', formatString: 'GG' },
     { sourceString: '24', formatString: 'GG' },
     { sourceString: '2024', formatString: 'GG' },
     { sourceString: '2025 2', formatString: 'GG M' },
+    { sourceString: '84-10-24', formatString: 'GG-MM-DD' },
     { sourceString: '25-10-24', formatString: 'GG-MM-DD' },
     { sourceString: '2025-10-24', formatString: 'GG-MM-DD' },
     { sourceString: '25 22', formatString: 'GG DD' },

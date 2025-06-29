@@ -7,14 +7,16 @@ import localeCa from '~/locales/ca'
 import localeDe from '~/locales/de'
 import localeEn from '~/locales/en'
 import localeHr from '~/locales/hr'
+import localeKa from '~/locales/ka'
 import { localePlugin, localizedFormatPlugin } from '~/plugins'
 
-esday.extend(localizedFormatPlugin)
-esday.extend(localePlugin)
-esday.registerLocale(localeEn)
-esday.registerLocale(localeDe)
-esday.registerLocale(localeHr)
-esday.registerLocale(localeCa)
+esday.extend(localizedFormatPlugin).extend(localePlugin)
+esday
+  .registerLocale(localeCa)
+  .registerLocale(localeEn)
+  .registerLocale(localeDe)
+  .registerLocale(localeHr)
+  .registerLocale(localeKa)
 
 describe('localizedFormat plugin - using locale "en"', () => {
   beforeEach(() => {
@@ -25,6 +27,9 @@ describe('localizedFormat plugin - using locale "en"', () => {
   it.each([
     { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMM DD HH:mm:ss' },
     { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMMM DD HH:mm:ss' },
+    { sourceString: '2024-12-23T14:25:36', formatString: 'D MMMM' },
+    { sourceString: '2024-12-23T14:25:36', formatString: 'DD MMMM' },
+    { sourceString: '2024-12-23T14:25:36', formatString: 'Do MMMM' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dd HH:mm:ss' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD ddd HH:mm:ss' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dddd HH:mm:ss' },
@@ -132,6 +137,8 @@ describe('localizedFormat plugin - using locale "hr"', () => {
     { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMM DD HH:mm:ss' },
     { sourceString: '2024-11-23T14:25:36', formatString: 'YYYY MMMM DD HH:mm:ss' },
     { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMMM DD HH:mm:ss' },
+    { sourceString: '2024-12-23T14:25:36', formatString: 'DD MMMM' },
+    { sourceString: '2024-12-23T14:25:36', formatString: 'Do MMMM' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dd HH:mm:ss' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD ddd HH:mm:ss' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dddd HH:mm:ss' },
@@ -186,6 +193,9 @@ describe('localizedFormat plugin - using locale "ca"', () => {
     { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMM DD HH:mm:ss' },
     { sourceString: '2024-11-23T14:25:36', formatString: 'YYYY MMMM DD HH:mm:ss' },
     { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMMM DD HH:mm:ss' },
+    { sourceString: '2024-12-23T14:25:36', formatString: 'D MMMM' },
+    { sourceString: '2024-12-23T14:25:36', formatString: 'DD MMMM' },
+    { sourceString: '2024-12-23T14:25:36', formatString: 'Do MMMM' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dd HH:mm:ss' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD ddd HH:mm:ss' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dddd HH:mm:ss' },
@@ -225,6 +235,30 @@ describe('localizedFormat plugin - using locale "ca"', () => {
     (formatString) => {
       const sourceString = 'I am not a date'
       expectSame((esday) => esday(sourceString).format(formatString).toLowerCase())
+    },
+  )
+})
+
+describe('localizedFormat plugin - using locale "ka"', () => {
+  beforeEach(() => {
+    // set global locale
+    esday.locale('ka')
+    moment.locale('ka')
+  })
+
+  it.each([
+    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dd HH:mm:ss' },
+    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD ddd HH:mm:ss' },
+    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dddd HH:mm:ss' },
+    { sourceString: '2024-12-24T14:25:36', formatString: '[შემდეგ] dddd LT[-ზე]' }, // test 'useFormatProperty' of addWeekday
+    { sourceString: '2024-12-24T14:25:36', formatString: '[წინა] dddd LT-ზე' }, // test 'useFormatProperty' of addWeekday
+    { sourceString: '2024-12-23T14:25:36', formatString: 'D MMMM' },
+    { sourceString: '2024-12-23T14:25:36', formatString: 'DD MMMM' },
+    { sourceString: '2024-12-23T14:25:36', formatString: 'Do MMMM' },
+  ])(
+    'format date string "$sourceString" with format "$formatString"',
+    ({ sourceString, formatString }) => {
+      expectSame((esday) => esday(sourceString).format(formatString))
     },
   )
 })

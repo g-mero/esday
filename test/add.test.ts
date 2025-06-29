@@ -1,10 +1,21 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import type { UnitTypeAddSub } from '~/common/units'
 import { esday } from '~/core'
 import { expectSameResult } from './util'
 
 describe('add', () => {
+  const fakeTimeAsString = '2025-07-17T03:24:46.234'
+
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it.each([
     { value: 1, unit: 'y', format: 'YYYY-MM-DD', expected: '2022-01-01' },
     { value: 1, unit: 'year', format: 'YYYY-MM-DD', expected: '2022-01-01' },
@@ -83,4 +94,29 @@ describe('add', () => {
       expect(esday(sourceString).add(addedValue, addUnit).format().slice(0, -6)).toBe(expected)
     },
   )
+
+  it('add object without plugin ObjectSupport', () => {
+    const value = { years: 1, months: 2, days: 3 }
+
+    expect(esday().add(value).format().slice(0, -6)).toBe('2025-07-17T03:24:46')
+  })
+})
+
+describe('subtract', () => {
+  const fakeTimeAsString = '2025-07-17T03:24:46.234'
+
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('subtract object without plugin ObjectSupport', () => {
+    const value = { years: 1, months: 2, days: 3 }
+
+    expect(esday().subtract(value).format().slice(0, -6)).toBe('2025-07-17T03:24:46')
+  })
 })
