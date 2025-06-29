@@ -12,7 +12,8 @@ declare module 'esday' {
 export interface ParsedElements {
   year?: number
   month?: number
-  day?: number
+  day?: number // day-of-week
+  date?: number // day-of-month
   hours?: number
   minutes?: number
   seconds?: number

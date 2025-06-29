@@ -19,7 +19,6 @@ esday().toNow(withoutSuffix?: boolean): string
 esday().from(referenceDate: DateType, withoutSuffix?: boolean): string
 esday().to(referenceDate: DateType, withoutSuffix?: boolean): string
 ```
-```
 
 | parameter     | description                                 |
 | ------------- | ------------------------------------------- |
@@ -28,7 +27,9 @@ esday().to(referenceDate: DateType, withoutSuffix?: boolean): string
 
 Passing true as `withoutSuffix`, the methods return the value without the suffix (e.g. '4 years' instead of 'in 4 years').
 
-The returned strings are defined by the current locale. Time is rounded to the nearest second.
+The returned strings are defined by the current locale. `future` and `past` define the corresponding suffixes to use (default to 'in' / 'ago').
+
+Time is rounded to the nearest second.
 
 The breakdown of which string is displayed for each length of time is outlined in the table below
 ('key' is the key in the definition of `relativeTime` in the current locale):
@@ -45,6 +46,26 @@ The breakdown of which string is displayed for each length of time is outlined i
 | 45 to 319 days              | MM  | 2 months ago ... 10 months ago              |
 | 320 to 547 days (1.5 years) | y   | a year ago                                  |
 | 548 days+                   | yy  | 2 years ago ... 20 years ago                |
+
+The used thresholds can be overwritten, when activating the plugin by using an object with a property named `thresholds` as second parameter.
+
+The default threshold list looks like this;
+```typescript
+[
+    { key: 's', thresholdValue: 44, thresholdUnit: C.SECOND },
+    { key: 'ss', thresholdValue: 43, thresholdUnit: C.SECOND },
+    { key: 'm', thresholdValue: 89, thresholdUnit: C.SECOND },
+    { key: 'mm', thresholdValue: 44, thresholdUnit: C.MIN },
+    { key: 'h', thresholdValue: 89, thresholdUnit: C.MIN },
+    { key: 'hh', thresholdValue: 21, thresholdUnit: C.HOUR },
+    { key: 'd', thresholdValue: 35, thresholdUnit: C.HOUR },
+    { key: 'dd', thresholdValue: 25, thresholdUnit: C.DAY },
+    { key: 'M', thresholdValue: 45, thresholdUnit: C.DAY },
+    { key: 'MM', thresholdValue: 10, thresholdUnit: C.MONTH },
+    { key: 'y', thresholdValue: 17, thresholdUnit: C.MONTH },
+    { key: 'yy', thresholdUnit: C.YEAR },
+  ]
+```
 
 ## Examples
 ```typescript
@@ -71,4 +92,29 @@ const startDate = esday([2007, 0, 5]);
 const endDate = esday([2007, 0, 10]);
 endDate.to(startDate, true)
 // Returns '5 days'
+```
+Overwrite threshold list:
+```
+import { localePlugin, relativeTimePlugin } from 'esday/plugins'
+import localeEn from 'esday/locales/en'
+
+esday.extend(localePlugin)
+esday.registerLocale(localeEn)
+const options = {
+  thresholds: [
+    { key: 's', thresholdValue: 44, thresholdUnit: C.SECOND },
+    { key: 'ss', thresholdValue: 43, thresholdUnit: C.SECOND },
+    { key: 'm', thresholdValue: 89, thresholdUnit: C.SECOND },
+    { key: 'mm', thresholdValue: 44, thresholdUnit: C.MIN },
+    { key: 'h', thresholdValue: 89, thresholdUnit: C.MIN },
+    { key: 'hh', thresholdValue: 21, thresholdUnit: C.HOUR },
+    { key: 'd', thresholdValue: 1, thresholdUnit: C.DAY }, // modified threshold
+    { key: 'dd', thresholdValue: 25, thresholdUnit: C.DAY },
+    { key: 'M', thresholdValue: 45, thresholdUnit: C.DAY },
+    { key: 'MM', thresholdValue: 10, thresholdUnit: C.MONTH },
+    { key: 'y', thresholdValue: 17, thresholdUnit: C.MONTH },
+    { key: 'yy', thresholdUnit: C.YEAR },
+  ] as Threshold[],
+}
+esday.extend(relativeTimePlugin, options)
 ```

@@ -92,6 +92,13 @@ describe('quarterOfYear plugin', () => {
     },
   )
 
+  it('set with object without plugin ObjectSupport', () => {
+    const value = { years: 1, months: 2, days: 3 }
+
+    // @ts-expect-error this is a test with incompatible parameter (plugin ObjectSupport not loaded)
+    expect(esday().set(value).format().slice(0, -6)).toBe('2023-12-17T03:24:46')
+  })
+
   it.each([
     { sourceString: '2023-01-05T09:10:21.456', value: 2, unit: 'quarter' },
     { sourceString: '2023-06-30T09:10:21.456', value: 2, unit: 'quarter' },
@@ -131,7 +138,7 @@ describe('quarterOfYear plugin', () => {
     { sourceString: '2024-12-31T00:00:00' },
     { sourceString: '2025-01-01T00:00:00' },
   ])('endOf quarter of "$sourceString"', ({ sourceString }) => {
-    expectSameResult((esday) => esday(sourceString).startOf('quarter'))
+    expectSameResult((esday) => esday(sourceString).endOf('quarter'))
   })
 
   it.each([

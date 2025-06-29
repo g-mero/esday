@@ -14,7 +14,7 @@
  * Returns the string of relative time to X.
  */
 import type { DateType, EsDay, EsDayPlugin } from 'esday'
-import { C } from '~/common'
+import { C, createInstanceFromExist } from '~/common'
 import type { Locale, RelativeTimeKeys } from '../locale'
 
 declare module 'esday' {
@@ -26,21 +26,28 @@ declare module 'esday' {
   }
 }
 
-type Threshold = {
-  l: RelativeTimeKeys
-  r?: number
-  d?: typeof C.SECOND | typeof C.MIN | typeof C.HOUR | typeof C.DAY | typeof C.MONTH | typeof C.YEAR
+export type ThresholdUnit =
+  | typeof C.SECOND
+  | typeof C.MIN
+  | typeof C.HOUR
+  | typeof C.DAY
+  | typeof C.MONTH
+  | typeof C.YEAR
+
+export type Threshold = {
+  key: RelativeTimeKeys
+  thresholdValue?: number // defaults to positive infinity
+  thresholdUnit?: ThresholdUnit // defaults to 'second'
 }
 
 const relativeTimePlugin: EsDayPlugin<{
   thresholds?: Threshold[]
-  rounding?: (n: number) => number
-}> = (options, Class, esday) => {
-  const proto = Class.prototype
+  rounding?: (valueToRound: number) => number
+}> = (options, dayClass, dayFactory) => {
+  const proto = dayClass.prototype
 
-  // Default relative time strings
-  // copy from locales/en.ts
-  const defaultRTDef: Locale['relativeTime'] = {
+  // Use relativeTime definition from locales/en.ts as default
+  const defaultRelativeTimeDef: Locale['relativeTime'] = {
     future: 'in %s',
     past: '%s ago',
     s: 'a few seconds',
@@ -58,58 +65,95 @@ const relativeTimePlugin: EsDayPlugin<{
   }
 
   const thresholds: Threshold[] = options.thresholds ?? [
-    { l: 's', r: 44, d: C.SECOND },
-    { l: 'm', r: 89 },
-    { l: 'mm', r: 44, d: C.MIN },
-    { l: 'h', r: 89 },
-    { l: 'hh', r: 21, d: C.HOUR },
-    { l: 'd', r: 35 },
-    { l: 'dd', r: 25, d: C.DAY },
-    { l: 'M', r: 45 },
-    { l: 'MM', r: 10, d: C.MONTH },
-    { l: 'y', r: 17 },
-    { l: 'yy', d: C.YEAR },
+    { key: 's', thresholdValue: 44, thresholdUnit: C.SECOND },
+    { key: 'ss', thresholdValue: 43, thresholdUnit: C.SECOND },
+    { key: 'm', thresholdValue: 89, thresholdUnit: C.SECOND },
+    { key: 'mm', thresholdValue: 44, thresholdUnit: C.MIN },
+    { key: 'h', thresholdValue: 89, thresholdUnit: C.MIN },
+    { key: 'hh', thresholdValue: 21, thresholdUnit: C.HOUR },
+    { key: 'd', thresholdValue: 35, thresholdUnit: C.HOUR },
+    { key: 'dd', thresholdValue: 25, thresholdUnit: C.DAY },
+    { key: 'M', thresholdValue: 45, thresholdUnit: C.DAY },
+    { key: 'MM', thresholdValue: 10, thresholdUnit: C.MONTH },
+    { key: 'y', thresholdValue: 17, thresholdUnit: C.MONTH },
+    { key: 'yy', thresholdUnit: C.YEAR },
   ]
 
   const rounding = options.rounding ?? Math.round
 
-  function fromToBase(
-    referenceDate: DateType,
-    withoutSuffix: boolean,
+  /**
+   * Calculate the difference between instance and referenceDate in given units
+   * as fractional value for 'from' and 'to'
+   * @param instance - date to calculate difference for
+   * @param referenceDate - base date for calculating the difference
+   * @param unit - unit of the difference
+   * @param isFrom - difference for 'from'?
+   * @returns difference as float
+   */
+  function differenceInUnits(
     instance: EsDay,
+    referenceDate: EsDay,
+    unit: ThresholdUnit,
     isFrom: boolean,
-    postFormat?: (formattedDate: string) => string,
+  ): number {
+    return isFrom
+      ? referenceDate.diff(instance, unit, true)
+      : instance.diff(referenceDate, unit, true)
+  }
+
+  /**
+   * Format instance date as relative to reference date as
+   * human readable length of time.
+   * @param reference - date the output relates to
+   * @param withoutSuffix - format without 'in ---' or '... ago'
+   * @param this - date to format
+   * @param isFrom - format as 'from' or 'fromNow'
+   * @returns difference formatted as human string (e.g. 5 days ago)
+   */
+  function fromToBase(
+    this: EsDay,
+    reference: DateType,
+    withoutSuffix: boolean,
+    isFrom: boolean,
   ): string {
-    const inputInstance = esday(referenceDate)
-    if (!instance.isValid() || !inputInstance.isValid()) {
+    const referenceDate = dayFactory(reference)
+    if (!this.isValid() || !referenceDate.isValid()) {
       return C.INVALID_DATE_STRING
     }
 
-    const locale = instance.localeObject?.()?.relativeTime ?? defaultRTDef
-    let result = 0
+    const locale = this.localeObject?.()
+    const relativeTimeDef = locale?.relativeTime ?? defaultRelativeTimeDef
+    let diffAsUnit = 0
     let out = ''
     let isFuture = false
 
+    // test all thresholds until we find the first threshold matching the
+    // difference between the instance and the reference date
     for (let i = 0; i < thresholds.length; i++) {
-      let t = thresholds[i]
-      if (t.d) {
-        result = isFrom
-          ? inputInstance.diff(instance, t.d, true)
-          : instance.diff(inputInstance, t.d, true)
-      }
+      const threshold = thresholds[i]
+      const thresholdUnit = threshold.thresholdUnit ?? C.SECOND
+      diffAsUnit = differenceInUnits(this, referenceDate, thresholdUnit, isFrom)
+      const absoluteDiff = rounding(Math.abs(diffAsUnit))
+      isFuture = diffAsUnit > 0
 
-      let abs = rounding(Math.abs(result))
-      isFuture = result > 0
-
-      if (abs <= (t.r ?? Number.POSITIVE_INFINITY)) {
-        if (abs <= 1 && i > 0) t = thresholds[i - 1]
-        const format = locale[t.l]
-        if (postFormat) abs = Number.parseInt(postFormat(`${abs}`), 10)
+      if (absoluteDiff <= (threshold.thresholdValue ?? Number.POSITIVE_INFINITY)) {
+        // calculate diff in unit defined by key
+        const thresholdKey = threshold.key
+        const formatUnit = thresholdKey.slice(0, 1) as ThresholdUnit
+        const outputDiff = differenceInUnits(this, referenceDate, formatUnit, isFrom)
+        const outputDiffAbs = rounding(Math.abs(outputDiff))
+        const format = relativeTimeDef[thresholdKey]
 
         out =
           typeof format === 'string'
-            ? format.replace('%d', abs.toString())
-            : format(abs, withoutSuffix, t.l, isFuture)
+            ? format.replace('%d', `${outputDiffAbs}`)
+            : format(outputDiffAbs, withoutSuffix, thresholdKey, isFuture)
+
+        // transform the result to locale form
+        const postFormat = locale?.postFormat
+        if (postFormat) {
+          out = postFormat(out)
+        }
 
         break
       }
@@ -117,28 +161,28 @@ const relativeTimePlugin: EsDayPlugin<{
 
     if (withoutSuffix) return out
 
-    const suffix = isFuture ? locale.future : locale.past
+    const suffix = isFuture ? relativeTimeDef.future : relativeTimeDef.past
     return typeof suffix === 'function'
       ? suffix(out, withoutSuffix, isFuture ? 'future' : 'past', isFuture)
       : suffix.replace('%s', out)
   }
 
-  const getNow = (self: EsDay) => (self['$conf'].utc ? esday.utc() : esday())
-
   proto.to = function (this: EsDay, referenceDate: DateType, withoutSuffix?: boolean) {
-    return fromToBase(referenceDate, withoutSuffix ?? false, this, true)
+    return fromToBase.call(this, referenceDate, withoutSuffix ?? false, true)
   }
 
   proto.from = function (this: EsDay, referenceDate: DateType, withoutSuffix?: boolean) {
-    return fromToBase(referenceDate, withoutSuffix ?? false, this, false)
+    return fromToBase.call(this, referenceDate, withoutSuffix ?? false, false)
   }
 
   proto.toNow = function (this: EsDay, withoutSuffix?: boolean) {
-    return this.to(getNow(this), withoutSuffix)
+    const now = createInstanceFromExist(new Date(), this)
+    return this.to(now, withoutSuffix)
   }
 
   proto.fromNow = function (this: EsDay, withoutSuffix?: boolean) {
-    return this.from(getNow(this), withoutSuffix)
+    const now = createInstanceFromExist(new Date(), this)
+    return this.from(now, withoutSuffix)
   }
 }
 

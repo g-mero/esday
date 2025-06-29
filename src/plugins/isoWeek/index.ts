@@ -2,7 +2,7 @@
  * isoWeek plugin
  *
  * This plugin adds 'isoWeek', 'isoWeeks', 'isoWeekDay', 'isoWeekYear', 'isoWeeksInYear'
- * and formatting and parsing tokens to EsDay
+ * and formatting and parsing tokens to EsDay.
  *
  * For the 'Wo' formatting token, the plugins 'locale' and 'localizedFormat'
  * and a loaded locale are required.
@@ -115,7 +115,7 @@ const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     if (
       !Number.isNaN(parsedDate.valueOf()) &&
       !isUndefined(parsedElements.isoWeek) &&
-      isUndefined(parsedElements.day)
+      isUndefined(parsedElements.date)
     ) {
       const newEsday = createInstanceFromExist(parsedDate, this)
       const parsedIsoWeek = parsedElements.isoWeek as number
@@ -170,7 +170,7 @@ const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       if (Object.keys(parsedElements).length === 1) {
         // we parsed isoYear only ('GG' or 'GGGG')
         let modifiedEsday = newEsday.isoWeekYear(parsedIsoWeekYear)
-        modifiedEsday = modifiedEsday.year(parsedIsoWeekYear).month(0).date(1).isoWeekday(1)
+        modifiedEsday = modifiedEsday.year(parsedIsoWeekYear).isoWeek(1).isoWeekday(1)
         modifiedDate = modifiedEsday.toDate()
       } else if (!isUndefined(parsedElements.isoWeek)) {
         const modifiedEsday = newEsday.isoWeekYear(parsedIsoWeekYear)

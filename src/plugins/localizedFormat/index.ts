@@ -20,7 +20,7 @@ import type {
  * @returns function that will format the day of the week of the given date
  */
 function addWeekday(defaultFormat: string) {
-  return function monthFormatter(sourceDate: EsDay, format?: string) {
+  return function weekdayFormatter(sourceDate: EsDay, format?: string) {
     const weekdays = sourceDate.localeObject().weekdays
 
     if (isArray(weekdays)) {
@@ -57,6 +57,7 @@ function addMonth(property: 'months' | 'monthsShort', defaultFormat: string) {
       return months(sourceDate, format ?? defaultFormat)
     }
 
+    // if format is day or day-of-week before month then use 'format' else use 'standalone' parameter
     const parseForUseFormat = (months as MonthNamesStandaloneFormat).isFormat ?? MONTHS_IN_FORMAT
     const useFormatProperty = parseForUseFormat.test(format ?? defaultFormat)
     if (useFormatProperty) {

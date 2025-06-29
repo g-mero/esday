@@ -81,7 +81,7 @@ export function normalizeUnit<T extends UnitType>(unit: T): PrettyUnit<T> {
 export function normalizeUnitWithPlurals<T extends UnitTypePlurals>(unit: T): PrettyUnitPlurals<T> {
   let normalizedUnit = UNIT_MAP[unit as ShortUnit]
   if (normalizedUnit === undefined) {
-    normalizedUnit = unit?.toLowerCase()?.replace(/s$/, '') as LongUnit
+    normalizedUnit = unit?.toLowerCase?.().replace?.(/s$/, '') as LongUnit
   }
   return (normalizedUnit ?? unit) as PrettyUnitPlurals<T>
 }

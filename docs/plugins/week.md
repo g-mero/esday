@@ -72,13 +72,17 @@ Dec 30 would have a different week-year than Dec 31 (in the previous case it wou
 When no locale is loaded the token 'wo' returns the week number as number (instead of an ordinal number).
 
 ### Added parsing tokens
-| **Token** | **Example** | **Description**                                               |
-| --------- | ----------- | ------------------------------------------------------------- |
-| w         | 1-53        | Week of year.  Sets day of week to 1st day of week.           |
-| ww        | 01-53       | Week of year. Sets day of week to 1st day of week (2 digits). |
-| e         | 1-7         | Day of week.                                                  |
-| gg        | 00-99       | Week-year (2 digits).                                         |
-| gggg      | 0000-9999   | Week-year.                                                    |
+| **Token** | **Example**       | **Description**                                               |
+| --------- | ----------------- | ------------------------------------------------------------- |
+| w         | 1-53              | Week of year. Sets day of week to 1st day of week.            |
+| ww        | 01-53             | Week of year. Sets day of week to 1st day of week (2 digits). |
+| d         | 0..6              | Day of week (numeric form)                                    |
+| dd        | Su...Sa           | Day of week (minimal form)                                    |
+| ddd       | Sun...Sat         | Day of week (short form)                                      |
+| dddd      | Sunday...Saturday | Day of week (long form)                                       |
+| e         | 1-7               | Day of week (evaluating start-of-week).                       |
+| gg        | 00-99             | Week-year (2 digits).                                         |
+| gggg      | 0000-9999         | Week-year.                                                    |
 
 If the source string (and the format to use) contains a valid day of month, the week is ignored (like moment.js does).
 
@@ -207,9 +211,13 @@ esday('2025 02', 'YYYY ww')
 esday('2025 12', 'YYYY ww')
 // Returns esday for '2025-03-16'
 
-esday('2025 4', 'YYYY e')
+esday('2025 4', 'YYYY d')
 // Returns esday for '2025-12-18' when current date is '2023-12-17'
 // '4' is Thursday; month and week is taken from current date
+
+esday('2025 4', 'YYYY e')
+// Returns esday for '2025-12-17' when current date is '2023-12-17'
+// '4' is Wednesday (weekday); month and week is taken from current date
 
 esday("24", "gg")
 // Returns esday for '2024-12-15' when current date is '2023-12-17'

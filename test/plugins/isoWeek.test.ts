@@ -188,6 +188,7 @@ describe('isoWeek plugin - default locale', () => {
     },
   )
 
+  // without plugin AdvancedParse, the new parsing tokens ('W', 'E', 'GG') are ignored
   it.each([
     { sourceString: '2025-09-23', formatString: 'YYYY-MM-DD', expected: '2025-09-23T00:00:00' },
     { sourceString: '2025-09-23 2', formatString: 'YYYY-MM-DD W', expected: '2025-09-23T02:00:00' },

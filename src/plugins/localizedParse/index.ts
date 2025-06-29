@@ -1,7 +1,7 @@
 /**
  * localizedParse plugin
  *
- * This plugin adds localized formats to advancedParse plugin
+ * This plugin adds localized parsing formats to the advancedParse plugin.
  *
  * used esday parameters in '$conf':
  *   args_1           format parameter in call signature
@@ -15,10 +15,8 @@
  */
 
 import type { DateType, EsDay, EsDayPlugin } from 'esday'
-import { C, createInstanceFromExist, isArray, isString, isUndefined } from '~/common'
+import { isArray, isString, isUndefined } from '~/common'
 import type {
-  DayNames,
-  DayNamesStandaloneFormat,
   Locale,
   MonthNames,
   MonthNamesStandaloneFormat,
@@ -27,8 +25,6 @@ import type {
   TokenDefinitions,
 } from '../index'
 import { getLocale } from '../locale'
-
-const DEFAULT_LOCALE = 'en'
 
 // Regular expressions for parsing
 const match2 = /\d{2}/
@@ -109,7 +105,7 @@ function addDayOfMonthOrdinal(
     const dateAsOrdinal = ordinal?.(dateValue)
 
     if (dateAsOrdinal === undefined || dateAsOrdinal === input) {
-      parsedElements.day = dateValue
+      parsedElements.date = dateValue
     }
   }
 }
@@ -139,33 +135,6 @@ function addMonth(property: 'months' | 'monthsShort') {
 
     const matchIndex = monthNames.indexOf(input) + 1
     parsedElements.month = matchIndex % 12 || matchIndex
-  }
-}
-
-/**
- * Create a function that will convert the value from the input string
- * to a day of week number and add it to the given 'parsedElements'
- * containing the date&time components.
- * @param property - name of the list of weekday names to use
- * @returns function that will add the weekday value to date&time component
- */
-function addDayOfWeek(property: 'weekdays' | 'weekdaysShort' | 'weekdaysMin') {
-  return function weekdayUpdater(
-    parsedElements: ParsedElements,
-    input: string,
-    parseOptions: ParseOptions,
-  ) {
-    const localeName = parseOptions['locale'] as string
-    const weekdays = getLocale(localeName)[property]
-    let weekdayNames: DayNames
-
-    if (isArray(weekdays)) {
-      weekdayNames = weekdays as DayNames
-    } else {
-      weekdayNames = (weekdays as DayNamesStandaloneFormat).standalone
-    }
-
-    parsedElements.dayOfWeek = weekdayNames.indexOf(input)
   }
 }
 
@@ -217,28 +186,6 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   /**
-   * Verify that parsed date is the expected day of week.
-   * Must be called in the context of an EsDay instance.
-   * @param this - context for this function (required for getting the $conf settings)
-   * @param parsedDate - Date object returned by parsing function
-   * @param parsedElements - object containing the components of a parsed date
-   * @returns parsedDate or invalid date (if day of week does not match)
-   */
-  function _postParseDayOfWeek(this: EsDay, parsedDate: Date, parsedElements: ParsedElements) {
-    let modifiedDate = parsedDate
-
-    // is this a valid date and do we have parsed the day of week?
-    if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.dayOfWeek)) {
-      const newEsday = createInstanceFromExist(parsedDate, this)
-
-      if (newEsday.day() !== parsedElements.dayOfWeek) {
-        modifiedDate = C.INVALID_DATE
-      }
-    }
-    return modifiedDate
-  }
-
-  /**
    * List of parsing tokens; the key of an entry in this list is
    * the token to be parsed and the value is a 3-entries-array with
    * the 1st entry being the regex for parsing in 'standard' mode,
@@ -252,9 +199,6 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     hh: [match1to2, match2, addHour],
     a: [matchWord, matchWord, addAfternoon(true), _postParseMeridiem],
     A: [matchWord, matchWord, addAfternoon(false), _postParseMeridiem],
-    dd: [matchWord, matchWord, addDayOfWeek('weekdaysMin'), _postParseDayOfWeek],
-    ddd: [matchWord, matchWord, addDayOfWeek('weekdaysShort'), _postParseDayOfWeek],
-    dddd: [matchWord, matchWord, addDayOfWeek('weekdays'), _postParseDayOfWeek],
     Do: [matchWord, matchWord, addDayOfMonthOrdinal],
     MMM: [matchWord, matchWord, addMonth('monthsShort')],
     MMMM: [matchWord, matchWord, addMonth('months')],
@@ -277,7 +221,7 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     // as the default value, if no locale is given as 3rd calling
     // parameter (1st parameter is the date string, 2nd is the format
     // to use, 3rd may also be the strict flag).
-    let currentLocale = this.localeObject?.() ?? DEFAULT_LOCALE
+    let currentLocale = this.localeObject?.()
     const arg2 = this['$conf'].args_2
     if (!isUndefined(arg2) && typeof arg2 === 'string') {
       currentLocale = getLocale(arg2)

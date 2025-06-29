@@ -9,7 +9,7 @@ export default defineConfig({
       esday: `${path.resolve(__dirname, 'src')}`,
     },
     coverage: {
-      exclude: [...configDefaults.exclude, 'dev/*'],
+      exclude: [...configDefaults.exclude, 'dev/**', 'scripts/**'],
       reporter: ['text', 'json', 'html'],
     },
     browser: {

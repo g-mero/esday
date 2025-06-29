@@ -3,13 +3,8 @@ import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import localeEn from '~/locales/en'
 import localeJa from '~/locales/ja'
-import {
-  type CalendarPartial,
-  calendarPlugin,
-  localePlugin,
-  localizedFormatPlugin,
-  weekPlugin,
-} from '~/plugins'
+import { calendarPlugin, localePlugin, localizedFormatPlugin, weekPlugin } from '~/plugins'
+import type { CalendarPartial, Locale } from '~/plugins'
 import { expectSame } from '../util'
 
 esday.extend(localePlugin)
@@ -190,5 +185,39 @@ describe('week plugin - locale "ja"', () => {
 
     expect(formattedEsday).toBe('先週金曜日 15:24')
     expectSame((esday) => esday().subtract(6, 'day').hour(15).calendar())
+  })
+})
+
+describe('calendar plugin - locale without calendar', () => {
+  const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
+
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('should use default calendar', () => {
+    esday.registerLocale({
+      name: 'test',
+      formats: {
+        LT: 'hh:mm',
+        LTS: 'hh:mm:ss',
+        L: 'MM/DD/YYYY',
+        LL: 'MMMM D, YYYY',
+        LLL: 'MMMM D, YYYY hh:mm',
+        LLLL: 'dddd, MMMM D, YYYY hh:mm',
+        l: 'MM/DD/YYYY',
+        ll: 'MMM D, YYYY',
+        lll: 'MMM D, YYYY hh:mm',
+        llll: 'ddd, MMM D, YYYY hh:mm',
+      },
+    } as Locale)
+    const testDate = esday().locale('test')
+
+    expect(testDate.calendar()).toBe('Today at 03:24')
   })
 })

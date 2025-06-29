@@ -1,6 +1,9 @@
 # Locale
 
-Locale extends `esday` to support locales by adding the `locale`, the `registerLocale` and  the `localeObject` methods to EsDay.
+Locale extends `esday` to support locales by adding the `locale`, the `registerLocale` and the `unregisterLocale` methods.
+
+`EsDay` objects get the `locale` and the `localeObject` methods.
+
 The locale to use can be loaded from the corresponding locale file ([list of supported locales](../locales/locales.md)).
 
 **Note**: the name of the locale (e.g. used for setting the locale) is case sensitive.
@@ -18,22 +21,27 @@ esday.locale(): string
 esday.locale(localeName: string): EsDay
 
 // add a locale to the list of available locales
-esday.registerLocale(locale: Locale, newName?: string): EsDay
+esday.registerLocale(locale: Locale, newName?: string): esday
 
-// get the locale object from the name of the locale
-esday.localeObject(name: string): Locale
+// remove a locale to the list of available locales
+esday.unregisterLocale(localeName: string): esday
 ```
 
-For esday instance ('local')
+For EsDay instances ('local')
 ```
 // get / set the locale of an esday instance
 esday().locale(): string
-esday().locale(name: string): EsDay
+esday().locale(localeName: string): EsDay
+
+// get the locale object from the name of the locale
+esday.localeObject(): Locale
 ```
 
-| Parameter | Type   | Description          |
-| --------- | ------ | ---------------------|
-| locale    | Locale | locale object to use |
+| Parameter  | Type   | Description                |
+| ---------- | ------ | ---------------------------|
+| locale     | Locale | locale object to use       |
+| localeName | string | name of the locale to use  |
+| newName    | string | name to use for the locale |
 
 ## Locale object
 Locales are defined in locale files that contain an object with all required Properties.
@@ -87,12 +95,12 @@ import localePlugin from 'esday/plugins/locale'
 esday.extend(localePlugin)
 esday.registerLocale(localeZhCn)
 
-// set global locale
 esday.locale('zh-CN')
+// set global locale to 'zh-CN'
 
-// get global locale
-console.log(esday.locale()) // 'zh-cn'
+esday.locale()
+// returns  'zh-cn' (name of the global locale)
 
-// set the locale of an esday object
 const day = esday('2021-01-01').locale('en')
+// set the locale of the esday object
 ```

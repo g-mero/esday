@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { esday } from '~/core'
+import type { UnitsObjectTypeSet } from '~/types'
 import { expectSame, expectSameResult } from './util'
 
 describe('get', () => {
@@ -72,6 +73,18 @@ describe('get', () => {
     expectSame((esday) => esday().get('ms'))
     expectSame((esday) => esday().get('millisecond'))
     expectSame((esday) => esday().get('milliseconds'))
+  })
+
+  it('quarter without plugin quarter returns NaN', () => {
+    expect(esday().get('Q')).toBeNaN()
+    expect(esday().get('quarter')).toBeNaN()
+    expect(esday().get('quarters')).toBeNaN()
+  })
+
+  it('week without plugin week returns NaN', () => {
+    expect(esday().get('w')).toBeNaN()
+    expect(esday().get('week')).toBeNaN()
+    expect(esday().get('weeks')).toBeNaN()
   })
 })
 
@@ -175,5 +188,24 @@ describe('set', () => {
     const another = base.set('month', month + 1)
 
     expect(base.valueOf()).not.toBe(another.valueOf())
+  })
+
+  it('quarter without plugin quarter returns "now"', () => {
+    expect(esday().set('Q', 3).format().slice(0, -6)).toBe('2024-07-17T13:24:46')
+    expect(esday().set('quarter', 3).format().slice(0, -6)).toBe('2024-07-17T13:24:46')
+    expect(esday().set('quarters', 3).format().slice(0, -6)).toBe('2024-07-17T13:24:46')
+  })
+
+  it('week without plugin week returns "now"', () => {
+    expect(esday().set('w', 12).format().slice(0, -6)).toBe('2024-07-17T13:24:46')
+    expect(esday().set('week', 12).format().slice(0, -6)).toBe('2024-07-17T13:24:46')
+    expect(esday().set('weeks', 12).format().slice(0, -6)).toBe('2024-07-17T13:24:46')
+  })
+
+  it('set using an object without plugin ObjectSupport', () => {
+    const value = { years: 1, months: 2, days: 3 } as UnitsObjectTypeSet
+    const expected = '2024-07-17T13:24:46'
+
+    expect(esday().set(value).format().slice(0, -6)).toBe(expected)
   })
 })
