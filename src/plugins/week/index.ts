@@ -2,7 +2,7 @@
  * week plugin
  *
  * This plugin adds 'week', 'weeks', 'weekday', 'weekYear', 'weeksInYear'
- * and formatting and parsing tokens to EsDay
+ * and week related formatting and parsing tokens to EsDay.
  *
  * This plugin requires the 'locale' plugin and a locale to be loaded.
  * For the 'wo' formatting token, the 'localizedFormat' plugin is required too.
@@ -21,11 +21,14 @@ import type {
 import {
   C,
   createInstanceFromExist,
+  isArray,
   isObject,
   isUndefined,
   normalizeUnitWithPlurals,
   padStart,
 } from '~/common'
+import { getLocale } from '~/plugins/locale'
+import type { DayNames, DayNamesStandaloneFormat } from '~/plugins/locale'
 import type { ParseOptions, ParsedElements, TokenDefinitions } from '../advancedParse/types'
 
 const match1to2NoLeadingZero = /^[1-9]\d?/ // 1-99
@@ -34,6 +37,7 @@ const match2 = /\d\d/ // 00 - 99
 const match1to2 = /\d\d?/ // 0 - 99
 const match4 = /\d{4}/ // 0000 - 9999
 const match1to4 = /\d{1,4}/ // 0 - 9999
+const matchWord = /\d*[^-_:/,()\s\d]+/
 
 declare module 'esday' {
   interface EsDay {
@@ -58,7 +62,7 @@ declare module 'esday' {
  */
 function toOrdinal(sourceDate: EsDay, value: number) {
   const defaultValue = value.toString()
-  return sourceDate.localeObject?.().ordinal(value) ?? defaultValue
+  return sourceDate.localeObject?.().ordinal?.(value) ?? defaultValue
 }
 
 /**
@@ -68,13 +72,44 @@ function toOrdinal(sourceDate: EsDay, value: number) {
  * @param property - name of the property to set
  * @returns function that will add the given value to date&time component as new element
  */
-function addWeekProperty(property: 'week' | 'weekday' | 'weekYear') {
+function addWeek(property: 'week' | 'weekday' | 'weekYear') {
   return function weekPropUpdater(
     parsedElements: ParsedElements,
     input: string,
     _parseOptions: ParseOptions,
   ) {
     parsedElements[property] = +input
+  }
+}
+
+/**
+ * Create a function that will convert the value from the input string
+ * to a day of week number and add it to the given 'parsedElements'
+ * containing the date&time components.
+ * @param property - name of the list of weekday names to use
+ * @returns function that will add the weekday value to date&time component
+ */
+function addDayOfWeek(property: 'day' | 'weekdays' | 'weekdaysShort' | 'weekdaysMin') {
+  return function weekdayUpdater(
+    parsedElements: ParsedElements,
+    input: string,
+    parseOptions: ParseOptions,
+  ) {
+    if (property === 'day') {
+      parsedElements[property] = +input
+    } else {
+      const localeName = parseOptions['locale'] as string
+      const weekdays = getLocale(localeName)[property]
+      let weekdayNames: DayNames
+
+      if (isArray(weekdays)) {
+        weekdayNames = weekdays as DayNames
+      } else {
+        weekdayNames = (weekdays as DayNamesStandaloneFormat).standalone
+      }
+
+      parsedElements.day = weekdayNames.indexOf(input)
+    }
   }
 }
 
@@ -119,7 +154,7 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     if (
       !Number.isNaN(parsedDate.valueOf()) &&
       !isUndefined(parsedElements.week) &&
-      isUndefined(parsedElements.day)
+      isUndefined(parsedElements.date)
     ) {
       const newEsday = createInstanceFromExist(parsedDate, this)
       const parsedWeek = parsedElements.week as number
@@ -137,7 +172,7 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
    * @param parsedElements - object containing the components of a parsed date
    * @returns parsedDate or invalid date (if day of week does not match)
    */
-  function _postParseDayOfWeek(this: EsDay, parsedDate: Date, parsedElements: ParsedElements) {
+  function _postParseWeekDay(this: EsDay, parsedDate: Date, parsedElements: ParsedElements) {
     const newWeekday = parsedElements.weekday as number
     if (!isUndefined(newWeekday) && newWeekday !== null && (newWeekday < 0 || newWeekday > 6)) {
       return C.INVALID_DATE
@@ -150,7 +185,7 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     if (
       !Number.isNaN(parsedDate.valueOf()) &&
       !isUndefined(newWeekday) &&
-      isUndefined(parsedElements.day)
+      isUndefined(parsedElements.date)
     ) {
       let newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
       newEsday['$conf'] = structuredClone(this['$conf'])
@@ -161,6 +196,41 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       }
       const modifiedEsday = newEsday.weekday(newWeekday)
       modifiedDate = modifiedEsday.toDate()
+    }
+    return modifiedDate
+  }
+
+  /**
+   * Verify that parsed date is the expected day-of-week or set the day-of-week.
+   * Must be called in the context of an EsDay instance.
+   * @param this - context for this function (required for getting the $conf settings)
+   * @param parsedDate - Date object returned by parsing function
+   * @param parsedElements - object containing the components of a parsed date
+   * @returns parsedDate or invalid date (if day of week does not match)
+   */
+  function _postParseDayOfWeek(this: EsDay, parsedDate: Date, parsedElements: ParsedElements) {
+    let modifiedDate = parsedDate
+
+    // is this a valid date and do we have parsed the day of week?
+    if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.day)) {
+      const now = createInstanceFromExist(new Date(), this)
+      let newEsday = createInstanceFromExist(parsedDate, this)
+
+      if (
+        parsedElements.year !== undefined &&
+        parsedElements.month === undefined &&
+        parsedElements.date === undefined
+      ) {
+        // use current date as base for parsed date, if we have parsed only a year
+        const currentWeek = now.week()
+        const dayOfWeek = (parsedElements.day + 7 - newEsday.localeObject().weekStart) % 7
+        newEsday = newEsday.week(currentWeek).weekday(dayOfWeek)
+        modifiedDate = newEsday.toDate()
+      }
+
+      if (newEsday.day() !== parsedElements.day) {
+        modifiedDate = C.INVALID_DATE
+      }
     }
     return modifiedDate
   }
@@ -381,11 +451,15 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
   // Add week related parsing tokens
   const parseTokensDefinitions: TokenDefinitions = {
-    w: [match1to2, match1to2NoLeadingZero, addWeekProperty('week'), _postParseWeek], // isoWeek 1..52
-    ww: [match1to2, match2, addWeekProperty('week'), _postParseWeek], // isoWeek 01..52
-    e: [match1to2, match1, addWeekProperty('weekday'), _postParseDayOfWeek], // isoWeekday 1..7
+    d: [match1to2, match1to2, addDayOfWeek('day'), _postParseDayOfWeek],
+    dd: [matchWord, matchWord, addDayOfWeek('weekdaysMin'), _postParseDayOfWeek],
+    ddd: [matchWord, matchWord, addDayOfWeek('weekdaysShort'), _postParseDayOfWeek],
+    dddd: [matchWord, matchWord, addDayOfWeek('weekdays'), _postParseDayOfWeek],
+    w: [match1to2, match1to2NoLeadingZero, addWeek('week'), _postParseWeek], // isoWeek 1..52
+    ww: [match1to2, match2, addWeek('week'), _postParseWeek], // isoWeek 01..52
+    e: [match1to2, match1, addWeek('weekday'), _postParseWeekDay], // isoWeekday 1..7
     gg: [match1to4, match2, twoDigitsYearUpdater, _postParseYear], // isoWeekYear 70 .. 30
-    gggg: [match1to4, match4, addWeekProperty('weekYear'), _postParseYear], // isoWeekYear 1970 .. 2030
+    gggg: [match1to4, match4, addWeek('weekYear'), _postParseYear], // isoWeekYear 1970 .. 2030
   }
   dayFactory.addParseTokenDefinitions?.(parseTokensDefinitions)
 }

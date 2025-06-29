@@ -35,7 +35,7 @@ import localizedParsePlugin from './localizedParse'
 import minMaxPlugin from './minMax'
 import objectSupportPlugin from './objectSupport'
 import quarterOfYearPlugin from './quarterOfYear'
-import relativeTimePlugin from './relativeTime'
+import relativeTimePlugin, { type Threshold, type ThresholdUnit } from './relativeTime'
 import toArrayPlugin from './toArray'
 import toObjectPlugin from './toObject'
 import utcPlugin from './utc'
@@ -83,4 +83,6 @@ export type {
   TokenDefinitions,
   RelativeTimeElementFunction,
   RelativeTimeKeys,
+  Threshold,
+  ThresholdUnit,
 }

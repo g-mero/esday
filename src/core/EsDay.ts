@@ -72,7 +72,7 @@ export class EsDay {
    * The month is 1 based (1..12).
    * Potential hook for plugins to change the details of Date creation.
    * @param Y - year of date to create
-   * @param M - year of date to create
+   * @param M - year of date to create (1..12)
    * @param D - year of date to create
    * @param h - year of date to create
    * @param m - year of date to create

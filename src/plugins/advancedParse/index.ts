@@ -1,7 +1,7 @@
 /**
  * advancedParse plugin
  *
- * This plugin adds format definitions to date parsing
+ * This plugin adds format definitions to date parsing.
  *
  * used esday parameters in '$conf':
  *   args_1           format parameter in call signature
@@ -48,6 +48,8 @@ const matchSigned = /[+-]?\d+/
 const matchUnsigned = /\d+/
 const matchTimestamp = /[+-]?\d+(\.\d{1,3})?/ // 123456789 123456789.123
 const matchOffset = /[+-]\d\d:?(\d\d)?|Z/
+
+const parseTokensDefinitions: TokenDefinitions = {}
 
 /**
  * Definition of parser that handles 1 token in the parsing format.
@@ -142,87 +144,6 @@ function addMillisecondsToInput() {
     }
     parsedElements.milliseconds = value
   }
-}
-
-/**
- * List of parsing tokens; the key of an entry in this list is
- * the token to be parsed and the value is a 3-entries-array with
- * the 1st entry being the regex for parsing in 'standard' mode,
- * the 2nd entry being the regex for parsing in 'strict' mode and
- * the 3rd entry being a function that will add the corresponding
- * value to an object containing all the date&time elements (year,
- * month, day, ...).
- */
-const parseTokensDefinitions: TokenDefinitions = {
-  Q: [
-    match1,
-    match1,
-    (parsedElements: ParsedElements, input: string) => {
-      parsedElements.month = (Number.parseInt(input, 10) - 1) * 3 + 1
-    },
-  ],
-  S: [matchUnsigned, match1, addMillisecondsToInput()],
-  SS: [matchUnsigned, match2, addMillisecondsToInput()],
-  SSS: [matchUnsigned, match3, addMillisecondsToInput()],
-  s: [match1to2, match1to2, addInput('seconds')],
-  ss: [match1to2, match2, addInput('seconds')],
-  m: [match1to2, match1to2, addInput('minutes')],
-  mm: [match1to2, match2, addInput('minutes')],
-  H: [match1to2, match1to2, addInput('hours')],
-  HH: [match1to2, match2, addInput('hours')],
-  D: [match1to2, match1to2, addInput('day')],
-  DD: [match1to2, match2, addInput('day')],
-  x: [
-    matchSigned,
-    matchSigned,
-    (parsedElements: ParsedElements, input: string) => {
-      parsedElements.unix = Number.parseInt(input, 10)
-    },
-  ],
-  X: [
-    matchTimestamp,
-    matchTimestamp,
-    (parsedElements: ParsedElements, input: string) => {
-      parsedElements.unix = Number.parseFloat(input) * 1000
-    },
-  ],
-  M: [match1to2, match1to2, addInput('month')],
-  MM: [match1to2, match2, addInput('month')],
-  Y: [
-    matchSigned,
-    matchSigned,
-    (parsedElements: ParsedElements, input: string) => {
-      parsedElements.year = Number.parseInt(input, 10)
-    },
-  ],
-  YY: [
-    match1to4,
-    match2,
-    (parsedElements: ParsedElements, input: string) => {
-      parsedElements.year = parseTwoDigitYear(input)
-    },
-  ],
-  YYYY: [
-    match1to4,
-    match4,
-    (parsedElements: ParsedElements, input: string) => {
-      parsedElements.year = parseFourDigitYear(input)
-    },
-  ],
-  Z: [
-    matchOffset,
-    matchOffset,
-    (parsedElements: ParsedElements, input: string) => {
-      parsedElements.zoneOffset = offsetFromString(input)
-    },
-  ],
-  ZZ: [
-    matchOffset,
-    matchOffset,
-    (parsedElements: ParsedElements, input: string) => {
-      parsedElements.zoneOffset = offsetFromString(input)
-    },
-  ],
 }
 
 /**
@@ -381,7 +302,7 @@ function makeParser(format: string, isStrict: boolean): { parser: Parser; postPa
  * @returns Date object created from the parsed data
  */
 function parsedElementsToDate(this: EsDay, elements: ParsedElements) {
-  const { year, month, day, hours, minutes, seconds, milliseconds, zoneOffset, unix } = elements
+  const { year, month, date, hours, minutes, seconds, milliseconds, zoneOffset, unix } = elements
 
   if (Object.keys(elements).length === 0) {
     return C.INVALID_DATE
@@ -400,7 +321,7 @@ function parsedElementsToDate(this: EsDay, elements: ParsedElements) {
     this,
     year,
     month,
-    day,
+    date,
     hours,
     minutes,
     seconds,
@@ -456,10 +377,93 @@ function addParseTokenDefinitions(newTokens: TokenDefinitions) {
 }
 
 const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
+  dayFactory.addParseTokenDefinitions = addParseTokenDefinitions
+
   const proto = dayClass.prototype
 
-  // get regexp to separate format into formatting tokens and separators
-  formattingTokensRegexFromDefinitions()
+  /**
+   * List of parsing tokens; the key of an entry in this list is
+   * the token to be parsed and the value is a 3-entries-array with
+   * the 1st entry being the regex for parsing in 'standard' mode,
+   * the 2nd entry being the regex for parsing in 'strict' mode and
+   * the 3rd entry being a function that will add the corresponding
+   * value to an object containing all the date&time elements (year,
+   * month, day, ...).
+   */
+  const parseTokensDefinitions: TokenDefinitions = {
+    Q: [
+      match1,
+      match1,
+      (parsedElements: ParsedElements, input: string) => {
+        parsedElements.month = (Number.parseInt(input, 10) - 1) * 3 + 1
+      },
+    ],
+    S: [matchUnsigned, match1, addMillisecondsToInput()],
+    SS: [matchUnsigned, match2, addMillisecondsToInput()],
+    SSS: [matchUnsigned, match3, addMillisecondsToInput()],
+    s: [match1to2, match1to2, addInput('seconds')],
+    ss: [match1to2, match2, addInput('seconds')],
+    m: [match1to2, match1to2, addInput('minutes')],
+    mm: [match1to2, match2, addInput('minutes')],
+    H: [match1to2, match1to2, addInput('hours')],
+    HH: [match1to2, match2, addInput('hours')],
+    D: [match1to2, match1to2, addInput('date')],
+    DD: [match1to2, match2, addInput('date')],
+    x: [
+      matchSigned,
+      matchSigned,
+      (parsedElements: ParsedElements, input: string) => {
+        parsedElements.unix = Number.parseInt(input, 10)
+      },
+    ],
+    X: [
+      matchTimestamp,
+      matchTimestamp,
+      (parsedElements: ParsedElements, input: string) => {
+        parsedElements.unix = Number.parseFloat(input) * 1000
+      },
+    ],
+    M: [match1to2, match1to2, addInput('month')],
+    MM: [match1to2, match2, addInput('month')],
+    Y: [
+      matchSigned,
+      matchSigned,
+      (parsedElements: ParsedElements, input: string) => {
+        parsedElements.year = Number.parseInt(input, 10)
+      },
+    ],
+    YY: [
+      match1to4,
+      match2,
+      (parsedElements: ParsedElements, input: string) => {
+        parsedElements.year = parseTwoDigitYear(input)
+      },
+    ],
+    YYYY: [
+      match1to4,
+      match4,
+      (parsedElements: ParsedElements, input: string) => {
+        parsedElements.year = parseFourDigitYear(input)
+      },
+    ],
+    Z: [
+      matchOffset,
+      matchOffset,
+      (parsedElements: ParsedElements, input: string) => {
+        parsedElements.zoneOffset = offsetFromString(input)
+      },
+    ],
+    ZZ: [
+      matchOffset,
+      matchOffset,
+      (parsedElements: ParsedElements, input: string) => {
+        parsedElements.zoneOffset = offsetFromString(input)
+      },
+    ],
+  }
+
+  // add new parsing tokens to existing list of parsing tokens
+  dayFactory.addParseTokenDefinitions(parseTokensDefinitions)
 
   const oldParse = proto['$parse']
   proto['$parse'] = function (d?: Exclude<DateType, EsDay>) {
@@ -557,8 +561,6 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   }
 
   dateFromDateComponents = proto['dateFromDateComponents']
-
-  dayFactory.addParseTokenDefinitions = addParseTokenDefinitions
 }
 
 export default advancedParsePlugin

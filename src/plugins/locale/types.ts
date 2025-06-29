@@ -20,6 +20,11 @@ declare module 'esday' {
      * add locale to list of available Locales
      */
     registerLocale: (locale: Locale, newName?: string) => EsDayFactory
+
+    /**
+     * remove locale from list of available Locales
+     */
+    unregisterLocale: (localeName: string) => EsDayFactory
   }
 }
 

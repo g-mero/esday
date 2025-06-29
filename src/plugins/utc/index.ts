@@ -4,9 +4,9 @@
  * when utc mode is enabled, get and set methods will use UTC time
  *
  * new esday parameters in '$conf':
- *   utc              utc mode (true / false)
- *   offset           utcOffset (constant value, no DST handling)
- *   timezoneOffset   timezone offset (with DST handling)
+ *   utc          utc mode (true / false)
+ *   offset       utcOffset (constant value, no DST handling)
+ *   tzOffset     timezone offset (with DST handling)
  */
 
 import type { EsDay } from 'esday'
@@ -24,24 +24,6 @@ import type { DateType, EsDayPlugin, SimpleType, UnitsObjectTypeSet } from '~/ty
 
 const REGEX_VALID_OFFSET_FORMAT = /[+-]\d\d(?::?\d\d)?/g
 const REGEX_OFFSET_HOURS_MINUTES_FORMAT = /[+-]|\d\d/g
-function offsetFromString(value = '') {
-  const offset = value.match(REGEX_VALID_OFFSET_FORMAT)
-
-  if (!offset) {
-    return Number.NaN
-  }
-
-  const [indicator, hoursOffset, minutesOffset] = `${offset[0]}`.match(
-    REGEX_OFFSET_HOURS_MINUTES_FORMAT,
-  ) || ['-', 0, 0]
-  const totalOffsetInMinutes = +hoursOffset * 60 + +minutesOffset
-
-  if (totalOffsetInMinutes === 0) {
-    return 0
-  }
-
-  return indicator === '+' ? totalOffsetInMinutes : -totalOffsetInMinutes
-}
 
 declare module 'esday' {
   interface EsDay {
@@ -56,6 +38,81 @@ declare module 'esday' {
       ...others: (SimpleType | string[] | { [key: string]: SimpleType })[]
     ) => EsDay
   }
+}
+
+function offsetFromString(value = '') {
+  const offset = value.match(REGEX_VALID_OFFSET_FORMAT)
+
+  if (!offset) {
+    return Number.NaN
+  }
+
+  const [indicator, hoursOffset, minutesOffset] = Object.assign(
+    ['-', 0, 0],
+    `${offset[0]}`.match(REGEX_OFFSET_HOURS_MINUTES_FORMAT),
+  )
+  const totalOffsetInMinutes = +hoursOffset * 60 + +minutesOffset
+
+  if (totalOffsetInMinutes === 0) {
+    return 0
+  }
+
+  return indicator === '+' ? totalOffsetInMinutes : -totalOffsetInMinutes
+}
+
+function utcOffsetGetImpl(that: EsDay, defaultValue = Number.NaN) {
+  if (that['$conf'].utc) {
+    return 0
+  }
+  if (that['$conf'].offset !== undefined) {
+    return Number(that['$conf'].offset)
+  }
+  return defaultValue
+}
+
+function utcOffsetSetImpl(that: EsDay, offset: number | string, keepLocalTime?: boolean) {
+  let offsetAsNumber: number
+
+  if (typeof offset === 'string') {
+    offsetAsNumber = offsetFromString(offset)
+    if (Number.isNaN(offsetAsNumber)) {
+      return that
+    }
+  } else {
+    offsetAsNumber = offset
+  }
+
+  const offsetAsMinutes = Math.abs(offsetAsNumber) <= 16 ? offsetAsNumber * 60 : offsetAsNumber
+
+  if (keepLocalTime) {
+    // change point in time using offset and return new instance
+    const localTimezoneOffset = that['$conf'].utc
+      ? that.toDate().getTimezoneOffset()
+      : -1 * that.utcOffset()
+
+    let instance = that
+    if (that['$conf'].utc) {
+      instance = instance.add(localTimezoneOffset, C.MIN)
+      instance['$conf'].utc = offsetAsMinutes === 0
+    }
+
+    instance['$conf'].offset = offsetAsMinutes
+    instance['$conf'].tzOffset = localTimezoneOffset
+    return instance
+  }
+
+  if (offsetAsNumber !== 0) {
+    const localTimezoneOffset = that['$conf'].utc
+      ? that.toDate().getTimezoneOffset()
+      : -1 * that.utcOffset()
+
+    // switch away from utc mode
+    const instance = that.local().add(offsetAsMinutes + localTimezoneOffset, C.MIN)
+    instance['$conf'].offset = offsetAsMinutes
+    instance['$conf'].tzOffset = localTimezoneOffset
+    return instance
+  }
+  return that.utc()
 }
 
 const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
@@ -236,56 +293,6 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     }
     return old$set.call(this, unit, values)
   }
-}
-
-function utcOffsetGetImpl(that: EsDay, defaultValue = Number.NaN) {
-  if (that['$conf'].utc) {
-    return 0
-  }
-  if (that['$conf'].offset !== undefined) {
-    return Number(that['$conf'].offset)
-  }
-  return defaultValue
-}
-
-function utcOffsetSetImpl(that: EsDay, offset: number | string, keepLocalTime?: boolean) {
-  let offsetAsNumber: number
-
-  if (typeof offset === 'string') {
-    offsetAsNumber = offsetFromString(offset)
-    if (Number.isNaN(offsetAsNumber)) {
-      return that
-    }
-  } else {
-    offsetAsNumber = offset
-  }
-
-  const offsetAsMinutes = Math.abs(offsetAsNumber) <= 16 ? offsetAsNumber * 60 : offsetAsNumber
-
-  if (keepLocalTime) {
-    // change point in time using offset and return new instance
-    const localTimezoneOffset = that['$conf'].utc
-      ? that.toDate().getTimezoneOffset()
-      : -1 * that.utcOffset()
-    const instance = that.add(localTimezoneOffset, C.MIN)
-    instance['$conf'].offset = offsetAsMinutes
-    instance['$conf'].tzOffset = localTimezoneOffset
-    instance['$conf'].utc = offsetAsMinutes === 0
-    return instance
-  }
-
-  if (offsetAsNumber !== 0) {
-    const localTimezoneOffset = that['$conf'].utc
-      ? that.toDate().getTimezoneOffset()
-      : -1 * that.utcOffset()
-
-    // switch away from utc mode
-    const instance = that.local().add(offsetAsMinutes + localTimezoneOffset, C.MIN)
-    instance['$conf'].offset = offsetAsMinutes
-    instance['$conf'].tzOffset = localTimezoneOffset
-    return instance
-  }
-  return that.utc()
 }
 
 export default utcPlugin
