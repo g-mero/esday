@@ -7,9 +7,9 @@ The locale to use for parsing can be defined as 3rd parameter. If no locale is g
 ## Usage
 
 ### Dependencies
-LocalizedParse requires the plugins AdvancedParse and Locale and at least 1 registered and activated locale.
+LocalizedParse requires the plugins AdvancedParse and Locale and at least 1 registered and activated locale. Dor using the 'd', 'dd', 'ddd' or the 'dddd' tokens the plugin Week is required too.
 
-The plugin AdvancedParse must be loaded using esday.extend(...) before the plugin LocalizedParse.
+The plugin AdvancedParse must be loaded using esday.extend(...) before the plugin LocalizedParse. If used, the plugin Week must be loaded after the plugin AdvancedParse.
 
 LocalizedParse can be used together with the plugin Utc which must be loaded using esday.extend(...) before the plugin AdvancedParse.
 
@@ -51,9 +51,6 @@ If an array of formats is used, `date` will be parsed with the best matching for
 | hh        | 01...12                             | Hours, 12-hour clock, 2-digits                    |
 | A         | AM PM                               | Post or ante meridiem, upper-case                 |
 | a         | am pm                               | Post or ante meridiem, lower-case                 |
-| dd        | Su...Sa                             | Day of week (minimal form)                        |
-| ddd       | Sun...Sat                           | Day of week (short form)                          |
-| dddd      | Sunday...Saturday                   | Day of week (long form)                           |
 | Do        | 1st...31st                          | Day of Month with ordinal                         |
 | MMM       | Jan...Dec                           | Month name (short form)                           |
 | MMMM      | January...December                  | Month name (long form)                            |
@@ -84,7 +81,7 @@ esday.registerLocale(localeZhCn)
 // set global locale
 esday.locale('zh-cn')
 
-const parsedDate = esday('2024 12月 24日 星期二 8:10:21 早上', 'YYYY MMM Do dddd H:mm:SS A')
+const parsedDate = esday('2024 12月 24日 星期二 8:10:21 早上', 'YYYY MMM Do dddd H:mm:ss A')
 ```
 
 Example with locale given as parameter of esday.
@@ -102,5 +99,5 @@ esday.registerLocale(localeZhCn)
 
 // default global locale is 'en' (i.e. 'en-US')
 
-const parsedDate = esday('2024 12月 24日 星期二 8:10:21 早上', 'YYYY MMM Do dddd H:mm:SS A', 'zh-CN')
+const parsedDate = esday('2024 12月 24日 星期二 8:10:21 早上', 'YYYY MMM Do dddd H:mm:ss A', 'zh-CN')
 ```
