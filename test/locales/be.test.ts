@@ -4,6 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/be'
+import type { DayNamesStandaloneFormat, MonthNames, MonthNamesStandaloneFormat } from '~/plugins'
 
 describe('locale be', () => {
   it('should have the correct name', () => {
@@ -11,12 +12,16 @@ describe('locale be', () => {
   })
 
   it('should have 7 weekday names', () => {
-    expect(locale.weekdays).toBeDefined()
-    if (Array.isArray(locale.weekdays)) {
-      expect(locale.weekdays.length).toBe(7)
-    } else {
-      expect(locale.weekdays).toBeTypeOf('object')
-    }
+    const weekdays = locale.weekdays as DayNamesStandaloneFormat
+
+    expect(weekdays).toBeDefined()
+    expect(weekdays).toBeTypeOf('object')
+    expect(weekdays.standalone).toBeDefined()
+    expect(weekdays.standalone.length).toBe(7)
+    expect(weekdays.format).toBeDefined()
+    expect(weekdays.format.length).toBe(7)
+    expect(weekdays.isFormat).toBeDefined()
+    expect(weekdays.isFormat).toBeInstanceOf(RegExp)
   })
 
   it('should have 7 short weekday names', () => {
@@ -30,26 +35,25 @@ describe('locale be', () => {
   })
 
   it('should have 12 month names', () => {
-    expect(locale.months).toBeDefined()
-    if (Array.isArray(locale.months)) {
-      expect(locale.months.length).toBe(12)
-    } else {
-      expect(locale.months).toBeTypeOf('object')
-    }
+    const months = locale.months as MonthNamesStandaloneFormat
+
+    expect(months).toBeDefined()
+    expect(months).toBeTypeOf('object')
+    expect(months.standalone).toBeDefined()
+    expect(months.standalone.length).toBe(12)
+    expect(months.format).toBeDefined()
+    expect(months.format.length).toBe(12)
   })
 
   it('should have 12 short month names', () => {
     expect(locale.monthsShort).toBeDefined()
-    if (Array.isArray(locale.monthsShort)) {
-      expect(locale.monthsShort.length).toBe(12)
-    } else {
-      expect(locale.monthsShort).toBeTypeOf('function')
-    }
+    expect((locale.monthsShort as MonthNames).length).toBe(12)
   })
 
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -85,5 +89,9 @@ describe('locale be', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })

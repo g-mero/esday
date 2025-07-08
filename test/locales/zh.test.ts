@@ -2,8 +2,10 @@
  * Test for locale 'Chinese [zh]'
  */
 
+import type { EsDay } from 'esday'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/zh'
+import type { CalendarSpecValFunction } from '~/plugins'
 
 describe('locale zh', () => {
   it('should have the correct name', () => {
@@ -50,6 +52,8 @@ describe('locale zh', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2, 'W')).toBe('2周')
+    expect(locale.ordinal(2)).toBe('2日')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -75,6 +79,33 @@ describe('locale zh', () => {
     expect(locale.calendar).toBeTypeOf('object')
     expect(Object.keys(locale.calendar ?? {}).length).toBe(6)
   })
+  it.each([
+    { thisWeek: 0, refWeek: 1, expected: '[下]dddLT' },
+    { thisWeek: 0, refWeek: 0, expected: '[本]dddLT' },
+  ])(
+    'should format nextWeek with calendar for weekday "$weekday"',
+    ({ thisWeek, refWeek, expected }) => {
+      const thisDate = { week: () => thisWeek } as EsDay
+      const referenceDate = { week: () => refWeek } as EsDay
+      const nextWeek = locale.calendar.nextWeek as CalendarSpecValFunction
+
+      expect(nextWeek.call(thisDate, referenceDate)).toBe(expected)
+    },
+  )
+
+  it.each([
+    { thisWeek: 0, refWeek: 1, expected: '[上]dddLT' },
+    { thisWeek: 0, refWeek: 0, expected: '[本]dddLT' },
+  ])(
+    'should format lastWeek with calendar for weekday "$weekday"',
+    ({ thisWeek, refWeek, expected }) => {
+      const thisDate = { week: () => thisWeek } as EsDay
+      const referenceDate = { week: () => refWeek } as EsDay
+      const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+
+      expect(lastWeek.call(thisDate, referenceDate)).toBe(expected)
+    },
+  )
 
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
@@ -85,5 +116,11 @@ describe('locale zh', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(5, 59, false)).toBe('凌晨')
+    expect(locale.meridiem(8, 59, true)).toBe('早上')
+    expect(locale.meridiem(10, 59, false)).toBe('上午')
+    expect(locale.meridiem(12, 59, false)).toBe('中午')
+    expect(locale.meridiem(17, 59, true)).toBe('下午')
+    expect(locale.meridiem(18, 0, true)).toBe('晚上')
   })
 })

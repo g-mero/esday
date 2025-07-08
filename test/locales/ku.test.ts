@@ -50,6 +50,7 @@ describe('locale ku', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -85,15 +86,21 @@ describe('locale ku', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('پ.ن')
+    expect(locale.meridiem(10, 0, true)).toBe('پ.ن')
+    expect(locale.meridiem(20, 0, false)).toBe('د.ن')
+    expect(locale.meridiem(20, 0, true)).toBe('د.ن')
   })
 
   it('should have a method named "preParse"', () => {
     expect(locale.preParse).toBeDefined()
     expect(locale.preParse).toBeTypeOf('function')
+    expect(locale.preParse?.('١٢٣٤٥٦٧٨٩٠')).toBe('1234567890')
   })
 
   it('should have a method named "postFormat"', () => {
     expect(locale.postFormat).toBeDefined()
     expect(locale.postFormat).toBeTypeOf('function')
+    expect(locale.postFormat?.('1234567890')).toBe('١٢٣٤٥٦٧٨٩٠')
   })
 })

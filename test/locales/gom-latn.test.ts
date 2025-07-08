@@ -4,6 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/gom-latn'
+import type { MonthNamesStandaloneFormat, RelativeTimeElementFunction } from '~/plugins'
 
 describe('locale gom-LATN', () => {
   it('should have the correct name', () => {
@@ -30,12 +31,16 @@ describe('locale gom-LATN', () => {
   })
 
   it('should have 12 month names', () => {
-    expect(locale.months).toBeDefined()
-    if (Array.isArray(locale.months)) {
-      expect(locale.months.length).toBe(12)
-    } else {
-      expect(locale.months).toBeTypeOf('object')
-    }
+    const months = locale.months as MonthNamesStandaloneFormat
+
+    expect(months).toBeDefined()
+    expect(months).toBeTypeOf('object')
+    expect(months.standalone).toBeDefined()
+    expect(months.standalone.length).toBe(12)
+    expect(months.format).toBeDefined()
+    expect(months.format.length).toBe(12)
+    expect(months.isFormat).toBeDefined()
+    expect(months.isFormat).toBeInstanceOf(RegExp)
   })
 
   it('should have 12 short month names', () => {
@@ -50,6 +55,7 @@ describe('locale gom-LATN', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -80,10 +86,19 @@ describe('locale gom-LATN', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
     expect(Object.keys(locale.relativeTime ?? {}).length).toBe(14)
+
+    const rtFunctionSeconds = locale.relativeTime.ss as RelativeTimeElementFunction
+    expect(rtFunctionSeconds(4, false, 'ss', false)).toBe('4 sekond')
+    expect(rtFunctionSeconds(4, false, 'ss', true)).toBe('4 sekondamni')
   })
 
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(1, 0, false)).toBe('rati')
+    expect(locale.meridiem(11, 0, true)).toBe('sokallim')
+    expect(locale.meridiem(15, 0, false)).toBe('donparam')
+    expect(locale.meridiem(19, 0, true)).toBe('sanje')
+    expect(locale.meridiem(23, 0, true)).toBe('rati')
   })
 })

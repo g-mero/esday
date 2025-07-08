@@ -52,6 +52,31 @@ describe('locale tk', () => {
     expect(locale.ordinal).toBeTypeOf('function')
   })
 
+  it.each([
+    { value: 0, expected: "0'unjy" },
+    { value: 1, expected: "1'inji" },
+    { value: 2, expected: "2'nji" },
+    { value: 3, expected: "3'ünji" },
+    { value: 4, expected: "4'ünji" },
+    { value: 5, expected: "5'inji" },
+    { value: 6, expected: "6'njy" },
+    { value: 7, expected: "7'nji" },
+    { value: 8, expected: "8'inji" },
+    { value: 9, expected: "9'unjy" },
+    { value: 10, expected: "10'unjy" },
+    { value: 20, expected: "20'nji" },
+    { value: 30, expected: "30'unjy" },
+    { value: 40, expected: "40'njy" },
+    { value: 50, expected: "50'nji" },
+    { value: 60, expected: "60'ynjy" },
+    { value: 70, expected: "70'inji" },
+    { value: 80, expected: "80'inji" },
+    { value: 90, expected: "90'ynjy" },
+    { value: 100, expected: "100'ünji" },
+  ])('should format "$value" as ordinal', ({ value, expected }) => {
+    expect(locale.ordinal(value)).toBe(expected)
+  })
+
   it('should have numeric property named weekStart', () => {
     expect(locale.weekStart).toBeDefined()
     expect(locale.weekStart).toBeTypeOf('number')
@@ -85,5 +110,9 @@ describe('locale tk', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })

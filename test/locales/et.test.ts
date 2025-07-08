@@ -4,6 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/et'
+import type { RelativeTimeElementFunction } from '~/plugins'
 
 describe('locale et', () => {
   it('should have the correct name', () => {
@@ -50,6 +51,7 @@ describe('locale et', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2.')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -82,8 +84,33 @@ describe('locale et', () => {
     expect(Object.keys(locale.relativeTime ?? {}).length).toBe(14)
   })
 
+  it('should format token "s" as relativeTime', () => {
+    const rtFunctionToken = locale.relativeTime.s as RelativeTimeElementFunction
+    expect(rtFunctionToken(4, true, 's', false)).toBe('paar sekundit')
+    expect(rtFunctionToken(4, false, 's', false)).toBe('mõni sekund')
+    expect(rtFunctionToken(4, false, 's', true)).toBe('mõne sekundi')
+  })
+
+  it('should format token "ss" as relativeTime', () => {
+    const rtFunctionToken = locale.relativeTime.ss as RelativeTimeElementFunction
+    expect(rtFunctionToken(4, true, 'ss', false)).toBe('4 sekundit')
+    expect(rtFunctionToken(4, false, 'ss', false)).toBe('4 sekundit')
+    expect(rtFunctionToken(4, false, 'ss', true)).toBe('4 sekundi')
+  })
+
+  it('should format token "dd" as relativeTime', () => {
+    const rtFunctionToken = locale.relativeTime.dd as RelativeTimeElementFunction
+    expect(rtFunctionToken(4, false, 'dd', false)).toBe('4 päeva')
+    expect(rtFunctionToken(4, true, 'dd', false)).toBe('4 päeva')
+    expect(rtFunctionToken(4, true, 'dd', true)).toBe('4 päeva')
+  })
+
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })

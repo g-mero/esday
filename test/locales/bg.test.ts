@@ -2,8 +2,14 @@
  * Test for locale 'Bulgarian [bg]'
  */
 
+import { type EsDay, esday } from 'esday'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/bg'
+import { localePlugin } from '~/plugins'
+import type { CalendarSpecValFunction } from '~/plugins'
+
+esday.extend(localePlugin)
+esday.registerLocale(locale)
 
 describe('locale bg', () => {
   it('should have the correct name', () => {
@@ -50,6 +56,11 @@ describe('locale bg', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(15)).toBe('15-ти')
+    expect(locale.ordinal(1)).toBe('1-ви')
+    expect(locale.ordinal(2)).toBe('2-ри')
+    expect(locale.ordinal(7)).toBe('7-ми')
+    expect(locale.ordinal(5)).toBe('5-ти')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -76,6 +87,22 @@ describe('locale bg', () => {
     expect(Object.keys(locale.calendar ?? {}).length).toBe(6)
   })
 
+  it.each([
+    { weekday: 0, expected: '[Миналата] dddd [в] LT' },
+    { weekday: 1, expected: '[Миналия] dddd [в] LT' },
+    { weekday: 2, expected: '[Миналия] dddd [в] LT' },
+    { weekday: 3, expected: '[Миналата] dddd [в] LT' },
+    { weekday: 4, expected: '[Миналия] dddd [в] LT' },
+    { weekday: 5, expected: '[Миналия] dddd [в] LT' },
+    { weekday: 6, expected: '[Миналата] dddd [в] LT' },
+    { weekday: 7, expected: '' },
+  ])('should format lastWeek with calendar for weekday "$weekday"', ({ weekday, expected }) => {
+    const referenceDate = { day: () => weekday } as EsDay
+    const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+
+    expect(lastWeek.call(referenceDate)).toBe(expected)
+  })
+
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
@@ -85,5 +112,9 @@ describe('locale bg', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })

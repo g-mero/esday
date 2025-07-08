@@ -85,5 +85,12 @@ describe('locale bn-BD', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(3, 0, false)).toBe('রাত')
+    expect(locale.meridiem(5, 0, false)).toBe('ভোর')
+    expect(locale.meridiem(11, 0, false)).toBe('সকাল')
+    expect(locale.meridiem(14, 0, false)).toBe('দুপুর')
+    expect(locale.meridiem(17, 0, false)).toBe('বিকাল')
+    expect(locale.meridiem(19, 0, false)).toBe('সন্ধ্যা')
+    expect(locale.meridiem(21, 0, false)).toBe('রাত')
   })
 })

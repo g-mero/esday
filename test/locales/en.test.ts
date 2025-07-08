@@ -52,6 +52,18 @@ describe('locale en', () => {
     expect(locale.ordinal).toBeTypeOf('function')
   })
 
+  it.each([
+    { value: 0, expected: '0th' },
+    { value: 1, expected: '1st' },
+    { value: 2, expected: '2nd' },
+    { value: 3, expected: '3rd' },
+    { value: 4, expected: '4th' },
+    { value: 5, expected: '5th' },
+    { value: 99, expected: '99th' },
+  ])('should convert $value to ordinal number', ({ value, expected }) => {
+    expect(locale.ordinal(value)).toBe(expected)
+  })
+
   it('should have numeric property named weekStart', () => {
     expect(locale.weekStart).toBeDefined()
     expect(locale.weekStart).toBeTypeOf('number')
@@ -85,5 +97,9 @@ describe('locale en', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })
