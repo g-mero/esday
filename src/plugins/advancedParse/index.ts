@@ -314,7 +314,7 @@ function parsedElementsToDate(this: EsDay, elements: ParsedElements) {
 
   let offsetMs: number | undefined
   if (zoneOffset !== undefined) {
-    offsetMs = (zoneOffset ?? 0) * 60000
+    offsetMs = zoneOffset * 60000
   }
 
   return dateFromDateComponents.call(
