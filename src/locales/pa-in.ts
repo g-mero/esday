@@ -111,7 +111,7 @@ const localePaIn: Readonly<Locale> = {
   },
   preParse: (dateString: string) =>
     dateString.replace(
-      /[੧੨੩੪੫੬੭੮੯੦]/g,
+      /[١٢٣٤٥٦٧٨٩٠]/g,
       (match) => punjabiToEnglishNumbersMap[match as keyof typeof punjabiToEnglishNumbersMap],
     ),
   postFormat: (formattedDate: string) =>

@@ -12,6 +12,7 @@ import type {
   Locale,
   MonthNames,
   MonthNamesStandaloneFormat,
+  RelativeTimeElementFunction,
 } from '~/plugins/locale'
 
 declare module 'esday' {
@@ -170,23 +171,25 @@ function plural(timeStrings: string[], timeValue: number) {
       ? forms[1]
       : forms[2]
 }
-function relativeTimeWithPlural(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
-): string {
+  token: string,
+  _isFuture: boolean,
+) => {
   const format = {
+    ss: withoutSuffix ? ['секунда', 'секунды', 'секунд'] : ['секунду', 'секунды', 'секунд'],
     mm: withoutSuffix ? ['минута', 'минуты', 'минут'] : ['минуту', 'минуты', 'минут'],
     hh: ['час', 'часа', 'часов'],
     dd: ['день', 'дня', 'дней'],
     MM: ['месяц', 'месяца', 'месяцев'],
     yy: ['год', 'года', 'лет'],
   }
-  if (range === 'm') {
+  if (token === 'm') {
     return withoutSuffix ? 'минута' : 'минуту'
   }
 
-  return `${timeValue} ${plural(format[range as keyof typeof format], +timeValue)}`
+  return `${timeValue} ${plural(format[token as keyof typeof format], +timeValue)}`
 }
 
 const localeRu: Readonly<Locale> = {
@@ -216,17 +219,17 @@ const localeRu: Readonly<Locale> = {
     future: 'через %s',
     past: '%s назад',
     s: 'несколько секунд',
-    ss: relativeTimeWithPlural,
-    m: relativeTimeWithPlural,
-    mm: relativeTimeWithPlural,
+    ss: relativeTimeFormatter,
+    m: relativeTimeFormatter,
+    mm: relativeTimeFormatter,
     h: 'час',
-    hh: relativeTimeWithPlural,
+    hh: relativeTimeFormatter,
     d: 'день',
-    dd: relativeTimeWithPlural,
+    dd: relativeTimeFormatter,
     M: 'месяц',
-    MM: relativeTimeWithPlural,
+    MM: relativeTimeFormatter,
     y: 'год',
-    yy: relativeTimeWithPlural,
+    yy: relativeTimeFormatter,
   },
   // eslint-disable-next-line  unused-imports/no-unused-vars
   meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {

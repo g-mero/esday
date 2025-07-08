@@ -35,11 +35,12 @@ const englishToMarathiNumbersMap = {
 function relativeTimeFormatter(
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
+  token: string,
+  _isFuture: boolean,
 ): string {
   let output = ''
   if (withoutSuffix) {
-    switch (range) {
+    switch (token) {
       case 's':
         output = 'काही सेकंद'
         break
@@ -78,7 +79,7 @@ function relativeTimeFormatter(
         break
     }
   } else {
-    switch (range) {
+    switch (token) {
       case 's':
         output = 'काही सेकंदां'
         break

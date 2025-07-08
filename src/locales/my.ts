@@ -98,7 +98,7 @@ const localeMy: Readonly<Locale> = {
   },
   preParse: (dateString: string) =>
     dateString.replace(
-      /[١٢٣٤٥٦٧٨٩٠]/g,
+      /[၁၂၃၄၅၆၇၈၉၀]/g,
       (match) => burmeseToEnglishNumbersMap[match as keyof typeof burmeseToEnglishNumbersMap],
     ),
   postFormat: (formattedDate: string) =>

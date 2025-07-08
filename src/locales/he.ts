@@ -2,7 +2,7 @@
  * Hebrew [he]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
 const relativeTimeFormatStrings = {
   s: 'מספר שניות',
@@ -22,16 +22,17 @@ const relativeTimeFormatStrings = {
   yy: '%d שנים',
   yy2: 'שנתיים',
 }
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   _withoutSuffix: boolean,
-  range: string,
-): string {
-  const formatStringsIndex = (range +
+  token: string,
+  _isFuture: boolean,
+) => {
+  const formatStringsIndex = (token +
     (+timeValue === 2 ? '2' : '')) as keyof typeof relativeTimeFormatStrings
   const text =
-    relativeTimeFormatStrings[formatStringsIndex] ||
-    relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings]
+    relativeTimeFormatStrings[formatStringsIndex] ??
+    relativeTimeFormatStrings[token as keyof typeof relativeTimeFormatStrings]
   return text.replace('%d', timeValue.toString())
 }
 

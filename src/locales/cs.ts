@@ -3,7 +3,12 @@
  */
 
 import type { EsDay } from 'esday'
-import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
+import type {
+  Locale,
+  MonthNames,
+  MonthNamesStandaloneFormat,
+  RelativeTimeElementFunction,
+} from '~/plugins/locale'
 
 const monthFormat: MonthNames = [
   'ledna',
@@ -84,17 +89,17 @@ const calendar = {
 }
 
 function usePlural(timeValue: number): boolean {
-  return timeValue > 1 && timeValue < 5 && ~~(timeValue / 10) !== 1
+  return timeValue > 1 && timeValue < 5
 }
 
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
+  token: string,
   isFuture: boolean,
-): string {
+) => {
   const result = `${timeValue} `
-  switch (range) {
+  switch (token) {
     case 's': // a few seconds / in a few seconds / a few seconds ago
       return withoutSuffix || isFuture ? 'pár sekund' : 'pár sekundami'
     case 'ss': // 9 seconds / in 9 seconds / 9 seconds ago

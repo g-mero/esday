@@ -2,7 +2,7 @@
  * German [de]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
 const relativeTimeFormatStrings = {
   s: 'ein paar Sekunden',
@@ -19,9 +19,14 @@ const relativeTimeFormatStrings = {
   yy: ['%d Jahre', '%d Jahren'],
 }
 
-function relativeTimeFormatter(timeValue: string | number, withoutSuffix: boolean, range: string) {
+const relativeTimeFormatter: RelativeTimeElementFunction = (
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  token: string,
+  _isFuture: boolean,
+) => {
   let result = ''
-  const l = relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings]
+  const l = relativeTimeFormatStrings[token as keyof typeof relativeTimeFormatStrings]
   if (Array.isArray(l)) {
     result = l[withoutSuffix ? 0 : 1]
   } else {

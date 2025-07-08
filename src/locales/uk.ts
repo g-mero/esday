@@ -1,5 +1,10 @@
 import type { EsDay } from 'esday'
-import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
+import type {
+  Locale,
+  MonthNames,
+  MonthNamesStandaloneFormat,
+  RelativeTimeElementFunction,
+} from '~/plugins/locale'
 
 const monthFormat: MonthNames = [
   'січня',
@@ -34,9 +39,9 @@ const months: MonthNamesStandaloneFormat = {
   format: monthFormat,
 }
 
-function processHoursFunction(str: string) {
+function processHoursFunction(prefix: string) {
   return function (this: EsDay) {
-    return `${str}о${this.hour() === 11 ? 'б' : ''}] LT`
+    return `${prefix}о${this.hour() === 11 ? 'б' : ''}] LT`
   }
 }
 
@@ -48,11 +53,12 @@ function plural(timeStrings: string[], timeValue: number) {
       ? forms[1]
       : forms[2]
 }
-function relativeTimeWithPlural(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
-): string {
+  token: string,
+  _isFuture: boolean,
+) => {
   const formats = {
     ss: withoutSuffix ? ['секунда', 'секунди', 'секунд'] : ['секунду', 'секунди', 'секунд'],
     mm: withoutSuffix ? ['хвилина', 'хвилини', 'хвилин'] : ['хвилину', 'хвилини', 'хвилин'],
@@ -61,14 +67,14 @@ function relativeTimeWithPlural(
     MM: ['місяць', 'місяці', 'місяців'],
     yy: ['рік', 'роки', 'років'],
   }
-  if (range === 'm') {
+  if (token === 'm') {
     return withoutSuffix ? 'хвилина' : 'хвилину'
   }
-  if (range === 'h') {
+  if (token === 'h') {
     return withoutSuffix ? 'година' : 'годину'
   }
 
-  return `${timeValue} ${plural(formats[range as keyof typeof formats], +timeValue)}`
+  return `${timeValue} ${plural(formats[token as keyof typeof formats], +timeValue)}`
 }
 
 const localeUk: Readonly<Locale> = {
@@ -132,17 +138,17 @@ const localeUk: Readonly<Locale> = {
     future: 'за %s',
     past: '%s тому',
     s: 'декілька секунд',
-    ss: relativeTimeWithPlural,
-    m: relativeTimeWithPlural,
-    mm: relativeTimeWithPlural,
-    h: relativeTimeWithPlural,
-    hh: relativeTimeWithPlural,
+    ss: relativeTimeFormatter,
+    m: relativeTimeFormatter,
+    mm: relativeTimeFormatter,
+    h: relativeTimeFormatter,
+    hh: relativeTimeFormatter,
     d: 'день',
-    dd: relativeTimeWithPlural,
+    dd: relativeTimeFormatter,
     M: 'місяць',
-    MM: relativeTimeWithPlural,
+    MM: relativeTimeFormatter,
     y: 'рік',
-    yy: relativeTimeWithPlural,
+    yy: relativeTimeFormatter,
   },
   meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Ukrainian doesn't have AM/PM, so return default values

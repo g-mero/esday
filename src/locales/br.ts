@@ -3,13 +3,13 @@
  */
 
 import type { EsDay } from 'esday'
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
-function lastNumber(number: number): number {
-  if (number > 9) {
-    return lastNumber(number % 10)
+function lastNumber(timeValue: number): number {
+  if (timeValue > 9) {
+    return lastNumber(timeValue % 10)
   }
-  return number
+  return timeValue
 }
 
 function softMutation(text: string): string {
@@ -21,20 +21,20 @@ function softMutation(text: string): string {
   return mutationTable[text.charAt(0)] + text.substring(1)
 }
 
-function mutation(text: string, number: number): string {
-  if (number === 2) {
+function mutation(text: string, timeValue: number): string {
+  if (timeValue === 2) {
     return softMutation(text)
   }
   return text
 }
 
-function relativeTimeWithMutation(number: number, _withoutSuffix: boolean, key: string): string {
+function relativeTimeWithMutation(timeValue: number, _withoutSuffix: boolean, key: string): string {
   const format: Record<string, string> = {
     mm: 'munutenn',
     MM: 'miz',
     dd: 'devezh',
   }
-  return `${number} ${mutation(format[key], number)}`
+  return `${timeValue} ${mutation(format[key], timeValue)}`
 }
 
 function specialMutationForYears(number: number): string {
@@ -65,20 +65,21 @@ const relativeTimeFormatStrings = {
   y: 'ur bloaz',
   yy: specialMutationForYears,
 }
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
-): string {
-  const l = relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings]
-  if (typeof l === 'function') {
-    return (l as (number: number, withoutSuffix: boolean, key: string) => string)(
+  token: string,
+  _isFuture: boolean,
+) => {
+  const format = relativeTimeFormatStrings[token as keyof typeof relativeTimeFormatStrings]
+  if (typeof format === 'function') {
+    return (format as (timeValue: number, withoutSuffix: boolean, key: string) => string)(
       Number(timeValue),
       withoutSuffix,
-      range,
+      token,
     )
   }
-  return l.replace('%d', timeValue.toString())
+  return format.replace('%d', timeValue.toString())
 }
 
 const localeBr: Readonly<Locale> = {

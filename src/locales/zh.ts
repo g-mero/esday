@@ -48,8 +48,9 @@ const localeZh: Readonly<Locale> = {
     '11月',
     '12月',
   ],
-  ordinal: (number, period) => {
-    switch (period) {
+  ordinal: (number: number, period?: 'W') => {
+    const p = period ?? ''
+    switch (p) {
       case 'W':
         return `${number}周`
       default:

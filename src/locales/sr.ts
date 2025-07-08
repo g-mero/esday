@@ -4,7 +4,7 @@
  */
 
 import type { EsDay } from 'esday'
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
 const calendar = {
   sameDay: '[danas u] LT',
@@ -42,23 +42,23 @@ const calendar = {
   sameElse: 'L',
 }
 
-function plural(timeValue: number, wordKey: string[]) {
+function plural(timeValue: number, formats: string[]) {
   if (
     timeValue % 10 >= 1 &&
     timeValue % 10 <= 4 &&
     (timeValue % 100 < 10 || timeValue % 100 >= 20)
   ) {
-    return timeValue % 10 === 1 ? wordKey[0] : wordKey[1]
+    return timeValue % 10 === 1 ? formats[0] : formats[1]
   }
-  return wordKey[2]
+  return formats[2]
 }
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
+  token: string,
   isFuture: boolean,
-): string {
-  const formats = {
+) => {
+  const formatsAll = {
     ss: ['sekunda', 'sekunde', 'sekundi'],
     m: ['jedan minut', 'jednog minuta'],
     mm: ['%d minut', '%d minuta', '%d minuta'],
@@ -72,19 +72,21 @@ function relativeTimeFormatter(
     yy: ['%d godinu', '%d godine', '%d godina'],
   }
 
-  const wordKey = formats[range as keyof typeof formats]
+  const formatsForToken = formatsAll[token as keyof typeof formatsAll]
 
-  if (range.length === 1) {
+  if (token.length === 1) {
     // Nominativ
-    if (range === 'y' && withoutSuffix) return 'jedna godina'
-    return isFuture || withoutSuffix ? wordKey[0] : wordKey[1]
+    if (token === 'y' && withoutSuffix) return 'jedna godina'
+    return isFuture || withoutSuffix ? formatsForToken[0] : formatsForToken[1]
   }
 
-  const word = plural(+timeValue, wordKey)
+  const format = plural(+timeValue, formatsForToken)
   // Nominativ
-  if (range === 'yy' && withoutSuffix && word === '%d godinu') return `${timeValue} godina`
+  if (token === 'yy' && withoutSuffix && format === '%d godinu') {
+    return `${timeValue} godina`
+  }
 
-  return word.replace('%d', timeValue.toString())
+  return format.replace('%d', timeValue.toString())
 }
 
 const localeSr: Readonly<Locale> = {

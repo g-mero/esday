@@ -5,6 +5,7 @@
 import type { EsDay } from 'esday'
 import localeSr from '~/locales/sr'
 import { cloneLocale, setLocaleProperty } from '~/plugins/locale'
+import type { RelativeTimeElementFunction } from '~/plugins/locale'
 
 const localeSrCyrl = cloneLocale(localeSr)
 
@@ -86,14 +87,13 @@ function plural(timeValue: number, wordKey: string[]) {
   }
   return wordKey[2]
 }
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
+  token: string,
   isFuture: boolean,
-): string {
+) => {
   const formats = {
-    s: ['секунда', 'секунде', 'секунди'],
     ss: ['%d секунди', '%d секунде', '%d секунди'],
     m: ['један минут', 'једног минута'],
     mm: ['%d минут', '%d минута', '%d минута'],
@@ -107,17 +107,17 @@ function relativeTimeFormatter(
     yy: ['%d годину', '%d године', '%d година'],
   }
 
-  const wordKey = formats[range as keyof typeof formats]
+  const wordKey = formats[token as keyof typeof formats]
 
-  if (range.length === 1) {
+  if (token.length === 1) {
     // Nominativ
-    if (range === 'y' && withoutSuffix) return 'једна година'
+    if (token === 'y' && withoutSuffix) return 'једна година'
     return isFuture || withoutSuffix ? wordKey[0] : wordKey[1]
   }
 
   const word = plural(+timeValue, wordKey)
   // Nominativ
-  if (range === 'yy' && withoutSuffix && word === '%d годину') return `${timeValue} година`
+  if (token === 'yy' && withoutSuffix && word === '%d годину') return `${timeValue} година`
 
   return word.replace('%d', timeValue.toString())
 }

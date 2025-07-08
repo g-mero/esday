@@ -2,14 +2,14 @@
  * Finnish [fi]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
+  token: string,
   isFuture: boolean,
-): string {
+) => {
   const pastWords = {
     s: 'muutama sekunti',
     ss: '%d sekuntia',
@@ -67,7 +67,7 @@ function relativeTimeFormatter(
   const words = isFuture && !withoutSuffix ? futureWords : pastWords
   const numbers = isFuture && !withoutSuffix ? futureNumbers : pastNumbers
 
-  const result = words[range as keyof typeof words]
+  const result = words[token as keyof typeof words]
   if (+timeValue < 10) {
     return result.replace('%d', numbers[+timeValue])
   }

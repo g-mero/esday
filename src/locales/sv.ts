@@ -25,9 +25,9 @@ const localeSv: Readonly<Locale> = {
   ],
   monthsShort: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
   ordinal: (n) => {
-    const b = n % 10
-    const o = b === 1 || b === 2 ? 'a' : 'e'
-    return `[${n}${o}]`
+    const lastDigit = n % 10
+    const extension = lastDigit === 1 || lastDigit === 2 ? 'a' : 'e'
+    return `${n}${extension}`
   },
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.

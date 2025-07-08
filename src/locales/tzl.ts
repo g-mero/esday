@@ -2,14 +2,14 @@
  * Talossan [tzl]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
+  token: string,
   isFuture: boolean,
-): string {
+) => {
   const format = {
     s: ['viensas secunds', "'iensas secunds"],
     ss: [`${timeValue} secunds`, `${timeValue} secunds`],
@@ -25,10 +25,10 @@ function relativeTimeFormatter(
     yy: [`${timeValue} ars`, `${timeValue} ars`],
   }
   return isFuture
-    ? format[range as keyof typeof format][0]
+    ? format[token as keyof typeof format][0]
     : withoutSuffix
-      ? format[range as keyof typeof format][0]
-      : format[range as keyof typeof format][1]
+      ? format[token as keyof typeof format][0]
+      : format[token as keyof typeof format][1]
 }
 
 const localeTzl: Readonly<Locale> = {

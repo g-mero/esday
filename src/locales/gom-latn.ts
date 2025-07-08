@@ -2,7 +2,12 @@
  * Konkani Latin script [gom-LATN]
  */
 
-import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
+import type {
+  Locale,
+  MonthNames,
+  MonthNamesStandaloneFormat,
+  RelativeTimeElementFunction,
+} from '~/plugins/locale'
 
 const monthFormat: MonthNames = [
   'Janerachea',
@@ -38,12 +43,12 @@ const months: MonthNamesStandaloneFormat = {
   isFormat: /MMMM(\s)+D[oD]?/,
 }
 
-function processRelativeTime(
+const processRelativeTime: RelativeTimeElementFunction = (
   timeValue: string | number,
   _withoutSuffix: boolean,
-  range: string,
+  token: string,
   isFuture: boolean,
-) {
+) => {
   const relativeTimeFormatStrings = {
     s: ['thoddea sekondamni', 'thodde sekond'],
     ss: [`${timeValue} sekondamni`, `${timeValue} sekond`],
@@ -59,8 +64,8 @@ function processRelativeTime(
     yy: [`${timeValue} vorsamni`, `${timeValue} vorsam`],
   }
   return isFuture
-    ? relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings][0]
-    : relativeTimeFormatStrings[range as keyof typeof relativeTimeFormatStrings][1]
+    ? relativeTimeFormatStrings[token as keyof typeof relativeTimeFormatStrings][0]
+    : relativeTimeFormatStrings[token as keyof typeof relativeTimeFormatStrings][1]
 }
 
 const localeGomLatn: Readonly<Locale> = {

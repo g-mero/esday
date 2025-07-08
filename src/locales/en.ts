@@ -26,9 +26,9 @@ const localeEn: Readonly<Locale> = {
   ],
   monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   ordinal: (n) => {
-    const s = ['th', 'st', 'nd', 'rd']
+    const suffices = ['th', 'st', 'nd', 'rd']
     const v = n % 100
-    return `${n}${s[(v - 20) % 10] || s[v] || s[0]}`
+    return `${n}${suffices[(v - 20) % 10] || suffices[v] || suffices[0]}`
   },
   weekStart: 0, // Sunday is the first day of the week.
   yearStart: 1, // The week that contains Jan 1st is the first week of the year.
