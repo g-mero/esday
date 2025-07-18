@@ -2,8 +2,10 @@
  * Test for locale 'Greek [el]'
  */
 
+import type { EsDay } from 'esday'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/el'
+import type { CalendarSpecValFunction } from '~/plugins'
 
 describe('locale el', () => {
   it('should have the correct name', () => {
@@ -50,6 +52,7 @@ describe('locale el', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -76,6 +79,21 @@ describe('locale el', () => {
     expect(Object.keys(locale.calendar ?? {}).length).toBe(6)
   })
 
+  it.each([
+    { weekday: 0, hour: 1, expected: '[την προηγούμενη] dddd [στη] LT' },
+    { weekday: 1, hour: 2, expected: '[την προηγούμενη] dddd [στις] LT' },
+    { weekday: 6, hour: 12, expected: '[το προηγούμενο] dddd [στις] LT' },
+    { weekday: 6, hour: 13, expected: '[το προηγούμενο] dddd [στη] LT' },
+  ])(
+    'should format lastWeek with calendar for weekday "$weekday"',
+    ({ weekday, hour, expected }) => {
+      const referenceDate = { day: () => weekday, hour: () => hour } as EsDay
+      const nextWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+
+      expect(nextWeek.call(referenceDate)).toBe(expected)
+    },
+  )
+
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
@@ -85,5 +103,9 @@ describe('locale el', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })

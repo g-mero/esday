@@ -2,8 +2,10 @@
  * Test for locale 'Italian (Switzerland) [it-CH]'
  */
 
+import type { EsDay } from 'esday'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/it-ch'
+import type { CalendarSpecValFunction } from '~/plugins'
 
 describe('locale it-CH', () => {
   it('should have the correct name', () => {
@@ -74,6 +76,16 @@ describe('locale it-CH', () => {
     expect(locale.calendar).toBeDefined()
     expect(locale.calendar).toBeTypeOf('object')
     expect(Object.keys(locale.calendar ?? {}).length).toBe(6)
+  })
+
+  it.each([
+    { day: 0, expected: '[la scorsa] dddd [alle] LT' },
+    { day: 1, expected: '[lo scorso] dddd [alle] LT' },
+  ])('should format lastWeek with calendar for day "$day"', ({ day, expected }) => {
+    const referenceDate = { day: () => day } as EsDay
+    const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+
+    expect(lastWeek.call(referenceDate)).toBe(expected)
   })
 
   it('should have an object named "relativeTime"', () => {

@@ -59,7 +59,8 @@ export type LocaleFormatKeys =
   | 'lll'
   | 'llll'
 
-export type CalendarSpecVal = string | ((this: EsDay, refDate?: EsDay) => string)
+export type CalendarSpecValFunction = (this: EsDay, refDate?: EsDay) => string
+export type CalendarSpecVal = string | CalendarSpecValFunction
 export interface Calendar {
   sameDay: CalendarSpecVal
   nextDay: CalendarSpecVal

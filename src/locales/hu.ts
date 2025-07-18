@@ -3,7 +3,7 @@
  */
 
 import type { EsDay } from 'esday'
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
 const weekEndings = [
   'vasárnap',
@@ -19,38 +19,38 @@ function week(this: EsDay, isFuture: boolean) {
   return `${isFuture ? '' : '[múlt] '}[${weekEndings[this.day()]}] LT[-kor]`
 }
 
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
+  token: string,
   isFuture: boolean,
-): string {
+) => {
   const num = timeValue.toString()
-  switch (range) {
+  switch (token) {
     case 's':
       return isFuture || withoutSuffix ? 'néhány másodperc' : 'néhány másodperce'
     case 'ss':
-      return num + (isFuture || withoutSuffix) ? ' másodperc' : ' másodperce'
+      return `${num} ${isFuture || withoutSuffix ? 'másodperc' : 'másodperce'}`
     case 'm':
       return `egy${isFuture || withoutSuffix ? ' perc' : ' perce'}`
     case 'mm':
-      return num + (isFuture || withoutSuffix ? ' perc' : ' perce')
+      return `${num} ${isFuture || withoutSuffix ? 'perc' : 'perce'}`
     case 'h':
       return `egy${isFuture || withoutSuffix ? ' óra' : ' órája'}`
     case 'hh':
-      return num + (isFuture || withoutSuffix ? ' óra' : ' órája')
+      return `${num} ${isFuture || withoutSuffix ? 'óra' : 'órája'}`
     case 'd':
       return `egy${isFuture || withoutSuffix ? ' nap' : ' napja'}`
     case 'dd':
-      return num + (isFuture || withoutSuffix ? ' nap' : ' napja')
+      return `${num} ${isFuture || withoutSuffix ? 'nap' : 'napja'}`
     case 'M':
       return `egy${isFuture || withoutSuffix ? ' hónap' : ' hónapja'}`
     case 'MM':
-      return num + (isFuture || withoutSuffix ? ' hónap' : ' hónapja')
+      return `${num} ${isFuture || withoutSuffix ? 'hónap' : 'hónapja'}`
     case 'y':
       return `egy${isFuture || withoutSuffix ? ' év' : ' éve'}`
     case 'yy':
-      return num + (isFuture || withoutSuffix ? ' év' : ' éve')
+      return `${num} ${isFuture || withoutSuffix ? 'év' : 'éve'}`
   }
   return ''
 }

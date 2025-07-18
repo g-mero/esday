@@ -47,7 +47,6 @@ const localeKk: Readonly<Locale> = {
     lastWeek: '[Өткен аптаның] dddd [сағат] LT',
     sameElse: 'L',
   },
-
   relativeTime: {
     future: '%s ішінде',
     past: '%s бұрын',

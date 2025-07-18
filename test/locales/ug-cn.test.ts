@@ -50,6 +50,7 @@ describe('locale ug-CN', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -85,5 +86,11 @@ describe('locale ug-CN', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(5, 59, false)).toBe('يېرىم كېچە')
+    expect(locale.meridiem(8, 59, true)).toBe('سەھەر')
+    expect(locale.meridiem(11, 29, false)).toBe('چۈشتىن بۇرۇن')
+    expect(locale.meridiem(12, 29, true)).toBe('چۈش')
+    expect(locale.meridiem(17, 59, true)).toBe('چۈشتىن كېيىن')
+    expect(locale.meridiem(20, 0, true)).toBe('كەچ')
   })
 })

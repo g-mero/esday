@@ -3,7 +3,12 @@
  */
 
 import type { EsDay } from 'esday'
-import type { Locale, MonthNames, MonthNamesFunction } from '~/plugins/locale'
+import type {
+  Locale,
+  MonthNames,
+  MonthNamesFunction,
+  RelativeTimeElementFunction,
+} from '~/plugins/locale'
 
 const monthFormat: MonthNames = [
   'stycznia',
@@ -49,13 +54,13 @@ months.standalone = monthStandalone
 function usePlural(timeValue: number) {
   return timeValue % 10 < 5 && timeValue % 10 > 1 && ~~(timeValue / 10) % 10 !== 1
 }
-function relativeTimeWithPlural(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
-): string {
-  const result = `${timeValue} `
-  switch (range) {
+  token: string,
+) => {
+  const result = `${timeValue}`
+  switch (token) {
     case 'ss':
       return `${result} ${usePlural(+timeValue) ? 'sekundy' : 'sekund'}`
     case 'm':
@@ -104,13 +109,10 @@ const localePl: Readonly<Locale> = {
       switch (this.day()) {
         case 0:
           return '[W niedzielę o] LT'
-
         case 2:
           return '[We wtorek o] LT'
-
         case 3:
           return '[W środę o] LT'
-
         case 6:
           return '[W sobotę o] LT'
 
@@ -137,17 +139,17 @@ const localePl: Readonly<Locale> = {
     future: 'za %s',
     past: '%s temu',
     s: 'kilka sekund',
-    ss: relativeTimeWithPlural,
-    m: relativeTimeWithPlural,
-    mm: relativeTimeWithPlural,
-    h: relativeTimeWithPlural,
-    hh: relativeTimeWithPlural,
+    ss: relativeTimeFormatter,
+    m: relativeTimeFormatter,
+    mm: relativeTimeFormatter,
+    h: relativeTimeFormatter,
+    hh: relativeTimeFormatter,
     d: '1 dzień',
     dd: '%d dni',
     M: 'miesiąc',
-    MM: relativeTimeWithPlural,
+    MM: relativeTimeFormatter,
     y: 'rok',
-    yy: relativeTimeWithPlural,
+    yy: relativeTimeFormatter,
   },
   meridiem: (hour: number, _minute: number, isLowercase: boolean) => {
     // Polish doesn't have AM/PM, so return default values

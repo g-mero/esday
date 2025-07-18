@@ -2,7 +2,7 @@
  * Luxembourgish [lb]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
 /**
  * Returns true if the word before the given number loses the '-n' ending.
@@ -41,11 +41,11 @@ function eifelerRuleAppliesToNumber(timeValue: string) {
     while (timeAsNumber >= 10) {
       timeAsNumber = timeAsNumber / 10
     }
-    return eifelerRuleAppliesToNumber(timeValue)
+    return eifelerRuleAppliesToNumber(`${timeAsNumber}`)
   }
   // Anything larger than 4 digits: recursively check first n-3 digits
   timeAsNumber = timeAsNumber / 1000
-  return eifelerRuleAppliesToNumber(timeValue)
+  return eifelerRuleAppliesToNumber(`${timeAsNumber}`)
 }
 function processFutureTime(timeValue: string | number) {
   const timeValueAsString = timeValue.toString().trim()
@@ -73,11 +73,12 @@ function processPastTime(timeValue: string | number) {
   }
   return `virun ${timeValue}`
 }
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
-): string {
+  token: string,
+  _isFuture: boolean,
+) => {
   const format = {
     m: ['eng Minutt', 'enger Minutt'],
     h: ['eng Stonn', 'enger Stonn'],
@@ -88,8 +89,8 @@ function relativeTimeFormatter(
   return (
     timeValue.toString() +
     (withoutSuffix
-      ? format[range as keyof typeof format][0]
-      : format[range as keyof typeof format][1])
+      ? format[token as keyof typeof format][0]
+      : format[token as keyof typeof format][1])
   )
 }
 

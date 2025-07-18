@@ -50,6 +50,7 @@ describe('locale ta', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2 வது')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -85,15 +86,24 @@ describe('locale ta', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(1, 0, false)).toBe('யாமம்')
+    expect(locale.meridiem(5, 0, true)).toBe('வைகறை')
+    expect(locale.meridiem(9, 0, false)).toBe('காலை')
+    expect(locale.meridiem(13, 0, true)).toBe('நண்பகல்')
+    expect(locale.meridiem(17, 0, true)).toBe('எற்பாடு')
+    expect(locale.meridiem(21, 0, true)).toBe('மாலை')
+    expect(locale.meridiem(22, 0, true)).toBe('யாமம்')
   })
 
   it('should have a method named "preParse"', () => {
     expect(locale.preParse).toBeDefined()
     expect(locale.preParse).toBeTypeOf('function')
+    expect(locale.preParse?.('௧௨௩௪௫௬௭௮௯௦')).toBe('1234567890')
   })
 
   it('should have a method named "postFormat"', () => {
     expect(locale.postFormat).toBeDefined()
     expect(locale.postFormat).toBeTypeOf('function')
+    expect(locale.postFormat?.('1234567890')).toBe('௧௨௩௪௫௬௭௮௯௦')
   })
 })

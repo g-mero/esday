@@ -50,6 +50,11 @@ describe('locale sv', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(1)).toBe('1a')
+    expect(locale.ordinal(2)).toBe('2a')
+    expect(locale.ordinal(3)).toBe('3e')
+    expect(locale.ordinal(12)).toBe('12a')
+    expect(locale.ordinal(13)).toBe('13e')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -85,5 +90,9 @@ describe('locale sv', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })

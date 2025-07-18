@@ -50,6 +50,7 @@ describe('locale pa-IN', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -85,15 +86,22 @@ describe('locale pa-IN', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(3, 0, false)).toBe('ਰਾਤ')
+    expect(locale.meridiem(9, 0, true)).toBe('ਸਵੇਰ')
+    expect(locale.meridiem(16, 0, false)).toBe('ਦੁਪਹਿਰ')
+    expect(locale.meridiem(19, 0, true)).toBe('ਸ਼ਾਮ')
+    expect(locale.meridiem(20, 0, true)).toBe('ਰਾਤ')
   })
 
   it('should have a method named "preParse"', () => {
     expect(locale.preParse).toBeDefined()
     expect(locale.preParse).toBeTypeOf('function')
+    expect(locale.preParse?.('١٢٣٤٥٦٧٨٩٠')).toBe('1234567890')
   })
 
   it('should have a method named "postFormat"', () => {
     expect(locale.postFormat).toBeDefined()
     expect(locale.postFormat).toBeTypeOf('function')
+    expect(locale.postFormat?.('1234567890')).toBe('١٢٣٤٥٦٧٨٩٠')
   })
 })

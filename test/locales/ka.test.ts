@@ -4,6 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/ka'
+import type { DayNamesStandaloneFormat } from '~/plugins'
 
 describe('locale ka', () => {
   it('should have the correct name', () => {
@@ -11,12 +12,16 @@ describe('locale ka', () => {
   })
 
   it('should have 7 weekday names', () => {
-    expect(locale.weekdays).toBeDefined()
-    if (Array.isArray(locale.weekdays)) {
-      expect(locale.weekdays.length).toBe(7)
-    } else {
-      expect(locale.weekdays).toBeTypeOf('object')
-    }
+    const weekdays = locale.weekdays as DayNamesStandaloneFormat
+
+    expect(weekdays).toBeDefined()
+    expect(weekdays).toBeTypeOf('object')
+    expect(weekdays.standalone).toBeDefined()
+    expect(weekdays.standalone.length).toBe(7)
+    expect(weekdays.format).toBeDefined()
+    expect(weekdays.format.length).toBe(7)
+    expect(weekdays.isFormat).toBeDefined()
+    expect(weekdays.isFormat).toBeInstanceOf(RegExp)
   })
 
   it('should have 7 short weekday names', () => {
@@ -52,6 +57,17 @@ describe('locale ka', () => {
     expect(locale.ordinal).toBeTypeOf('function')
   })
 
+  it.each([
+    { value: 0, expected: '0' },
+    { value: 1, expected: '1-ლი' },
+    { value: 2, expected: 'მე-2' },
+    { value: 21, expected: '21-ე' },
+    { value: 40, expected: 'მე-40' },
+    { value: 100, expected: 'მე-100' },
+  ])('should format "$value" as ordinal number', ({ value, expected }) => {
+    expect(locale.ordinal(value)).toBe(expected)
+  })
+
   it('should have numeric property named weekStart', () => {
     expect(locale.weekStart).toBeDefined()
     expect(locale.weekStart).toBeTypeOf('number')
@@ -85,5 +101,9 @@ describe('locale ka', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })

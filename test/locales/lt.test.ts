@@ -4,6 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/lt'
+import type { MonthNamesStandaloneFormat } from '~/plugins'
 
 describe('locale lt', () => {
   it('should have the correct name', () => {
@@ -39,17 +40,22 @@ describe('locale lt', () => {
   })
 
   it('should have 12 short month names', () => {
-    expect(locale.monthsShort).toBeDefined()
-    if (Array.isArray(locale.monthsShort)) {
-      expect(locale.monthsShort.length).toBe(12)
-    } else {
-      expect(locale.monthsShort).toBeTypeOf('function')
-    }
+    const months = locale.months as MonthNamesStandaloneFormat
+
+    expect(months).toBeDefined()
+    expect(months).toBeTypeOf('object')
+    expect(months.standalone).toBeDefined()
+    expect(months.standalone.length).toBe(12)
+    expect(months.format).toBeDefined()
+    expect(months.format.length).toBe(12)
+    expect(months.isFormat).toBeDefined()
+    expect(months.isFormat).toBeInstanceOf(RegExp)
   })
 
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2-oji')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -85,5 +91,9 @@ describe('locale lt', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })

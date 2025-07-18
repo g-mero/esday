@@ -2,8 +2,10 @@
  * Test for locale 'Italian [it]'
  */
 
+import type { EsDay } from 'esday'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/it'
+import type { CalendarSpecValFunction } from '~/plugins'
 
 describe('locale it', () => {
   it('should have the correct name', () => {
@@ -50,6 +52,7 @@ describe('locale it', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2º')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -76,6 +79,67 @@ describe('locale it', () => {
     expect(Object.keys(locale.calendar ?? {}).length).toBe(6)
   })
 
+  it.each([
+    { hour: 0, expected: '[Oggi a ]LT' },
+    { hour: 1, expected: "[Oggi all']LT" },
+    { hour: 2, expected: '[Oggi alle ]LT' },
+  ])('should format sameDay with calendar for hour "$hour"', ({ hour, expected }) => {
+    const referenceDate = { hour: () => hour } as EsDay
+    const sameDay = locale.calendar.sameDay as CalendarSpecValFunction
+
+    expect(sameDay.call(referenceDate)).toBe(expected)
+  })
+
+  it.each([
+    { hour: 0, expected: '[Domani a ]LT' },
+    { hour: 1, expected: "[Domani all']LT" },
+    { hour: 2, expected: '[Domani alle ]LT' },
+  ])('should format nextDay with calendar for hour "$hour"', ({ hour, expected }) => {
+    const referenceDate = { hour: () => hour } as EsDay
+    const nextDay = locale.calendar.nextDay as CalendarSpecValFunction
+
+    expect(nextDay.call(referenceDate)).toBe(expected)
+  })
+
+  it.each([
+    { hour: 0, expected: 'dddd [a ]LT' },
+    { hour: 1, expected: "dddd [all']LT" },
+    { hour: 2, expected: 'dddd [alle ]LT' },
+  ])('should format nextWeek with calendar for hour "$hour"', ({ hour, expected }) => {
+    const referenceDate = { hour: () => hour } as EsDay
+    const nextWeek = locale.calendar.nextWeek as CalendarSpecValFunction
+
+    expect(nextWeek.call(referenceDate)).toBe(expected)
+  })
+
+  it.each([
+    { hour: 0, expected: '[Ieri a ]LT' },
+    { hour: 1, expected: "[Ieri all']LT" },
+    { hour: 2, expected: '[Ieri alle ]LT' },
+  ])('should format lastDay with calendar for hour "$hour"', ({ hour, expected }) => {
+    const referenceDate = { hour: () => hour } as EsDay
+    const lastDay = locale.calendar.lastDay as CalendarSpecValFunction
+
+    expect(lastDay.call(referenceDate)).toBe(expected)
+  })
+
+  it.each([
+    { day: 0, hour: 0, expected: '[La scorsa] dddd [a ]LT' },
+    { day: 0, hour: 1, expected: "[La scorsa] dddd [all']LT" },
+    { day: 0, hour: 2, expected: '[La scorsa] dddd [alle ]LT' },
+    { day: 1, hour: 0, expected: '[Lo scorso] dddd [a ]LT' },
+    { day: 1, hour: 1, expected: "[Lo scorso] dddd [all']LT" },
+    { day: 1, hour: 2, expected: '[Lo scorso] dddd [alle ]LT' },
+  ])(
+    'should format lastWeek with calendar for day "$day" and hour "$hour"',
+    ({ day, hour, expected }) => {
+      const referenceDate = { day: () => day, hour: () => hour } as EsDay
+      const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+
+      expect(lastWeek.call(referenceDate)).toBe(expected)
+    },
+  )
+
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
@@ -85,5 +149,9 @@ describe('locale it', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })

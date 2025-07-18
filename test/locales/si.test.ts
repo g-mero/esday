@@ -50,6 +50,7 @@ describe('locale si', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -85,5 +86,9 @@ describe('locale si', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(11, 0, false)).toBe('පෙර වරු')
+    expect(locale.meridiem(11, 0, true)).toBe('පෙ.ව.')
+    expect(locale.meridiem(12, 0, false)).toBe('පස් වරු')
+    expect(locale.meridiem(12, 0, true)).toBe('ප.ව.')
   })
 })

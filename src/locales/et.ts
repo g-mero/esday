@@ -2,15 +2,15 @@
  * Estonian [et]
  */
 
-import type { Locale } from '~/plugins/locale'
+import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  key: string,
+  token: string,
   isFuture: boolean,
-): string {
-  const timeValueAsString = `${timeValue} `
+) => {
+  const timeValueAsString = `${timeValue}`
   const format: Record<string, string[]> = {
     s: ['mõne sekundi', 'mõni sekund', 'paar sekundit'],
     ss: ['%d sekundi', '%d sekundit'],
@@ -25,13 +25,13 @@ function relativeTimeFormatter(
     y: ['ühe aasta', 'aasta', 'üks aasta'],
     yy: ['%d aasta', '%d aastat'],
   }
-  if (key === 'dd') {
-    return format[key][0].replace('%d', timeValueAsString)
+  if (token === 'dd') {
+    return format[token][0].replace('%d', timeValueAsString)
   }
   if (withoutSuffix) {
-    return (format[key][2] ? format[key][2] : format[key][1]).replace('%d', timeValueAsString)
+    return (format[token][2] ? format[token][2] : format[token][1]).replace('%d', timeValueAsString)
   }
-  return (isFuture ? format[key][0] : format[key][1]).replace('%d', timeValueAsString)
+  return (isFuture ? format[token][0] : format[token][1]).replace('%d', timeValueAsString)
 }
 
 const localeEt: Readonly<Locale> = {

@@ -50,6 +50,19 @@ describe('locale nl', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(0)).toBe('[0de]')
+    expect(locale.ordinal(1)).toBe('[1ste]')
+    expect(locale.ordinal(2)).toBe('[2de]')
+    expect(locale.ordinal(3)).toBe('[3de]')
+    expect(locale.ordinal(4)).toBe('[4de]')
+    expect(locale.ordinal(5)).toBe('[5de]')
+    expect(locale.ordinal(6)).toBe('[6de]')
+    expect(locale.ordinal(7)).toBe('[7de]')
+    expect(locale.ordinal(8)).toBe('[8ste]')
+    expect(locale.ordinal(9)).toBe('[9de]')
+    expect(locale.ordinal(19)).toBe('[19de]')
+    expect(locale.ordinal(20)).toBe('[20ste]')
+    expect(locale.ordinal(21)).toBe('[21ste]')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -85,5 +98,9 @@ describe('locale nl', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })

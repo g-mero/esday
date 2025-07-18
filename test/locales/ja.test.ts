@@ -2,8 +2,10 @@
  * Test for locale 'Japanese [ja]'
  */
 
+import type { EsDay } from 'esday'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/ja'
+import type { CalendarSpecValFunction } from '~/plugins'
 
 describe('locale ja', () => {
   it('should have the correct name', () => {
@@ -50,6 +52,7 @@ describe('locale ja', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2日')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -76,6 +79,36 @@ describe('locale ja', () => {
     expect(Object.keys(locale.calendar ?? {}).length).toBe(6)
   })
 
+  it.each([
+    { thisWeek: 0, refWeek: 0, expected: 'dddd LT' },
+    { thisWeek: 0, refWeek: 1, expected: '[来週]dddd LT' },
+    { thisWeek: 1, refWeek: 1, expected: 'dddd LT' },
+  ])(
+    'should format nextWeek with calendar for week "$thisWeek" and ref week "$refWeek"',
+    ({ thisWeek, refWeek, expected }) => {
+      const thisDate = { week: () => thisWeek } as EsDay
+      const referenceDate = { week: () => refWeek } as EsDay
+      const nextWeek = locale.calendar.nextWeek as CalendarSpecValFunction
+
+      expect(nextWeek.call(thisDate, referenceDate)).toBe(expected)
+    },
+  )
+
+  it.each([
+    { thisWeek: 0, refWeek: 0, expected: 'dddd LT' },
+    { thisWeek: 0, refWeek: 1, expected: '[先週]dddd LT' },
+    { thisWeek: 1, refWeek: 1, expected: 'dddd LT' },
+  ])(
+    'should format lastWeek with calendar for week "$thisWeek" and ref week "$refWeek"',
+    ({ thisWeek, refWeek, expected }) => {
+      const thisDate = { week: () => thisWeek } as EsDay
+      const referenceDate = { week: () => refWeek } as EsDay
+      const lastWeek = locale.calendar.lastWeek as CalendarSpecValFunction
+
+      expect(lastWeek.call(thisDate, referenceDate)).toBe(expected)
+    },
+  )
+
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
@@ -85,5 +118,9 @@ describe('locale ja', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('午前')
+    expect(locale.meridiem(10, 0, true)).toBe('午前')
+    expect(locale.meridiem(20, 0, false)).toBe('午後')
+    expect(locale.meridiem(20, 0, true)).toBe('午後')
   })
 })

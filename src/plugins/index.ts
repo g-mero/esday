@@ -20,6 +20,8 @@ import { getLocale } from './locale'
 import type {
   Calendar,
   CalendarPartial,
+  CalendarSpecVal,
+  CalendarSpecValFunction,
   DayNames,
   DayNamesStandaloneFormat,
   Locale,
@@ -69,6 +71,8 @@ export {
 export type {
   Calendar,
   CalendarPartial,
+  CalendarSpecVal,
+  CalendarSpecValFunction,
   DayNames,
   DayNamesStandaloneFormat,
   Locale,

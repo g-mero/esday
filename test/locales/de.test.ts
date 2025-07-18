@@ -4,6 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/de'
+import type { RelativeTimeElementFunction } from '~/plugins'
 
 describe('locale de', () => {
   it('should have the correct name', () => {
@@ -50,6 +51,7 @@ describe('locale de', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2.')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -80,10 +82,21 @@ describe('locale de', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
     expect(Object.keys(locale.relativeTime ?? {}).length).toBe(14)
+
+    const rtFunctionSeconds = locale.relativeTime.ss as RelativeTimeElementFunction
+    expect(rtFunctionSeconds(4, false, 'ss', false)).toBe('4 Sekunden')
+
+    const rtFunctionMinute = locale.relativeTime.ss as RelativeTimeElementFunction
+    expect(rtFunctionMinute(4, false, 'm', false)).toBe('einer Minute')
+    expect(rtFunctionMinute(4, true, 'm', false)).toBe('eine Minute')
   })
 
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(10, 0, false)).toBe('AM')
+    expect(locale.meridiem(10, 0, true)).toBe('am')
+    expect(locale.meridiem(20, 0, false)).toBe('PM')
+    expect(locale.meridiem(20, 0, true)).toBe('pm')
   })
 })

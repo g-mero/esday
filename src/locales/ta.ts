@@ -115,24 +115,24 @@ const localeTa: Readonly<Locale> = {
   // eslint-disable-next-line unused-imports/no-unused-vars
   meridiem: (hour: number, _minute: number, _isLowercase: boolean) => {
     if (hour < 2) {
-      return ' யாமம்'
+      return 'யாமம்'
     }
     if (hour < 6) {
-      return ' வைகறை' // வைகறை
+      return 'வைகறை' // வைகறை
     }
     if (hour < 10) {
-      return ' காலை' // காலை
+      return 'காலை' // காலை
     }
     if (hour < 14) {
-      return ' நண்பகல்' // நண்பகல்
+      return 'நண்பகல்' // நண்பகல்
     }
     if (hour < 18) {
-      return ' எற்பாடு' // எற்பாடு
+      return 'எற்பாடு' // எற்பாடு
     }
     if (hour < 22) {
-      return ' மாலை' // மாலை
+      return 'மாலை' // மாலை
     }
-    return ' யாமம்'
+    return 'யாமம்'
   },
   preParse: (dateString: string) =>
     dateString.replace(

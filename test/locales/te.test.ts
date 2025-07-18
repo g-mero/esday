@@ -50,6 +50,7 @@ describe('locale te', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
+    expect(locale.ordinal(2)).toBe('2')
   })
 
   it('should have numeric property named weekStart', () => {
@@ -85,5 +86,10 @@ describe('locale te', () => {
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()
     expect(locale.meridiem).toBeTypeOf('function')
+    expect(locale.meridiem(3, 0, false)).toBe('రాత్రి')
+    expect(locale.meridiem(9, 0, true)).toBe('ఉదయం')
+    expect(locale.meridiem(16, 0, false)).toBe('మధ్యాహ్నం')
+    expect(locale.meridiem(19, 0, true)).toBe('సాయంత్రం')
+    expect(locale.meridiem(20, 0, true)).toBe('రాత్రి')
   })
 })

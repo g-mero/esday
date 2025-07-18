@@ -3,7 +3,12 @@
  */
 
 import type { EsDay } from 'esday'
-import type { Locale, MonthNames, MonthNamesFunction } from '~/plugins/locale'
+import type {
+  Locale,
+  MonthNames,
+  MonthNamesFunction,
+  RelativeTimeElementFunction,
+} from '~/plugins/locale'
 
 const monthFormat: MonthNames = [
   'siječnja',
@@ -85,15 +90,16 @@ const calendar = {
   sameElse: 'L',
 }
 
-function relativeTimeFormatter(
+const relativeTimeFormatter: RelativeTimeElementFunction = (
   timeValue: string | number,
   withoutSuffix: boolean,
-  range: string,
-): string {
+  token: string,
+  _isFuture: boolean,
+) => {
   // function translate(timeValue: string | number, withoutSuffix: boolean, range: string): string {
   let result = `${timeValue} `
   const timeValueAsNumber = +timeValue
-  switch (range) {
+  switch (token) {
     case 'ss':
       if (timeValueAsNumber === 1) {
         result += 'sekunda'
