@@ -1,0 +1,48 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+header {
+  align-items: center;
+  background-color: #fff;
+  display: grid;
+  grid-template-columns: 100px 1rem 1fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "symbol . title";
+  padding: 1rem 0;
+}
+
+.header-symbol {
+  grid-area: symbol;
+  padding-left: 0.5rem;
+}
+
+.header-title {
+  grid-area: title;
+}
+
+nav {
+  background-color: #555;
+  color: #fff;
+  padding: 0.5rem 0;
+  text-align: center;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 0 1rem;
+}
+
+.container {
+  background-color: #f4f4f4;
+  margin: 1rem 0.5rem;
+  padding: 1rem 0.5rem;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
