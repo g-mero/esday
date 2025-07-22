@@ -19,6 +19,16 @@ export function unregisterLocale(name: string): void {
   LocaleStore.delete(name)
 }
 
+function updateLocale(localeName: string, locale: Partial<Locale>): void {
+  const existingLocale = getLocale(localeName)
+  if (existingLocale) {
+    const updatedLocale = { ...existingLocale, ...locale }
+    LocaleStore.set(localeName, updatedLocale)
+  } else {
+    throw new Error(`Locale "${localeName}" does not exist.`)
+  }
+}
+
 /**
  * Same as 'setLocaleProperty', but for arbitrary objects to enable use
  * e.g. for cloning the 'relativeTime' property.
@@ -175,6 +185,11 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
   dayFactory.unregisterLocale = (localeName: string) => {
     unregisterLocale(localeName)
+    return dayFactory
+  }
+
+  dayFactory.updateLocale = (localeName: string, locale: Partial<Locale>) => {
+    updateLocale(localeName, locale)
     return dayFactory
   }
 }

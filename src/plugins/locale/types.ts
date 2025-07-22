@@ -15,6 +15,7 @@ declare module 'esday' {
   interface EsDayFactory {
     locale(): string
     locale(localeName: string): EsDay
+    updateLocale: (localeName: string, newLocale: Partial<Locale>) => EsDayFactory
 
     /**
      * add locale to list of available Locales
