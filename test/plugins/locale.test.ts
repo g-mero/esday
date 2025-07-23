@@ -69,6 +69,29 @@ describe('factory locale methods', () => {
     esday.locale('non-exist')
     expect(getLocaleName(esday())).toBe('non-exist')
   })
+
+  it('update locale', () => {
+    esday.registerLocale(localeZh, 'test')
+    esday.registerLocale(localeZh)
+    const newMonths = [
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
+    ] as const
+
+    esday.updateLocale('test', { months: newMonths })
+    esday.locale('test')
+    expect(esday().localeObject().months.toString()).toBe(newMonths.toString())
+  })
 })
 
 describe('instance locale methods', () => {
