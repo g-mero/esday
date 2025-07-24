@@ -21,12 +21,8 @@ export function unregisterLocale(name: string): void {
 
 function updateLocale(localeName: string, locale: Partial<Locale>): void {
   const existingLocale = getLocale(localeName)
-  if (existingLocale) {
-    const updatedLocale = { ...existingLocale, ...locale }
-    LocaleStore.set(localeName, updatedLocale)
-  } else {
-    throw new Error(`Locale "${localeName}" does not exist.`)
-  }
+  const updatedLocale = { ...existingLocale, ...locale }
+  LocaleStore.set(localeName, updatedLocale)
 }
 
 /**

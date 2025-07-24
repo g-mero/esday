@@ -1,14 +1,13 @@
 import { esday } from 'esday'
-import { beforeEach, describe, it } from 'vitest'
-import { expectSame } from '../util'
-
 import moment from 'moment/min/moment-with-locales'
+import { beforeEach, describe, it } from 'vitest'
 import localeCa from '~/locales/ca'
 import localeDe from '~/locales/de'
 import localeEn from '~/locales/en'
 import localeHr from '~/locales/hr'
 import localeKa from '~/locales/ka'
 import { localePlugin, localizedFormatPlugin } from '~/plugins'
+import { expectSame } from '../util'
 
 esday.extend(localizedFormatPlugin).extend(localePlugin)
 esday
