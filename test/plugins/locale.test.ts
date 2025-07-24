@@ -1,13 +1,21 @@
 import type { EsDay } from 'esday'
 import { esday } from 'esday'
+import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import localeZh from '~/locales/zh'
-// import localePlugin, { getLocale, type Locale } from '~/plugins/locale'
-import { type Locale, getLocale, localePlugin } from '~/plugins'
+import { cloneLocale, getLocale, localePlugin } from '~/plugins'
+import type { Locale } from '~/plugins'
 
 esday.extend(localePlugin)
 
 const getLocaleName = (inst: EsDay) => inst['$conf']['$locale_name']
+
+function createRandomString(length: number): string {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  return Array.from({ length }, () =>
+    characters.charAt(Math.floor(Math.random() * characters.length)),
+  ).join('')
+}
 
 describe('factory locale methods', () => {
   const fakeTimeAsString = '2023-12-13T03:24:46.234'
@@ -69,29 +77,6 @@ describe('factory locale methods', () => {
     esday.locale('non-exist')
     expect(getLocaleName(esday())).toBe('non-exist')
   })
-
-  it('update locale', () => {
-    esday.registerLocale(localeZh, 'test')
-    esday.registerLocale(localeZh)
-    const newMonths = [
-      '1月',
-      '2月',
-      '3月',
-      '4月',
-      '5月',
-      '6月',
-      '7月',
-      '8月',
-      '9月',
-      '10月',
-      '11月',
-      '12月',
-    ] as const
-
-    esday.updateLocale('test', { months: newMonths })
-    esday.locale('test')
-    expect(esday().localeObject().months.toString()).toBe(newMonths.toString())
-  })
 })
 
 describe('instance locale methods', () => {
@@ -151,5 +136,144 @@ describe('instance locale methods', () => {
     const dayTest = esday().locale('test')
 
     expect(dayTest.endOf('week').format('YYYY-MM-DD')).toBe('2023-12-16')
+  })
+})
+
+describe('Update locale', () => {
+  const fakeTimeAsString = '2023-12-13T03:24:46.234'
+  let globalLocaleName: string
+  let globalLocale: Locale
+
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(fakeTimeAsString))
+    globalLocaleName = esday.locale()
+    globalLocale = cloneLocale(getLocale(globalLocaleName))
+    esday.locale('en')
+  })
+
+  afterEach(() => {
+    esday.registerLocale(globalLocale)
+    esday.locale(globalLocaleName)
+    vi.useRealTimers()
+  })
+
+  it('update single property', () => {
+    const randomLocaleName = createRandomString(8)
+    esday.registerLocale(localeZh)
+    esday.registerLocale(localeZh, randomLocaleName)
+    const newMonths = [
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
+    ] as const
+
+    esday.updateLocale(randomLocaleName, { months: newMonths })
+    esday.locale(randomLocaleName)
+    const globalLocaleObject = getLocale(randomLocaleName)
+    const esdayInstanceLocale = esday().localeObject()
+
+    expect(globalLocaleObject.months).toEqual(newMonths)
+    expect(esdayInstanceLocale.months).toEqual(newMonths)
+    expect(esdayInstanceLocale.monthsShort).toEqual(globalLocaleObject.monthsShort)
+  })
+
+  it('update all properties', () => {
+    const randomLocaleName = createRandomString(8)
+    const oldLocaleData = getLocale('zh')
+    const newLocaleData = cloneLocale(oldLocaleData)
+
+    const newWeekdays = [
+      'Sonntag',
+      'Montag',
+      'Dienstag',
+      'Mittwoch',
+      'Donnerstag',
+      'Freitag',
+      'Samstag',
+    ]
+    Object.defineProperty(newLocaleData, 'weekdays', {
+      enumerable: true,
+      configurable: true,
+      writable: false,
+      value: newWeekdays,
+    })
+    const newWeekdaysShort = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.']
+    Object.defineProperty(newLocaleData, 'weekdaysShort', {
+      enumerable: true,
+      configurable: true,
+      writable: false,
+      value: newWeekdaysShort,
+    })
+    const newWeekdaysMin = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
+    Object.defineProperty(newLocaleData, 'weekdaysMin', {
+      enumerable: true,
+      configurable: true,
+      writable: false,
+      value: newWeekdaysMin,
+    })
+    esday.updateLocale(randomLocaleName, newLocaleData)
+
+    esday.locale(randomLocaleName)
+    const globalLocaleObject = getLocale(randomLocaleName)
+    const esdayInstanceLocale = esday().localeObject()
+
+    // expect(globalLocaleObject.months).toEqual(oldLocaleData.months)
+    expect(globalLocaleObject.weekdays).toEqual(newLocaleData.weekdays)
+    expect(globalLocaleObject.weekdaysShort).toEqual(newLocaleData.weekdaysShort)
+    expect(globalLocaleObject.weekdaysMin).toEqual(newLocaleData.weekdaysMin)
+
+    expect(esdayInstanceLocale.months).toEqual(oldLocaleData.months)
+    expect(esdayInstanceLocale.weekdays).toEqual(newLocaleData.weekdays)
+    expect(esdayInstanceLocale.weekdaysShort).toEqual(newLocaleData.weekdaysShort)
+    expect(esdayInstanceLocale.weekdaysMin).toEqual(newLocaleData.weekdaysMin)
+  })
+
+  it('update non-existing locale', () => {
+    const randomLocaleName = createRandomString(8)
+    const newMonths = [
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
+    ] as const
+    const newMonthsAsMutable = [...newMonths]
+
+    moment.updateLocale(randomLocaleName, { months: newMonthsAsMutable })
+    const momentGlobalDefaultLocaleObject = moment.localeData('en')
+    const momentGlobalNewLocaleObject = moment.localeData(randomLocaleName)
+    const momentWithRandomLocale = moment().locale(randomLocaleName)
+
+    esday.updateLocale(randomLocaleName, { months: newMonths })
+    const esdayGlobalDefaultLocaleObject = getLocale('en')
+    const esdayGlobalNewLocaleObject = getLocale(randomLocaleName)
+    const esdayWithRandomLocale = esday().locale(randomLocaleName)
+
+    expect(momentWithRandomLocale.locale()).toEqual(randomLocaleName)
+    expect(momentGlobalNewLocaleObject.months()).toEqual(newMonthsAsMutable)
+    expect(momentGlobalNewLocaleObject.weekdays()).toEqual(
+      momentGlobalDefaultLocaleObject.weekdays(),
+    )
+
+    expect(esdayWithRandomLocale.locale()).toEqual(randomLocaleName)
+    expect(esdayGlobalNewLocaleObject.months).toEqual(newMonthsAsMutable)
+    expect(esdayGlobalNewLocaleObject.weekdays).toEqual(esdayGlobalDefaultLocaleObject.weekdays)
   })
 })
