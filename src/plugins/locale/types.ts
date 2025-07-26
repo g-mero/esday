@@ -15,17 +15,18 @@ declare module 'esday' {
   interface EsDayFactory {
     locale(): string
     locale(localeName: string): EsDay
-    updateLocale: (localeName: string, newLocale: Partial<Locale>) => EsDayFactory
 
-    /**
-     * add locale to list of available Locales
-     */
+    // add locale to list of available Locales
     registerLocale: (locale: Locale, newName?: string) => EsDayFactory
 
-    /**
-     * remove locale from list of available Locales
-     */
+    // remove locale from list of available Locales
     unregisterLocale: (localeName: string) => EsDayFactory
+
+    // get locale object from list of available Locales
+    getLocale: (localeName: string) => Locale
+
+    // update locale object in list of available Locales
+    updateLocale: (localeName: string, newLocale: Partial<Locale>) => EsDayFactory
   }
 }
 

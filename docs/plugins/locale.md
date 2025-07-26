@@ -25,6 +25,12 @@ esday.registerLocale(locale: Locale, newName?: string): esday
 
 // remove a locale to the list of available locales
 esday.unregisterLocale(localeName: string): esday
+
+// get object of existing locale
+esday.getLocale: (localeName: string): Locale
+
+// modify existing locale
+esday.updateLocale: (localeName: string, newLocale: Partial<Locale>): esday
 ```
 
 For EsDay instances ('local')
@@ -100,6 +106,26 @@ esday.locale('zh-CN')
 
 esday.locale()
 // returns  'zh-cn' (name of the global locale)
+
+esday.getLocale('en')
+// returns object for locale 'en'
+
+const newMonths = [
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
+    ] as const
+esday.updateLocale('en', { months: newMonths })
+// changes globally month names in locale 'en'
 
 const day = esday('2021-01-01').locale('en')
 // set the locale of the esday object
