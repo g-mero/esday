@@ -14,7 +14,7 @@
  *   locale           name of the locale to use when parsing
  */
 
-import type { DateType, EsDay, EsDayPlugin } from 'esday'
+import type { DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
 import { isArray, isString, isUndefined } from '~/common'
 import type {
   Locale,
@@ -24,7 +24,6 @@ import type {
   ParsedElements,
   TokenDefinitions,
 } from '../index'
-import { getLocale } from '../locale'
 
 // Regular expressions for parsing
 const match2 = /\d{2}/
@@ -68,16 +67,17 @@ function meridiemMatch(locale: Locale, input: string, isLowerCase: boolean): boo
  * Create a function that will parse the input string as meridiem string and
  * add it to the given 'parsedElements' containing the date&time components.
  * @param isLowerCase - parse the meridiem string as lowercase
+ * @param esday - global esday object (to get locale by its name)
  * @returns function that will add the given value to date&time component as 'afternoon'
  */
-function addAfternoon(isLowerCase: boolean) {
+function addAfternoon(isLowerCase: boolean, esday: EsDayFactory) {
   return function meridiemUpdater(
     parsedElements: ParsedElements,
     input: string,
     parseOptions: ParseOptions,
   ) {
     const localeName = parseOptions['locale'] as string
-    const locale = getLocale(localeName)
+    const locale = esday.getLocale(localeName)
     const meridiem = meridiemMatch(locale, input, isLowerCase)
     if (!isUndefined(meridiem)) {
       parsedElements.afternoon = meridiem
@@ -87,25 +87,28 @@ function addAfternoon(isLowerCase: boolean) {
 
 /**
  * Parse day of month as ordinal number.
- * @param parsedElements - object containing the components of a parsed date
- * @param input - parsed component of a date, to be transformed and inserted in parsedElements
- * @param parseOptions - parsing options e.g. containing the locale to use
+ * Create a function that will parse the input string as day of month as ordinal
+ * number and add it to the given 'parsedElements' containing the date&time components.
+ * @param esday - global esday object (to get locale by its name)
+ * @returns function that will add the given value to date&time component as 'afternoon'
  */
-function addDayOfMonthOrdinal(
-  parsedElements: ParsedElements,
-  input: string,
-  parseOptions: ParseOptions,
-) {
-  const localeName = parseOptions['locale'] as string
-  const { ordinal } = getLocale(localeName)
-  let dateValue: number | undefined
-  const splittedInput = input.match(/^[^\d]*(\d+)[^\d]*$/)
-  if (splittedInput !== null) {
-    dateValue = +splittedInput[1]
-    const dateAsOrdinal = ordinal?.(dateValue)
+function addDayOfMonthOrdinal(esday: EsDayFactory) {
+  return function monthOrdinalUpdater(
+    parsedElements: ParsedElements,
+    input: string,
+    parseOptions: ParseOptions,
+  ) {
+    const localeName = parseOptions['locale'] as string
+    const { ordinal } = esday.getLocale(localeName)
+    let dateValue: number | undefined
+    const splittedInput = input.match(/^[^\d]*(\d+)[^\d]*$/)
+    if (splittedInput !== null) {
+      dateValue = +splittedInput[1]
+      const dateAsOrdinal = ordinal?.(dateValue)
 
-    if (dateAsOrdinal === undefined || dateAsOrdinal === input) {
-      parsedElements.date = dateValue
+      if (dateAsOrdinal === undefined || dateAsOrdinal === input) {
+        parsedElements.date = dateValue
+      }
     }
   }
 }
@@ -115,16 +118,17 @@ function addDayOfMonthOrdinal(
  * to a month number and add it to the given 'parsedElements' containing
  * the date&time components.
  * @param property - name of the list of month names to use
+ * @param esday - global esday object (to get locale by its name)
  * @returns function that will add the given value to date&time component
  */
-function addMonth(property: 'months' | 'monthsShort') {
+function addMonth(property: 'months' | 'monthsShort', esday: EsDayFactory) {
   return function monthUpdater(
     parsedElements: ParsedElements,
     input: string,
     parseOptions: ParseOptions,
   ) {
     const localeName = parseOptions['locale'] as string
-    const months = getLocale(localeName)[property]
+    const months = esday.getLocale(localeName)[property]
     let monthNames: MonthNames
 
     if (isArray(months)) {
@@ -197,11 +201,11 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   const parseTokensDefinitions: TokenDefinitions = {
     h: [match1to2, match1to2, addHour],
     hh: [match1to2, match2, addHour],
-    a: [matchWord, matchWord, addAfternoon(true), _postParseMeridiem],
-    A: [matchWord, matchWord, addAfternoon(false), _postParseMeridiem],
-    Do: [matchWord, matchWord, addDayOfMonthOrdinal],
-    MMM: [matchWord, matchWord, addMonth('monthsShort')],
-    MMMM: [matchWord, matchWord, addMonth('months')],
+    a: [matchWord, matchWord, addAfternoon(true, dayFactory), _postParseMeridiem],
+    A: [matchWord, matchWord, addAfternoon(false, dayFactory), _postParseMeridiem],
+    Do: [matchWord, matchWord, addDayOfMonthOrdinal(dayFactory)],
+    MMM: [matchWord, matchWord, addMonth('monthsShort', dayFactory)],
+    MMMM: [matchWord, matchWord, addMonth('months', dayFactory)],
   }
 
   // add new parsing tokens to existing list of parsing tokens
@@ -224,7 +228,7 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     let currentLocale = this.localeObject?.()
     const arg2 = this['$conf'].args_2
     if (!isUndefined(arg2) && typeof arg2 === 'string') {
-      currentLocale = getLocale(arg2)
+      currentLocale = dayFactory.getLocale(arg2)
     }
 
     // create required parseOptions

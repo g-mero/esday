@@ -7,15 +7,15 @@ const LocaleStore: Map<string, Locale> = new Map()
 
 let $localeGlobal = 'en'
 
-export function getLocale(name: string): Locale {
+function getLocale(name: string): Locale {
   return LocaleStore.get(name) || en
 }
 
-export function registerLocale(locale: Locale, rename?: string): void {
+function registerLocale(locale: Locale, rename?: string): void {
   LocaleStore.set(rename || locale.name, locale)
 }
 
-export function unregisterLocale(name: string): void {
+function unregisterLocale(name: string): void {
   LocaleStore.delete(name)
 }
 
@@ -182,6 +182,10 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   dayFactory.unregisterLocale = (localeName: string) => {
     unregisterLocale(localeName)
     return dayFactory
+  }
+
+  dayFactory.getLocale = (localeName: string) => {
+    return getLocale(localeName)
   }
 
   dayFactory.updateLocale = (localeName: string, locale: Partial<Locale>) => {
