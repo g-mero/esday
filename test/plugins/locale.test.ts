@@ -3,7 +3,7 @@ import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import localeZh from '~/locales/zh'
-import { cloneLocale, localePlugin } from '~/plugins'
+import { cloneLocale, localePlugin, setLocaleProperty } from '~/plugins'
 import type { Locale } from '~/plugins'
 
 esday.extend(localePlugin)
@@ -201,26 +201,11 @@ describe('Update locale', () => {
       'Freitag',
       'Samstag',
     ]
-    Object.defineProperty(newLocaleData, 'weekdays', {
-      enumerable: true,
-      configurable: true,
-      writable: false,
-      value: newWeekdays,
-    })
+    setLocaleProperty(newLocaleData, 'weekdays', newWeekdays)
     const newWeekdaysShort = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.']
-    Object.defineProperty(newLocaleData, 'weekdaysShort', {
-      enumerable: true,
-      configurable: true,
-      writable: false,
-      value: newWeekdaysShort,
-    })
+    setLocaleProperty(newLocaleData, 'weekdaysShort', newWeekdaysShort)
     const newWeekdaysMin = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
-    Object.defineProperty(newLocaleData, 'weekdaysMin', {
-      enumerable: true,
-      configurable: true,
-      writable: false,
-      value: newWeekdaysMin,
-    })
+    setLocaleProperty(newLocaleData, 'weekdaysMin', newWeekdaysMin)
     esday.updateLocale(randomLocaleName, newLocaleData)
 
     esday.locale(randomLocaleName)

@@ -13,6 +13,12 @@ The locale to use can be loaded from the corresponding locale file ([list of sup
 ### Dependencies
 Locale has no dependencies on other plugins.
 
+### Public functions
+```
+cloneLocale(source: Locale): Locale
+setLocaleProperty(targetLocale: Locale, propName: string, newValue: any)
+```
+
 ### Method signatures
 For esday ('global')
 ```
@@ -97,6 +103,7 @@ The function variant of `months` and `monthsShort` return the name of the month 
 import { esday } from 'esday'
 import localeZhCn from 'esday/locales/zh-cn'
 import localePlugin from 'esday/plugins/locale'
+import { cloneLocale, setLocaleProperty } from 'esday/plugins/locale'
 
 esday.extend(localePlugin)
 esday.registerLocale(localeZhCn)
@@ -126,6 +133,11 @@ const newMonths = [
     ] as const
 esday.updateLocale('en', { months: newMonths })
 // changes globally month names in locale 'en'
+
+const mySpecialLocale = cloneLocale(esday.getLocale('en'))
+setLocaleProperty(mySpecialLocale, 'name', 'en-MY')
+setLocaleProperty(mySpecialLocale, 'months', newMonths)
+
 
 const day = esday('2021-01-01').locale('en')
 // set the locale of the esday object
