@@ -56,7 +56,7 @@ const transformMdToHtml = async (fullSourcePath, baseDirectory, templateHtml, md
     currentPath = path.dirname(fullSourcePath)
     currentPath = path.relative(sourcePath, currentPath)
 
-    const rawHtml = await mdTransformer.parse(markdownData)
+    const rawHtml = mdTransformer.parse(markdownData)
 
     // sanitize html (as someone could have corrupted the files in '/doc')
     const window = new JSDOM('').window
