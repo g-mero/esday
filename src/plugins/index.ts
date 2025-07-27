@@ -16,7 +16,7 @@ import isSameOrBeforePlugin from './isSameOrBefore'
 import isTodayPlugin from './isToday'
 import isoWeekPlugin from './isoWeek'
 import localePlugin from './locale'
-import { cloneLocale, getLocale } from './locale'
+import { cloneLocale, setLocaleProperty } from './locale'
 import type {
   Calendar,
   CalendarPartial,
@@ -49,7 +49,6 @@ export {
   calendarPlugin,
   cloneLocale,
   dayOfYearPlugin,
-  getLocale,
   isBetweenPlugin,
   isLeapYearPlugin,
   isoWeekPlugin,
@@ -62,6 +61,7 @@ export {
   minMaxPlugin,
   objectSupportPlugin,
   quarterOfYearPlugin,
+  setLocaleProperty,
   toArrayPlugin,
   toObjectPlugin,
   utcPlugin,

@@ -12,6 +12,7 @@
 
 import type {
   EsDay,
+  EsDayFactory,
   EsDayPlugin,
   FormattingTokenDefinitions,
   UnitType,
@@ -27,7 +28,6 @@ import {
   normalizeUnitWithPlurals,
   padStart,
 } from '~/common'
-import { getLocale } from '~/plugins/locale'
 import type { DayNames, DayNamesStandaloneFormat } from '~/plugins/locale'
 import type { ParseOptions, ParsedElements, TokenDefinitions } from '../advancedParse/types'
 
@@ -89,7 +89,10 @@ function addWeek(property: 'week' | 'weekday' | 'weekYear') {
  * @param property - name of the list of weekday names to use
  * @returns function that will add the weekday value to date&time component
  */
-function addDayOfWeek(property: 'day' | 'weekdays' | 'weekdaysShort' | 'weekdaysMin') {
+function addDayOfWeek(
+  property: 'day' | 'weekdays' | 'weekdaysShort' | 'weekdaysMin',
+  esday: EsDayFactory,
+) {
   return function weekdayUpdater(
     parsedElements: ParsedElements,
     input: string,
@@ -99,7 +102,7 @@ function addDayOfWeek(property: 'day' | 'weekdays' | 'weekdaysShort' | 'weekdays
       parsedElements[property] = +input
     } else {
       const localeName = parseOptions['locale'] as string
-      const weekdays = getLocale(localeName)[property]
+      const weekdays = esday.getLocale(localeName)[property]
       let weekdayNames: DayNames
 
       if (isArray(weekdays)) {
@@ -451,10 +454,10 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
   // Add week related parsing tokens
   const parseTokensDefinitions: TokenDefinitions = {
-    d: [match1to2, match1to2, addDayOfWeek('day'), _postParseDayOfWeek],
-    dd: [matchWord, matchWord, addDayOfWeek('weekdaysMin'), _postParseDayOfWeek],
-    ddd: [matchWord, matchWord, addDayOfWeek('weekdaysShort'), _postParseDayOfWeek],
-    dddd: [matchWord, matchWord, addDayOfWeek('weekdays'), _postParseDayOfWeek],
+    d: [match1to2, match1to2, addDayOfWeek('day', dayFactory), _postParseDayOfWeek],
+    dd: [matchWord, matchWord, addDayOfWeek('weekdaysMin', dayFactory), _postParseDayOfWeek],
+    ddd: [matchWord, matchWord, addDayOfWeek('weekdaysShort', dayFactory), _postParseDayOfWeek],
+    dddd: [matchWord, matchWord, addDayOfWeek('weekdays', dayFactory), _postParseDayOfWeek],
     w: [match1to2, match1to2NoLeadingZero, addWeek('week'), _postParseWeek], // isoWeek 1..52
     ww: [match1to2, match2, addWeek('week'), _postParseWeek], // isoWeek 01..52
     e: [match1to2, match1, addWeek('weekday'), _postParseWeekDay], // isoWeekday 1..7
