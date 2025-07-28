@@ -1,6 +1,7 @@
 import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 import { beforeEach, describe, it } from 'vitest'
+import localeBe from '~/locales/be'
 import localeCa from '~/locales/ca'
 import localeDe from '~/locales/de'
 import localeEn from '~/locales/en'
@@ -11,6 +12,7 @@ import { expectSame } from '../util'
 
 esday.extend(localizedFormatPlugin).extend(localePlugin)
 esday
+  .registerLocale(localeBe)
   .registerLocale(localeCa)
   .registerLocale(localeEn)
   .registerLocale(localeDe)
@@ -255,6 +257,21 @@ describe('localizedFormat plugin - using locale "ka"', () => {
     { sourceString: '2024-12-23T14:25:36', formatString: 'DD MMMM' },
     { sourceString: '2024-12-23T14:25:36', formatString: 'Do MMMM' },
   ])(
+    'format date string "$sourceString" with format "$formatString"',
+    ({ sourceString, formatString }) => {
+      expectSame((esday) => esday(sourceString).format(formatString))
+    },
+  )
+})
+
+describe('localizedFormat plugin - using locale "be"', () => {
+  beforeEach(() => {
+    // set global locale
+    esday.locale('be')
+    moment.locale('be')
+  })
+
+  it.each([{ sourceString: '2024-12-23T14:25:36', formatString: 'D MMMM' }])(
     'format date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
       expectSame((esday) => esday(sourceString).format(formatString))

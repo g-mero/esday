@@ -1,5 +1,5 @@
 import type { EsDay, FormattingTokenDefinitions } from 'esday'
-import { C, isUndefined, padStart, padZoneStr } from '~/common'
+import { C, padStart, padZoneStr } from '~/common'
 
 const formattingSeparatorsRegex = '\\[([^\\]]+)\\]'
 let formattingTokensRegex: RegExp
@@ -24,6 +24,7 @@ export const formatTokensDefinitions: FormattingTokenDefinitions = {
 /**
  * Compare 2 tokens for sorting.
  * Longer token and upper case token are sorted to the top.
+ * As we sort here object keys, a and b can never be equal.
  * @param a - token 1
  * @param b - token 2
  * @returns -1 (a<b), 0 (a==b), 1 (a>b)
@@ -40,12 +41,9 @@ function compareTokens(a: string, b: string) {
   if (a < b) {
     return 1
   }
-  if (a > b) {
-    return -1
-  }
 
-  // are equal
-  return 0
+  // as a can never be equal to b, '-1' is the only possible value
+  return -1
 }
 // Get regex from list of supported tokens
 export function formattingTokensRegexFromDefinitions() {
@@ -76,16 +74,12 @@ export function formatImpl(that: EsDay, formatStr?: string) {
   if (!that.isValid()) return C.INVALID_DATE_STRING
 
   const activeFormatString = formatStr || C.FORMAT_DEFAULT
-  const unknownTokenOutput = '??'
 
   const matches = (match: string) => {
     const formatter = formatTokensDefinitions[match]
-    return !isUndefined(formatter) ? formatter(that, formatStr) : unknownTokenOutput
+    return formatter(that, formatStr)
   }
 
   // replace format tokens with corresponding values
-  return activeFormatString.replace(
-    formattingTokensRegex,
-    (match, $1) => $1 || matches(match) || unknownTokenOutput,
-  )
+  return activeFormatString.replace(formattingTokensRegex, (match, $1) => $1 || matches(match))
 }

@@ -36,7 +36,7 @@ function monthDiff(a: EsDay, b: EsDay): number {
  * @returns n without fractional part
  */
 function absFloor(n: number): number {
-  return n < 0 ? Math.ceil(n) || 0 : Math.floor(n)
+  return n < 0 ? Math.ceil(n) : Math.floor(n)
 }
 
 export function diffImpl(
