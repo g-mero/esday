@@ -40,3 +40,6 @@ jobs:
 
       - name: "Report coverage"
         uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          json-summary-compare-path: coverage-main/coverage-summary.json
+          vite-config-path: configs/vitest.config.ts
