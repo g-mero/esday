@@ -10,7 +10,20 @@ export default defineConfig({
     },
     coverage: {
       exclude: [...configDefaults.exclude, 'dev/**', 'scripts/**'],
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'json', 'json-summary', 'html'],
+      reportOnFailure: true,
+      thresholds: {
+        statements: 95,
+        functions: 95,
+        branches: 95,
+        lines: 95,
+      },
+      watermarks: {
+        statements: [95, 100],
+        functions: [95, 100],
+        branches: [95, 100],
+        lines: [95, 100],
+      },
     },
     browser: {
       headless: true,
