@@ -1,0 +1,42 @@
+name: Report Coverage
+
+# Prevent that corepack looks for latest version of pnpm
+# HACK to work around issue nodejs/corepack#625
+env:
+  COREPACK_DEFAULT_TO_LATEST: 0
+
+on:
+  workflow_run:
+    workflows: ["Test (Vitest)"]
+    types:
+      - completed
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: "Download coverage artifacts of pull request"
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-pull-request
+          path: coverage
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: "Download vitest configuration of pull request"
+        uses: actions/download-artifact@v4
+        with:
+          name: pull-request-vitest.config.ts
+          path: configs
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: "Report coverage"
+        uses: davelosert/vitest-coverage-report-action@v2
