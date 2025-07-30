@@ -1,4 +1,4 @@
-name: Report Coverage
+name: "Report Coverage"
 
 # Prevent that corepack looks for latest version of pnpm
 # HACK to work around issue nodejs/corepack#625
@@ -19,8 +19,26 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Checkout
+      - name: "Checkout"
         uses: actions/checkout@v4
+
+      - name: "Install Pnpm"
+        run: corepack enable
+
+      - name: "Setup Node.js"
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: "Install dependencies"
+        run: pnpm install
+
+      - name: "Run tests"
+        run: npx vitest run --coverage.enabled --coverage.reporter=json --coverage.reporter=json-summary
+
+      - name: "rename coverage directory"
+        run: |
+          mv coverage coverage-main
 
       - name: "Download coverage artifacts of pull request"
         uses: actions/download-artifact@v4

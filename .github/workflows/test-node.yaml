@@ -24,48 +24,36 @@ jobs:
   test-on-node:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        include:
-          - branch: main
-            artifact: main
-          - branch: ${{ github.head_ref }}
-            artifact: pull-request
-
     permissions:
       # Required to checkout the code
       contents: read
 
     steps:
-      - name: Checkout
+      - name: "Checkout"
         uses: actions/checkout@v4
-        with:
-          ref: ${{ matrix.branch }}
-          ## Set repository to correctly checkout from forks
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
 
-      - name: Install Pnpm
+      - name: "Install Pnpm"
         run: corepack enable
 
-      - name: Setup Node.js
+      - name: "Setup Node.js"
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
 
-      - name: Install dependencies
+      - name: "Install dependencies"
         run: pnpm install
 
-      - name: Run tests
+      - name: "Run tests"
         run: npx vitest run --coverage.enabled --coverage.reporter=json --coverage.reporter=json-summary
 
       - name: "Upload coverage"
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-${{ matrix.artifact }}
+          name: coverage-pull-request
           path: coverage
 
       - name: "Upload vitest config"
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact }}-vitest.config.ts
+          name: pull-request-vitest.config.ts
           path: vitest.config.ts
