@@ -95,16 +95,16 @@ function parseFourDigitYear(input: string): number {
 }
 
 /**
- * Convert offset as string to offset as minutes (number)
+ * Convert 2-digit offset as string to offset as minutes (number)
  * @param offset - parsed string representing the offset (e.g. '+10:00)
  * @returns offset in minutes
  */
 function offsetFromString(offset: string): number {
-  if (!offset) return 0
   if (offset === 'Z') return 0
   const parts = offset.match(/([+-]|\d\d)/g)
-  if (!parts) return 0
+  // @ts-expect-error parts will never be null, as parser ensures 2-digit number
   const minutes = +parts[1] * 60 + (+parts[2] || 0)
+  // @ts-expect-error parts will never be null, as parser ensures 2-digit number
   return parts[0] === '+' ? minutes : -minutes
 }
 
@@ -149,6 +149,7 @@ function addMillisecondsToInput() {
 /**
  * Compare 2 tokens for sorting.
  * Longer token and upper case token are sorted to the top.
+ * As we sort here object keys, a and b can never be equal.
  * @param a - token 1
  * @param b - token 2
  * @returns -1 (a<b), 0 (a==b), 1 (a>b)
@@ -165,12 +166,9 @@ function compareTokens(a: string, b: string) {
   if (a < b) {
     return 1
   }
-  if (a > b) {
-    return -1
-  }
 
-  // are equal
-  return 0
+  // as a can never be equal to b, '-1' is the only possible value
+  return -1
 }
 /**
  * Get regex from list of supported tokens.

@@ -16,10 +16,9 @@ import type {
 /**
  * Create a function that will format the day of week value from the sourceDate
  * to a day of week string using the given format.
- * @param defaultFormat - format to use, if no format is given
  * @returns function that will format the day of the week of the given date
  */
-function addWeekday(defaultFormat: string) {
+function addWeekday() {
   return function weekdayFormatter(sourceDate: EsDay, format?: string) {
     const weekdays = sourceDate.localeObject().weekdays
 
@@ -28,7 +27,7 @@ function addWeekday(defaultFormat: string) {
     }
 
     const parseForUseFormat = (weekdays as DayNamesStandaloneFormat).isFormat
-    const useFormatProperty = parseForUseFormat?.test(format ?? defaultFormat)
+    const useFormatProperty = parseForUseFormat?.test(format as string)
     if (useFormatProperty) {
       return (weekdays as DayNamesStandaloneFormat).format[sourceDate.day()]
     }
@@ -40,10 +39,9 @@ function addWeekday(defaultFormat: string) {
  * Create a function that will format the month value from the sourceDate
  * to a month string using the given format.
  * @param property - name of the list of month names to use
- * @param defaultFormat - format to use, if no format is given
  * @returns function that will format the month of the given date
  */
-function addMonth(property: 'months' | 'monthsShort', defaultFormat: string) {
+function addMonth(property: 'months' | 'monthsShort') {
   return function monthFormatter(sourceDate: EsDay, format?: string) {
     const MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/
     const months = sourceDate.localeObject()[property]
@@ -54,12 +52,12 @@ function addMonth(property: 'months' | 'monthsShort', defaultFormat: string) {
 
     // is months an instance of 'MonthNamesFunction'?
     if (typeof months === 'function') {
-      return months(sourceDate, format ?? defaultFormat)
+      return months(sourceDate, format as string)
     }
 
     // if format is day or day-of-week before month then use 'format' else use 'standalone' parameter
     const parseForUseFormat = (months as MonthNamesStandaloneFormat).isFormat ?? MONTHS_IN_FORMAT
-    const useFormatProperty = parseForUseFormat.test(format ?? defaultFormat)
+    const useFormatProperty = parseForUseFormat.test(format as string)
     if (useFormatProperty) {
       return (months as MonthNamesStandaloneFormat | MonthNamesFunction).format[sourceDate.month()]
     }
@@ -103,14 +101,14 @@ const localizedFormatPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
   // add new parsing tokens to existing list of parsing tokens
   const additionalTokens: FormattingTokenDefinitions = {
-    MMM: addMonth('monthsShort', 'MMM'),
-    MMMM: addMonth('months', 'MMMM'),
+    MMM: addMonth('monthsShort'),
+    MMMM: addMonth('months'),
     Do: (sourceDate: EsDay) => sourceDate.localeObject().ordinal(sourceDate.date()), // Day of month as ordinal
     dd: (sourceDate: EsDay, _formatStr?: string) =>
       sourceDate.localeObject().weekdaysMin[sourceDate.day()],
     ddd: (sourceDate: EsDay, _formatStr?: string) =>
       sourceDate.localeObject().weekdaysShort[sourceDate.day()],
-    dddd: addWeekday('dddd'),
+    dddd: addWeekday(),
     h: (sourceDate: EsDay) => padNumberWithLeadingZeros(hour24hTo12h(sourceDate.hour()), 1),
     hh: (sourceDate: EsDay) => padNumberWithLeadingZeros(hour24hTo12h(sourceDate.hour()), 2),
     a: (sourceDate: EsDay) =>

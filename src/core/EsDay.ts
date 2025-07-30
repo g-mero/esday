@@ -160,7 +160,7 @@ export class EsDay {
   /**
    * Convert a parsed milliseconds element to a number | undefined;
    * for milliseconds only the 1st 3 digits are considered;
-   * empty strings are treated as undefined.
+   * empty strings are treated as '0'.
    * @param parsedElement - element to be converted
    * @returns parsed element as number
    */
@@ -169,15 +169,7 @@ export class EsDay {
       return undefined
     }
 
-    if (typeof parsedElement === 'string') {
-      if (parsedElement.trim().length !== 0) {
-        return Number(parsedElement.slice(0, 3))
-      }
-
-      return undefined
-    }
-
-    return parsedElement
+    return Number(parsedElement.toString().slice(0, 3))
   }
 
   #parseImpl(date?: Exclude<DateType, EsDay>): Date {
