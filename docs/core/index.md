@@ -1,8 +1,14 @@
 EsDay has many integrated functions:
-- [diff](./diff.md) calculating the difference between 2 esday objects based on a given unit.
-- [formatting](./format.md) an esday object as a string.
-- [get](./get.md) get an element of an esday object.
-- [add, Subtract](./add.md) manipulate esday objects (add, subtract).
-- [startOf, EndOf](./startOf.md) manipulate esday objects (startOf, enfOf).
-- [parse](./parse.md) create a new esday object.
-- [set](./set.md) set an element of an esday object.
+- [add](./add.md): adds a value to an esday object.
+- clone: creates a copy of an esday object (`esday().clone()`).
+- [diff](./diff.md): calculates the difference between 2 esday objects based on a given unit.
+- [endOf](./startOf.md): gets an esday object at the end of a unit.
+- [format](./format.md): converts an esday object to a string.
+- [get](./get.md): get an element of an esday object.
+- [isAfter](./compare.md): compares 2 esday objects.
+- [isBefore](./compare.md): compares 2 esday objects.
+- [isSame](./compare.md): compares 2 esday objects.
+- [parse](./parse.md): creates a new esday object.
+- [set](./set.md): sets an element of an esday object.
+- [startOf](./startOf.md): gets an esday object at the start of a unit.
+- [subtract](./add.md): subtracts a value from an esday object.
