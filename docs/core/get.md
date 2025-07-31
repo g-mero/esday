@@ -33,12 +33,23 @@ esday().get(unit: UnitTypeGetSet): number
 
 ### Available Units in UnitTypeGetSet
 
-Short form: 'y', 'Q', 'M', 'w', 'd', 'D', 'h', 'm', 's' and 'ms'.
-Long form: 'year', 'quarter', 'month', 'week', 'day', 'date', 'hour', 'minute', 'second' and 'millisecond'.
-Plural form: 'years', 'quarters', 'months', 'weeks', 'days', 'dates', 'hours', 'minutes', 'seconds' and 'milliseconds'.
+| Singular    | Plural       | Shorthand | Comment      |
+| ----------- | ------------ | --------- | ------------ |
+| year        | years        | y         |              |
+| quarter     | quarters     | Q         |              |
+| month       | months       | M         |              |
+| isoWeek     | isoWeeks     | W         |              |
+| week        | weeks        | w         |              |
+| day         | days         | d         | day of week  |
+| date        | dates        | D         | day of month |
+| hour        | hours        | h         |              |
+| minute      | minutes      | m         |              |
+| second      | seconds      | s         |              |
+| millisecond | milliseconds | ms        |              |
 
-The unit `week` (in short, long and plural forms) requires the plugin 'week' to be loaded.
-The unit `quarter` (in short, long and plural forms) requires the plugin 'quarterOfYear' to be loaded.
+The unit `week` (in short, long and plural forms) requires the plugin [week](../plugins/week.md) to be loaded.
+
+The unit `quarter` (in short, long and plural forms) requires the plugin [quarterOfYear](../plugins/quarterOfYear.md) to be loaded.
 
 ## Examples
 ```typescript
