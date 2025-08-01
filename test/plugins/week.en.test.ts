@@ -65,6 +65,14 @@ describe('week plugin - locale "en"', () => {
     expect(esday(sourceString).week()).toBe(expected)
   })
 
+  it('get weeks', () => {
+    const sourceString = '2024-04-06'
+    const expected = 14
+
+    expectSame((esday) => esday(sourceString).weeks())
+    expect(esday(sourceString).weeks()).toBe(expected)
+  })
+
   it.each([
     { sourceString: '2024-03-29T07:18:29', expected: 13, weekday: 'Friday' },
     { sourceString: '2024-03-30T07:18:29', expected: 13, weekday: 'Saturday' },
@@ -136,6 +144,16 @@ describe('week plugin - locale "en"', () => {
       expect(esdaySourceDate.day()).toBe(esdayTargetDate.day())
     },
   )
+
+  it('set weeks', () => {
+    const sourceString = '2024-06-15'
+    const newWeek = 10
+    const esdaySourceDate = esday(sourceString)
+    const esdayTargetDate = esdaySourceDate.week(newWeek)
+
+    expectSameResult((esday) => esday(sourceString).week(newWeek))
+    expect(esdaySourceDate.day()).toBe(esdayTargetDate.day())
+  })
 
   it.each([
     { sourceString: '2025-05-01', unit: 'w', newWeek: 1 },

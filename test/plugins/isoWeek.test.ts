@@ -37,11 +37,29 @@ describe('isoWeek plugin - default locale', () => {
     expect(esday(sourceString).isoWeek()).toBe(expected)
   })
 
+  it('get isoWeeks', () => {
+    const sourceString = '2021-01-02T07:18:29'
+    const expected = 53
+
+    expectSame((esday) => esday(sourceString).isoWeeks())
+    expect(esday(sourceString).isoWeeks()).toBe(expected)
+  })
+
   it.each([
     { sourceString: '2025-05-01', newWeek: 1 },
     { sourceString: '2023-04-15', newWeek: 23 },
     { sourceString: '2020-01-01', newWeek: 53 },
   ])('set isoWeek for "$sourceString" to "$newWeek"', ({ sourceString, newWeek }) => {
+    const esdaySourceDate = esday(sourceString)
+    const esdayTargetDate = esdaySourceDate.isoWeek(newWeek)
+
+    expectSameResult((esday) => esday(sourceString).isoWeek(newWeek))
+    expect(esdaySourceDate.day()).toBe(esdayTargetDate.day())
+  })
+
+  it('set isoWeeks', () => {
+    const sourceString = '2023-04-15'
+    const newWeek = 23
     const esdaySourceDate = esday(sourceString)
     const esdayTargetDate = esdaySourceDate.isoWeek(newWeek)
 
