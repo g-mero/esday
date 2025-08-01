@@ -26,17 +26,25 @@ All setters will bubble up to the next higher unit, If the range is exceeded. I.
 
 ### Method signatures
 ```typescript
-set(unit: UnitYears, year: number, month?: number, date?: number): EsDay
-set(unit: UnitQuarters, quarter: number): EsDay
-set(unit: UnitMonths, month: number, date?: number): EsDay
-set(unit: UnitWeeks, week: number): EsDay
-set(unit: UnitDates, date: number): EsDay
-set(unit: UnitDays, day: number): EsDay
-set(unit: UnitHours, hours: number, min?: number, sec?: number, ms?: number): EsDay
-set(unit: UnitMins, min: number, sec?: number, ms?: number): EsDay
-set(unit: UnitSeconds, sec: number, ms?: number): EsDay
-set(unit: UnitMss, ms: number): EsDay
-set(unit: UnitsObjectTypeSet): EsDay
+esday().set(unit: UnitYears, year: number, month?: number, date?: number): EsDay
+esday().set(unit: UnitQuarters, quarter: number): EsDay
+esday().set(unit: UnitMonths, month: number, date?: number): EsDay
+esday().set(unit: UnitWeeks, week: number): EsDay
+esday().set(unit: UnitDates, date: number): EsDay
+esday().set(unit: UnitDays, day: number): EsDay
+esday().set(unit: UnitHours, hours: number, min?: number, sec?: number, ms?: number): EsDay
+esday().set(unit: UnitMins, min: number, sec?: number, ms?: number): EsDay
+esday().set(unit: UnitSeconds, sec: number, ms?: number): EsDay
+esday().set(unit: UnitMss, ms: number): EsDay
+esday().set(unit: UnitsObjectTypeSet): EsDay
+esday().year((year: number, month?: number, date?: number): EsDay
+esday().month((month: number, date?: number): EsDay
+esday().date((date: number): EsDay
+esday().day((day: number): EsDay
+esday().hour((hours: number): EsDay
+esday().minute((min: number): EsDay
+esday().second((sec: number): EsDay
+esday().millisecond((ms: number): EsDay
 ```
 
 | parameter | description                |
@@ -48,6 +56,8 @@ set(unit: UnitsObjectTypeSet): EsDay
 Short form: 'y', 'Q', 'M', 'w', 'd', 'D', 'h', 'm', 's' and 'ms'.
 Long form: 'year', 'quarter', 'month', 'week', 'day', 'date', 'hour', 'minute', 'second' and 'millisecond'.
 Plural form: 'years', 'quarters', 'months', 'weeks', 'days', 'dates', 'hours', 'minutes', 'seconds' and 'milliseconds'.
+
+`date` is 'day of month' and `day` is 'day of week'.
 
 `UnitYears` means one of the 3 forms of units for years ('y', 'year' or 'years'). The same goes for the other units (like UnitQuarters, UnitMonths, etc.).
 

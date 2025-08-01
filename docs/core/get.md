@@ -25,6 +25,14 @@ The `get` method takes a unit parameter to define, which value to extract from a
 ### Method signatures
 ```typescript
 esday().get(unit: UnitTypeGetSet): number
+esday().year(): number
+esday().month(): number
+esday().date(): number
+esday().day(): number
+esday().hour(): number
+esday().minute(): number
+esday().second(): number
+esday().millisecond(): number
 ```
 
 | parameter | description                |
@@ -39,6 +47,8 @@ Plural form: 'years', 'quarters', 'months', 'weeks', 'days', 'dates', 'hours', '
 
 The unit `week` (in short, long and plural forms) requires the plugin 'week' to be loaded.
 The unit `quarter` (in short, long and plural forms) requires the plugin 'quarterOfYear' to be loaded.
+
+`date` is 'day of month' and `day` is 'day of week'.
 
 ## Examples
 ```typescript
