@@ -33,6 +33,14 @@ describe('quarterOfYear plugin', () => {
     expectSame((esday) => esday(sourceString).quarter())
   })
 
+  it('get quarters', () => {
+    const sourceString = '2023-04-01T00:00:00.000'
+    const expected = 2
+
+    expect(esday(sourceString).quarter()).toBe(expected)
+    expectSame((esday) => esday(sourceString).quarter())
+  })
+
   it.each([
     { sourceString: '2023-01-02T00:00:00.000', unit: 'Q', expected: 1 },
     { sourceString: '2023-04-01T00:00:00.000', unit: 'quarter', expected: 2 },
@@ -64,6 +72,13 @@ describe('quarterOfYear plugin', () => {
       expectSameResult((esday) => esday(sourceString).quarter(quarter))
     },
   )
+
+  it('set quarters', () => {
+    const sourceString = '2023-02-05T04:05:06.789'
+    const quarter = 2
+
+    expectSameResult((esday) => esday(sourceString).quarter(quarter))
+  })
 
   it.each([
     {

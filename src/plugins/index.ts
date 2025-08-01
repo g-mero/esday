@@ -36,6 +36,7 @@ import localizedFormatPlugin from './localizedFormat'
 import localizedParsePlugin from './localizedParse'
 import minMaxPlugin from './minMax'
 import objectSupportPlugin from './objectSupport'
+import pluralGetSetPlugin from './pluralGetSet'
 import quarterOfYearPlugin from './quarterOfYear'
 import relativeTimePlugin, { type Threshold, type ThresholdUnit } from './relativeTime'
 import toArrayPlugin from './toArray'
@@ -60,6 +61,7 @@ export {
   localizedParsePlugin,
   minMaxPlugin,
   objectSupportPlugin,
+  pluralGetSetPlugin,
   quarterOfYearPlugin,
   setLocaleProperty,
   toArrayPlugin,

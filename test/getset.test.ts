@@ -166,12 +166,12 @@ describe('set', () => {
   })
 
   it('millisecond', () => {
-    const newMilliecond = 25
+    const newMillisecond = 25
 
-    expectSameResult((esday) => esday().millisecond(newMilliecond))
-    expectSameResult((esday) => esday().set('ms', newMilliecond))
-    expectSameResult((esday) => esday().set('millisecond', newMilliecond))
-    expectSameResult((esday) => esday().set('milliseconds', newMilliecond))
+    expectSameResult((esday) => esday().millisecond(newMillisecond))
+    expectSameResult((esday) => esday().set('ms', newMillisecond))
+    expectSameResult((esday) => esday().set('millisecond', newMillisecond))
+    expectSameResult((esday) => esday().set('milliseconds', newMillisecond))
   })
 
   it('to year returns new instance', () => {
