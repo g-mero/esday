@@ -1,7 +1,7 @@
+import { esday } from 'esday'
 import { afterEach, beforeEach, describe, it, vi } from 'vitest'
 import { pluralGetSetPlugin } from '~/plugins'
 import { expectSame, expectSameResult } from '../util'
-import { esday } from 'esday'
 
 esday.extend(pluralGetSetPlugin)
 
