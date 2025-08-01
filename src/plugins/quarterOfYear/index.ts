@@ -18,6 +18,8 @@ declare module 'esday' {
   interface EsDay {
     quarter(): number
     quarter(quarterNumber: number): EsDay
+    quarters(): number
+    quarters(quarterNumber: number): EsDay
   }
 }
 
@@ -34,6 +36,8 @@ const quarterOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     // Setter
     return this.month((this.month() % 3) + (quarterNumber - 1) * 3)
   }
+
+  proto.quarters = proto.quarter
 
   const oldAdd = proto.add
   proto.add = function (value: number | UnitsObjectTypeAddSub, unit?: UnitTypeAddSub) {
