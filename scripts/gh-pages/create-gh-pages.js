@@ -113,6 +113,11 @@ marked.use({
           hrefAsHtml = `${currentPath}${hrefAsHtml.slice(1)}`
         }
 
+        if (currentPath.length > 0 && hrefAsHtml.startsWith('../')) {
+          // remove '../'
+          hrefAsHtml = `${hrefAsHtml.slice(3)}`
+        }
+
         hrefAsHtml = `${hrefAsHtml.slice(0, -3)}.html`
       }
       return `<a href="${hrefAsHtml}">${text}</a>`
