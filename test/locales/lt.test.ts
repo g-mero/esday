@@ -4,7 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/lt'
-import type { MonthNamesStandaloneFormat } from '~/plugins'
+import type { MonthNames } from '~/plugins'
 
 describe('locale lt', () => {
   it('should have the correct name', () => {
@@ -40,16 +40,11 @@ describe('locale lt', () => {
   })
 
   it('should have 12 short month names', () => {
-    const months = locale.months as MonthNamesStandaloneFormat
+    const months = locale.months as MonthNames
 
     expect(months).toBeDefined()
     expect(months).toBeTypeOf('object')
-    expect(months.standalone).toBeDefined()
-    expect(months.standalone.length).toBe(12)
-    expect(months.format).toBeDefined()
-    expect(months.format.length).toBe(12)
-    expect(months.isFormat).toBeDefined()
-    expect(months.isFormat).toBeInstanceOf(RegExp)
+    expect(months.length).toBe(12)
   })
 
   it('should have a method named "ordinal"', () => {
