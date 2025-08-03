@@ -94,7 +94,7 @@ endDate.to(startDate, true)
 // Returns '5 days'
 ```
 Overwrite threshold list:
-```
+```typescript
 import { localePlugin, relativeTimePlugin } from 'esday/plugins'
 import localeEn from 'esday/locales/en'
 
