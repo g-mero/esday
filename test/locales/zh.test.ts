@@ -3,11 +3,11 @@
  */
 
 import { type EsDay, esday } from 'esday'
-import { expectSame } from 'test/util'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/zh'
 import { localePlugin } from '~/plugins'
 import type { CalendarSpecValFunction } from '~/plugins'
+import { expectSame } from '../util'
 
 esday.extend(localePlugin).registerLocale(locale)
 
