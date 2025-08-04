@@ -12,6 +12,7 @@ Currently the following plugins are available:
 - [IsTomorrow](./isTomorrow.md) (IsToday adds .isTomorrow() API - is date tomorrow)
 - [IsYesterday](./isYesterday.md) (IsYesterday adds .isYesterday() API - is date yesterday)
 - [Locale](./locale.md) (add locale functions to EsDay)
+- [LocaleData](./localeData.md) (add .localeData() API - access locale properties)
 - [LocalizedFormat](./localizedFormat.md) (for formatting with locale dependant tokens in template)
 - [LocalizedParse](./localizedParse.md) (for parsing locale dependant tokens in arbitrary formatted date and time strings)
 - [MinMax](./minMay.md) (MinMax adds .min() and .max() APIs - find the minimum or maximum of several dates)

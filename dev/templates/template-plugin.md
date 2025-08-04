@@ -4,6 +4,7 @@
 <NewPluginName> extends the `esday` constructor to <what-is-the-purpose-of-this-plugin>.
 
 The `method1` method gets or sets the xx value of a given date.
+
 The `method2` method gets a new date in the middle of the next week for a date.
 
 ## Usage
@@ -29,16 +30,16 @@ esday().myPlugin(format: string): EsDay
 
 // TODO describe all new formatting tokens here, if any are defined
 ### Formatting tokens
-| **Token** | **Example** | **Description**                 |
-| --------- | ----------- | --------------------------------|
-| a         | 1-99        | Calculated a of date.           |
-| b         | 01-99       | Calculated a of date (2-digit). |
+| Token | Example | Description                     |
+| ----- | ------- | --------------------------------|
+| a     | 1-99    | Calculated a of date.           |
+| b     | 01-99   | Calculated a of date (2-digit). |
 
 // TODO describe all new parsing tokens here, if any are defined
 ### Parsing tokens
-| **Token** | **Example** | **Description**         |
-| --------- | ----------- | ----------------------- |
-| bb        | 1-99        | Calculated abb of date. |
+| Token | Example | Description             |
+| ----- | ------- | ----------------------- |
+| bb    | 1-99    | Calculated abb of date. |
 
 ## Examples
 ```typescript
