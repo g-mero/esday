@@ -1,8 +1,7 @@
 import { esday } from 'esday'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { expectSame } from '../util'
-
 import advancedFormatPlugin from '~/plugins/advancedFormat'
+import { expectSame } from '../util'
 
 esday.extend(advancedFormatPlugin)
 

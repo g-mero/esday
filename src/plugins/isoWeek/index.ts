@@ -12,7 +12,7 @@
 
 import type { EsDay, EsDayPlugin, FormattingTokenDefinitions, UnitType } from 'esday'
 import { C, createInstanceFromExist, isUndefined, padStart } from '~/common'
-import type { ParseOptions, ParsedElements, TokenDefinitions } from '../advancedParse/types'
+import type { ParsedElements, ParseOptions, TokenDefinitions } from '../advancedParse/types'
 
 declare module 'esday' {
   interface EsDay {

@@ -10,6 +10,7 @@
  */
 
 import type { EsDay } from 'esday'
+import type { UnitForGetDate, UnitForSetDate } from '~/common'
 import {
   C,
   getUnitInDateUTC,
@@ -18,7 +19,6 @@ import {
   normalizeUnitWithPlurals,
   setUnitInDateUTC,
 } from '~/common'
-import type { UnitForGetDate, UnitForSetDate } from '~/common'
 import type { UnitTypeGetSet } from '~/common/units'
 import type { DateType, EsDayPlugin, SimpleType, UnitsObjectTypeSet } from '~/types'
 

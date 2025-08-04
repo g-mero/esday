@@ -1,8 +1,8 @@
 import advancedFormatPlugin from './advancedFormat'
 import advancedParsePlugin from './advancedParse'
 import type {
-  ParseOptions,
   ParsedElements,
+  ParseOptions,
   PostParser,
   TokenDefinitions,
   UpdateParsedElement,
@@ -11,12 +11,10 @@ import calendarPlugin from './calendar'
 import dayOfYearPlugin from './dayOfYear'
 import isBetweenPlugin from './isBetween'
 import isLeapYearPlugin from './isLeapYear'
+import isoWeekPlugin from './isoWeek'
 import isSameOrAfterPlugin from './isSameOrAfter'
 import isSameOrBeforePlugin from './isSameOrBefore'
 import isTodayPlugin from './isToday'
-import isoWeekPlugin from './isoWeek'
-import localePlugin from './locale'
-import { cloneLocale, setLocaleProperty } from './locale'
 import type {
   Calendar,
   CalendarPartial,
@@ -32,6 +30,7 @@ import type {
   RelativeTimeElementFunction,
   RelativeTimeKeys,
 } from './locale'
+import localePlugin, { cloneLocale, setLocaleProperty } from './locale'
 import localizedFormatPlugin from './localizedFormat'
 import localizedParsePlugin from './localizedParse'
 import minMaxPlugin from './minMax'

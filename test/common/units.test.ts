@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { normalizeUnitWithPlurals } from '~/common/units'
 import type { UnitTypePlurals } from '~/common/units'
+import { normalizeUnitWithPlurals } from '~/common/units'
 
 describe('normalizeUnitWithPlurals', () => {
   it.each([

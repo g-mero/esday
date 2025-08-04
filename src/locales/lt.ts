@@ -31,7 +31,7 @@ const monthStandalone: MonthNames = [
 const months: MonthNamesStandaloneFormat = {
   standalone: monthStandalone,
   format: monthFormat,
-  isFormat: /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?|MMMM?(\[[^\[\]]*\]|\s)+D[oD]?/,
+  isFormat: /D[oD]?(\[[^[\]]*\]|\s)+MMMM?|MMMM?(\[[^[\]]*\]|\s)+D[oD]?/,
 }
 
 const localeLt: Locale = {

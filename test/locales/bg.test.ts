@@ -5,8 +5,8 @@
 import { type EsDay, esday } from 'esday'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/bg'
-import { localePlugin } from '~/plugins'
 import type { CalendarSpecValFunction } from '~/plugins'
+import { localePlugin } from '~/plugins'
 
 esday.extend(localePlugin)
 esday.registerLocale(locale)

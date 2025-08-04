@@ -1,5 +1,5 @@
+import type { UnitsObjectTypeSet, UnitTypeAddSub } from 'esday'
 import { esday } from 'esday'
-import type { UnitTypeAddSub, UnitsObjectTypeSet } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'

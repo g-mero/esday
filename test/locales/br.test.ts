@@ -7,8 +7,8 @@ import { describe, expect, it } from 'vitest'
 import locale from '~/locales/br'
 import {
   type CalendarSpecValFunction,
-  type RelativeTimeElementFunction,
   localePlugin,
+  type RelativeTimeElementFunction,
 } from '~/plugins'
 
 esday.extend(localePlugin)
