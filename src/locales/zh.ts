@@ -48,13 +48,20 @@ const localeZh: Readonly<Locale> = {
     '11月',
     '12月',
   ],
-  ordinal: (number: number, period?: 'W') => {
+  ordinal: (number: number, period?: string) => {
     const p = period ?? ''
     switch (p) {
+      case 'd':
+      case 'D':
+      case 'DDD':
+        return `${number}日`
+      case 'M':
+        return `${number}月`
+      case 'w':
       case 'W':
         return `${number}周`
       default:
-        return `${number}日`
+        return number.toString()
     }
   },
   weekStart: 1, // Monday is the first day of the week.
