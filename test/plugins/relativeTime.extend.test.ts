@@ -40,7 +40,6 @@ describe('relativeTime plugin - custom thresholds', () => {
 
     // set global locale
     esday.locale('en')
-    // we do not have to call 'moment.locale('en')' as this is the default locale
   })
 
   afterEach(() => {
