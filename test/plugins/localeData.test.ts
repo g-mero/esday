@@ -7,8 +7,8 @@ import localeFr from '~/locales/fr'
 import localeHr from '~/locales/hr'
 import localeRu from '~/locales/ru'
 import localeZhCn from '~/locales/zh-cn'
-import { localeDataPlugin, localePlugin, weekPlugin } from '~/plugins'
 import type { Calendar, LocaleFormatKeys, RelativeTimeKeys } from '~/plugins'
+import { localeDataPlugin, localePlugin, weekPlugin } from '~/plugins'
 import { expectSame } from '../util'
 
 esday.extend(localePlugin).extend(weekPlugin).extend(localeDataPlugin)
