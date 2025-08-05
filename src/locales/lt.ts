@@ -1,38 +1,4 @@
-import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '~/plugins/locale'
-
-const monthFormat: MonthNames = [
-  'sausio',
-  'vasario',
-  'kovo',
-  'balandžio',
-  'gegužės',
-  'birželio',
-  'liepos',
-  'rugpjūčio',
-  'rugsėjo',
-  'spalio',
-  'lapkričio',
-  'gruodžio',
-]
-const monthStandalone: MonthNames = [
-  'sausis',
-  'vasaris',
-  'kovas',
-  'balandis',
-  'gegužė',
-  'birželis',
-  'liepa',
-  'rugpjūtis',
-  'rugsėjis',
-  'spalis',
-  'lapkritis',
-  'gruodis',
-]
-const months: MonthNamesStandaloneFormat = {
-  standalone: monthStandalone,
-  format: monthFormat,
-  isFormat: /D[oD]?(\[[^[\]]*\]|\s)+MMMM?|MMMM?(\[[^[\]]*\]|\s)+D[oD]?/,
-}
+import type { Locale } from '~/plugins/locale'
 
 const localeLt: Locale = {
   name: 'lt',
@@ -47,8 +13,21 @@ const localeLt: Locale = {
   ],
   weekdaysShort: ['sek', 'pir', 'ant', 'tre', 'ket', 'pen', 'šeš'],
   weekdaysMin: ['s', 'p', 'a', 't', 'k', 'pn', 'š'],
-  months,
-  monthsShort: ['sau', 'vas', 'kov', 'bal', 'geg', 'bir', 'lie', 'rgp', 'rgs', 'spa', 'lap', 'grd'],
+  months: [
+    'gennaio',
+    'febbraio',
+    'marzo',
+    'aprile',
+    'maggio',
+    'giugno',
+    'luglio',
+    'agosto',
+    'settembre',
+    'ottobre',
+    'novembre',
+    'dicembre',
+  ],
+  monthsShort: ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'],
   ordinal: (n) => `${n}-oji`,
   weekStart: 1, // Monday is the first day of the week.
   yearStart: 4, // The week that contains Jan 4th is the first week of the year.

@@ -1,3 +1,14 @@
+/**
+ * Locale plugin
+ *
+ * This plugin adds the 'locale' getter and setter and 'localeObject()' to the EsDay class and
+ * the 'locale' getter and setter, 'registerLocale', 'unregisterLocale', 'getLocale' and the
+ * 'updateLocale' method to the esday factory.
+ *
+ * esday parameters in '$conf' defined in Locale plugin:
+ *   $locale_name  the name of the current locale of an EsDay instance
+ */
+
 import type { DateType, EsDay, EsDayPlugin, UnitType } from 'esday'
 import { C, normalizeUnit, undefinedOr } from '~/common'
 import en from '~/locales/en'

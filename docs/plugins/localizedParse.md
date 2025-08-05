@@ -7,7 +7,7 @@ The locale to use for parsing can be defined as 3rd parameter. If no locale is g
 ## Usage
 
 ### Dependencies
-LocalizedParse requires the plugins AdvancedParse and Locale and at least 1 registered and activated locale. Dor using the 'd', 'dd', 'ddd' or the 'dddd' tokens the plugin Week is required too.
+LocalizedParse requires the plugins AdvancedParse and Locale and at least 1 registered and activated locale. For using the 'd', 'dd', 'ddd' or the 'dddd' tokens the plugin Week is required too.
 
 The plugin AdvancedParse must be loaded using esday.extend(...) before the plugin LocalizedParse. If used, the plugin Week must be loaded after the plugin AdvancedParse.
 

@@ -15,6 +15,7 @@ import isoWeekPlugin from './isoWeek'
 import isSameOrAfterPlugin from './isSameOrAfter'
 import isSameOrBeforePlugin from './isSameOrBefore'
 import isTodayPlugin from './isToday'
+import localePlugin, { cloneLocale, setLocaleProperty } from './locale'
 import type {
   Calendar,
   CalendarPartial,
@@ -30,7 +31,8 @@ import type {
   RelativeTimeElementFunction,
   RelativeTimeKeys,
 } from './locale'
-import localePlugin, { cloneLocale, setLocaleProperty } from './locale'
+import localeDataPlugin from './localeData'
+import type { LocaleData } from './localeData/types'
 import localizedFormatPlugin from './localizedFormat'
 import localizedParsePlugin from './localizedParse'
 import minMaxPlugin from './minMax'
@@ -56,6 +58,7 @@ export {
   isSameOrBeforePlugin,
   isTodayPlugin,
   localePlugin,
+  localeDataPlugin,
   localizedFormatPlugin,
   localizedParsePlugin,
   minMaxPlugin,
@@ -78,6 +81,7 @@ export type {
   DayNames,
   DayNamesStandaloneFormat,
   Locale,
+  LocaleData,
   LocaleFormatKeys,
   MonthNames,
   MonthNamesStandaloneFormat,
