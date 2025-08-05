@@ -32,6 +32,8 @@ import type {
   RelativeTimeElementFunction,
   RelativeTimeKeys,
 } from './locale'
+import localeDataPlugin from './localeData'
+import type { LocaleData } from './localeData/types'
 import localizedFormatPlugin from './localizedFormat'
 import localizedParsePlugin from './localizedParse'
 import minMaxPlugin from './minMax'
@@ -57,6 +59,7 @@ export {
   isSameOrBeforePlugin,
   isTodayPlugin,
   localePlugin,
+  localeDataPlugin,
   localizedFormatPlugin,
   localizedParsePlugin,
   minMaxPlugin,
@@ -79,6 +82,7 @@ export type {
   DayNames,
   DayNamesStandaloneFormat,
   Locale,
+  LocaleData,
   LocaleFormatKeys,
   MonthNames,
   MonthNamesStandaloneFormat,

@@ -2,10 +2,14 @@
  * Test for locale 'Chinese [zh]'
  */
 
-import type { EsDay } from 'esday'
+import { type EsDay, esday } from 'esday'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/zh'
+import { localePlugin } from '~/plugins'
 import type { CalendarSpecValFunction } from '~/plugins'
+import { expectSame } from '../util'
+
+esday.extend(localePlugin).registerLocale(locale)
 
 describe('locale zh', () => {
   it('should have the correct name', () => {
@@ -52,9 +56,25 @@ describe('locale zh', () => {
   it('should have a method named "ordinal"', () => {
     expect(locale.ordinal).toBeDefined()
     expect(locale.ordinal).toBeTypeOf('function')
-    expect(locale.ordinal(2, 'W')).toBe('2周')
-    expect(locale.ordinal(2)).toBe('2日')
   })
+
+  it.each([
+    { value: 2, period: 'd', expected: '2日' },
+    { value: 3, period: 'D', expected: '3日' },
+    { value: 4, period: 'DDD', expected: '4日' },
+    { value: 5, period: 'M', expected: '5月' },
+    { value: 2, period: 'w', expected: '2周' },
+    { value: 2, period: 'W', expected: '2周' },
+    { value: 3, period: 'MM', expected: '3' },
+    { value: 3, period: undefined, expected: '3' },
+  ])(
+    'should format "$value" with period "$period" using "ordinal"',
+    ({ value, period, expected }) => {
+      expect(locale.ordinal(value, period)).toBe(expected)
+      // moment.js returns number if period does not require an pending string
+      expectSame((_) => locale.ordinal(value, period).toString())
+    },
+  )
 
   it('should have numeric property named weekStart', () => {
     expect(locale.weekStart).toBeDefined()

@@ -119,7 +119,7 @@ export interface Locale {
   readonly weekdaysMin: DayNames
   readonly months: MonthNames | MonthNamesStandaloneFormat | MonthNamesFunction
   readonly monthsShort: MonthNames | MonthNamesStandaloneFormat | MonthNamesFunction
-  readonly ordinal: (number: number, period?: 'W') => string
+  readonly ordinal: (number: number, period?: string) => string
   readonly weekStart: number
   readonly yearStart: number
   readonly formats: Record<LocaleFormatKeys, string>
