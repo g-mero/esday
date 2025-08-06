@@ -3,8 +3,8 @@ import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import localeEn from '~/locales/en'
 import localeJa from '~/locales/ja'
-import { calendarPlugin, localePlugin, localizedFormatPlugin, weekPlugin } from '~/plugins'
 import type { CalendarPartial, Locale } from '~/plugins'
+import { calendarPlugin, localePlugin, localizedFormatPlugin, weekPlugin } from '~/plugins'
 import { expectSame } from '../util'
 
 esday.extend(localePlugin)

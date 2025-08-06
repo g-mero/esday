@@ -16,9 +16,9 @@
 import type { DateFromDateComponents, DateType, EsDay, EsDayPlugin } from 'esday'
 import { C, isArray, isString, isUndefined, isValidDate } from '~/common'
 import type {
-  ParseOptions,
   ParsedElements,
   ParsedResultRaw,
+  ParseOptions,
   Parser,
   PostParser,
   TokenDefinitions,
@@ -193,7 +193,7 @@ function makeParser(format: string, isStrict: boolean): { parser: Parser; postPa
     (format.match(formattingTokensRegex) as Array<string>) ?? ([] as Array<string>)
   const length = splittedFormat.length
   const parsingDefinitions = Array<string | ParserDefinition>(length)
-  const postParseHandlers = Array<PostParser>()
+  const postParseHandlers: PostParser[] = []
 
   // Evaluate input using all parsing tokens
   for (let i = 0; i < length; i += 1) {
@@ -245,7 +245,6 @@ function makeParser(format: string, isStrict: boolean): { parser: Parser; postPa
         if (isStrict && separatorsMatch) {
           separatorsMatch &&= input.substring(0, separatorLength) === token
         }
-        // biome-ignore lint/style/noParameterAssign: <explanation>
         input = input.slice(separatorLength)
       } else {
         const { regex, updater } = token
@@ -253,7 +252,6 @@ function makeParser(format: string, isStrict: boolean): { parser: Parser; postPa
         const match = regex.exec(part)
         if (match !== null) {
           const value = match[0]
-          // biome-ignore lint/style/noParameterAssign: <explanation>
           input = input.replace(value, '')
           updater(parsedDateElements, value, parseOptions)
         }
@@ -366,6 +364,7 @@ function parseFormattedInput(
 function addParseTokenDefinitions(newTokens: TokenDefinitions) {
   // add all entries from newTokens into parseTokensDefinitions (without duplicates!)
   for (const key in newTokens) {
+    // biome-ignore lint/suspicious/noPrototypeBuiltins: hasOwn requires 'lib' in compiler option to be 'es2022' or later
     if (!Object.prototype.hasOwnProperty.call(parseTokensDefinitions, key)) {
       parseTokensDefinitions[key] = newTokens[key]
     }

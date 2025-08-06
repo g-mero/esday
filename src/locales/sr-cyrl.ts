@@ -4,8 +4,8 @@
 
 import type { EsDay } from 'esday'
 import localeSr from '~/locales/sr'
-import { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 import type { RelativeTimeElementFunction } from '~/plugins/locale'
+import { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 
 const localeSrCyrl = cloneLocale(localeSr)
 

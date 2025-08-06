@@ -20,8 +20,8 @@ import type {
   Locale,
   MonthNames,
   MonthNamesStandaloneFormat,
-  ParseOptions,
   ParsedElements,
+  ParseOptions,
   TokenDefinitions,
 } from '../index'
 
@@ -48,7 +48,7 @@ function addHour(parsedElements: ParsedElements, input: string, _parseOptions: P
  * @returns is input an 'afternoon' string for given locale
  */
 function meridiemMatch(locale: Locale, input: string, isLowerCase: boolean): boolean | undefined {
-  let isAfternoon = undefined
+  let isAfternoon = false
   const { meridiem } = locale
   if (!meridiem) {
     isAfternoon = input === (isLowerCase ? 'pm' : 'PM')
@@ -150,7 +150,7 @@ function addMonth(property: 'months' | 'monthsShort', esday: EsDayFactory) {
  * @returns format with locale dependent tokens replaced
  */
 function replaceLocaleTokens(format: string, currentLocale: Locale) {
-  const localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g
+  const localFormattingTokens = /(\[[^[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g
   function replaceLongDateFormatTokens(input: string) {
     return currentLocale.formats[input as keyof typeof currentLocale.formats] ?? input
   }

@@ -7,8 +7,8 @@ import localeEn from '~/locales/en'
 import localeFr from '~/locales/fr'
 import {
   type Locale,
-  type RelativeTimeElementFunction,
   localePlugin,
+  type RelativeTimeElementFunction,
   relativeTimePlugin,
   utcPlugin,
 } from '~/plugins'

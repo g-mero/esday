@@ -41,7 +41,7 @@ const monthStandalone: MonthNames = [
 const months: MonthNamesStandaloneFormat = {
   standalone: monthStandalone,
   format: monthFormat,
-  isFormat: /DD?[o.]?(\[[^\[\]]*\]|\s)+MMMM/,
+  isFormat: /DD?[o.]?(\[[^[\]]*\]|\s)+MMMM/,
 }
 
 const calendar = {

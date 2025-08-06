@@ -15,9 +15,9 @@ import type {
   EsDayFactory,
   EsDayPlugin,
   FormattingTokenDefinitions,
+  UnitsObjectTypeSet,
   UnitType,
   UnitTypeGetSet,
-  UnitsObjectTypeSet,
 } from 'esday'
 import {
   C,
@@ -29,7 +29,7 @@ import {
   padStart,
 } from '~/common'
 import type { DayNames, DayNamesStandaloneFormat } from '~/plugins/locale'
-import type { ParseOptions, ParsedElements, TokenDefinitions } from '../advancedParse/types'
+import type { ParsedElements, ParseOptions, TokenDefinitions } from '../advancedParse/types'
 
 const match1to2NoLeadingZero = /^[1-9]\d?/ // 1-99
 const match1 = /\d/ // 0 - 9

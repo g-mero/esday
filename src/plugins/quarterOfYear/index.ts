@@ -7,11 +7,11 @@
 import type { EsDay, EsDayPlugin, FormattingTokenDefinitions } from 'esday'
 import { C, isObject, normalizeUnitWithPlurals } from '~/common'
 import type {
+  UnitsObjectTypeAddSub,
+  UnitsObjectTypeSet,
   UnitType,
   UnitTypeAddSub,
   UnitTypeGetSet,
-  UnitsObjectTypeAddSub,
-  UnitsObjectTypeSet,
 } from '~/types'
 
 declare module 'esday' {

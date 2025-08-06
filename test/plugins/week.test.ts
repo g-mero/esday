@@ -2,6 +2,7 @@ import { esday } from 'esday'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import localeEn from '~/locales/en'
+import type { Locale } from '~/plugins'
 import {
   advancedParsePlugin,
   localePlugin,
@@ -9,7 +10,6 @@ import {
   localizedParsePlugin,
   weekPlugin,
 } from '~/plugins'
-import type { Locale } from '~/plugins'
 
 esday
   .extend(localePlugin)

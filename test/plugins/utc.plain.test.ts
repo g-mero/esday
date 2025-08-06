@@ -1,5 +1,5 @@
-import { esday } from 'esday'
 import type { UnitsObjectTypeSet } from 'esday'
+import { esday } from 'esday'
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import utcPlugin from '~/plugins/utc'

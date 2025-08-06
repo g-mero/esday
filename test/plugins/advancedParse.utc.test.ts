@@ -1,8 +1,7 @@
 import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
-import type { ParsedElements, TokenDefinitions } from '~/plugins'
-
 import { describe, expect, it } from 'vitest'
+import type { ParsedElements, TokenDefinitions } from '~/plugins'
 import { utcPlugin } from '~/plugins/'
 import advancedParsePlugin from '~/plugins/advancedParse'
 import { expectSame, expectSameResult } from '../util'

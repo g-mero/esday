@@ -5,7 +5,7 @@
  */
 
 import { existsSync } from 'node:fs'
-import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
+import { cp, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import DOMPurify from 'dompurify'
 import { JSDOM } from 'jsdom'
@@ -81,7 +81,7 @@ const transformMdToHtml = async (fullSourcePath, baseDirectory, templateHtml, md
 
     html = templateHtml.slice(0)
     for (const key in templateValues) {
-      if (Object.prototype.hasOwnProperty.call(templateValues, key)) {
+      if (Object.hasOwn(templateValues, key)) {
         html = html.replace(`\{\{${key}}}`, templateValues[key])
       }
     }

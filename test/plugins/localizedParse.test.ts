@@ -1,15 +1,14 @@
 import { esday } from 'esday'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { expectSame, expectSameResult } from '../util'
-
 import moment from 'moment/min/moment-with-locales'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import localeDe from '~/locales/de'
 import localeEn from '~/locales/en'
 import localeHr from '~/locales/hr'
 import localeKa from '~/locales/ka'
 import localeKu from '~/locales/ku'
-import { advancedParsePlugin, localePlugin, localizedParsePlugin, weekPlugin } from '~/plugins'
 import type { Locale } from '~/plugins'
+import { advancedParsePlugin, localePlugin, localizedParsePlugin, weekPlugin } from '~/plugins'
+import { expectSame, expectSameResult } from '../util'
 
 esday
   .extend(advancedParsePlugin)

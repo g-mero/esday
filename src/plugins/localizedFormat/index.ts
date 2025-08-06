@@ -43,7 +43,7 @@ function addWeekday() {
  */
 function addMonth(property: 'months' | 'monthsShort') {
   return function monthFormatter(sourceDate: EsDay, format?: string) {
-    const MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/
+    const MONTHS_IN_FORMAT = /D[oD]?(\[[^[\]]*\]|\s)+MMMM?/
     const months = sourceDate.localeObject()[property]
 
     if (isArray(months)) {
@@ -88,7 +88,7 @@ function hour24hTo12h(hour24h: number): number {
  * @returns format with locale dependent tokens replaced
  */
 function replaceLocaleTokens(format: string, currentLocale: Locale) {
-  const localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g
+  const localFormattingTokens = /(\[[^[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g
   function replaceLongDateFormatTokens(input: string) {
     return currentLocale.formats[input as keyof typeof currentLocale.formats] ?? input
   }
