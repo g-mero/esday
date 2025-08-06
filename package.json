@@ -13,6 +13,18 @@
   "bugs": {
     "url": "https://github.com/g-mero/esday/issues"
   },
+  "keywords": [
+    "dayjs",
+    "date",
+    "time",
+    "immutable",
+    "moment",
+    "parse",
+    "format",
+    "validate",
+    "i18n",
+    "l10n"
+  ],
   "sideEffects": false,
   "exports": {
     ".": {
