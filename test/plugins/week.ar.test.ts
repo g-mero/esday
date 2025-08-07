@@ -4,13 +4,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import type { UnitTypeGetSet } from '~/common/units'
 import localeAr from '~/locales/ar'
-import {
-  advancedParsePlugin,
-  localePlugin,
-  localizedFormatPlugin,
-  localizedParsePlugin,
-  weekPlugin,
-} from '~/plugins'
+import advancedParsePlugin from '~/plugins/advancedParse'
+import localePlugin from '~/plugins/locale'
+import localizedFormatPlugin from '~/plugins/localizedFormat'
+import localizedParsePlugin from '~/plugins/localizedParse'
+import weekPlugin from '~/plugins/week'
 import { expectSame, expectSameResult } from '../util'
 
 esday
@@ -94,8 +92,18 @@ describe('week plugin - locale "ar"', () => {
 
   it.each([
     { sourceString: '2024-06-10', unit: 'w', expected: 24, weekday: 'Monday' },
-    { sourceString: '2024-06-11', unit: 'week', expected: 24, weekday: 'Tuesday' },
-    { sourceString: '2024-06-12', unit: 'weeks', expected: 24, weekday: 'Wednesday' },
+    {
+      sourceString: '2024-06-11',
+      unit: 'week',
+      expected: 24,
+      weekday: 'Tuesday',
+    },
+    {
+      sourceString: '2024-06-12',
+      unit: 'weeks',
+      expected: 24,
+      weekday: 'Wednesday',
+    },
   ])(
     'should get week number for "$sourceString" using get("$unit")',
     ({ sourceString, unit, expected }) => {
@@ -210,15 +218,35 @@ describe('week plugin - locale "ar"', () => {
   // 1st day of week: Saturday; 1st week of year contains January 1st
   it.each([
     { sourceDate: '2019-04-25T00:00:00', expected: 52, weekdayJan1: 'Tuesday' },
-    { sourceDate: '2020-04-25T00:00:00', expected: 52, weekdayJan1: 'Wednesday' },
+    {
+      sourceDate: '2020-04-25T00:00:00',
+      expected: 52,
+      weekdayJan1: 'Wednesday',
+    },
     { sourceDate: '2021-04-25T00:00:00', expected: 53, weekdayJan1: 'Friday' }, // Friday ********
-    { sourceDate: '2022-04-25T00:00:00', expected: 52, weekdayJan1: 'Saturday' },
+    {
+      sourceDate: '2022-04-25T00:00:00',
+      expected: 52,
+      weekdayJan1: 'Saturday',
+    },
     { sourceDate: '2023-04-25T00:00:00', expected: 52, weekdayJan1: 'Sunday' },
     { sourceDate: '2024-04-25T00:00:00', expected: 52, weekdayJan1: 'Monday' },
-    { sourceDate: '2025-04-25T00:00:00', expected: 52, weekdayJan1: 'Wednesday' },
-    { sourceDate: '2026-04-25T00:00:00', expected: 52, weekdayJan1: 'Thursday' },
+    {
+      sourceDate: '2025-04-25T00:00:00',
+      expected: 52,
+      weekdayJan1: 'Wednesday',
+    },
+    {
+      sourceDate: '2026-04-25T00:00:00',
+      expected: 52,
+      weekdayJan1: 'Thursday',
+    },
     { sourceDate: '2027-04-25T00:00:00', expected: 53, weekdayJan1: 'Friday' }, // Friday ********
-    { sourceDate: '2032-04-25T00:00:00', expected: 53, weekdayJan1: 'Thursday' }, // Thursday in leap year ********
+    {
+      sourceDate: '2032-04-25T00:00:00',
+      expected: 53,
+      weekdayJan1: 'Thursday',
+    }, // Thursday in leap year ********
   ])('should get the weeksInYear for "$sourceDate"', ({ sourceDate, expected }) => {
     expect(moment(sourceDate).weeksInYear()).toBe(expected)
     expect(esday(sourceDate).weeksInYear()).toBe(expected)
@@ -233,10 +261,22 @@ describe('week plugin - locale "ar"', () => {
   })
 
   it.each([
-    { sourceString: '2023-11-15T03:24:46.234', expectedRawString: '2023-11-11T00:00:00.000' },
-    { sourceString: '2023-10-01T00:00:00.000', expectedRawString: '2023-09-30T00:00:00.000' },
-    { sourceString: '2022-01-01T03:24:46.234', expectedRawString: '2022-01-01T00:00:00.000' },
-    { sourceString: '2021-01-01T03:24:46.234', expectedRawString: '2020-12-26T00:00:00.000' },
+    {
+      sourceString: '2023-11-15T03:24:46.234',
+      expectedRawString: '2023-11-11T00:00:00.000',
+    },
+    {
+      sourceString: '2023-10-01T00:00:00.000',
+      expectedRawString: '2023-09-30T00:00:00.000',
+    },
+    {
+      sourceString: '2022-01-01T03:24:46.234',
+      expectedRawString: '2022-01-01T00:00:00.000',
+    },
+    {
+      sourceString: '2021-01-01T03:24:46.234',
+      expectedRawString: '2020-12-26T00:00:00.000',
+    },
   ])('should get startOf week for "$sourceString"', ({ sourceString }) => {
     expectSameResult((esday) => esday(sourceString).startOf(C.WEEK))
   })
@@ -253,10 +293,22 @@ describe('week plugin - locale "ar"', () => {
   })
 
   it.each([
-    { sourceString: '2023-11-17T03:24:46.234', expectedRawString: '2023-11-17T23:59:59.999' },
-    { sourceString: '2023-10-30T00:00:00.000', expectedRawString: '2023-11-03T23:59:59.999' },
-    { sourceString: '2023-01-01T03:24:46.234', expectedRawString: '2023-01-06T23:59:59.999' },
-    { sourceString: '2023-12-31T03:24:46.234', expectedRawString: '2024-01-05T23:59:59.999' },
+    {
+      sourceString: '2023-11-17T03:24:46.234',
+      expectedRawString: '2023-11-17T23:59:59.999',
+    },
+    {
+      sourceString: '2023-10-30T00:00:00.000',
+      expectedRawString: '2023-11-03T23:59:59.999',
+    },
+    {
+      sourceString: '2023-01-01T03:24:46.234',
+      expectedRawString: '2023-01-06T23:59:59.999',
+    },
+    {
+      sourceString: '2023-12-31T03:24:46.234',
+      expectedRawString: '2024-01-05T23:59:59.999',
+    },
   ])('should get endOf week for "$sourceString"', ({ sourceString }) => {
     expectSameResult((esday) => esday(sourceString).endOf(C.WEEK))
   })
@@ -328,10 +380,22 @@ describe('week plugin - locale "ar"', () => {
     { sourceString: '2025 5', formatString: 'YYYY d' },
     { sourceString: '2025 6', formatString: 'YYYY d' },
     { sourceString: '2025 12 1', formatString: 'YYYY MM d' },
-    { sourceString: '٢٠٢٤ ١٢ ٢٤ ث ١٤:٢٥:٣٦', formatString: 'YYYY MM DD dd HH:mm:ss' },
-    { sourceString: '2024 12 24 ث 14:25:36', formatString: 'YYYY MM DD dd HH:mm:ss' },
-    { sourceString: '2024 12 24 ثلاثاء 14:25:36', formatString: 'YYYY MM DD ddd HH:mm:ss' },
-    { sourceString: '2024 12 24 الثلاثاء 14:25:36', formatString: 'YYYY MM DD dddd HH:mm:ss' },
+    {
+      sourceString: '٢٠٢٤ ١٢ ٢٤ ث ١٤:٢٥:٣٦',
+      formatString: 'YYYY MM DD dd HH:mm:ss',
+    },
+    {
+      sourceString: '2024 12 24 ث 14:25:36',
+      formatString: 'YYYY MM DD dd HH:mm:ss',
+    },
+    {
+      sourceString: '2024 12 24 ثلاثاء 14:25:36',
+      formatString: 'YYYY MM DD ddd HH:mm:ss',
+    },
+    {
+      sourceString: '2024 12 24 الثلاثاء 14:25:36',
+      formatString: 'YYYY MM DD dddd HH:mm:ss',
+    },
     { sourceString: '2024 الإثنين', formatString: 'YYYY dddd' },
     { sourceString: '2024 الإثنين 15:26', formatString: 'YYYY dddd HH:mm' },
     { sourceString: '2024 12 الأحد', formatString: 'YYYY MM dddd' },

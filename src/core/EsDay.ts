@@ -129,12 +129,10 @@ export class EsDay {
 
     if (overflowed) {
       result = C.INVALID_DATE
-    } else {
-      if (!isUndefined(offsetMs)) {
-        const currentOffsetMin = result.getTimezoneOffset()
-        const newMs = result.getMilliseconds() - (currentOffsetMin * 60000 + offsetMs)
-        result.setMilliseconds(newMs)
-      }
+    } else if (!isUndefined(offsetMs)) {
+      const currentOffsetMin = result.getTimezoneOffset()
+      const newMs = result.getMilliseconds() - (currentOffsetMin * 60_000 + offsetMs)
+      result.setMilliseconds(newMs)
     }
 
     return result
@@ -151,7 +149,7 @@ export class EsDay {
       parsedElement === undefined ||
       (typeof parsedElement === 'string' && parsedElement.trim().length === 0)
     ) {
-      return undefined
+      return
     }
 
     return Number(parsedElement)
@@ -166,7 +164,7 @@ export class EsDay {
    */
   #toMsNumber(parsedElement: string | number | undefined) {
     if (parsedElement === undefined) {
-      return undefined
+      return
     }
 
     return Number(parsedElement.toString().slice(0, 3))

@@ -53,7 +53,7 @@ const localePt: Readonly<Locale> = {
     nextDay: '[Amanhã às] LT',
     nextWeek: 'dddd [às] LT',
     lastDay: '[Ontem às] LT',
-    lastWeek: function (this: EsDay) {
+    lastWeek(this: EsDay) {
       return this.day() === 0 || this.day() === 6
         ? '[Último] dddd [às] LT' // Saturday + Sunday
         : '[Última] dddd [às] LT' // Monday - Friday

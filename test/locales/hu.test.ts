@@ -5,7 +5,7 @@
 import type { EsDay } from 'esday'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/hu'
-import type { CalendarSpecValFunction, RelativeTimeElementFunction } from '~/plugins'
+import type { CalendarSpecValFunction, RelativeTimeElementFunction } from '~/plugins/locale'
 
 describe('locale hu', () => {
   it('should have the correct name', () => {

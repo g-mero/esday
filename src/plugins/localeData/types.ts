@@ -1,5 +1,11 @@
 import type { EsDay } from 'esday'
-import type { Calendar, DayNames, LocaleFormatKeys, MonthNames, RelativeTimeKeys } from '~/plugins'
+import type {
+  Calendar,
+  DayNames,
+  LocaleFormatKeys,
+  MonthNames,
+  RelativeTimeKeys,
+} from '../locale/types'
 
 declare module 'esday' {
   interface EsDay {

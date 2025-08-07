@@ -41,19 +41,19 @@ const localeEs: Readonly<Locale> = {
     llll: 'dddd, D [de] MMMM [de] YYYY H:mm',
   },
   calendar: {
-    sameDay: function (this: EsDay) {
+    sameDay(this: EsDay) {
       return `[hoy a la${this.hour() !== 1 ? 's' : ''}] LT`
     },
-    nextDay: function (this: EsDay) {
+    nextDay(this: EsDay) {
       return `[mañana a la${this.hour() !== 1 ? 's' : ''}] LT`
     },
-    nextWeek: function (this: EsDay) {
+    nextWeek(this: EsDay) {
       return `dddd [a la${this.hour() !== 1 ? 's' : ''}] LT`
     },
-    lastDay: function (this: EsDay) {
+    lastDay(this: EsDay) {
       return `[ayer a la${this.hour() !== 1 ? 's' : ''}] LT`
     },
-    lastWeek: function () {
+    lastWeek() {
       return `[el] dddd [pasado a la${this.hour() !== 1 ? 's' : ''}] LT`
     },
     sameElse: 'L',

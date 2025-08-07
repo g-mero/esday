@@ -5,13 +5,9 @@ import { C } from '~/common'
 import localeAr from '~/locales/ar'
 import localeEn from '~/locales/en'
 import localeFr from '~/locales/fr'
-import {
-  type Locale,
-  localePlugin,
-  type RelativeTimeElementFunction,
-  relativeTimePlugin,
-  utcPlugin,
-} from '~/plugins'
+import localePlugin, { type Locale, type RelativeTimeElementFunction } from '~/plugins/locale'
+import relativeTimePlugin from '~/plugins/relativeTime'
+import utcPlugin from '~/plugins/utc'
 import { expectSame } from '../util'
 
 esday.extend(localePlugin).extend(utcPlugin).extend(relativeTimePlugin)

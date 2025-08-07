@@ -47,7 +47,7 @@ const months: MonthNamesStandaloneFormat = {
 const calendar = {
   sameDay: '[dnes v] LT',
   nextDay: '[zítra v] LT',
-  nextWeek: function (this: EsDay) {
+  nextWeek(this: EsDay) {
     switch (this.day()) {
       case 0:
         return '[v neděli v] LT'
@@ -67,7 +67,7 @@ const calendar = {
     }
   },
   lastDay: '[včera v] LT',
-  lastWeek: function (this: EsDay) {
+  lastWeek(this: EsDay) {
     switch (this.day()) {
       case 0:
         return '[minulou neděli v] LT'

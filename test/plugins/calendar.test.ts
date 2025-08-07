@@ -3,8 +3,10 @@ import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import localeEn from '~/locales/en'
 import localeJa from '~/locales/ja'
-import type { CalendarPartial, Locale } from '~/plugins'
-import { calendarPlugin, localePlugin, localizedFormatPlugin, weekPlugin } from '~/plugins'
+import calendarPlugin from '~/plugins/calendar'
+import localePlugin, { type CalendarPartial, type Locale } from '~/plugins/locale'
+import localizedFormatPlugin from '~/plugins/localizedFormat'
+import weekPlugin from '~/plugins/week'
 import { expectSame } from '../util'
 
 esday.extend(localePlugin)
@@ -124,7 +126,7 @@ describe('calendar plugin - locale "en"', () => {
 
   it('should handle overriding a format key with a function', () => {
     const customFormats: CalendarPartial = {
-      nextDay: function (this: EsDay, refDate?: EsDay) {
+      nextDay(this: EsDay, refDate?: EsDay) {
         return `[Func: Next Day from ${refDate?.format('YYYY-MM-DD')} at] HHmm`
       },
     }

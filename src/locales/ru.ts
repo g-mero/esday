@@ -115,7 +115,7 @@ const monthsShort: MonthNamesStandaloneFormat = {
 const calendar = {
   sameDay: '[Сегодня, в] LT',
   nextDay: '[Завтра, в] LT',
-  nextWeek: function (this: EsDay, refDate?: EsDay) {
+  nextWeek(this: EsDay, refDate?: EsDay) {
     if (refDate?.week?.() !== this.week?.()) {
       switch (this.day()) {
         case 0:
@@ -138,7 +138,7 @@ const calendar = {
     return '[В] dddd, [в] LT'
   },
   lastDay: '[Вчера, в] LT',
-  lastWeek: function (this: EsDay, refDate?: EsDay) {
+  lastWeek(this: EsDay, refDate?: EsDay) {
     if (refDate?.week?.() !== this.week?.()) {
       switch (this.day()) {
         case 0:

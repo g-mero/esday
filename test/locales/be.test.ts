@@ -4,7 +4,11 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/be'
-import type { DayNamesStandaloneFormat, MonthNames, MonthNamesStandaloneFormat } from '~/plugins'
+import type {
+  DayNamesStandaloneFormat,
+  MonthNames,
+  MonthNamesStandaloneFormat,
+} from '~/plugins/locale'
 
 describe('locale be', () => {
   it('should have the correct name', () => {

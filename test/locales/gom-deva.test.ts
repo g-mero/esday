@@ -4,7 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/gom-deva'
-import type { MonthNamesStandaloneFormat, RelativeTimeElementFunction } from '~/plugins'
+import type { MonthNamesStandaloneFormat, RelativeTimeElementFunction } from '~/plugins/locale'
 
 describe('locale gom-DEVA', () => {
   it('should have the correct name', () => {

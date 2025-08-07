@@ -7,8 +7,13 @@ import localeFr from '~/locales/fr'
 import localeHr from '~/locales/hr'
 import localeRu from '~/locales/ru'
 import localeZhCn from '~/locales/zh-cn'
-import type { Calendar, LocaleFormatKeys, RelativeTimeKeys } from '~/plugins'
-import { localeDataPlugin, localePlugin, weekPlugin } from '~/plugins'
+import localePlugin, {
+  type Calendar,
+  type LocaleFormatKeys,
+  type RelativeTimeKeys,
+} from '~/plugins/locale'
+import localeDataPlugin from '~/plugins/localeData'
+import weekPlugin from '~/plugins/week'
 import { expectSame } from '../util'
 
 esday.extend(localePlugin).extend(weekPlugin).extend(localeDataPlugin)
@@ -193,10 +198,34 @@ describe('locale en - local', () => {
   })
 
   it.each([
-    { value: 5, token: 'm', withoutSuffix: false, isFuture: false, expected: 'a minute' },
-    { value: 5, token: 'm', withoutSuffix: false, isFuture: true, expected: 'a minute' },
-    { value: 5, token: 'mm', withoutSuffix: true, isFuture: false, expected: '5 minutes' },
-    { value: 5, token: 'mm', withoutSuffix: true, isFuture: true, expected: '5 minutes' },
+    {
+      value: 5,
+      token: 'm',
+      withoutSuffix: false,
+      isFuture: false,
+      expected: 'a minute',
+    },
+    {
+      value: 5,
+      token: 'm',
+      withoutSuffix: false,
+      isFuture: true,
+      expected: 'a minute',
+    },
+    {
+      value: 5,
+      token: 'mm',
+      withoutSuffix: true,
+      isFuture: false,
+      expected: '5 minutes',
+    },
+    {
+      value: 5,
+      token: 'mm',
+      withoutSuffix: true,
+      isFuture: true,
+      expected: '5 minutes',
+    },
   ])(
     'should format value "$value" as relative time using "$token", withoutSuffix "$withoutSuffix", , isFuture "$isFuture"',
     ({ value, token, withoutSuffix, isFuture, expected }) => {
@@ -308,8 +337,18 @@ describe('locale ca - local', () => {
   })
 
   it.each([
-    { key: 'sameDay', thisHour: 1, referenceHour: 3, expected: '[avui a la] LT' },
-    { key: 'nextWeek', thisHour: 1, referenceHour: 3, expected: 'dddd [a la] LT' },
+    {
+      key: 'sameDay',
+      thisHour: 1,
+      referenceHour: 3,
+      expected: '[avui a la] LT',
+    },
+    {
+      key: 'nextWeek',
+      thisHour: 1,
+      referenceHour: 3,
+      expected: 'dddd [a la] LT',
+    },
     { key: undefined, thisHour: 1, referenceHour: 3, expected: 'L' },
     { key: 'not-existing-key', thisHour: 1, referenceHour: 3, expected: 'L' },
   ])('should get calendar format for "$key"', ({ key, thisHour, referenceHour, expected }) => {
@@ -386,10 +425,34 @@ describe('locale hr - local', () => {
   })
 
   it.each([
-    { value: 5, token: 'm', withoutSuffix: false, isFuture: false, expected: 'jedne minute' },
-    { value: 5, token: 'm', withoutSuffix: false, isFuture: true, expected: 'jedne minute' },
-    { value: 5, token: 'mm', withoutSuffix: true, isFuture: false, expected: '5 minuta' },
-    { value: 5, token: 'mm', withoutSuffix: true, isFuture: true, expected: '5 minuta' },
+    {
+      value: 5,
+      token: 'm',
+      withoutSuffix: false,
+      isFuture: false,
+      expected: 'jedne minute',
+    },
+    {
+      value: 5,
+      token: 'm',
+      withoutSuffix: false,
+      isFuture: true,
+      expected: 'jedne minute',
+    },
+    {
+      value: 5,
+      token: 'mm',
+      withoutSuffix: true,
+      isFuture: false,
+      expected: '5 minuta',
+    },
+    {
+      value: 5,
+      token: 'mm',
+      withoutSuffix: true,
+      isFuture: true,
+      expected: '5 minuta',
+    },
   ])(
     'should format value "$value" as relative time using "$token", withoutSuffix "$withoutSuffix", , isFuture "$isFuture"',
     ({ value, token, withoutSuffix, isFuture, expected }) => {

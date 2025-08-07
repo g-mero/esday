@@ -113,8 +113,7 @@ const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     // if the source string contains a valid day of month, the isoWeek
     // is ignored (like moment.js does).
     if (
-      !Number.isNaN(parsedDate.valueOf()) &&
-      !isUndefined(parsedElements.isoWeek) &&
+      !(Number.isNaN(parsedDate.valueOf()) || isUndefined(parsedElements.isoWeek)) &&
       isUndefined(parsedElements.date)
     ) {
       const newEsday = createInstanceFromExist(parsedDate, this)
@@ -139,8 +138,7 @@ const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     // if the source string contains a valid month, the isoWeekday
     // is ignored (like moment.js does).
     if (
-      !Number.isNaN(parsedDate.valueOf()) &&
-      !isUndefined(parsedElements.isoWeekday) &&
+      !(Number.isNaN(parsedDate.valueOf()) || isUndefined(parsedElements.isoWeekday)) &&
       isUndefined(parsedElements.month)
     ) {
       const newEsday = createInstanceFromExist(parsedDate, this)
@@ -163,7 +161,7 @@ const isoWeekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     let modifiedDate = parsedDate
 
     // is this a valid date and do we have parsed the isoWeekYear?
-    if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.isoWeekYear)) {
+    if (!(Number.isNaN(parsedDate.valueOf()) || isUndefined(parsedElements.isoWeekYear))) {
       const newEsday = createInstanceFromExist(parsedDate, this)
       const parsedIsoWeekYear = parsedElements.isoWeekYear as number
 

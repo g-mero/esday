@@ -4,8 +4,9 @@ import { C } from '~/common'
 import localeAr from '~/locales/ar'
 import localeEn from '~/locales/en'
 import localeFr from '~/locales/fr'
-import type { Threshold } from '~/plugins'
-import { localePlugin, relativeTimePlugin, utcPlugin } from '~/plugins'
+import localePlugin from '~/plugins/locale'
+import relativeTimePlugin, { type Threshold } from '~/plugins/relativeTime'
+import utcPlugin from '~/plugins/utc'
 import { expectSame } from '../util'
 
 esday.extend(localePlugin).extend(utcPlugin)

@@ -10,12 +10,15 @@
       "~/*": ["src/*"],
       "esday": ["src/index"]
     },
+    "declaration": true,
+    "declarationDir": "dist/types",
     "types": ["node"],
     "strict": true,
-    "noEmit": true,
+    "noEmit": false,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "strictNullChecks": true
   },
   "exclude": ["dist"]
 }

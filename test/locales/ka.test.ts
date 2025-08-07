@@ -4,7 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/ka'
-import type { DayNamesStandaloneFormat } from '~/plugins'
+import type { DayNamesStandaloneFormat } from '~/plugins/locale'
 
 describe('locale ka', () => {
   it('should have the correct name', () => {

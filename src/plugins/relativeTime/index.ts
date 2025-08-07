@@ -117,7 +117,7 @@ const relativeTimePlugin: EsDayPlugin<{
     isFrom: boolean,
   ): string {
     const referenceDate = dayFactory(reference)
-    if (!this.isValid() || !referenceDate.isValid()) {
+    if (!(this.isValid() && referenceDate.isValid())) {
       return C.INVALID_DATE_STRING
     }
 

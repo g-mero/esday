@@ -4,7 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/oc-lnc'
-import type { MonthNamesStandaloneFormat } from '~/plugins'
+import type { MonthNamesStandaloneFormat } from '~/plugins/locale'
 
 describe('locale oc-LNC', () => {
   it('should have the correct name', () => {

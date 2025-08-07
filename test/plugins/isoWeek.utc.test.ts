@@ -3,13 +3,11 @@ import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import localeAr from '~/locales/ar'
 import localeEn from '~/locales/en'
-import {
-  advancedParsePlugin,
-  isoWeekPlugin,
-  localePlugin,
-  localizedFormatPlugin,
-  utcPlugin,
-} from '~/plugins'
+import advancedParsePlugin from '~/plugins/advancedParse'
+import isoWeekPlugin from '~/plugins/isoWeek'
+import localePlugin from '~/plugins/locale'
+import localizedFormatPlugin from '~/plugins/localizedFormat'
+import utcPlugin from '~/plugins/utc'
 import { expectSameResult } from '../util'
 
 esday

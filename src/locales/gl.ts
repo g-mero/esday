@@ -54,19 +54,19 @@ const localeGl: Readonly<Locale> = {
     llll: 'dddd, D [de] MMMM [de] YYYY H:mm', // Added for consistency with cy.ts
   },
   calendar: {
-    sameDay: function (this: EsDay) {
+    sameDay(this: EsDay) {
       return `[hoxe ${this.hour() !== 1 ? 'ás' : 'á'}] LT`
     },
-    nextDay: function (this: EsDay) {
+    nextDay(this: EsDay) {
       return `[mañá ${this.hour() !== 1 ? 'ás' : 'á'}] LT`
     },
-    nextWeek: function (this: EsDay) {
+    nextWeek(this: EsDay) {
       return `dddd [${this.hour() !== 1 ? 'ás' : 'a'}] LT`
     },
-    lastDay: function (this: EsDay) {
+    lastDay(this: EsDay) {
       return `[onte ${this.hour() !== 1 ? 'á' : 'a'}] LT`
     },
-    lastWeek: function (this: EsDay) {
+    lastWeek(this: EsDay) {
       return `[o] dddd [pasado ${this.hour() !== 1 ? 'ás' : 'a'}] LT`
     },
     sameElse: 'L',

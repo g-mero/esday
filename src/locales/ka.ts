@@ -30,7 +30,7 @@ const weekdays: DayNamesStandaloneFormat = {
 
 const localeKa: Readonly<Locale> = {
   name: 'ka',
-  weekdays: weekdays,
+  weekdays,
   weekdaysShort: ['კვი', 'ორშ', 'სამ', 'ოთხ', 'ხუთ', 'პარ', 'შაბ'],
   weekdaysMin: ['კვ', 'ორ', 'სა', 'ოთ', 'ხუ', 'პა', 'შა'],
   months: [

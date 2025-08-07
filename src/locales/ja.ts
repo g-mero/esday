@@ -53,14 +53,14 @@ const localeJa: Readonly<Locale> = {
   calendar: {
     sameDay: '[今日] LT',
     nextDay: '[明日] LT',
-    nextWeek: function (this: EsDay, refDate?: EsDay) {
+    nextWeek(this: EsDay, refDate?: EsDay) {
       if (refDate?.week?.() !== this.week?.()) {
         return '[来週]dddd LT'
       }
       return 'dddd LT'
     },
     lastDay: '[昨日] LT',
-    lastWeek: function (this: EsDay, refDate?: EsDay) {
+    lastWeek(this: EsDay, refDate?: EsDay) {
       if (this.week?.() !== refDate?.week?.()) {
         return '[先週]dddd LT'
       }

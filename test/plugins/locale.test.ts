@@ -3,8 +3,8 @@ import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import localeZh from '~/locales/zh'
-import type { Locale } from '~/plugins'
-import { cloneLocale, localePlugin, setLocaleProperty } from '~/plugins'
+import type { Locale } from '~/plugins/locale'
+import localePlugin, { cloneLocale, setLocaleProperty } from '~/plugins/locale'
 
 esday.extend(localePlugin)
 

@@ -4,7 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/lt'
-import type { MonthNames } from '~/plugins'
+import type { MonthNames } from '~/plugins/locale'
 
 describe('locale lt', () => {
   it('should have the correct name', () => {

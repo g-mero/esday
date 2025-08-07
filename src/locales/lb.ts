@@ -36,7 +36,7 @@ function eifelerRuleAppliesToNumber(timeValue: string) {
     }
     return eifelerRuleAppliesToNumber(lastDigit.toString())
   }
-  if (timeAsNumber < 10000) {
+  if (timeAsNumber < 10_000) {
     // 3 or 4 digits --> recursively check first digit
     while (timeAsNumber >= 10) {
       timeAsNumber = timeAsNumber / 10
@@ -148,7 +148,7 @@ const localeLb: Readonly<Locale> = {
     nextDay: '[Muer um] LT',
     nextWeek: 'dddd [um] LT',
     lastDay: '[Gëschter um] LT',
-    lastWeek: function () {
+    lastWeek() {
       // Different date string for 'Dënschdeg' (Tuesday) and 'Donneschdeg' (Thursday) due to phonological rule
       switch (this.day()) {
         case 2:

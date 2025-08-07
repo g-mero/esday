@@ -6,19 +6,19 @@ import type { EsDay } from 'esday'
 import type { Locale } from '~/plugins/locale'
 
 const calendar = {
-  sameDay: function (this: EsDay) {
+  sameDay(this: EsDay) {
     return `[Oggi a${this.hour() > 1 ? 'lle ' : this.hour() === 0 ? ' ' : "ll'"}]LT`
   },
-  nextDay: function (this: EsDay) {
+  nextDay(this: EsDay) {
     return `[Domani a${this.hour() > 1 ? 'lle ' : this.hour() === 0 ? ' ' : "ll'"}]LT`
   },
-  nextWeek: function (this: EsDay) {
+  nextWeek(this: EsDay) {
     return `dddd [a${this.hour() > 1 ? 'lle ' : this.hour() === 0 ? ' ' : "ll'"}]LT`
   },
-  lastDay: function (this: EsDay) {
+  lastDay(this: EsDay) {
     return `[Ieri a${this.hour() > 1 ? 'lle ' : this.hour() === 0 ? ' ' : "ll'"}]LT`
   },
-  lastWeek: function (this: EsDay) {
+  lastWeek(this: EsDay) {
     switch (this.day()) {
       case 0:
         return `[La scorsa] dddd [a${this.hour() > 1 ? 'lle ' : this.hour() === 0 ? ' ' : "ll'"}]LT`

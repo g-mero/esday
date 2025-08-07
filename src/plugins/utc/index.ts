@@ -287,10 +287,8 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
     if (overflowed) {
       result = C.INVALID_DATE
-    } else {
-      if (!isUndefined(offsetMs)) {
-        result.setUTCMilliseconds(result.getUTCMilliseconds() - offsetMs)
-      }
+    } else if (!isUndefined(offsetMs)) {
+      result.setUTCMilliseconds(result.getUTCMilliseconds() - offsetMs)
     }
 
     return result

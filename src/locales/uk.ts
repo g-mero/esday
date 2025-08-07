@@ -117,7 +117,7 @@ const localeUk: Readonly<Locale> = {
     nextDay: processHoursFunction('[Завтра '),
     lastDay: processHoursFunction('[Вчора '),
     nextWeek: processHoursFunction('[У] dddd ['),
-    lastWeek: function () {
+    lastWeek() {
       switch (this.day()) {
         case 0:
         case 3:

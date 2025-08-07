@@ -50,7 +50,9 @@ export function diffImpl(
   const zoneDelta = (that.utcOffset() - date.utcOffset()) * C.MILLISECONDS_A_MINUTE
   let result: number
 
-  if (!isUndefined(units)) {
+  if (isUndefined(units)) {
+    result = diffInMs // milliseconds
+  } else {
     const unit = normalizeUnitWithPlurals(units)
     switch (unit) {
       case C.YEAR:
@@ -81,8 +83,6 @@ export function diffImpl(
         result = diffInMs // milliseconds
         break
     }
-  } else {
-    result = diffInMs // milliseconds
   }
 
   return asFloat ? result : absFloor(result)

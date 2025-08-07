@@ -4,7 +4,9 @@ import moment from 'moment/min/moment-with-locales'
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
-import { advancedParsePlugin, utcPlugin, weekPlugin } from '~/plugins'
+import advancedParsePlugin from '~/plugins/advancedParse'
+import utcPlugin from '~/plugins/utc'
+import weekPlugin from '~/plugins/week'
 import { expectSame, expectSameResult } from '../util'
 
 esday.extend(utcPlugin).extend(advancedParsePlugin).extend(weekPlugin)
@@ -805,7 +807,7 @@ describe('plugin utc', () => {
       // remove tzOffset for testing default value for utcOffset
       dateEsday['$conf'].tzOffset = undefined
 
-      expect(dateEsday.valueOf()).toBe(1702783486234)
+      expect(dateEsday.valueOf()).toBe(1_702_783_486_234)
     })
   })
 })

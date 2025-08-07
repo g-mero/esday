@@ -4,7 +4,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import localeAr from '~/locales/ar'
 import localeEn from '~/locales/en'
-import { advancedParsePlugin, isoWeekPlugin, localePlugin, localizedFormatPlugin } from '~/plugins'
+import advancedParsePlugin from '~/plugins/advancedParse'
+import isoWeekPlugin from '~/plugins/isoWeek'
+import localePlugin from '~/plugins/locale'
+import localizedFormatPlugin from '~/plugins/localizedFormat'
 import { expectSameResult } from '../util'
 
 esday
@@ -32,8 +35,16 @@ describe('isoWeek plugin - default locale ("en")', () => {
   })
 
   it.each([
-    { sourceString: '2024-12-24T14:25:36', formatString: 'Wo', expected: '52nd' },
-    { sourceString: '2025-01-01T14:25:36', formatString: 'Wo', expected: '1st' },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'Wo',
+      expected: '52nd',
+    },
+    {
+      sourceString: '2025-01-01T14:25:36',
+      formatString: 'Wo',
+      expected: '1st',
+    },
   ])(
     'format date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString, expected }) => {
@@ -117,10 +128,22 @@ describe('isoWeek plugin - locale "ar"', () => {
   })
 
   it.each([
-    { sourceString: '2023-11-17T03:24:46.234', expectedRawString: '2023-11-13T00:00:00.000' },
-    { sourceString: '2023-11-01T00:00:00.000', expectedRawString: '2023-10-30T00:00:00.000' },
-    { sourceString: '2023-01-01T03:24:46.234', expectedRawString: '2022-12-26T00:00:00.000' },
-    { sourceString: '2024-01-02T03:24:46.234', expectedRawString: '2024-01-01T00:00:00.000' },
+    {
+      sourceString: '2023-11-17T03:24:46.234',
+      expectedRawString: '2023-11-13T00:00:00.000',
+    },
+    {
+      sourceString: '2023-11-01T00:00:00.000',
+      expectedRawString: '2023-10-30T00:00:00.000',
+    },
+    {
+      sourceString: '2023-01-01T03:24:46.234',
+      expectedRawString: '2022-12-26T00:00:00.000',
+    },
+    {
+      sourceString: '2024-01-02T03:24:46.234',
+      expectedRawString: '2024-01-01T00:00:00.000',
+    },
   ])('should get startOf week for "$sourceString"', ({ sourceString }) => {
     expectSameResult((esday) => esday(sourceString).startOf(C.ISOWEEK))
   })
@@ -137,10 +160,22 @@ describe('isoWeek plugin - locale "ar"', () => {
   })
 
   it.each([
-    { sourceString: '2023-11-17T03:24:46.234', expectedRawString: '2023-11-19T23:59:59.999' },
-    { sourceString: '2023-10-31T00:00:00.000', expectedRawString: '2023-11-05T23:59:59.999' },
-    { sourceString: '2023-01-01T03:24:46.234', expectedRawString: '2023-01-01T23:59:59.999' },
-    { sourceString: '2022-12-31T03:24:46.234', expectedRawString: '2023-01-01T23:59:59.999' },
+    {
+      sourceString: '2023-11-17T03:24:46.234',
+      expectedRawString: '2023-11-19T23:59:59.999',
+    },
+    {
+      sourceString: '2023-10-31T00:00:00.000',
+      expectedRawString: '2023-11-05T23:59:59.999',
+    },
+    {
+      sourceString: '2023-01-01T03:24:46.234',
+      expectedRawString: '2023-01-01T23:59:59.999',
+    },
+    {
+      sourceString: '2022-12-31T03:24:46.234',
+      expectedRawString: '2023-01-01T23:59:59.999',
+    },
   ])('should get endOf week for "$sourceString"', ({ sourceString }) => {
     expectSameResult((esday) => esday(sourceString).endOf(C.ISOWEEK))
   })

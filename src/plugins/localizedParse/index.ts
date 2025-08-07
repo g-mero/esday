@@ -16,14 +16,8 @@
 
 import type { DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
 import { isArray, isString, isUndefined } from '~/common'
-import type {
-  Locale,
-  MonthNames,
-  MonthNamesStandaloneFormat,
-  ParsedElements,
-  ParseOptions,
-  TokenDefinitions,
-} from '../index'
+import type { ParsedElements, ParseOptions, TokenDefinitions } from '../advancedParse/types'
+import type { Locale, MonthNames, MonthNamesStandaloneFormat } from '../locale'
 
 // Regular expressions for parsing
 const match2 = /\d{2}/
@@ -50,15 +44,15 @@ function addHour(parsedElements: ParsedElements, input: string, _parseOptions: P
 function meridiemMatch(locale: Locale, input: string, isLowerCase: boolean): boolean | undefined {
   let isAfternoon = false
   const { meridiem } = locale
-  if (!meridiem) {
-    isAfternoon = input === (isLowerCase ? 'pm' : 'PM')
-  } else {
+  if (meridiem) {
     for (let i = 1; i <= 24; i += 1) {
       if (input === meridiem(i, 0, isLowerCase)) {
         isAfternoon = i >= 12
         break
       }
     }
+  } else {
+    isAfternoon = input === (isLowerCase ? 'pm' : 'PM')
   }
   return isAfternoon
 }
@@ -173,9 +167,11 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     let modifiedDate = parsedDate
 
     // is this a valid date and do we have parsed a meridiem?
-    if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.afternoon)) {
+    if (!(Number.isNaN(parsedDate.valueOf()) || isUndefined(parsedElements.afternoon))) {
       let parsedHours: number
-      let newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
+      let newEsday = dayFactory(parsedDate, {
+        utc: this['$conf'].utc as boolean,
+      })
       newEsday['$conf'] = structuredClone(this['$conf'])
 
       parsedHours = newEsday.hour()
