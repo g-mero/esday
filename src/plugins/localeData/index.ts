@@ -20,7 +20,7 @@ import type {
   MonthNamesStandaloneFormat,
   RelativeTimeElementFunction,
   RelativeTimeKeys,
-} from '~/plugins'
+} from '../locale/types'
 import type { LocaleData } from './types'
 
 /**
@@ -96,12 +96,10 @@ const getMonths = (
   // get list of month names depending on type of localeData().months (or localeData().monthsShort)
   if (Array.isArray(property)) {
     nameArray = property as MonthNames
+  } else if (typeof property === 'function') {
+    nameArray = property.standalone as MonthNames
   } else {
-    if (typeof property === 'function') {
-      nameArray = property.standalone as MonthNames
-    } else {
-      nameArray = (property as MonthNamesStandaloneFormat).standalone
-    }
+    nameArray = (property as MonthNamesStandaloneFormat).standalone
   }
 
   // format date, if there is one

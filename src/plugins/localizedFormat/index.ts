@@ -5,13 +5,14 @@
  */
 
 import type { EsDay, EsDayPlugin, FormattingTokenDefinitions } from 'esday'
+
 import { isArray, isString, padNumberWithLeadingZeros } from '~/common'
 import type {
   DayNamesStandaloneFormat,
   Locale,
   MonthNamesFunction,
   MonthNamesStandaloneFormat,
-} from '../index'
+} from '../locale'
 
 /**
  * Create a function that will format the day of week value from the sourceDate

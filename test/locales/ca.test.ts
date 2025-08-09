@@ -5,7 +5,7 @@
 import type { EsDay } from 'esday'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/ca'
-import type { CalendarSpecValFunction, MonthNamesStandaloneFormat } from '~/plugins'
+import type { CalendarSpecValFunction, MonthNamesStandaloneFormat } from '~/plugins/locale'
 
 describe('locale ca', () => {
   it('should have the correct name', () => {

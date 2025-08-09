@@ -82,7 +82,7 @@ const transformMdToHtml = async (fullSourcePath, baseDirectory, templateHtml, md
     html = templateHtml.slice(0)
     for (const key in templateValues) {
       if (Object.hasOwn(templateValues, key)) {
-        html = html.replace(`\{\{${key}}}`, templateValues[key])
+        html = html.replace(`{{${key}}}`, templateValues[key])
       }
     }
   } catch (err) {
@@ -141,7 +141,10 @@ await cp('scripts/gh-pages/template', targetPath, {
 })
 
 // transform all markdown files to web pages
-const entries = await readdir(sourcePath, { withFileTypes: true, recursive: true })
+const entries = await readdir(sourcePath, {
+  withFileTypes: true,
+  recursive: true,
+})
 for (const entry of entries) {
   if (entry.isFile()) {
     let content = ''

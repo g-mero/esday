@@ -58,7 +58,7 @@ const localeEl: Readonly<Locale> = {
     nextDay: '[Αύριο {}] LT',
     nextWeek: 'dddd [{}] LT',
     lastDay: '[Χθες {}] LT',
-    lastWeek: function (this: EsDay) {
+    lastWeek(this: EsDay) {
       switch (this.day()) {
         case 6:
           if (this.hour() % 12 === 1) {

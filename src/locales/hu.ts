@@ -106,11 +106,11 @@ const localeHu: Readonly<Locale> = {
   calendar: {
     sameDay: '[ma] LT[-kor]',
     nextDay: '[holnap] LT[-kor]',
-    nextWeek: function (this: EsDay) {
+    nextWeek(this: EsDay) {
       return week.call(this, true)
     },
     lastDay: '[tegnap] LT[-kor]',
-    lastWeek: function (this: EsDay) {
+    lastWeek(this: EsDay) {
       return week.call(this, false)
     },
     sameElse: 'L',

@@ -84,19 +84,19 @@ const localeCa: Readonly<Locale> = {
     llll: 'ddd D MMM YYYY, H:mm',
   },
   calendar: {
-    sameDay: function (this: EsDay) {
+    sameDay(this: EsDay) {
       return `[avui a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
     },
-    nextDay: function () {
+    nextDay() {
       return `[demà a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
     },
-    nextWeek: function () {
+    nextWeek() {
       return `dddd [a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
     },
-    lastDay: function () {
+    lastDay() {
       return `[ahir a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
     },
-    lastWeek: function () {
+    lastWeek() {
       return `[el] dddd [passat a ${this.hour() !== 1 ? 'les' : 'la'}] LT`
     },
     sameElse: 'L',

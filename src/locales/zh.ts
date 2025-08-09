@@ -81,14 +81,14 @@ const localeZh: Readonly<Locale> = {
   calendar: {
     sameDay: '[今天]LT',
     nextDay: '[明天]LT',
-    nextWeek: function (this: EsDay, refDate?: EsDay) {
+    nextWeek(this: EsDay, refDate?: EsDay) {
       if (refDate?.week?.() !== this.week?.()) {
         return '[下]dddLT'
       }
       return '[本]dddLT'
     },
     lastDay: '[昨天]LT',
-    lastWeek: function (this: EsDay, refDate?: EsDay) {
+    lastWeek(this: EsDay, refDate?: EsDay) {
       if (this.week?.() !== refDate?.week?.()) {
         return '[上]dddLT'
       }

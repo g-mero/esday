@@ -8,7 +8,7 @@ import type { Locale, RelativeTimeElementFunction } from '~/plugins/locale'
 const calendar = {
   sameDay: '[dnes o] LT',
   nextDay: '[zajtra o] LT',
-  nextWeek: function (this: EsDay) {
+  nextWeek(this: EsDay) {
     switch (this.day()) {
       case 0:
         return '[v nedeľu o] LT'
@@ -28,7 +28,7 @@ const calendar = {
     }
   },
   lastDay: '[včera o] LT',
-  lastWeek: function (this: EsDay) {
+  lastWeek(this: EsDay) {
     switch (this.day()) {
       case 0:
         return '[minulú nedeľu o] LT'

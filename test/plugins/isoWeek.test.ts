@@ -2,7 +2,7 @@ import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
-import { isoWeekPlugin } from '~/plugins'
+import isoWeekPlugin from '~/plugins/isoWeek'
 import { expectSame, expectSameResult } from '../util'
 
 esday.extend(isoWeekPlugin)
@@ -138,10 +138,22 @@ describe('isoWeek plugin - default locale', () => {
   })
 
   it.each([
-    { sourceString: '2023-11-17T03:24:46.234', expectedAsString: '2023-11-13T00:00:00.000' },
-    { sourceString: '2023-11-01T00:00:00.000', expectedAsString: '2023-10-30T00:00:00.000' },
-    { sourceString: '2023-01-01T03:24:46.234', expectedAsString: '2022-12-26T00:00:00.000' },
-    { sourceString: '2024-01-02T03:24:46.234', expectedAsString: '2024-01-01T00:00:00.000' },
+    {
+      sourceString: '2023-11-17T03:24:46.234',
+      expectedAsString: '2023-11-13T00:00:00.000',
+    },
+    {
+      sourceString: '2023-11-01T00:00:00.000',
+      expectedAsString: '2023-10-30T00:00:00.000',
+    },
+    {
+      sourceString: '2023-01-01T03:24:46.234',
+      expectedAsString: '2022-12-26T00:00:00.000',
+    },
+    {
+      sourceString: '2024-01-02T03:24:46.234',
+      expectedAsString: '2024-01-01T00:00:00.000',
+    },
   ])('get startOf week for "$sourceString"', ({ sourceString, expectedAsString }) => {
     const resultDate = esday(sourceString).startOf(C.ISOWEEK)
 
@@ -161,10 +173,22 @@ describe('isoWeek plugin - default locale', () => {
   })
 
   it.each([
-    { sourceString: '2023-11-17T03:24:46.234', expectedAsString: '2023-11-19T23:59:59.999' },
-    { sourceString: '2023-10-31T00:00:00.000', expectedAsString: '2023-11-05T23:59:59.999' },
-    { sourceString: '2023-01-01T03:24:46.234', expectedAsString: '2023-01-01T23:59:59.999' },
-    { sourceString: '2022-12-31T03:24:46.234', expectedAsString: '2023-01-01T23:59:59.999' },
+    {
+      sourceString: '2023-11-17T03:24:46.234',
+      expectedAsString: '2023-11-19T23:59:59.999',
+    },
+    {
+      sourceString: '2023-10-31T00:00:00.000',
+      expectedAsString: '2023-11-05T23:59:59.999',
+    },
+    {
+      sourceString: '2023-01-01T03:24:46.234',
+      expectedAsString: '2023-01-01T23:59:59.999',
+    },
+    {
+      sourceString: '2022-12-31T03:24:46.234',
+      expectedAsString: '2023-01-01T23:59:59.999',
+    },
   ])('get endOf week for "$sourceString"', ({ sourceString, expectedAsString }) => {
     const resultDate = esday(sourceString).endOf(C.ISOWEEK)
 
@@ -208,9 +232,21 @@ describe('isoWeek plugin - default locale', () => {
 
   // without plugin AdvancedParse, the new parsing tokens ('W', 'E', 'GG') are ignored
   it.each([
-    { sourceString: '2025-09-23', formatString: 'YYYY-MM-DD', expected: '2025-09-23T00:00:00' },
-    { sourceString: '2025-09-23 2', formatString: 'YYYY-MM-DD W', expected: '2025-09-23T02:00:00' },
-    { sourceString: '2025 12', formatString: 'YYYY WW', expected: '2025-01-01T12:00:00' },
+    {
+      sourceString: '2025-09-23',
+      formatString: 'YYYY-MM-DD',
+      expected: '2025-09-23T00:00:00',
+    },
+    {
+      sourceString: '2025-09-23 2',
+      formatString: 'YYYY-MM-DD W',
+      expected: '2025-09-23T02:00:00',
+    },
+    {
+      sourceString: '2025 12',
+      formatString: 'YYYY WW',
+      expected: '2025-01-01T12:00:00',
+    },
   ])(
     'parse "$sourceString" ignoring unknown tokens in "$formatString" without plugin advancedParse',
     ({ sourceString, formatString, expected }) => {

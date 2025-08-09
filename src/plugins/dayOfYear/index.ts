@@ -7,7 +7,7 @@ declare module 'esday' {
   }
 }
 
-const SECONDS_A_DAY = 86400
+const SECONDS_A_DAY = 86_400
 
 const dayOfYearPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
   // @ts-expect-error function is compatible with its overload

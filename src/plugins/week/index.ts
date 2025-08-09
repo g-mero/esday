@@ -155,8 +155,7 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     // if the source string contains a valid day of month, the week
     // is ignored (like moment.js does).
     if (
-      !Number.isNaN(parsedDate.valueOf()) &&
-      !isUndefined(parsedElements.week) &&
+      !(Number.isNaN(parsedDate.valueOf()) || isUndefined(parsedElements.week)) &&
       isUndefined(parsedElements.date)
     ) {
       const newEsday = createInstanceFromExist(parsedDate, this)
@@ -186,11 +185,12 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     // if the source string contains a valid day of month, the weekday
     // is ignored (like moment.js does).
     if (
-      !Number.isNaN(parsedDate.valueOf()) &&
-      !isUndefined(newWeekday) &&
+      !(Number.isNaN(parsedDate.valueOf()) || isUndefined(newWeekday)) &&
       isUndefined(parsedElements.date)
     ) {
-      let newEsday = dayFactory(parsedDate, { utc: this['$conf'].utc as boolean })
+      let newEsday = dayFactory(parsedDate, {
+        utc: this['$conf'].utc as boolean,
+      })
       newEsday['$conf'] = structuredClone(this['$conf'])
 
       if (isUndefined(parsedElements.weekYear) && isUndefined(parsedElements.week)) {
@@ -215,7 +215,7 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     let modifiedDate = parsedDate
 
     // is this a valid date and do we have parsed the day of week?
-    if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.day)) {
+    if (!(Number.isNaN(parsedDate.valueOf()) || isUndefined(parsedElements.day))) {
       const now = createInstanceFromExist(new Date(), this)
       let newEsday = createInstanceFromExist(parsedDate, this)
 
@@ -250,7 +250,7 @@ const weekPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     let modifiedDate = parsedDate
 
     // is this a valid date and do we have parsed the weekYear?
-    if (!Number.isNaN(parsedDate.valueOf()) && !isUndefined(parsedElements.weekYear)) {
+    if (!(Number.isNaN(parsedDate.valueOf()) || isUndefined(parsedElements.weekYear))) {
       const newEsday = createInstanceFromExist(parsedDate, this)
       const parsedWeekYear = parsedElements.weekYear as number
 

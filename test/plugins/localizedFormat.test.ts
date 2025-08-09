@@ -7,7 +7,8 @@ import localeDe from '~/locales/de'
 import localeEn from '~/locales/en'
 import localeHr from '~/locales/hr'
 import localeKa from '~/locales/ka'
-import { localePlugin, localizedFormatPlugin } from '~/plugins'
+import localePlugin from '~/plugins/locale'
+import localizedFormatPlugin from '~/plugins/localizedFormat'
 import { expectSame } from '../util'
 
 esday.extend(localizedFormatPlugin).extend(localePlugin)
@@ -27,27 +28,81 @@ describe('localizedFormat plugin - using locale "en"', () => {
   })
 
   it.each([
-    { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMM DD HH:mm:ss' },
-    { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMMM DD HH:mm:ss' },
+    {
+      sourceString: '2024-12-23T14:25:36',
+      formatString: 'YYYY MMM DD HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-23T14:25:36',
+      formatString: 'YYYY MMMM DD HH:mm:ss',
+    },
     { sourceString: '2024-12-23T14:25:36', formatString: 'D MMMM' },
     { sourceString: '2024-12-23T14:25:36', formatString: 'DD MMMM' },
     { sourceString: '2024-12-23T14:25:36', formatString: 'Do MMMM' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dd HH:mm:ss' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD ddd HH:mm:ss' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dddd HH:mm:ss' },
-    { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MM Do HH:mm:ss' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD h:mm:ss a' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD h:mm:ss A' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD hh:mm:ss A' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD h:mm:ss a' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD h:mm:ss A' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD hh:mm:ss A' },
-    { sourceString: '2024-02-29T12:00:00', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T12:00:01', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T00:00:00', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T00:00:00', formatString: 'YYYY-MM-DD hh:mm:ss A' },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD dd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD ddd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD dddd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-23T14:25:36',
+      formatString: 'YYYY MM Do HH:mm:ss',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T12:00:00',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T12:00:01',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T00:00:00',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T00:00:00',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
     { sourceString: '2024-12-24T16:25:36', formatString: 'YYYY MM DD LT' },
     { sourceString: '2024-12-24T16:25:36', formatString: 'YYYY MM DD LTS' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'L' },
@@ -58,7 +113,10 @@ describe('localizedFormat plugin - using locale "en"', () => {
     { sourceString: '2024-12-24T14:25:36', formatString: 'll' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'lll' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'llll' },
-    { sourceString: '2024-12-24T16:25:36', formatString: 'YYYY MM DD [lll] LTS' },
+    {
+      sourceString: '2024-12-24T16:25:36',
+      formatString: 'YYYY MM DD [lll] LTS',
+    },
   ])(
     'format date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
@@ -83,24 +141,78 @@ describe('localizedFormat plugin - using locale "de"', () => {
   })
 
   it.each([
-    { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMM DD HH:mm:ss' },
-    { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMMM DD HH:mm:ss' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dd HH:mm:ss' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD ddd HH:mm:ss' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dddd HH:mm:ss' },
-    { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MM Do HH:mm:ss' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD h:mm:ss a' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD h:mm:ss A' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD hh:mm:ss A' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD h:mm:ss a' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD h:mm:ss A' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD hh:mm:ss A' },
-    { sourceString: '2024-02-29T12:00:00', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T12:00:01', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T00:00:00', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T00:00:00', formatString: 'YYYY-MM-DD hh:mm:ss A' },
+    {
+      sourceString: '2024-12-23T14:25:36',
+      formatString: 'YYYY MMM DD HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-23T14:25:36',
+      formatString: 'YYYY MMMM DD HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD dd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD ddd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD dddd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-23T14:25:36',
+      formatString: 'YYYY MM Do HH:mm:ss',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T12:00:00',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T12:00:01',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T00:00:00',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T00:00:00',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
     { sourceString: '2024-12-24T16:25:36', formatString: 'YYYY MM DD LT' },
     { sourceString: '2024-12-24T16:25:36', formatString: 'YYYY MM DD LTS' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'L' },
@@ -111,7 +223,10 @@ describe('localizedFormat plugin - using locale "de"', () => {
     { sourceString: '2024-12-24T14:25:36', formatString: 'll' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'lll' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'llll' },
-    { sourceString: '2024-12-24T16:25:36', formatString: 'YYYY MM DD [lll] LTS' },
+    {
+      sourceString: '2024-12-24T16:25:36',
+      formatString: 'YYYY MM DD [lll] LTS',
+    },
   ])(
     'format date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
@@ -136,27 +251,84 @@ describe('localizedFormat plugin - using locale "hr"', () => {
   })
 
   it.each([
-    { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMM DD HH:mm:ss' },
-    { sourceString: '2024-11-23T14:25:36', formatString: 'YYYY MMMM DD HH:mm:ss' },
-    { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMMM DD HH:mm:ss' },
+    {
+      sourceString: '2024-12-23T14:25:36',
+      formatString: 'YYYY MMM DD HH:mm:ss',
+    },
+    {
+      sourceString: '2024-11-23T14:25:36',
+      formatString: 'YYYY MMMM DD HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-23T14:25:36',
+      formatString: 'YYYY MMMM DD HH:mm:ss',
+    },
     { sourceString: '2024-12-23T14:25:36', formatString: 'DD MMMM' },
     { sourceString: '2024-12-23T14:25:36', formatString: 'Do MMMM' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dd HH:mm:ss' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD ddd HH:mm:ss' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dddd HH:mm:ss' },
-    { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MM Do HH:mm:ss' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD h:mm:ss a' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD h:mm:ss A' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD hh:mm:ss A' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD h:mm:ss a' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD h:mm:ss A' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD hh:mm:ss A' },
-    { sourceString: '2024-02-29T12:00:00', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T12:00:01', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T00:00:00', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T00:00:00', formatString: 'YYYY-MM-DD hh:mm:ss A' },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD dd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD ddd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD dddd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-23T14:25:36',
+      formatString: 'YYYY MM Do HH:mm:ss',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T12:00:00',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T12:00:01',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T00:00:00',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T00:00:00',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
     { sourceString: '2024-12-24T16:25:36', formatString: 'YYYY MM DD LT' },
     { sourceString: '2024-12-24T16:25:36', formatString: 'YYYY MM DD LTS' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'L' },
@@ -167,7 +339,10 @@ describe('localizedFormat plugin - using locale "hr"', () => {
     { sourceString: '2024-12-24T14:25:36', formatString: 'll' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'lll' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'llll' },
-    { sourceString: '2024-12-24T16:25:36', formatString: 'YYYY MM DD [lll] LTS' },
+    {
+      sourceString: '2024-12-24T16:25:36',
+      formatString: 'YYYY MM DD [lll] LTS',
+    },
   ])(
     'format date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
@@ -192,28 +367,85 @@ describe('localizedFormat plugin - using locale "ca"', () => {
   })
 
   it.each([
-    { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMM DD HH:mm:ss' },
-    { sourceString: '2024-11-23T14:25:36', formatString: 'YYYY MMMM DD HH:mm:ss' },
-    { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MMMM DD HH:mm:ss' },
+    {
+      sourceString: '2024-12-23T14:25:36',
+      formatString: 'YYYY MMM DD HH:mm:ss',
+    },
+    {
+      sourceString: '2024-11-23T14:25:36',
+      formatString: 'YYYY MMMM DD HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-23T14:25:36',
+      formatString: 'YYYY MMMM DD HH:mm:ss',
+    },
     { sourceString: '2024-12-23T14:25:36', formatString: 'D MMMM' },
     { sourceString: '2024-12-23T14:25:36', formatString: 'DD MMMM' },
     { sourceString: '2024-12-23T14:25:36', formatString: 'Do MMMM' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dd HH:mm:ss' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD ddd HH:mm:ss' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dddd HH:mm:ss' },
-    { sourceString: '2024-12-23T14:25:36', formatString: 'YYYY MM Do HH:mm:ss' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD h:mm:ss a' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD h:mm:ss A' },
-    { sourceString: '2024-02-29T08:10:21', formatString: 'YYYY-MM-DD hh:mm:ss A' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD h:mm:ss a' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD h:mm:ss A' },
-    { sourceString: '2024-02-29T20:10:21', formatString: 'YYYY-MM-DD hh:mm:ss A' },
-    { sourceString: '2024-02-29T12:00:00', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T12:00:01', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T00:00:00', formatString: 'YYYY-MM-DD hh:mm:ss a' },
-    { sourceString: '2024-02-29T00:00:00', formatString: 'YYYY-MM-DD hh:mm:ss A' },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD dd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD ddd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD dddd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-23T14:25:36',
+      formatString: 'YYYY MM Do HH:mm:ss',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T08:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD h:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T20:10:21',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
+    {
+      sourceString: '2024-02-29T12:00:00',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T12:00:01',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T00:00:00',
+      formatString: 'YYYY-MM-DD hh:mm:ss a',
+    },
+    {
+      sourceString: '2024-02-29T00:00:00',
+      formatString: 'YYYY-MM-DD hh:mm:ss A',
+    },
     { sourceString: '2024-12-24T16:25:36', formatString: 'YYYY MM DD LT' },
     { sourceString: '2024-12-24T16:25:36', formatString: 'YYYY MM DD LTS' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'L' },
@@ -224,7 +456,10 @@ describe('localizedFormat plugin - using locale "ca"', () => {
     { sourceString: '2024-12-24T14:25:36', formatString: 'll' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'lll' },
     { sourceString: '2024-12-24T14:25:36', formatString: 'llll' },
-    { sourceString: '2024-12-24T16:25:36', formatString: 'YYYY MM DD [lll] LTS' },
+    {
+      sourceString: '2024-12-24T16:25:36',
+      formatString: 'YYYY MM DD [lll] LTS',
+    },
   ])(
     'format date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
@@ -249,10 +484,22 @@ describe('localizedFormat plugin - using locale "ka"', () => {
   })
 
   it.each([
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dd HH:mm:ss' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD ddd HH:mm:ss' },
-    { sourceString: '2024-12-24T14:25:36', formatString: 'YYYY MM DD dddd HH:mm:ss' },
-    { sourceString: '2024-12-24T14:25:36', formatString: '[შემდეგ] dddd LT[-ზე]' }, // test 'useFormatProperty' of addWeekday
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD dd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD ddd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: 'YYYY MM DD dddd HH:mm:ss',
+    },
+    {
+      sourceString: '2024-12-24T14:25:36',
+      formatString: '[შემდეგ] dddd LT[-ზე]',
+    }, // test 'useFormatProperty' of addWeekday
     { sourceString: '2024-12-24T14:25:36', formatString: '[წინა] dddd LT-ზე' }, // test 'useFormatProperty' of addWeekday
     { sourceString: '2024-12-23T14:25:36', formatString: 'D MMMM' },
     { sourceString: '2024-12-23T14:25:36', formatString: 'DD MMMM' },

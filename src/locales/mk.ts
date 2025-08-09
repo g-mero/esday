@@ -44,7 +44,7 @@ const localeMk: Readonly<Locale> = {
     nextDay: '[Утре во] LT',
     nextWeek: '[Во] dddd [во] LT',
     lastDay: '[Вчера во] LT',
-    lastWeek: function (this: EsDay) {
+    lastWeek(this: EsDay) {
       switch (this.day()) {
         case 0:
         case 3:

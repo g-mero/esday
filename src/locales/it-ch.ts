@@ -17,7 +17,7 @@ const calendar = {
   nextDay: '[Domani alle] LT',
   nextWeek: 'dddd [alle] LT',
   lastDay: '[Ieri alle] LT',
-  lastWeek: function (this: EsDay) {
+  lastWeek(this: EsDay) {
     switch (this.day()) {
       case 0:
         return '[la scorsa] dddd [alle] LT'

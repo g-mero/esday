@@ -4,7 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/he'
-import type { RelativeTimeElementFunction } from '~/plugins'
+import type { RelativeTimeElementFunction } from '~/plugins/locale'
 
 describe('locale he', () => {
   it('should have the correct name', () => {

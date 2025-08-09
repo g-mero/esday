@@ -56,7 +56,7 @@ const localeBs: Readonly<Locale> = {
   calendar: {
     sameDay: '[danas u] LT',
     nextDay: '[sutra u] LT',
-    nextWeek: function (this: EsDay) {
+    nextWeek(this: EsDay) {
       switch (this.day()) {
         case 0:
           return '[u] [nedjelju] [u] LT'
@@ -74,7 +74,7 @@ const localeBs: Readonly<Locale> = {
       }
     },
     lastDay: '[jučer u] LT',
-    lastWeek: function (this: EsDay) {
+    lastWeek(this: EsDay) {
       switch (this.day()) {
         case 0:
         case 3:

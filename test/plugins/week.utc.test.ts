@@ -4,7 +4,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { UnitTypeGetSet } from '~/common/units'
 import localeDe from '~/locales/de'
 import localeEn from '~/locales/en'
-import { advancedParsePlugin, localePlugin, utcPlugin, weekPlugin } from '~/plugins'
+import advancedParsePlugin from '~/plugins/advancedParse'
+import localePlugin from '~/plugins/locale'
+import utcPlugin from '~/plugins/utc'
+import weekPlugin from '~/plugins/week'
 import { expectSame, expectSameResult } from '../util'
 
 esday.extend(utcPlugin).extend(localePlugin).extend(advancedParsePlugin).extend(weekPlugin)
@@ -30,8 +33,18 @@ describe('week plugin - locale en', () => {
 
   it.each([
     { sourceString: '2024-06-10', unit: 'w', expected: 24, weekday: 'Monday' },
-    { sourceString: '2024-06-11', unit: 'week', expected: 24, weekday: 'Tuesday' },
-    { sourceString: '2024-06-12', unit: 'weeks', expected: 24, weekday: 'Wednesday' },
+    {
+      sourceString: '2024-06-11',
+      unit: 'week',
+      expected: 24,
+      weekday: 'Tuesday',
+    },
+    {
+      sourceString: '2024-06-12',
+      unit: 'weeks',
+      expected: 24,
+      weekday: 'Wednesday',
+    },
   ])(
     'should get week number for "$sourceString" using get("$unit")',
     ({ sourceString, unit, expected }) => {
@@ -131,8 +144,18 @@ describe('week plugin - locale de', () => {
 
   it.each([
     { sourceString: '2024-06-10', unit: 'w', expected: 24, weekday: 'Monday' },
-    { sourceString: '2024-06-11', unit: 'week', expected: 24, weekday: 'Tuesday' },
-    { sourceString: '2024-06-12', unit: 'weeks', expected: 24, weekday: 'Wednesday' },
+    {
+      sourceString: '2024-06-11',
+      unit: 'week',
+      expected: 24,
+      weekday: 'Tuesday',
+    },
+    {
+      sourceString: '2024-06-12',
+      unit: 'weeks',
+      expected: 24,
+      weekday: 'Wednesday',
+    },
   ])(
     'should get week number for "$sourceString" using get("$unit")',
     ({ sourceString, unit, expected }) => {

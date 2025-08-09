@@ -44,7 +44,7 @@ const monthsShort = [
 const calendar = {
   sameDay: '[данас у] LT',
   nextDay: '[сутра у] LT',
-  nextWeek: function (this: EsDay) {
+  nextWeek(this: EsDay) {
     switch (this.day()) {
       case 0:
         return '[у] [недељу] [у] LT'
@@ -62,7 +62,7 @@ const calendar = {
     }
   },
   lastDay: '[јуче у] LT',
-  lastWeek: function (this: EsDay) {
+  lastWeek(this: EsDay) {
     const lastWeekDays = [
       '[прошле] [недеље] [у] LT',
       '[прошлог] [понедељка] [у] LT',

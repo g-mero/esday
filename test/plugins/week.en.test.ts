@@ -4,13 +4,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
 import type { UnitTypeGetSet } from '~/common/units'
 import localeEn from '~/locales/en'
-import {
-  advancedParsePlugin,
-  localePlugin,
-  localizedFormatPlugin,
-  localizedParsePlugin,
-  weekPlugin,
-} from '~/plugins'
+import advancedParsePlugin from '~/plugins/advancedParse'
+import localePlugin from '~/plugins/locale'
+import localizedFormatPlugin from '~/plugins/localizedFormat'
+import localizedParsePlugin from '~/plugins/localizedParse'
+import weekPlugin from '~/plugins/week'
 import { expectSame, expectSameResult } from '../util'
 
 esday
@@ -102,8 +100,18 @@ describe('week plugin - locale "en"', () => {
 
   it.each([
     { sourceString: '2024-06-10', unit: 'w', expected: 24, weekday: 'Monday' },
-    { sourceString: '2024-06-11', unit: 'week', expected: 24, weekday: 'Tuesday' },
-    { sourceString: '2024-06-12', unit: 'weeks', expected: 24, weekday: 'Wednesday' },
+    {
+      sourceString: '2024-06-11',
+      unit: 'week',
+      expected: 24,
+      weekday: 'Tuesday',
+    },
+    {
+      sourceString: '2024-06-12',
+      unit: 'weeks',
+      expected: 24,
+      weekday: 'Wednesday',
+    },
   ])(
     'should get week number for "$sourceString" using get("$unit")',
     ({ sourceString, unit, expected }) => {
@@ -247,10 +255,22 @@ describe('week plugin - locale "en"', () => {
   })
 
   it.each([
-    { sourceString: '2023-11-17T03:24:46.234', expectedAsString: '2023-11-12T00:00:00.000' },
-    { sourceString: '2023-11-01T00:00:00.000', expectedAsString: '2023-10-29T00:00:00.000' },
-    { sourceString: '2023-01-01T03:24:46.234', expectedAsString: '2023-01-01T00:00:00.000' },
-    { sourceString: '2024-01-02T03:24:46.234', expectedAsString: '2023-12-31T00:00:00.000' },
+    {
+      sourceString: '2023-11-17T03:24:46.234',
+      expectedAsString: '2023-11-12T00:00:00.000',
+    },
+    {
+      sourceString: '2023-11-01T00:00:00.000',
+      expectedAsString: '2023-10-29T00:00:00.000',
+    },
+    {
+      sourceString: '2023-01-01T03:24:46.234',
+      expectedAsString: '2023-01-01T00:00:00.000',
+    },
+    {
+      sourceString: '2024-01-02T03:24:46.234',
+      expectedAsString: '2023-12-31T00:00:00.000',
+    },
   ])('should get startOf week for "$sourceString"', ({ sourceString, expectedAsString }) => {
     const resultDate = esday(sourceString).startOf(C.WEEK)
 
@@ -270,10 +290,22 @@ describe('week plugin - locale "en"', () => {
   })
 
   it.each([
-    { sourceString: '2023-11-17T03:24:46.234', expectedAsString: '2023-11-18T23:59:59.999' },
-    { sourceString: '2023-10-30T00:00:00.000', expectedAsString: '2023-11-04T23:59:59.999' },
-    { sourceString: '2023-01-01T03:24:46.234', expectedAsString: '2023-01-07T23:59:59.999' },
-    { sourceString: '2023-12-31T03:24:46.234', expectedAsString: '2024-01-06T23:59:59.999' },
+    {
+      sourceString: '2023-11-17T03:24:46.234',
+      expectedAsString: '2023-11-18T23:59:59.999',
+    },
+    {
+      sourceString: '2023-10-30T00:00:00.000',
+      expectedAsString: '2023-11-04T23:59:59.999',
+    },
+    {
+      sourceString: '2023-01-01T03:24:46.234',
+      expectedAsString: '2023-01-07T23:59:59.999',
+    },
+    {
+      sourceString: '2023-12-31T03:24:46.234',
+      expectedAsString: '2024-01-06T23:59:59.999',
+    },
   ])('should get endOf week for "$sourceString"', ({ sourceString, expectedAsString }) => {
     const resultDate = esday(sourceString).endOf(C.WEEK)
 
@@ -348,9 +380,18 @@ describe('week plugin - locale "en"', () => {
     { sourceString: '2025 0', formatString: 'YYYY d' },
     { sourceString: '2025 1', formatString: 'YYYY d' },
     { sourceString: '2025 12 1', formatString: 'YYYY MM d' },
-    { sourceString: '2024 12 24 Tu 14:25:36', formatString: 'YYYY MM DD dd HH:mm:ss' },
-    { sourceString: '2024 12 24 Tue 14:25:36', formatString: 'YYYY MM DD ddd HH:mm:ss' },
-    { sourceString: '2024 12 24 Tuesday 14:25:36', formatString: 'YYYY MM DD dddd HH:mm:ss' },
+    {
+      sourceString: '2024 12 24 Tu 14:25:36',
+      formatString: 'YYYY MM DD dd HH:mm:ss',
+    },
+    {
+      sourceString: '2024 12 24 Tue 14:25:36',
+      formatString: 'YYYY MM DD ddd HH:mm:ss',
+    },
+    {
+      sourceString: '2024 12 24 Tuesday 14:25:36',
+      formatString: 'YYYY MM DD dddd HH:mm:ss',
+    },
     { sourceString: '2024 Tuesday', formatString: 'YYYY dddd' },
     { sourceString: '2024 Tuesday 15:26', formatString: 'YYYY dddd HH:mm' },
     { sourceString: '2024 12 Sunday', formatString: 'YYYY MM dddd' },
@@ -364,7 +405,10 @@ describe('week plugin - locale "en"', () => {
 
   it.each([
     { sourceString: '2025 12 2', formatString: 'YYYY MM d' },
-    { sourceString: '2024 12 24 Wed 14:25:36', formatString: 'YYYY MM DD ddd HH:mm:ss' },
+    {
+      sourceString: '2024 12 24 Wed 14:25:36',
+      formatString: 'YYYY MM DD ddd HH:mm:ss',
+    },
   ])('parse illegal day-of-week value', ({ sourceString, formatString }) => {
     expectSame((esday) => esday(sourceString, formatString).isValid())
     expect(esday(sourceString, formatString).isValid()).toBeFalsy()

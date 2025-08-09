@@ -105,7 +105,7 @@ const localePl: Readonly<Locale> = {
   calendar: {
     sameDay: '[Dziś o] LT',
     nextDay: '[Jutro o] LT',
-    nextWeek: function (this: EsDay) {
+    nextWeek(this: EsDay) {
       switch (this.day()) {
         case 0:
           return '[W niedzielę o] LT'
@@ -121,7 +121,7 @@ const localePl: Readonly<Locale> = {
       }
     },
     lastDay: '[Wczoraj o] LT',
-    lastWeek: function (this: EsDay) {
+    lastWeek(this: EsDay) {
       switch (this.day()) {
         case 0:
           return '[W zeszłą niedzielę o] LT'

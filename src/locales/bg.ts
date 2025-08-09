@@ -62,7 +62,7 @@ const localeBg: Readonly<Locale> = {
     nextDay: '[Утре в] LT',
     nextWeek: 'dddd [в] LT',
     lastDay: '[Вчера в] LT',
-    lastWeek: function () {
+    lastWeek() {
       switch (this.day()) {
         case 0:
         case 3:

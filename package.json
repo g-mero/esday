@@ -31,14 +31,18 @@
       "types": "./index.d.ts",
       "default": "./index.js"
     },
-    "./*": {
-      "types": "./*/index.d.ts",
-      "default": "./*/index.js"
+    "./plugins/*": {
+      "types": "./plugins/*/index.d.ts",
+      "default": "./plugins/*/index.js"
+    },
+    "./locales/*": {
+      "types": "./locales/*.d.ts",
+      "default": "./locales/*.js"
     }
   },
-  "main": "index.js",
-  "module": "index.js",
-  "types": "index.d.ts",
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
   "typesVersions": {},
   "files": [
     "*"
@@ -46,7 +50,7 @@
   "scripts": {
     "lint": "pnpm exec biome check .",
     "lint:fix": "pnpm exec biome check --write .",
-    "build": "tsup --dts",
+    "build": "tsdown",
     "build:ghpages": "node ./scripts/gh-pages/create-gh-pages.js",
     "type-check": "tsc --noEmit --skipLibCheck",
     "test": "vitest",
@@ -58,12 +62,12 @@
     "test:coverage": "vitest run --coverage",
     "release": "commit-and-tag-version -i CHANGELOG.md --same-file",
     "lint-commits": "commitlint --from b4c0a8614dd7d9997 --to HEAD --verbose",
-    "copypkg": "cpy package.json dist/ && cpy README.md dist/ ",
+    "copypkg": "cpy package.json dist/ && cpy README.md dist/ && cpy CHANGELOG.md dist/",
     "pub": "pnpm build && pnpm copypkg && cd dist && pnpm publish",
     "prepare": "husky"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.1.3",
+    "@biomejs/biome": "2.1.2",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@playwright/test": "~1.54.2",
@@ -79,8 +83,9 @@
     "marked": "^16.1.2",
     "moment": "^2.30.1",
     "playwright": "~1.54.2",
-    "tsup": "^8.5.0",
+    "tsdown": "^0.13.3",
     "typescript": "^5.9.2",
+    "ultracite": "5.1.2",
     "vite": "^7.0.6",
     "vitest": "3.2.4"
   },

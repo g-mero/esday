@@ -2,7 +2,7 @@ import { esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { UnitTypeAddSub, UnitTypeGetSet } from '~/common/units'
-import { quarterOfYearPlugin } from '~/plugins'
+import quarterOfYearPlugin from '~/plugins/quarterOfYear'
 import { expectSame, expectSameResult } from '../util'
 
 esday.extend(quarterOfYearPlugin)
@@ -63,9 +63,21 @@ describe('quarterOfYear plugin', () => {
   })
 
   it.each([
-    { sourceString: '2023-01-01T00:00:00.000', quarter: 2, expected: '2023-04-01T00:00:00.000' },
-    { sourceString: '2023-02-05T04:05:06.789', quarter: 2, expected: '2023-04-01T00:00:00.000' },
-    { sourceString: '2023-11-25T05:06:07.000', quarter: 3, expected: '2023-07-25T00:00:00.000' },
+    {
+      sourceString: '2023-01-01T00:00:00.000',
+      quarter: 2,
+      expected: '2023-04-01T00:00:00.000',
+    },
+    {
+      sourceString: '2023-02-05T04:05:06.789',
+      quarter: 2,
+      expected: '2023-04-01T00:00:00.000',
+    },
+    {
+      sourceString: '2023-11-25T05:06:07.000',
+      quarter: 3,
+      expected: '2023-07-25T00:00:00.000',
+    },
   ])(
     'set quarter for "$sourceString" to "$quarter" using quarter()',
     ({ sourceString, quarter }) => {

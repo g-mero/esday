@@ -69,7 +69,7 @@ const months: MonthNamesStandaloneFormat = {
 
 const localeBe: Readonly<Locale> = {
   name: 'be',
-  weekdays: weekdays,
+  weekdays,
   weekdaysShort: ['нд', 'пн', 'ат', 'ср', 'чц', 'пт', 'сб'],
   weekdaysMin: ['нд', 'пн', 'ат', 'ср', 'чц', 'пт', 'сб'],
   months,

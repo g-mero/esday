@@ -8,7 +8,7 @@ import type { Locale } from '~/plugins/locale'
 const calendar = {
   sameDay: '[danas u] LT',
   nextDay: '[sjutra u] LT',
-  nextWeek: function (this: EsDay) {
+  nextWeek(this: EsDay) {
     switch (this.day()) {
       case 0:
         return '[u] [nedjelju] [u] LT'
@@ -26,7 +26,7 @@ const calendar = {
     }
   },
   lastDay: '[juče u] LT',
-  lastWeek: function (this: EsDay) {
+  lastWeek(this: EsDay) {
     const lastWeekDays = [
       '[prošle] [nedjelje] [u] LT',
       '[prošlog] [ponedjeljka] [u] LT',

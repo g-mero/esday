@@ -200,14 +200,14 @@ function makeParser(format: string, isStrict: boolean): { parser: Parser; postPa
     const token = splittedFormat[i]
     // get definition of current token to use
     const parseTo = parseTokensDefinitions[token]
-    const regex = !isStrict ? parseTo?.[0] : parseTo?.[1]
+    const regex = isStrict ? parseTo?.[1] : parseTo?.[0]
     const updater = parseTo?.[2]
 
-    if (!isUndefined(updater)) {
-      parsingDefinitions[i] = { regex, updater }
-    } else {
+    if (isUndefined(updater)) {
       // remove escaped text from input string (e.g. "[H]")
       parsingDefinitions[i] = token.replace(/^\[|\]$/g, '')
+    } else {
+      parsingDefinitions[i] = { regex, updater }
     }
 
     const postParseHandler = parseTo?.[3]
@@ -310,7 +310,7 @@ function parsedElementsToDate(this: EsDay, elements: ParsedElements) {
 
   let offsetMs: number | undefined
   if (zoneOffset !== undefined) {
-    offsetMs = zoneOffset * 60000
+    offsetMs = zoneOffset * 60_000
   }
 
   return dateFromDateComponents.call(
@@ -530,23 +530,21 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
           currentScore += parsingResult.unusedTokens * 10
 
           // wait for valid date(s)
-          if (!bestFormatIsValid) {
-            if (
-              isUndefined(scoreToBeat) || // take the first parsed date whatever it is
-              currentScore < scoreToBeat || // take better date (even invalid one)
-              validFormatFound // take first valid date
-            ) {
-              scoreToBeat = currentScore
-              bestDate = parsingResult.date
-              if (validFormatFound) {
-                bestFormatIsValid = true
-              }
-            }
-          } else {
+          if (bestFormatIsValid) {
             // evaluate only valid formats
             if (validFormatFound && !isUndefined(scoreToBeat) && currentScore < scoreToBeat) {
               scoreToBeat = currentScore
               bestDate = parsingResult.date
+            }
+          } else if (
+            isUndefined(scoreToBeat) || // take the first parsed date whatever it is
+            currentScore < scoreToBeat || // take better date (even invalid one)
+            validFormatFound // take first valid date
+          ) {
+            scoreToBeat = currentScore
+            bestDate = parsingResult.date
+            if (validFormatFound) {
+              bestFormatIsValid = true
             }
           }
         }

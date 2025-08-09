@@ -1,7 +1,9 @@
 import { esday } from 'esday'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import localeEn from '~/locales/en'
-import { advancedParsePlugin, localePlugin, localizedParsePlugin } from '~/plugins'
+import advancedParsePlugin from '~/plugins/advancedParse'
+import localePlugin from '~/plugins/locale'
+import localizedParsePlugin from '~/plugins/localizedParse'
 
 esday.extend(advancedParsePlugin).extend(localizedParsePlugin).extend(localePlugin)
 esday.registerLocale(localeEn)
