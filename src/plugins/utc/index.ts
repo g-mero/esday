@@ -13,14 +13,21 @@ import type { EsDay } from 'esday'
 import type { UnitForGetDate, UnitForSetDate } from '~/common'
 import {
   C,
+  createInstanceFromExist,
   getUnitInDateUTC,
   isObject,
   isUndefined,
   normalizeUnitWithPlurals,
   setUnitInDateUTC,
 } from '~/common'
-import type { UnitTypeGetSet } from '~/common/units'
-import type { DateType, EsDayPlugin, SimpleType, UnitsObjectTypeSet } from '~/types'
+import type { UnitTypeAddSub, UnitTypeGetSet } from '~/common/units'
+import type {
+  DateType,
+  EsDayPlugin,
+  SimpleType,
+  UnitsObjectTypeAddSub,
+  UnitsObjectTypeSet,
+} from '~/types'
 
 const REGEX_VALID_OFFSET_FORMAT = /[+-]\d\d(?::?\d\d)?/g
 const REGEX_OFFSET_HOURS_MINUTES_FORMAT = /[+-]|\d\d/g
@@ -113,6 +120,42 @@ function utcOffsetSetImpl(that: EsDay, offset: number | string, keepLocalTime?: 
     return instance
   }
   return that.utc()
+}
+
+function addUtc(that: EsDay, value: number, units: UnitTypeAddSub) {
+  const $d = that['$d']
+  const unit = normalizeUnitWithPlurals(units)
+
+  const instanceFactorySet = (multiplier: number) => {
+    const newInstance = that.clone()
+    newInstance['$d'].setUTCDate($d.getUTCDate() + Math.round(multiplier * value))
+    return newInstance
+  }
+
+  switch (normalizeUnitWithPlurals(unit)) {
+    case C.YEAR:
+      return that.set('year', that.get('year') + value)
+    case C.MONTH:
+      return that.set('month', that.get('month') + value)
+    case C.WEEK:
+      return instanceFactorySet(7)
+    case C.DAY:
+    case C.DAY_OF_MONTH:
+      return instanceFactorySet(1)
+    case C.HOUR:
+    case C.MIN:
+    case C.SECOND:
+    case C.MS: {
+      // set multiplier to convert value to add to milliseconds (default '1')
+      // @ts-expect-error default 1
+      const step = { minute: 60 * 1000, hour: 60 * 60 * 1000, second: 1000 }[unit] || 1
+      const nextTimeStamp = $d.getTime() + value * step
+      return createInstanceFromExist(new Date(nextTimeStamp), that)
+    }
+    default:
+      // ignore unsupported units
+      return that.clone()
+  }
 }
 
 const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
@@ -292,6 +335,38 @@ const utcPlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
       return this
     }
     return old$set.call(this, unit, values)
+  }
+
+  const oldAdd = proto.add
+  proto.add = function (value: number | UnitsObjectTypeAddSub, unit?: UnitTypeAddSub) {
+    if (isObject(value) || unit === undefined) {
+      // using UnitsObjectTypeAddSub is implemented in plugin ObjectSupport
+      // therefore we ignore the request here.
+      return this.clone()
+    }
+
+    if (this['$conf'].utc) {
+      return addUtc(this, value, unit)
+    }
+
+    // @ts-expect-error always requires 3 args, as  UnitsObjectTypeAddSub is covered by plugin ObjectSupport
+    return oldAdd.call(this, value, unit)
+  }
+
+  const oldSubtract = proto.subtract
+  proto.subtract = function (value: number | UnitsObjectTypeAddSub, unit?: UnitTypeAddSub) {
+    if (isObject(value) || unit === undefined) {
+      // using UnitsObjectTypeAddSub is implemented in plugin ObjectSupport
+      // therefore we ignore the request here.
+      return this.clone()
+    }
+
+    if (this['$conf'].utc) {
+      return addUtc(this, -value, unit)
+    }
+
+    // @ts-expect-error always requires 3 args, as  UnitsObjectTypeAddSub is covered by plugin ObjectSupport
+    return oldSubtract.call(this, value, unit)
   }
 }
 

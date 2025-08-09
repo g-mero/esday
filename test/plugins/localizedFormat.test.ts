@@ -23,6 +23,7 @@ describe('localizedFormat plugin - using locale "en"', () => {
   beforeEach(() => {
     // set global locale
     esday.locale('en')
+    moment.locale('en')
   })
 
   it.each([

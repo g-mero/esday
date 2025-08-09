@@ -24,7 +24,7 @@ esday.registerLocale(localeDe)
 esday.registerLocale(localeHr)
 
 describe('localizedParse plugin - parsed as utc for "en"', () => {
-  const fakeTimeAsString = '2023-12-17T03:24:46.234' // 'Sunday 2023-12-17 03:24'
+  const fakeTimeAsString = '2023-12-17T03:24:46.234Z' // 'Sunday 2023-12-17 03:24'
 
   beforeEach(() => {
     vi.useFakeTimers()

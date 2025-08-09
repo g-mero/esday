@@ -30,6 +30,7 @@ describe('localizedParse plugin - local mode for "en"', () => {
 
     // set global locale
     esday.locale('en')
+    moment.locale('en')
   })
 
   afterEach(() => {

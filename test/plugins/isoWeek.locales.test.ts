@@ -24,6 +24,7 @@ describe('isoWeek plugin - default locale ("en")', () => {
 
     // set global locale
     esday.locale('en')
+    moment.locale('en')
   })
 
   afterEach(() => {

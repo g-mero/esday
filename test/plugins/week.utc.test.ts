@@ -13,7 +13,7 @@ esday.registerLocale(localeEn)
 esday.registerLocale(localeDe)
 
 describe('week plugin - locale en', () => {
-  const fakeTimeAsString = '2023-12-17T03:24:46.234'
+  const fakeTimeAsString = '2023-12-17T03:24:46.234Z'
 
   beforeEach(() => {
     vi.useFakeTimers()
@@ -21,6 +21,7 @@ describe('week plugin - locale en', () => {
 
     // set global locale
     esday.locale('en')
+    moment.locale('en')
   })
 
   afterEach(() => {
@@ -113,7 +114,7 @@ describe('week plugin - locale en', () => {
 })
 
 describe('week plugin - locale de', () => {
-  const fakeTimeAsString = '2023-12-18T03:24:46.234'
+  const fakeTimeAsString = '2023-12-18T03:24:46.234Z'
 
   beforeEach(() => {
     vi.useFakeTimers()
@@ -145,6 +146,7 @@ describe('week plugin - locale de', () => {
     { sourceString: '2025-05-01', unit: 'w', newWeek: 1 },
     { sourceString: '2024-06-15', unit: 'week', newWeek: 10 },
     { sourceString: '2022-05-16', unit: 'weeks', newWeek: 53 },
+    { sourceString: '2020-07-16', unit: 'weeks', newWeek: 53 },
   ])(
     'should set the week number  for "$sourceString" to "$newWeek" using set("$unit")',
     ({ sourceString, unit, newWeek }) => {

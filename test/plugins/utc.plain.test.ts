@@ -1,4 +1,4 @@
-import type { UnitsObjectTypeSet } from 'esday'
+import type { UnitsObjectTypeAddSub, UnitsObjectTypeSet } from 'esday'
 import { esday } from 'esday'
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -7,7 +7,7 @@ import utcPlugin from '~/plugins/utc'
 esday.extend(utcPlugin)
 
 describe('plugin utc - without other plugins', () => {
-  const fakeTimeAsString = '2023-12-17T03:24:46.234'
+  const fakeTimeAsString = '2023-12-17T03:24:46.234Z'
 
   beforeEach(() => {
     vi.useFakeTimers()
@@ -31,5 +31,19 @@ describe('plugin utc - without other plugins', () => {
     const expected = '2023-12-17'
 
     expect(esday().utc().set(value).format().slice(0, 10)).toBe(expected)
+  })
+
+  it('add using an object without plugin ObjectSupport', () => {
+    const value = { years: 1, months: 2, days: 3 } as UnitsObjectTypeAddSub
+    const expected = '2023-12-17'
+
+    expect(esday().utc().add(value).format().slice(0, 10)).toBe(expected)
+  })
+
+  it('subtract using an object without plugin ObjectSupport', () => {
+    const value = { years: 1, months: 2, days: 3 } as UnitsObjectTypeAddSub
+    const expected = '2023-12-17'
+
+    expect(esday().utc().subtract(value).format().slice(0, 10)).toBe(expected)
   })
 })

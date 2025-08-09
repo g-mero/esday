@@ -1,5 +1,5 @@
 import type { UnitsObjectTypeSet, UnitTypeAddSub } from 'esday'
-import { esday } from 'esday'
+import { EsDay, esday } from 'esday'
 import moment from 'moment/min/moment-with-locales'
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -56,7 +56,7 @@ describe('plugin utc', () => {
   })
 
   describe('set', () => {
-    const fakeTimeAsString = '2023-12-17T03:24:46.234'
+    const fakeTimeAsString = '2023-12-17T03:24:46.234Z'
 
     beforeEach(() => {
       vi.useFakeTimers()
@@ -617,7 +617,7 @@ describe('plugin utc', () => {
   })
 
   describe('startOf and endOf', () => {
-    // weekday of fake date is a sunday
+    // weekday of fake date is a Sunday
     const fakeTimeAsString = '2023-12-17T03:24:46.234'
     let momentDefaultLocale: string
 
@@ -664,25 +664,41 @@ describe('plugin utc', () => {
     it.each([
       { value: 2, unit: 'year' },
       { value: 3, unit: 'month' },
+      { value: 2, unit: 'week' },
       { value: 1, unit: 'day' },
+      { value: 120, unit: 'day' },
       { value: 4, unit: 'hour' },
       { value: 5, unit: 'minute' },
       { value: 6, unit: 'second' },
     ])('"$value $unit" to date parsed as utc', ({ value, unit }) => {
-      const dateString = '2018-09-06T19:34:28.652'
+      const dateString = '2018-02-06T19:34:28.652'
 
       expectSameResult((esday) => esday.utc(dateString).add(value, unit as UnitTypeAddSub))
+    })
+
+    it('unsupported unit to date parsed as utc', () => {
+      const dateString = '2018-02-06T19:34:28.652'
+      const base = esday.utc(dateString)
+      const cloned = base.add(1, 'quarter')
+
+      expect(base).toBeInstanceOf(EsDay)
+      expect(cloned).toBeInstanceOf(EsDay)
+      expect(base).toBe(base)
+      expect(base).not.toBe(cloned)
+      expect(base.valueOf()).toBe(cloned.valueOf())
     })
 
     it.each([
       { value: 2, unit: 'year' },
       { value: 3, unit: 'month' },
+      { value: 2, unit: 'week' },
       { value: 1, unit: 'day' },
+      { value: 120, unit: 'day' },
       { value: 4, unit: 'hour' },
       { value: 5, unit: 'minute' },
       { value: 6, unit: 'second' },
     ])('"$value $unit" to date converted to utc', ({ value, unit }) => {
-      const dateString = '2018-09-06T19:34:28.652'
+      const dateString = '2018-02-06T19:34:28.652'
 
       expectSameResult((esday) =>
         esday(dateString)
@@ -690,37 +706,77 @@ describe('plugin utc', () => {
           .add(value, unit as UnitTypeAddSub),
       )
     })
+
+    it('unsupported unit to date converted to utc', () => {
+      const dateString = '2018-02-06T19:34:28.652'
+      const base = esday(dateString).utc()
+      const cloned = base.add(1, 'quarter')
+
+      expect(base).toBeInstanceOf(EsDay)
+      expect(cloned).toBeInstanceOf(EsDay)
+      expect(base).toBe(base)
+      expect(base).not.toBe(cloned)
+      expect(base.valueOf()).toBe(cloned.valueOf())
+    })
   })
 
   describe('subtract', () => {
     it.each([
       { value: 2, unit: 'year' },
       { value: 3, unit: 'month' },
+      { value: 2, unit: 'week' },
       { value: 1, unit: 'day' },
+      { value: 120, unit: 'day' },
       { value: 4, unit: 'hour' },
       { value: 5, unit: 'minute' },
       { value: 6, unit: 'second' },
     ])('"$value $unit" to date parsed as utc', ({ value, unit }) => {
-      const dateString = '2018-09-06T19:34:28.652'
+      const dateString = '2018-11-06T19:34:28.652'
 
       expectSameResult((esday) => esday.utc(dateString).subtract(value, unit as UnitTypeAddSub))
+    })
+
+    it('unsupported unit to date parsed as utc', () => {
+      const dateString = '2018-02-06T19:34:28.652'
+      const base = esday.utc(dateString)
+      const cloned = base.subtract(1, 'quarter')
+
+      expect(base).toBeInstanceOf(EsDay)
+      expect(cloned).toBeInstanceOf(EsDay)
+      expect(base).toBe(base)
+      expect(base).not.toBe(cloned)
+      expect(base.valueOf()).toBe(cloned.valueOf())
     })
 
     it.each([
       { value: 2, unit: 'year' },
       { value: 3, unit: 'month' },
+      { value: 2, unit: 'week' },
       { value: 1, unit: 'day' },
+      { value: 120, unit: 'day' },
       { value: 4, unit: 'hour' },
       { value: 5, unit: 'minute' },
       { value: 6, unit: 'second' },
     ])('"$value $unit" to date converted to utc', ({ value, unit }) => {
-      const dateString = '2018-09-06T19:34:28.652'
+      const dateString = '2018-11-06T19:34:28.652'
 
       expectSameResult((esday) =>
         esday(dateString)
           .utc()
           .subtract(value, unit as UnitTypeAddSub),
       )
+    })
+
+    it('unsupported unit to date converted to utc', () => {
+      const dateString = '2018-02-06T19:34:28.652'
+      const base = esday(dateString).utc()
+      const cloned = base.subtract(1, 'quarter')
+
+      expect(base).toBeInstanceOf(EsDay)
+      expect(cloned).toBeInstanceOf(EsDay)
+      expect(base).toBe(base)
+      expect(base).not.toBe(cloned)
+      expect(base.valueOf()).toBe(cloned.valueOf())
     })
   })
 
