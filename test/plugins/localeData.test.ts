@@ -29,7 +29,7 @@ describe('locale en - local', () => {
     vi.setSystemTime(new Date(fakeTimeAsString))
     // set global locale
     esday.locale(localeName)
-    // we can not set en as locale in moment.js, as it is the default locale
+    moment.locale(localeName)
   })
 
   afterEach(() => {
