@@ -28,25 +28,24 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "types": "./index.d.ts",
+      "default": "./index.js"
     },
     "./plugins/*": {
-      "types": "./dist/plugins/*/index.d.ts",
-      "default": "./dist/plugins/*/index.js"
+      "types": "./plugins/*/index.d.ts",
+      "default": "./plugins/*/index.js"
     },
     "./locales/*": {
-      "types": "./dist/locales/*.d.ts",
-      "default": "./dist/locales/*.js"
+      "types": "./locales/*.d.ts",
+      "default": "./locales/*.js"
     }
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
   "typesVersions": {},
   "files": [
-    "dist",
-    "README.md"
+    "*"
   ],
   "scripts": {
     "lint": "pnpm exec biome check .",
@@ -63,7 +62,8 @@
     "test:coverage": "vitest run --coverage",
     "release": "commit-and-tag-version -i CHANGELOG.md --same-file",
     "lint-commits": "commitlint --from b4c0a8614dd7d9997 --to HEAD --verbose",
-    "pub": "pnpm build && pnpm publish",
+    "copypkg": "cpy package.json dist/ && cpy README.md dist/ && cpy CHANGELOG.md dist/",
+    "pub": "pnpm build && pnpm copypkg && cd dist && pnpm publish",
     "prepare": "husky"
   },
   "devDependencies": {
