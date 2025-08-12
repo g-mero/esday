@@ -19,6 +19,16 @@ EsDay is extensible by plugins. A list of all available plugins can be found in 
 - **'Start of Week'**: Default 'Start of Week' is 1 ('Monday') as defined by ISO 8601. Dayjs uses 0 ('Sunday') as (as defined by the dafault locale 'en-US').
 - **'Start of Year'**: Default 'Start of Year' is 4 (Jan 4th must be in the 1st week of the year) as defined by ISO 8601. Dayjs uses 1 (Jan 1st) as (as defined by the dafault locale 'en-US').
 - **Invalid Date**: conforms to Moment.js and uses `Invalid date` instead of `Invalid Date`.
+- **clamping month on set**: when changing the month and the new month does not have enough days to keep the current day of month, esday behaves like moment.js and clamps to the end of the target month
+- **Invalid Date**: conforms to Moment.js and uses `Invalid date` instead of `Invalid Date`.
+- **plugin AdvancedParse** got replaced by CustomParseFormat.
+- **plugin ArraySupport**: functionality is part of esday core.
+- **plugin IsoWeeksInYear**: functionality is part of plugin IsoWeek.
+- **plugin PreParsePostFormat**: functionality is part of esday core.
+- **plugin UpdateLocale**: functionality is part of plugin Locale.
+- **plugin weekOfYear**: functionality is part of plugin Week.
+- **plugin WeekYear**: functionality is part of plugin Week.
+- **plugin Weekday**: functionality is part of plugin Week.
 
 ## Differences to Moment.js
 
@@ -26,3 +36,14 @@ Esday uses moment@2.30.1 as api reference.
 
 - **toString**: conforms to Day.js and uses Date.toUTCString() (returning the date in RFC 7231 format 'ddd, DD MMM YYYY HH:mm:ss [GMT]') while moment uses the format 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ'.
 - **toISOString**: conforms to Day.js and returns 'Invalid date' when called on an invalid date. In that case moment returns null (see [moment pr#3710](https://github.com/moment/moment/pull/3710)).
+
+## Using EsDay in an application
+
+Examples of how to use EsDay in an application can be found in the demo apps:
+
+| Base on     | Source                                            | Output     |
+| ----------- | ------------------------------------------------- | ---------- |
+| Node script | [Node](https://github.com/BePo65/esday-demo-node) | on console |
+| HTML        | [Html](https://github.com/BePo65/esday-demo-html) | [GitHub Pages](https://bepo65.github.io/esday-demo-html/) |
+| Angular     | [Angular](https://github.com/BePo65/esday-demo-angular) | [GitHub Pages](https://bepo65.github.io/esday-demo-angular/) |
+| React       | [React](https://github.com/BePo65/esday-demo-react) | [GitHub Pages](https://bepo65.github.io/esday-demo-react/) |
