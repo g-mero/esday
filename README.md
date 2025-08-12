@@ -29,6 +29,14 @@ For detailed information see the [full documentation](https://g-mero.github.io/e
 - **default value for 'Start of Year' is 4 (as in ISO 8601)**: 'Start of Year' is 4.
 - **clamping month on set**: when changing the month and the new month does not have enough days to keep the current day of month, esday behaves like moment.js and clamps to the end of the target month
 - **Invalid Date**: conforms to Moment.js and uses `Invalid date` instead of `Invalid Date`.
+- **plugin AdvancedParse** got replaced by CustomParseFormat.
+- **plugin ArraySupport**: functionality is part of esday core.
+- **plugin IsoWeeksInYear**: functionality is part of plugin IsoWeek.
+- **plugin PreParsePostFormat**: functionality is part of esday core.
+- **plugin UpdateLocale**: functionality is part of plugin Locale.
+- **plugin weekOfYear**: functionality is part of plugin Week.
+- **plugin WeekYear**: functionality is part of plugin Week.
+- **plugin Weekday**: functionality is part of plugin Week.
 
 ## Differences to Moment.js
 
