@@ -43,7 +43,7 @@ export type UnitsObjectTypeAddSub = {
   weeks?: number
   days?: number
   hours?: number
-  mins?: number
+  minutes?: number
   seconds?: number
   milliseconds?: number
 }
@@ -57,7 +57,7 @@ export type UnitsObjectTypeSet = {
   day?: number // day-of-week
   date?: number // day-of-month
   hour?: number
-  min?: number
+  minute?: number
   second?: number
   millisecond?: number
 }
@@ -79,7 +79,7 @@ export type ParsingObjectLong = {
   day?: number | string // day-of-month
   date?: number | string // day-of-month
   hour?: number | string
-  min?: number | string
+  minute?: number | string
   second?: number | string
   millisecond?: number | string
 }
@@ -89,7 +89,7 @@ export type ParsingObjectPlurals = {
   days?: number | string // day-of-month
   dates?: number | string // day-of-month
   hours?: number | string
-  mins?: number | string
+  minutes?: number | string
   seconds?: number | string
   milliseconds?: number | string
 }
