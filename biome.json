@@ -30,7 +30,8 @@
       "suspicious": {
         "noExplicitAny": "warn",
         "noConsole": "warn",
-        "noUnsafeDeclarationMerging": "off"
+        "noUnsafeDeclarationMerging": "off",
+        "noPrototypeBuiltins": "off"
       },
       "style": {
         "noNonNullAssertion": "off"
