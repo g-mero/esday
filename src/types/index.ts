@@ -1,6 +1,8 @@
 export type {
   LongUnit,
-  PrettyUnit,
+  PrettyUnitAsPlural,
+  PrettyUnitAsSingular,
+  PrettyUnitFromPlurals,
   ShortUnit,
   UnitDate,
   UnitDay,

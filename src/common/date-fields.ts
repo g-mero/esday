@@ -4,12 +4,15 @@
 
 import { isArray } from './is'
 import type {
-  PrettyUnitPlurals,
+  PrettyUnitFromPlurals,
   UnitDays,
+  UnitIsoWeek,
   UnitQuarter,
+  UnitQuarters,
   UnitTypeGetSet,
   UnitTypePlurals,
   UnitWeek,
+  UnitWeeks,
 } from './units'
 import { normalizeUnitWithPlurals } from './units'
 
@@ -27,17 +30,17 @@ const UNIT_FIELD_MAP = {
 type DateUnit = keyof typeof UNIT_FIELD_MAP
 type DateField<T extends DateUnit> = (typeof UNIT_FIELD_MAP)[T]
 
-export type UnitForGetDate = Exclude<UnitTypeGetSet, UnitWeek | UnitQuarter>
+export type UnitForGetDate = Exclude<UnitTypeGetSet, UnitWeeks | UnitQuarters>
 export type UnitForSetDate = Exclude<UnitForGetDate, UnitDays>
 
 export type PrettyUnitForSetDate<T extends UnitTypePlurals> = Exclude<
-  PrettyUnitPlurals<T>,
-  UnitWeek | UnitQuarter
+  PrettyUnitFromPlurals<T>,
+  UnitWeek | UnitIsoWeek | UnitQuarter
 >
 
 export const prettyUnitsDate = Object.keys(UNIT_FIELD_MAP) as DateUnit[]
 
-export function unitToField<T extends UnitForGetDate>(unit: T): DateField<PrettyUnitForSetDate<T>> {
+function unitToField<T extends UnitForGetDate>(unit: T): DateField<PrettyUnitForSetDate<T>> {
   const p = normalizeUnitWithPlurals(unit) as PrettyUnitForSetDate<T>
   return UNIT_FIELD_MAP[p]
 }
