@@ -13,7 +13,7 @@
  * Time to X .to(compared: Dayjs, withoutSuffix?: boolean)
  * Returns the string of relative time to X.
  */
-import type { DateType, EsDay, EsDayPlugin } from 'esday'
+import type { DateType, EsDay, EsDayPlugin, UnitTypeAddSub } from 'esday'
 import { C, createInstanceFromExist } from '~/common'
 import type { Locale, RelativeTimeKeys } from '../locale'
 
@@ -26,22 +26,18 @@ declare module 'esday' {
   }
 }
 
-export type ThresholdUnit =
-  | typeof C.SECOND
-  | typeof C.MIN
-  | typeof C.HOUR
-  | typeof C.DAY
-  | typeof C.MONTH
-  | typeof C.YEAR
-
-export type Threshold = {
-  key: RelativeTimeKeys
-  thresholdValue?: number // defaults to positive infinity
-  thresholdUnit?: ThresholdUnit // defaults to 'second'
+export type ThresholdRelativeTime = {
+  ss: number
+  s: number
+  m: number
+  h: number
+  d: number
+  w: number | null
+  M: number
 }
 
 const relativeTimePlugin: EsDayPlugin<{
-  thresholds?: Threshold[]
+  thresholds?: ThresholdRelativeTime
   rounding?: (valueToRound: number) => number
 }> = (options, dayClass, dayFactory) => {
   const proto = dayClass.prototype
@@ -64,22 +60,20 @@ const relativeTimePlugin: EsDayPlugin<{
     yy: '%d years',
   }
 
-  const thresholds: Threshold[] = options.thresholds ?? [
-    { key: 's', thresholdValue: 44, thresholdUnit: C.SECOND },
-    { key: 'ss', thresholdValue: 43, thresholdUnit: C.SECOND },
-    { key: 'm', thresholdValue: 89, thresholdUnit: C.SECOND },
-    { key: 'mm', thresholdValue: 44, thresholdUnit: C.MIN },
-    { key: 'h', thresholdValue: 89, thresholdUnit: C.MIN },
-    { key: 'hh', thresholdValue: 21, thresholdUnit: C.HOUR },
-    { key: 'd', thresholdValue: 35, thresholdUnit: C.HOUR },
-    { key: 'dd', thresholdValue: 25, thresholdUnit: C.DAY },
-    { key: 'M', thresholdValue: 45, thresholdUnit: C.DAY },
-    { key: 'MM', thresholdValue: 10, thresholdUnit: C.MONTH },
-    { key: 'y', thresholdValue: 17, thresholdUnit: C.MONTH },
-    { key: 'yy', thresholdUnit: C.YEAR },
-  ]
+  const defaultThresholds: ThresholdRelativeTime = {
+    ss: 44,
+    s: 45,
+    m: 45,
+    h: 22,
+    d: 26,
+    w: null,
+    M: 11,
+  }
+
+  const thresholds: ThresholdRelativeTime = options.thresholds ?? defaultThresholds
 
   const rounding = options.rounding ?? Math.round
+  const abs = Math.abs
 
   /**
    * Calculate the difference between instance and referenceDate in given units
@@ -93,7 +87,7 @@ const relativeTimePlugin: EsDayPlugin<{
   function differenceInUnits(
     instance: EsDay,
     referenceDate: EsDay,
-    unit: ThresholdUnit,
+    unit: UnitTypeAddSub,
     isFrom: boolean,
   ): number {
     return isFrom
@@ -121,42 +115,80 @@ const relativeTimePlugin: EsDayPlugin<{
       return C.INVALID_DATE_STRING
     }
 
+    const diffsAsUnit = {
+      s: differenceInUnits(this, referenceDate, 's', isFrom),
+      m: differenceInUnits(this, referenceDate, 'm', isFrom),
+      h: differenceInUnits(this, referenceDate, 'h', isFrom),
+      d: differenceInUnits(this, referenceDate, 'd', isFrom),
+      w: differenceInUnits(this, referenceDate, 'w', isFrom),
+      M: differenceInUnits(this, referenceDate, 'M', isFrom),
+      y: differenceInUnits(this, referenceDate, 'y', isFrom),
+    }
+
     const locale = this.localeObject?.()
     const relativeTimeDef = locale?.relativeTime ?? defaultRelativeTimeDef
-    let diffAsUnit = 0
+    const isFuture = diffsAsUnit.s > 0
     let out = ''
-    let isFuture = false
+    let selectedKeyAndValue: { key: string; value: number | undefined }
 
     // test all thresholds until we find the first threshold matching the
     // difference between the instance and the reference date
-    for (let i = 0; i < thresholds.length; i++) {
-      const threshold = thresholds[i]
-      const thresholdUnit = threshold.thresholdUnit ?? C.SECOND
-      diffAsUnit = differenceInUnits(this, referenceDate, thresholdUnit, isFrom)
-      const absoluteDiff = rounding(Math.abs(diffAsUnit))
-      isFuture = diffAsUnit > 0
+    selectedKeyAndValue = { key: '', value: 0 }
+    if (rounding(abs(diffsAsUnit.s)) <= thresholds.ss) {
+      selectedKeyAndValue.key = 's'
+      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.s))
+    } else if (rounding(abs(diffsAsUnit.s)) < thresholds.s) {
+      selectedKeyAndValue.key = 'ss'
+      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.s))
+    } else if (rounding(abs(diffsAsUnit.m)) <= 1) {
+      selectedKeyAndValue.key = 'm'
+      selectedKeyAndValue.value = undefined
+    } else if (rounding(abs(diffsAsUnit.m)) < thresholds.m) {
+      selectedKeyAndValue.key = 'mm'
+      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.m))
+    } else if (rounding(abs(diffsAsUnit.h)) <= 1) {
+      selectedKeyAndValue.key = 'h'
+      selectedKeyAndValue.value = undefined
+    } else if (rounding(abs(diffsAsUnit.h)) < thresholds.h) {
+      selectedKeyAndValue.key = 'hh'
+      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.h))
+    } else if (rounding(abs(diffsAsUnit.d)) <= 1) {
+      selectedKeyAndValue.key = 'd'
+      selectedKeyAndValue.value = undefined
+    } else if (rounding(abs(diffsAsUnit.d)) < thresholds.d) {
+      selectedKeyAndValue.key = 'dd'
+      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.d))
+    } else if (thresholds.w !== null && rounding(abs(diffsAsUnit.w)) <= 1) {
+      selectedKeyAndValue.key = 'w'
+      selectedKeyAndValue.value = undefined
+    } else if (thresholds.w !== null && rounding(abs(diffsAsUnit.w)) < thresholds.w) {
+      selectedKeyAndValue.key = 'ww'
+      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.w))
+    } else if (rounding(abs(diffsAsUnit.M)) <= 1) {
+      selectedKeyAndValue.key = 'M'
+      selectedKeyAndValue.value = undefined
+    } else if (rounding(abs(diffsAsUnit.M)) < thresholds.M) {
+      selectedKeyAndValue.key = 'MM'
+      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.M))
+    } else if (rounding(abs(diffsAsUnit.y)) <= 1) {
+      selectedKeyAndValue.key = 'y'
+      selectedKeyAndValue.value = undefined
+    } else {
+      selectedKeyAndValue.key = 'yy'
+      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.y))
+    }
 
-      if (absoluteDiff <= (threshold.thresholdValue ?? Number.POSITIVE_INFINITY)) {
-        // calculate diff in unit defined by key
-        const thresholdKey = threshold.key
-        const formatUnit = thresholdKey.slice(0, 1) as ThresholdUnit
-        const outputDiff = differenceInUnits(this, referenceDate, formatUnit, isFrom)
-        const outputDiffAbs = rounding(Math.abs(outputDiff))
-        const format = relativeTimeDef[thresholdKey]
+    const format = relativeTimeDef[selectedKeyAndValue.key as RelativeTimeKeys]
+    const outputDiffAbs = rounding(abs(selectedKeyAndValue.value ?? 1))
+    out =
+      typeof format === 'string'
+        ? format.replace('%d', `${outputDiffAbs}`)
+        : format(outputDiffAbs, withoutSuffix, selectedKeyAndValue.key, isFuture)
 
-        out =
-          typeof format === 'string'
-            ? format.replace('%d', `${outputDiffAbs}`)
-            : format(outputDiffAbs, withoutSuffix, thresholdKey, isFuture)
-
-        // transform the result to locale form
-        const postFormat = locale?.postFormat
-        if (postFormat) {
-          out = postFormat(out)
-        }
-
-        break
-      }
+    // transform the result to locale form
+    const postFormat = locale?.postFormat
+    if (postFormat) {
+      out = postFormat(out)
     }
 
     if (withoutSuffix) return out

@@ -47,25 +47,34 @@ The breakdown of which string is displayed for each length of time is outlined i
 | 320 to 547 days (1.5 years) | y   | a year ago                                  |
 | 548 days+                   | yy  | 2 years ago ... 20 years ago                |
 
+The RelativeTime plugin uses a list of thresholds, which define, when a unit is considered a minute, an hour and so on. For example, by default more than 45 seconds is considered a minute, more than 22 hours is considered a day and so on.
+
 The used thresholds can be overwritten, when activating the plugin by using an object with a property named `thresholds` as second parameter.
 
 The default threshold list looks like this;
 ```typescript
-[
-    { key: 's', thresholdValue: 44, thresholdUnit: C.SECOND },
-    { key: 'ss', thresholdValue: 43, thresholdUnit: C.SECOND },
-    { key: 'm', thresholdValue: 89, thresholdUnit: C.SECOND },
-    { key: 'mm', thresholdValue: 44, thresholdUnit: C.MIN },
-    { key: 'h', thresholdValue: 89, thresholdUnit: C.MIN },
-    { key: 'hh', thresholdValue: 21, thresholdUnit: C.HOUR },
-    { key: 'd', thresholdValue: 35, thresholdUnit: C.HOUR },
-    { key: 'dd', thresholdValue: 25, thresholdUnit: C.DAY },
-    { key: 'M', thresholdValue: 45, thresholdUnit: C.DAY },
-    { key: 'MM', thresholdValue: 10, thresholdUnit: C.MONTH },
-    { key: 'y', thresholdValue: 17, thresholdUnit: C.MONTH },
-    { key: 'yy', thresholdUnit: C.YEAR },
-  ]
+{
+  ss: 44,
+  s: 45,
+  m: 45,
+  h: 22,
+  d: 26,
+  w: null,
+  M: 11,
+}
 ```
+
+| unit | meaning       | usage                                                      |
+| ---- | ------------- | ---------------------------------------------------------- |
+| ss   | a few seconds | least number of seconds to be counted in seconds, minus 1. |
+| s    | seconds       | least number of seconds to be considered a minute.         |
+| m    | minutes       | least number of minutes to be considered an hour.          |
+| h    | hours         | least number of hours to be considered a day.              |
+| d    | days          | least number of days to be considered a week.              |
+| w    | weeks         | least number of weeks to be considered a month. Not used by default. |
+| M    | months        | least number of months to be considered a year.            |
+
+By default, the unit 'w' is not used (set to null). It can be set it to a non-null value to activate it. Optionally 'd' can be set to a lower value, so that transitions from days to weeks get earlier.
 
 ## Examples
 ```typescript
@@ -101,20 +110,15 @@ import localeEn from 'esday/locales/en'
 esday.extend(localePlugin)
 esday.registerLocale(localeEn)
 const options = {
-  thresholds: [
-    { key: 's', thresholdValue: 44, thresholdUnit: C.SECOND },
-    { key: 'ss', thresholdValue: 43, thresholdUnit: C.SECOND },
-    { key: 'm', thresholdValue: 89, thresholdUnit: C.SECOND },
-    { key: 'mm', thresholdValue: 44, thresholdUnit: C.MIN },
-    { key: 'h', thresholdValue: 89, thresholdUnit: C.MIN },
-    { key: 'hh', thresholdValue: 21, thresholdUnit: C.HOUR },
-    { key: 'd', thresholdValue: 1, thresholdUnit: C.DAY }, // modified threshold
-    { key: 'dd', thresholdValue: 25, thresholdUnit: C.DAY },
-    { key: 'M', thresholdValue: 45, thresholdUnit: C.DAY },
-    { key: 'MM', thresholdValue: 10, thresholdUnit: C.MONTH },
-    { key: 'y', thresholdValue: 17, thresholdUnit: C.MONTH },
-    { key: 'yy', thresholdUnit: C.YEAR },
-  ] as Threshold[],
+  thresholds: {
+    ss: 44,
+    s: 45,
+    m: 50, // modified; default: 45
+    h: 22,
+    d: 26,
+    w: null,
+    M: 11,
+  } as ThresholdRelativeTime,
 }
 esday.extend(relativeTimePlugin, options)
 ```
