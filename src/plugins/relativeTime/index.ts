@@ -54,6 +54,8 @@ const relativeTimePlugin: EsDayPlugin<{
     hh: '%d hours',
     d: 'a day',
     dd: '%d days',
+    w: 'a week',
+    ww: '%d weeks',
     M: 'a month',
     MM: '%d months',
     y: 'a year',
@@ -183,7 +185,12 @@ const relativeTimePlugin: EsDayPlugin<{
     out =
       typeof format === 'string'
         ? format.replace('%d', `${outputDiffAbs}`)
-        : format(outputDiffAbs, withoutSuffix, selectedKeyAndValue.key, isFuture)
+        : format(
+            outputDiffAbs,
+            withoutSuffix,
+            selectedKeyAndValue.key as RelativeTimeKeys,
+            isFuture,
+          )
 
     // transform the result to locale form
     const postFormat = locale?.postFormat

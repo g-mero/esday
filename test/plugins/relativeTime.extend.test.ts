@@ -1,26 +1,25 @@
 import { esday } from 'esday'
+import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { C } from '~/common'
-import localeAr from '~/locales/ar'
 import localeEn from '~/locales/en'
-import localeFr from '~/locales/fr'
 import localePlugin from '~/plugins/locale'
 import relativeTimePlugin, { type ThresholdRelativeTime } from '~/plugins/relativeTime'
 import utcPlugin from '~/plugins/utc'
 
 esday.extend(localePlugin).extend(utcPlugin)
-esday.registerLocale(localeEn).registerLocale(localeFr).registerLocale(localeAr)
+esday.registerLocale(localeEn)
 
 // Use custom options in .register(relativeTimePlugin, option)
 // The modified threshold results in fractional difference between source and reference
 const options = {
   thresholds: {
-    ss: 44,
+    ss: 35, // modified; default: 44
     s: 45,
     m: 50, // modified; default: 45
     h: 22,
-    d: 26,
-    w: null,
+    d: 7,
+    w: 5, // modified; default: null (deactivated)
     M: 11,
   } as ThresholdRelativeTime,
 }
@@ -35,6 +34,7 @@ describe('relativeTime plugin - custom thresholds', () => {
 
     // set global locale
     esday.locale('en')
+    moment.locale('en')
   })
 
   afterEach(() => {
@@ -42,24 +42,36 @@ describe('relativeTime plugin - custom thresholds', () => {
   })
 
   it.each([
+    { difference: 44, unit: C.SECOND, expected: '44 seconds ago' },
+    { difference: 45, unit: C.SECOND, expected: 'a minute ago' },
     { difference: 44, unit: C.MIN, expected: '44 minutes ago' },
     { difference: 45, unit: C.MIN, expected: '45 minutes ago' },
     { difference: 49, unit: C.MIN, expected: '49 minutes ago' },
     { difference: 50, unit: C.MIN, expected: 'an hour ago' },
+    { difference: 6, unit: C.DAY, expected: '6 days ago' },
+    { difference: 7, unit: C.DAY, expected: 'a week ago' },
+    { difference: 4, unit: C.WEEK, expected: '4 weeks ago' },
+    { difference: 5, unit: C.WEEK, expected: 'a month ago' },
   ])(
-    'should handle fractional difference "$difference $unit" in the past',
+    'fromNow with difference "$difference $unit" in the past',
     ({ difference, unit, expected }) => {
       expect(esday().from(esday().add(difference, unit))).toBe(expected)
     },
   )
 
   it.each([
+    { difference: 44, unit: C.SECOND, expected: 'in 44 seconds' },
+    { difference: 45, unit: C.SECOND, expected: 'in a minute' },
     { difference: 44, unit: C.MIN, expected: 'in 44 minutes' },
     { difference: 45, unit: C.MIN, expected: 'in 45 minutes' },
     { difference: 49, unit: C.MIN, expected: 'in 49 minutes' },
     { difference: 50, unit: C.MIN, expected: 'in an hour' },
+    { difference: 6, unit: C.DAY, expected: 'in 6 days' },
+    { difference: 7, unit: C.DAY, expected: 'in a week' },
+    { difference: 4, unit: C.WEEK, expected: 'in 4 weeks' },
+    { difference: 5, unit: C.WEEK, expected: 'in a month' },
   ])(
-    'should handle fractional difference "$difference $unit" in the future',
+    'fromNow with difference "$difference $unit" in the future',
     ({ difference, unit, expected }) => {
       expect(esday().from(esday().subtract(difference, unit))).toBe(expected)
     },

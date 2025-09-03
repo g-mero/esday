@@ -73,13 +73,6 @@ export interface Calendar {
 }
 export type CalendarPartial = Partial<Calendar>
 
-export type RelativeTimeElementFunction = (
-  timeValue: string | number,
-  withoutSuffix: boolean,
-  token: string,
-  isFuture: boolean,
-) => string
-
 export type RelativeTimeKeys =
   | 'future'
   | 'past'
@@ -91,10 +84,19 @@ export type RelativeTimeKeys =
   | 'hh'
   | 'd'
   | 'dd'
+  | 'w'
+  | 'ww'
   | 'M'
   | 'MM'
   | 'y'
   | 'yy'
+
+export type RelativeTimeElementFunction = (
+  timeValue: string | number,
+  withoutSuffix: boolean,
+  token: RelativeTimeKeys,
+  isFuture: boolean,
+) => string
 
 // Type definition of locale (usually a literal object)
 export interface Locale {
