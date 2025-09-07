@@ -58,6 +58,8 @@ const localeCv: Readonly<Locale> = {
     hh: '%d сехет',
     d: 'пӗр кун',
     dd: '%d кун',
+    w: 'пӗр Эрне',
+    ww: '%d эрне',
     M: 'пӗр уйӑх',
     MM: '%d уйӑх',
     y: 'пӗр ҫул',

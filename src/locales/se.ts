@@ -79,6 +79,8 @@ const localeSe: Readonly<Locale> = {
     hh: '%d diimmut',
     d: 'okta beaivi',
     dd: '%d beaivvit',
+    w: 'okta vahkku',
+    ww: '%d vahkkut',
     M: 'okta mánnu',
     MM: '%d mánut',
     y: 'okta jahki',

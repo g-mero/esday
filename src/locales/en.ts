@@ -63,6 +63,8 @@ const localeEn: Readonly<Locale> = {
     hh: '%d hours',
     d: 'a day',
     dd: '%d days',
+    w: 'a week',
+    ww: '%d weeks',
     M: 'a month',
     MM: '%d months',
     y: 'a year',

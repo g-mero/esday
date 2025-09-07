@@ -9,6 +9,7 @@ import type {
   CalendarSpecValFunction,
   MonthNamesFunction,
   RelativeTimeElementFunction,
+  RelativeTimeKeys,
 } from '~/plugins/locale'
 
 describe('locale pl', () => {
@@ -127,8 +128,9 @@ describe('locale pl', () => {
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(14)
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(16)
   })
+
   it.each([
     {
       token: 'ss',
@@ -291,6 +293,38 @@ describe('locale pl', () => {
       expected: '22 godziny',
     },
     {
+      token: 'ww',
+      value: 1,
+      noSuffix: false,
+      key: 'ww',
+      future: false,
+      expected: '1 tygodni',
+    },
+    {
+      token: 'ww',
+      value: 2,
+      noSuffix: true,
+      key: 'ww',
+      future: false,
+      expected: '2 tygodnie',
+    },
+    {
+      token: 'ww',
+      value: 11,
+      noSuffix: false,
+      key: 'ww',
+      future: true,
+      expected: '11 tygodni',
+    },
+    {
+      token: 'ww',
+      value: 22,
+      noSuffix: true,
+      key: 'ww',
+      future: true,
+      expected: '22 tygodnie',
+    },
+    {
       token: 'MM',
       value: 1,
       noSuffix: false,
@@ -368,7 +402,7 @@ describe('locale pl', () => {
       const tokenKey = token as keyof RelativeTimeElementFunction
       const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-      expect(rtFunction(value, noSuffix, key, future)).toBe(expected)
+      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
     },
   )
 

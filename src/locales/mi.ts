@@ -70,6 +70,8 @@ const localeMi: Readonly<Locale> = {
     hh: '%d haora',
     d: 'he ra',
     dd: '%d ra',
+    w: 'he wiki',
+    ww: '%d wiki',
     M: 'he marama',
     MM: '%d marama',
     y: 'he tau',

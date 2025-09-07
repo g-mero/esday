@@ -42,6 +42,8 @@ const relativeTime = {
   hh: '%d soat',
   d: 'bir kun',
   dd: '%d kun',
+  w: 'bir hafta',
+  ww: '%d hafta',
   M: 'bir oy',
   MM: '%d oy',
   y: 'bir yil',

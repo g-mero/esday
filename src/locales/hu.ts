@@ -43,6 +43,10 @@ const relativeTimeFormatter: RelativeTimeElementFunction = (
       return `egy${isFuture || withoutSuffix ? ' nap' : ' napja'}`
     case 'dd':
       return `${num} ${isFuture || withoutSuffix ? 'nap' : 'napja'}`
+    case 'w':
+      return `egy${isFuture || withoutSuffix ? ' hét' : ' múlva'}`
+    case 'ww':
+      return `${num} ${isFuture || withoutSuffix ? 'hét' : 'múlva'}`
     case 'M':
       return `egy${isFuture || withoutSuffix ? ' hónap' : ' hónapja'}`
     case 'MM':
@@ -126,6 +130,8 @@ const localeHu: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: relativeTimeFormatter,
     dd: relativeTimeFormatter,
+    w: relativeTimeFormatter,
+    ww: relativeTimeFormatter,
     M: relativeTimeFormatter,
     MM: relativeTimeFormatter,
     y: relativeTimeFormatter,

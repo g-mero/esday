@@ -58,6 +58,8 @@ const localeMt: Readonly<Locale> = {
     hh: '%d siegħat',
     d: 'ġurnata',
     dd: '%d ġranet',
+    w: 'ġimgħa',
+    ww: '%d ġimgħat',
     M: 'xahar',
     MM: '%d xhur',
     y: 'sena',

@@ -79,6 +79,8 @@ const localeGd: Readonly<Locale> = {
     hh: '%d uairean',
     d: 'latha',
     dd: '%d latha',
+    w: 'seachdain ',
+    ww: '%d seachdainean',
     M: 'mìos',
     MM: '%d mìosan',
     y: 'bliadhna',

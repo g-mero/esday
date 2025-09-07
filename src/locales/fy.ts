@@ -71,6 +71,8 @@ const localeFy: Readonly<Locale> = {
     hh: '%d oeren',
     d: 'ien dei',
     dd: '%d dagen',
+    w: 'ien wike',
+    ww: '%d wiken',
     M: 'ien moanne',
     MM: '%d moannen',
     y: 'ien jier',

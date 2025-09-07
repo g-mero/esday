@@ -58,6 +58,8 @@ const localeEo: Readonly<Locale> = {
     hh: '%d horoj',
     d: 'tago',
     dd: '%d tagoj',
+    w: 'semajno',
+    ww: '%d semajnoj',
     M: 'monato',
     MM: '%d monatoj',
     y: 'jaro',

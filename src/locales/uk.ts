@@ -64,6 +64,7 @@ const relativeTimeFormatter: RelativeTimeElementFunction = (
     mm: withoutSuffix ? ['хвилина', 'хвилини', 'хвилин'] : ['хвилину', 'хвилини', 'хвилин'],
     hh: withoutSuffix ? ['година', 'години', 'годин'] : ['годину', 'години', 'годин'],
     dd: ['день', 'дні', 'днів'],
+    ww: ['тиждень', 'тижні', 'тижнів'],
     MM: ['місяць', 'місяці', 'місяців'],
     yy: ['рік', 'роки', 'років'],
   }
@@ -145,6 +146,8 @@ const localeUk: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: 'день',
     dd: relativeTimeFormatter,
+    w: 'тиждень',
+    ww: relativeTimeFormatter,
     M: 'місяць',
     MM: relativeTimeFormatter,
     y: 'рік',

@@ -71,6 +71,8 @@ const localeUgCn: Readonly<Locale> = {
     hh: '%d سائەت',
     d: 'بىر كۈن',
     dd: '%d كۈن',
+    w: 'بىر ھەپتە',
+    ww: '%d ھەپتە',
     M: 'بىر ئاي',
     MM: '%d ئاي',
     y: 'بىر يىل',

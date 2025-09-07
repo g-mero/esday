@@ -65,6 +65,12 @@ function relativeTimeFormatter(
       case 'dd':
         output = '%d दिवस'
         break
+      case 'w':
+        output = 'एक आठवडा'
+        break
+      case 'ww':
+        output = '%d आठवडा'
+        break
       case 'M':
         output = 'एक महिना'
         break
@@ -103,6 +109,12 @@ function relativeTimeFormatter(
         break
       case 'dd':
         output = '%d दिवसां'
+        break
+      case 'w':
+        output = 'एका आठवड्यात'
+        break
+      case 'ww':
+        output = '%d आठवडे'
         break
       case 'M':
         output = 'एका महिन्या'
@@ -188,6 +200,8 @@ const localeMr: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: relativeTimeFormatter,
     dd: relativeTimeFormatter,
+    w: relativeTimeFormatter,
+    ww: relativeTimeFormatter,
     M: relativeTimeFormatter,
     MM: relativeTimeFormatter,
     y: relativeTimeFormatter,

@@ -62,6 +62,8 @@ const localeSv: Readonly<Locale> = {
     hh: '%d timmar',
     d: 'en dag',
     dd: '%d dagar',
+    w: 'en vecka',
+    ww: '%d veckor',
     M: 'en månad',
     MM: '%d månader',
     y: 'ett år',

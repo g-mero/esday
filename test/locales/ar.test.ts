@@ -4,7 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/ar'
-import type { RelativeTimeElementFunction } from '~/plugins/locale'
+import type { RelativeTimeElementFunction, RelativeTimeKeys } from '~/plugins/locale'
 
 describe('locale ar', () => {
   it('should have the correct name', () => {
@@ -81,13 +81,13 @@ describe('locale ar', () => {
   it('should have an object named "relativeTime" with functions', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(14)
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(16)
 
     const rtFunctionSecond = locale.relativeTime.s as RelativeTimeElementFunction
-    expect(rtFunctionSecond(0, false, '', false)).toBe('أقل من ثانية')
-    expect(rtFunctionSecond(102, false, '', false)).toBe('102 ثانية')
-    expect(rtFunctionSecond(2, false, '', false)).toBe('ثانيتين')
-    expect(rtFunctionSecond(2, true, '', false)).toBe('ثانيتان')
+    expect(rtFunctionSecond(0, false, '' as RelativeTimeKeys, false)).toBe('أقل من ثانية')
+    expect(rtFunctionSecond(102, false, '' as RelativeTimeKeys, false)).toBe('102 ثانية')
+    expect(rtFunctionSecond(2, false, '' as RelativeTimeKeys, false)).toBe('ثانيتين')
+    expect(rtFunctionSecond(2, true, '' as RelativeTimeKeys, false)).toBe('ثانيتان')
   })
 
   it('should have a method named "meridiem"', () => {

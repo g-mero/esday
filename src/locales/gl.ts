@@ -82,6 +82,8 @@ const localeGl: Readonly<Locale> = {
     hh: '%d horas',
     d: 'un día',
     dd: '%d días',
+    w: 'nunha semana',
+    ww: '%d semanas',
     M: 'un mes',
     MM: '%d meses',
     y: 'un ano',

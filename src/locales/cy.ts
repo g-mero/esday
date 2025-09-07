@@ -79,6 +79,8 @@ const localeCy: Readonly<Locale> = {
     hh: '%d awr',
     d: 'diwrnod',
     dd: '%d diwrnod',
+    w: 'wythnos',
+    ww: '%d wythnos',
     M: 'mis',
     MM: '%d mis',
     y: 'blwyddyn',

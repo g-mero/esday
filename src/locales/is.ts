@@ -63,6 +63,22 @@ const relativeTimeFormatter: RelativeTimeElementFunction = (
         return `${result}dagur`
       }
       return `${result}${isFuture ? 'dag' : 'degi'}`
+    case 'w':
+      if (withoutSuffix) {
+        return 'vika'
+      }
+      return isFuture ? 'viku' : 'viku'
+    case 'ww':
+      if (plural(timeValueAsNumber)) {
+        if (withoutSuffix) {
+          return `${result}vikur`
+        }
+        return `${result}${isFuture ? 'vikur' : 'vikum'}`
+      }
+      if (withoutSuffix) {
+        return `${result}vikur`
+      }
+      return `${result}${isFuture ? 'viku' : 'viku'}`
     case 'M':
       if (withoutSuffix) {
         return 'mánuður'
@@ -153,6 +169,8 @@ const localeIs: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: relativeTimeFormatter,
     dd: relativeTimeFormatter,
+    w: relativeTimeFormatter,
+    ww: relativeTimeFormatter,
     M: relativeTimeFormatter,
     MM: relativeTimeFormatter,
     y: relativeTimeFormatter,

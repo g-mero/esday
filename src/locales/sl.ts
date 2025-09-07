@@ -101,6 +101,13 @@ const relativeTimeFormatter: RelativeTimeElementFunction = (
         return `${result}${withoutSuffix || isFuture ? 'dneva' : 'dnevoma'}`
       }
       return result + (withoutSuffix || isFuture ? 'dni' : 'dnevi')
+    case 'w': // a day / in a day / a day ago
+      return withoutSuffix || isFuture ? 'en teden' : 'enem tednu'
+    case 'ww': // 9 days / in 9 days / 9 days ago
+      if (dual(+timeValue)) {
+        return `${result}${withoutSuffix || isFuture ? 'tedna' : 'tednoma'}`
+      }
+      return result + (withoutSuffix || isFuture ? 'tednih' : 'tedni')
     case 'M': // a month / in a month / a month ago
       return withoutSuffix || isFuture ? 'en mesec' : 'enim mesecem'
     case 'MM': // 9 months / in 9 months / 9 months ago
@@ -188,6 +195,8 @@ const localeSl: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: relativeTimeFormatter,
     dd: relativeTimeFormatter,
+    w: relativeTimeFormatter,
+    ww: relativeTimeFormatter,
     M: relativeTimeFormatter,
     MM: relativeTimeFormatter,
     y: relativeTimeFormatter,

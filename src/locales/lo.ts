@@ -70,6 +70,8 @@ const localeLo: Readonly<Locale> = {
     hh: '%d ຊົ່ວໂມງ',
     d: '1 ມື້',
     dd: '%d ມື້',
+    w: '1 ອາທິດ',
+    ww: '%d ອາທິດ',
     M: '1 ເດືອນ',
     MM: '%d ເດືອນ',
     y: '1 ປີ',

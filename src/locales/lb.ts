@@ -83,6 +83,7 @@ const relativeTimeFormatter: RelativeTimeElementFunction = (
     m: ['eng Minutt', 'enger Minutt'],
     h: ['eng Stonn', 'enger Stonn'],
     d: ['een Dag', 'engem Dag'],
+    w: ['eng Woch', 'enger Woch'],
     M: ['ee Mount', 'engem Mount'],
     y: ['ee Joer', 'engem Joer'],
   }
@@ -170,6 +171,8 @@ const localeLb: Readonly<Locale> = {
     hh: '%d Stonnen',
     d: relativeTimeFormatter,
     dd: '%d Deeg',
+    w: relativeTimeFormatter,
+    ww: '%d Wochen',
     M: relativeTimeFormatter,
     MM: '%d Méint',
     y: relativeTimeFormatter,

@@ -71,6 +71,8 @@ const localeTzm: Readonly<Locale> = {
     hh: '%d ⵜⴰⵙⵙⴰⵄⵉⵏ',
     d: 'ⴰⵙⵙ',
     dd: '%d oⵙⵙⴰⵏ',
+    w: 'ⴷⴷⵓⵔⵜ',
+    ww: '%d ⵙⵎⴰⵏⴰⵜ',
     M: 'ⴰⵢoⵓⵔ',
     MM: '%d ⵉⵢⵢⵉⵔⵏ',
     y: 'ⴰⵙⴳⴰⵙ',

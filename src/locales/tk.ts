@@ -93,6 +93,8 @@ const localeTk: Readonly<Locale> = {
     hh: '%d sagat',
     d: 'bir gün',
     dd: '%d gün',
+    w: 'bir hepde',
+    ww: '%d hepde',
     M: 'bir aý',
     MM: '%d aý',
     y: 'bir ýyl',

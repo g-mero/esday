@@ -9,6 +9,7 @@ import type {
   CalendarSpecValFunction,
   MonthNamesFunction,
   RelativeTimeElementFunction,
+  RelativeTimeKeys,
 } from '~/plugins/locale'
 
 describe('locale hr', () => {
@@ -137,7 +138,7 @@ describe('locale hr', () => {
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(14)
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(16)
   })
 
   it.each([
@@ -398,6 +399,54 @@ describe('locale hr', () => {
       expected: '4 dana',
     },
     {
+      token: 'ww',
+      value: 11,
+      noSuffix: false,
+      key: 'w',
+      future: false,
+      expected: '',
+    }, // test for unknown token
+    {
+      token: 'ww',
+      value: 1,
+      noSuffix: false,
+      key: 'ww',
+      future: false,
+      expected: '1 tjedan',
+    },
+    {
+      token: 'ww',
+      value: 2,
+      noSuffix: false,
+      key: 'ww',
+      future: false,
+      expected: '2 tjedna',
+    },
+    {
+      token: 'ww',
+      value: 5,
+      noSuffix: true,
+      key: 'ww',
+      future: false,
+      expected: '5 tjedana',
+    },
+    {
+      token: 'ww',
+      value: 1,
+      noSuffix: false,
+      key: 'ww',
+      future: true,
+      expected: '1 tjedan',
+    },
+    {
+      token: 'ww',
+      value: 4,
+      noSuffix: true,
+      key: 'ww',
+      future: true,
+      expected: '4 tjedna',
+    },
+    {
       token: 'MM',
       value: 3,
       noSuffix: false,
@@ -539,7 +588,7 @@ describe('locale hr', () => {
       const tokenKey = token as keyof RelativeTimeElementFunction
       const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-      expect(rtFunction(value, noSuffix, key, future)).toBe(expected)
+      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
     },
   )
 

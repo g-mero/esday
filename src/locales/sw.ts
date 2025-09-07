@@ -58,6 +58,8 @@ const localeSw: Readonly<Locale> = {
     hh: 'masaa %d',
     d: 'siku moja',
     dd: 'masiku %d',
+    w: 'wiki moja',
+    ww: 'wiki %d',
     M: 'mwezi mmoja',
     MM: 'miezi %d',
     y: 'mwaka mmoja',

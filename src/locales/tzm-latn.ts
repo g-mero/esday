@@ -42,6 +42,8 @@ const relativeTime = {
   hh: '%d tassaɛin',
   d: 'ass',
   dd: '%d ossan',
+  w: 'ddurt',
+  ww: '%d smanat',
   M: 'ayowr',
   MM: '%d iyyirn',
   y: 'asgas',

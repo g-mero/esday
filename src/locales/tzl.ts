@@ -85,6 +85,8 @@ const localeTzl: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: relativeTimeFormatter,
     dd: relativeTimeFormatter,
+    w: 'a week',
+    ww: '%d weeks',
     M: relativeTimeFormatter,
     MM: relativeTimeFormatter,
     y: relativeTimeFormatter,

@@ -45,6 +45,8 @@ const localeSi: Readonly<Locale> = {
     hh: 'පැය %d',
     d: 'දිනය',
     dd: 'දින %d',
+    w: 'සතියක්',
+    ww: 'සති %d',
     M: 'මාසය',
     MM: 'මාස %d',
     y: 'වසර',

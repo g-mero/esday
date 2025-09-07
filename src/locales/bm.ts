@@ -58,6 +58,8 @@ const localeBm: Readonly<Locale> = {
     hh: 'lɛrɛ %d',
     d: 'tile kelen',
     dd: 'tile %d',
+    w: 'dɔgɔkun kelen',
+    ww: 'dɔgɔkunw %d',
     M: 'kalo kelen',
     MM: 'kalo %d',
     y: 'san kelen',

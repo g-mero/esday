@@ -71,6 +71,8 @@ const relativeTimeFormatter: RelativeTimeElementFunction = (
       return withoutSuffix ? 'godzina' : 'godzinę'
     case 'hh':
       return `${result} ${usePlural(+timeValue) ? 'godziny' : 'godzin'}`
+    case 'ww':
+      return `${result} ${usePlural(+timeValue) ? 'tygodnie' : 'tygodni'}`
     case 'MM':
       return `${result} ${usePlural(+timeValue) ? 'miesiące' : 'miesięcy'}`
     case 'yy':
@@ -146,6 +148,8 @@ const localePl: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: '1 dzień',
     dd: '%d dni',
+    w: 'tydzień',
+    ww: relativeTimeFormatter,
     M: 'miesiąc',
     MM: relativeTimeFormatter,
     y: 'rok',

@@ -89,6 +89,13 @@ const relativeTimeWithPlural: RelativeTimeElementFunction = (
         return result + (usePlural(+timeValue) ? 'dni' : 'dní')
       }
       return `${result}dňami`
+    case 'w': // a day / in a day / a day ago
+      return withoutSuffix || isFuture ? 'týždeň' : 'týždňom'
+    case 'ww': // 9 days / in 9 days / 9 days ago
+      if (withoutSuffix || isFuture) {
+        return result + (usePlural(+timeValue) ? 'týždňov' : 'týždňov')
+      }
+      return `${result}týždňami`
     case 'M': // a month / in a month / a month ago
       return withoutSuffix || isFuture ? 'mesiac' : 'mesiacom'
     case 'MM': // 9 months / in 9 months / 9 months ago
@@ -155,6 +162,8 @@ const localeSk: Readonly<Locale> = {
     hh: relativeTimeWithPlural,
     d: relativeTimeWithPlural,
     dd: relativeTimeWithPlural,
+    w: relativeTimeWithPlural,
+    ww: relativeTimeWithPlural,
     M: relativeTimeWithPlural,
     MM: relativeTimeWithPlural,
     y: relativeTimeWithPlural,

@@ -58,6 +58,8 @@ const localeNl: Readonly<Locale> = {
     hh: '%d uur',
     d: 'een dag',
     dd: '%d dagen',
+    w: 'één week',
+    ww: '%d weken',
     M: 'een maand',
     MM: '%d maanden',
     y: 'een jaar',
