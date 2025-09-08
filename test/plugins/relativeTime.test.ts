@@ -7,7 +7,10 @@ import localeDe from '~/locales/de'
 import localeEn from '~/locales/en'
 import localeFr from '~/locales/fr'
 import localePlugin, { type Locale, type RelativeTimeElementFunction } from '~/plugins/locale'
-import relativeTimePlugin, { type DiffAsUnit } from '~/plugins/relativeTime'
+import relativeTimePlugin, {
+  type DiffAsUnit,
+  type ThresholdRelativeTime,
+} from '~/plugins/relativeTime'
 import utcPlugin from '~/plugins/utc'
 import { expectSame } from '../util'
 
@@ -81,7 +84,7 @@ describe('relativeTime plugin - without locale', () => {
     expectSame((esday) => esday(nowDate).to(targeTimeAsString, true))
   })
 
-  it('invalid input', () => {
+  it('should handle invalid input', () => {
     expectSame((esday) => esday(C.INVALID_DATE).fromNow().toLowerCase())
     expectSame((esday) => esday(C.INVALID_DATE).toNow().toLowerCase())
     expectSame((esday) => esday(C.INVALID_DATE).from(targeTimeAsString).toLowerCase())
@@ -318,6 +321,42 @@ describe('relativeTime plugin - without locale', () => {
 
   it('should accept fractional difference', () => {
     expectSame((esday) => esday().from(esday().add(36.1, C.HOUR)))
+  })
+
+  it('should return default thresholds', () => {
+    const thresholds: ThresholdRelativeTime = {
+      ss: 44,
+      s: 45,
+      m: 45,
+      h: 22,
+      d: 26,
+      w: null,
+      M: 11,
+    }
+    expect(esday.defaultThresholds()).toEqual(thresholds)
+
+    // test immutability
+    const originalH = thresholds.h
+    thresholds.h = 99
+    expect(esday.defaultThresholds().h).toEqual(originalH)
+  })
+
+  it('should return default thresholds', () => {
+    const thresholds: ThresholdRelativeTime = {
+      ss: 44,
+      s: 45,
+      m: 45,
+      h: 22,
+      d: 26,
+      w: null,
+      M: 11,
+    }
+    expect(esday.globalThresholds()).toEqual(thresholds)
+
+    // test immutability
+    const originalH = thresholds.h
+    thresholds.h = 99
+    expect(esday.globalThresholds().h).toEqual(originalH)
   })
 })
 

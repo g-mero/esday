@@ -61,6 +61,9 @@ const relativeTimePlugin: EsDayPlugin<{
   thresholds?: ThresholdRelativeTime
   rounding?: (valueToRound: number) => number
 }> = (options, dayClass, dayFactory) => {
+  const rounding = options.rounding ?? Math.round
+  const abs = Math.abs
+
   // Use relativeTime definition from locales/en.ts as default
   const defaultRelativeTimeDef: Locale['relativeTime'] = {
     future: 'in %s',
@@ -90,11 +93,10 @@ const relativeTimePlugin: EsDayPlugin<{
     w: null,
     M: 11,
   }
+  dayFactory.defaultThresholds = () => structuredClone(defaultThresholds)
 
   const thresholds: ThresholdRelativeTime = options.thresholds ?? defaultThresholds
-
-  const rounding = options.rounding ?? Math.round
-  const abs = Math.abs
+  dayFactory.globalThresholds = () => structuredClone(thresholds)
 
   /**
    * Format object containing a time difference as human readable length of time.
@@ -187,10 +189,7 @@ const relativeTimePlugin: EsDayPlugin<{
       ? suffix(out, withoutSuffix, isFuture ? 'future' : 'past', isFuture)
       : suffix.replace('%s', out)
   }
-
   dayFactory.formatDifference = formatDifference
-  dayFactory.defaultThresholds = () => structuredClone(defaultThresholds)
-  dayFactory.globalThresholds = () => structuredClone(thresholds)
 
   const proto = dayClass.prototype
 
