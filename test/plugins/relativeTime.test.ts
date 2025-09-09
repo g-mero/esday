@@ -7,7 +7,7 @@ import localeDe from '~/locales/de'
 import localeEn from '~/locales/en'
 import localeFr from '~/locales/fr'
 import localePlugin, { type Locale, type RelativeTimeElementFunction } from '~/plugins/locale'
-import relativeTimePlugin from '~/plugins/relativeTime'
+import relativeTimePlugin, { type DiffAsUnit } from '~/plugins/relativeTime'
 import utcPlugin from '~/plugins/utc'
 import { expectSame } from '../util'
 
@@ -31,7 +31,44 @@ describe('relativeTime plugin - without locale', () => {
     vi.useRealTimers()
   })
 
-  it('basic usage', () => {
+  // Only 1 test implemented as all formats are tested by .from tests
+  it('should format a difference without suffix', () => {
+    // difference of 44min
+    const diffs: DiffAsUnit = {
+      s: 2640,
+      m: 44,
+      h: 0.7333333333333333,
+      d: 0.030555555555555555,
+      w: 0.004365079365079365,
+      M: 0.0010038992358957861,
+      y: 0.00008365826965798217,
+    }
+    const withoutSuffix = true
+    const locale = esday.getLocale(esday.locale())
+    const expected = '44 minutes'
+
+    expect(esday.formatDifference(diffs, withoutSuffix, locale)).toBe(expected)
+  })
+
+  it('should format a difference without suffix', () => {
+    // difference of 44min
+    const diffs: DiffAsUnit = {
+      s: 2640,
+      m: 44,
+      h: 0.7333333333333333,
+      d: 0.030555555555555555,
+      w: 0.004365079365079365,
+      M: 0.0010038992358957861,
+      y: 0.00008365826965798217,
+    }
+    const withoutSuffix = false
+    const locale = esday.getLocale(esday.locale())
+    const expected = 'in 44 minutes'
+
+    expect(esday.formatDifference(diffs, withoutSuffix, locale)).toBe(expected)
+  })
+
+  it('should handle basic usage', () => {
     const nowDate = '2023-11-17T03:24:46.234'
 
     expectSame((esday) => esday(nowDate).fromNow())

@@ -2,10 +2,17 @@
 
 RelativeTime adds the `fromNow`,  `toNow`, `from` and the `to` methods to EsDay to format a date as a relative time string (e.g. '3 hours ago').
 
-The `fromNow` method returns a string of a time relative to 'now' (e.g. '4 years ago').
-The `toNow` method returns the opposite value of `fromNow` (e.g. 'in 4 years').
-The `from`  method returns a string of a time relative to a given date (e.g. '3 hours ago').
+The `fromNow` method returns a string of a time relative to 'now' (e.g. '4 years ago').  
+The `toNow` method returns the opposite value of `fromNow` (e.g. 'in 4 years').  
+The `from`  method returns a string of a time relative to a given date (e.g. '3 hours ago').  
 The `to` method returns the opposite value of `from` (e.g. 'in 3 hours').
+
+It also adds methods to get the default thresholds `formatDifference`, `defaultThresholds` and `globalThresholds` to esday.
+
+The `formatDifference` method formats a given time difference to a relative time string.  
+The `defaultThresholds` method returns an object containing the default thresholds.  
+The `globalThresholds` method returns an object containing the currently used global thresholds.
+
 
 ## Usage
 
@@ -13,6 +20,7 @@ The `to` method returns the opposite value of `from` (e.g. 'in 3 hours').
 RelativeTime requires the plugin Locale and at least 1 registered and activated locale.
 
 ### Method signatures
+**Methods added to EsDay instances**
 ```typescript
 esday().fromNow(withoutSuffix?: boolean): string
 esday().toNow(withoutSuffix?: boolean): string
@@ -46,6 +54,27 @@ The breakdown of which string is displayed for each length of time is outlined i
 | 45 to 319 days              | MM  | 2 months ago ... 10 months ago              |
 | 320 to 547 days (1.5 years) | y   | a year ago                                  |
 | 548 days+                   | yy  | 2 years ago ... 20 years ago                |
+
+**Methods added to esday**
+```typescript
+esday.formatDifference: (
+      diffAsUnits: DiffAsUnit,
+      withoutSuffix: boolean,
+      locale: Locale,
+      thresholds?: ThresholdRelativeTime,
+    ): string
+esday.defaultThresholds(): ThresholdRelativeTime
+esday.globalThresholds(): ThresholdRelativeTime
+```
+
+| parameter     | description                                 |
+| ------------- | ------------------------------------------- |
+| diffAsUnits   | object containing the time differences calculated for several units (s, m, h, d, w, M, y) |
+| withoutSuffix | generate relative time without 'in' / 'ago' |
+| locale        | object containing the locale data to use    |
+| thresholds    | object containing the thresholds to use (defaults to the default thresholds listed above) |
+
+**Thresholds**
 
 The RelativeTime plugin uses a list of thresholds, which define, when a unit is considered a minute, an hour and so on. For example, by default more than 45 seconds is considered a minute, more than 22 hours is considered a day and so on.
 
