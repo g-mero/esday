@@ -38,13 +38,13 @@ declare module 'esday' {
 }
 
 export type ThresholdRelativeTime = {
-  ss: number
-  s: number
-  m: number
-  h: number
-  d: number
-  w: number | null
-  M: number
+  ss?: number
+  s?: number
+  m?: number
+  h?: number
+  d?: number
+  w?: number | null
+  M?: number
 }
 
 export type DiffAsUnit = {
@@ -120,40 +120,40 @@ const relativeTimePlugin: EsDayPlugin<{
     // test all thresholds until we find the first threshold matching the
     // difference between the instance and the reference date
     selectedKeyAndValue = { key: '', value: 0 }
-    if (rounding(abs(diffAsUnits.s)) <= thresholds.ss) {
+    if (rounding(abs(diffAsUnits.s)) <= (thresholds.ss ?? 0)) {
       selectedKeyAndValue.key = 's'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.s))
-    } else if (rounding(abs(diffAsUnits.s)) < thresholds.s) {
+    } else if (rounding(abs(diffAsUnits.s)) < (thresholds.s ?? 0)) {
       selectedKeyAndValue.key = 'ss'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.s))
     } else if (rounding(abs(diffAsUnits.m)) <= 1) {
       selectedKeyAndValue.key = 'm'
       selectedKeyAndValue.value = undefined
-    } else if (rounding(abs(diffAsUnits.m)) < thresholds.m) {
+    } else if (rounding(abs(diffAsUnits.m)) < (thresholds.m ?? 0)) {
       selectedKeyAndValue.key = 'mm'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.m))
     } else if (rounding(abs(diffAsUnits.h)) <= 1) {
       selectedKeyAndValue.key = 'h'
       selectedKeyAndValue.value = undefined
-    } else if (rounding(abs(diffAsUnits.h)) < thresholds.h) {
+    } else if (rounding(abs(diffAsUnits.h)) < (thresholds.h ?? 0)) {
       selectedKeyAndValue.key = 'hh'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.h))
     } else if (rounding(abs(diffAsUnits.d)) <= 1) {
       selectedKeyAndValue.key = 'd'
       selectedKeyAndValue.value = undefined
-    } else if (rounding(abs(diffAsUnits.d)) < thresholds.d) {
+    } else if (rounding(abs(diffAsUnits.d)) < (thresholds.d ?? 0)) {
       selectedKeyAndValue.key = 'dd'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.d))
     } else if (thresholds.w !== null && rounding(abs(diffAsUnits.w)) <= 1) {
       selectedKeyAndValue.key = 'w'
       selectedKeyAndValue.value = undefined
-    } else if (thresholds.w !== null && rounding(abs(diffAsUnits.w)) < thresholds.w) {
+    } else if (thresholds.w !== null && rounding(abs(diffAsUnits.w)) < (thresholds.w ?? 0)) {
       selectedKeyAndValue.key = 'ww'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.w))
     } else if (rounding(abs(diffAsUnits.M)) <= 1) {
       selectedKeyAndValue.key = 'M'
       selectedKeyAndValue.value = undefined
-    } else if (rounding(abs(diffAsUnits.M)) < thresholds.M) {
+    } else if (rounding(abs(diffAsUnits.M)) < (thresholds.M ?? 0)) {
       selectedKeyAndValue.key = 'MM'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.M))
     } else if (rounding(abs(diffAsUnits.y)) <= 1) {
