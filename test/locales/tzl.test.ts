@@ -4,7 +4,7 @@
 
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/tzl'
-import type { RelativeTimeElementFunction } from '~/plugins/locale'
+import type { RelativeTimeElementFunction, RelativeTimeKeys } from '~/plugins/locale'
 
 describe('locale tzl', () => {
   it('should have the correct name', () => {
@@ -81,7 +81,7 @@ describe('locale tzl', () => {
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(14)
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(16)
   })
 
   it.each([
@@ -475,7 +475,7 @@ describe('locale tzl', () => {
       const tokenKey = token as keyof RelativeTimeElementFunction
       const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
 
-      expect(rtFunction(value, noSuffix, key, future)).toBe(expected)
+      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
     },
   )
 

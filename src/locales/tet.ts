@@ -71,6 +71,8 @@ const localeTet: Readonly<Locale> = {
     hh: 'oras %d',
     d: 'loron ida',
     dd: 'loron %d',
+    w: 'semana ida',
+    ww: 'semana %d',
     M: 'fulan ida',
     MM: 'fulan %d',
     y: 'tinan ida',

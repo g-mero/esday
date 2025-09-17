@@ -71,6 +71,8 @@ const localeHt: Readonly<Locale> = {
     hh: '%d zè',
     d: 'yon jou',
     dd: '%d jou',
+    w: 'yon semèn',
+    ww: '%d semèn',
     M: 'yon mwa',
     MM: '%d mwa',
     y: 'yon ane',

@@ -79,6 +79,8 @@ const localeEu: Readonly<Locale> = {
     hh: '%d ordu',
     d: 'egun bat',
     dd: '%d egun',
+    w: 'astebete',
+    ww: '%d aste',
     M: 'hilabete bat',
     MM: '%d hilabete',
     y: 'urte bat',

@@ -58,6 +58,8 @@ const localeSq: Readonly<Locale> = {
     hh: '%d orë',
     d: 'një ditë',
     dd: '%d ditë',
+    w: 'një javë',
+    ww: '%d javë',
     M: 'një muaj',
     MM: '%d muaj',
     y: 'një vit',

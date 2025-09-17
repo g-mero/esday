@@ -78,6 +78,8 @@ const localeHyAm: Readonly<Locale> = {
     hh: '%d ժամ',
     d: 'օր',
     dd: '%d օր',
+    w: 'շաբաթից',
+    ww: '%d շաբաթից',
     M: 'ամիս',
     MM: '%d ամիս',
     y: 'տարի',

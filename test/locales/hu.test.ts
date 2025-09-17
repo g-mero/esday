@@ -5,7 +5,11 @@
 import type { EsDay } from 'esday'
 import { describe, expect, it } from 'vitest'
 import locale from '~/locales/hu'
-import type { CalendarSpecValFunction, RelativeTimeElementFunction } from '~/plugins/locale'
+import type {
+  CalendarSpecValFunction,
+  RelativeTimeElementFunction,
+  RelativeTimeKeys,
+} from '~/plugins/locale'
 
 describe('locale hu', () => {
   it('should have the correct name', () => {
@@ -112,83 +116,475 @@ describe('locale hu', () => {
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(14)
-
-    const rtFunctionSecond = locale.relativeTime.s as RelativeTimeElementFunction
-    expect(rtFunctionSecond(1, false, 's', false)).toBe('néhány másodperce')
-    expect(rtFunctionSecond(2, false, 's', true)).toBe('néhány másodperc')
-    expect(rtFunctionSecond(5, true, 's', false)).toBe('néhány másodperc')
-    expect(rtFunctionSecond(1, true, 's', true)).toBe('néhány másodperc')
-
-    const rtFunctionSeconds = locale.relativeTime.ss as RelativeTimeElementFunction
-    expect(rtFunctionSeconds(1, false, 'ss', false)).toBe('1 másodperce')
-    expect(rtFunctionSeconds(2, false, 'ss', true)).toBe('2 másodperc')
-    expect(rtFunctionSeconds(5, true, 'ss', false)).toBe('5 másodperc')
-    expect(rtFunctionSeconds(6, true, 'ss', true)).toBe('6 másodperc')
-
-    const rtFunctionMinute = locale.relativeTime.m as RelativeTimeElementFunction
-    expect(rtFunctionMinute(1, false, 'm', false)).toBe('egy perce')
-    expect(rtFunctionMinute(2, false, 'm', true)).toBe('egy perc')
-    expect(rtFunctionMinute(2, true, 'm', false)).toBe('egy perc')
-    expect(rtFunctionMinute(2, true, 'm', true)).toBe('egy perc')
-
-    const rtFunctionMinutes = locale.relativeTime.mm as RelativeTimeElementFunction
-    expect(rtFunctionMinutes(1, false, 'mm', false)).toBe('1 perce')
-    expect(rtFunctionMinutes(2, false, 'mm', true)).toBe('2 perc')
-    expect(rtFunctionMinutes(3, true, 'mm', false)).toBe('3 perc')
-    expect(rtFunctionMinutes(4, true, 'mm', true)).toBe('4 perc')
-
-    const rtFunctionHour = locale.relativeTime.h as RelativeTimeElementFunction
-    expect(rtFunctionHour(1, false, 'h', false)).toBe('egy órája')
-    expect(rtFunctionHour(2, false, 'h', true)).toBe('egy óra')
-    expect(rtFunctionHour(2, true, 'h', false)).toBe('egy óra')
-    expect(rtFunctionHour(2, true, 'h', true)).toBe('egy óra')
-
-    const rtFunctionHours = locale.relativeTime.hh as RelativeTimeElementFunction
-    expect(rtFunctionHours(1, false, 'hh', false)).toBe('1 órája')
-    expect(rtFunctionHours(2, false, 'hh', true)).toBe('2 óra')
-    expect(rtFunctionHours(4, true, 'hh', false)).toBe('4 óra')
-    expect(rtFunctionHours(5, true, 'hh', true)).toBe('5 óra')
-
-    const rtFunctionDay = locale.relativeTime.d as RelativeTimeElementFunction
-    expect(rtFunctionDay(1, false, 'd', false)).toBe('egy napja')
-    expect(rtFunctionDay(2, false, 'd', true)).toBe('egy nap')
-    expect(rtFunctionDay(3, true, 'd', false)).toBe('egy nap')
-    expect(rtFunctionDay(4, true, 'd', true)).toBe('egy nap')
-
-    const rtFunctionDays = locale.relativeTime.dd as RelativeTimeElementFunction
-    expect(rtFunctionDays(1, false, 'dd', false)).toBe('1 napja')
-    expect(rtFunctionDays(2, false, 'dd', true)).toBe('2 nap')
-    expect(rtFunctionDays(3, true, 'dd', false)).toBe('3 nap')
-    expect(rtFunctionDays(4, true, 'dd', true)).toBe('4 nap')
-
-    const rtFunctionMonth = locale.relativeTime.M as RelativeTimeElementFunction
-    expect(rtFunctionMonth(1, false, 'M', false)).toBe('egy hónapja')
-    expect(rtFunctionMonth(2, false, 'M', true)).toBe('egy hónap')
-    expect(rtFunctionMonth(4, true, 'M', false)).toBe('egy hónap')
-    expect(rtFunctionMonth(5, true, 'M', true)).toBe('egy hónap')
-
-    const rtFunctionMonths = locale.relativeTime.MM as RelativeTimeElementFunction
-    expect(rtFunctionMonths(1, false, 'MM', false)).toBe('1 hónapja')
-    expect(rtFunctionMonths(2, false, 'MM', true)).toBe('2 hónap')
-    expect(rtFunctionMonths(4, true, 'MM', false)).toBe('4 hónap')
-    expect(rtFunctionMonths(5, true, 'MM', true)).toBe('5 hónap')
-
-    const rtFunctionYear = locale.relativeTime.y as RelativeTimeElementFunction
-    expect(rtFunctionYear(1, false, 'y', false)).toBe('egy éve')
-    expect(rtFunctionYear(2, false, 'y', true)).toBe('egy év')
-    expect(rtFunctionYear(3, true, 'y', false)).toBe('egy év')
-    expect(rtFunctionYear(5, true, 'y', true)).toBe('egy év')
-
-    const rtFunctionYears = locale.relativeTime.yy as RelativeTimeElementFunction
-    expect(rtFunctionYears(1, false, 'yy', false)).toBe('1 éve')
-    expect(rtFunctionYears(2, false, 'yy', true)).toBe('2 év')
-    expect(rtFunctionYears(3, true, 'yy', false)).toBe('3 év')
-    expect(rtFunctionYears(5, true, 'yy', true)).toBe('5 év')
-
-    // test for unknown token
-    expect(rtFunctionYears(5, true, 'ab', true)).toBe('')
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(16)
   })
+
+  it.each([
+    {
+      token: 's',
+      value: 1,
+      noSuffix: false,
+      key: 's',
+      future: false,
+      expected: 'néhány másodperce',
+    },
+    {
+      token: 's',
+      value: 2,
+      noSuffix: false,
+      key: 's',
+      future: true,
+      expected: 'néhány másodperc',
+    },
+    {
+      token: 's',
+      value: 5,
+      noSuffix: true,
+      key: 's',
+      future: false,
+      expected: 'néhány másodperc',
+    },
+    {
+      token: 's',
+      value: 1,
+      noSuffix: true,
+      key: 's',
+      future: true,
+      expected: 'néhány másodperc',
+    },
+    {
+      token: 'ss',
+      value: 1,
+      noSuffix: false,
+      key: 'ss',
+      future: false,
+      expected: '1 másodperce',
+    },
+    {
+      token: 'ss',
+      value: 2,
+      noSuffix: false,
+      key: 'ss',
+      future: true,
+      expected: '2 másodperc',
+    },
+    {
+      token: 'ss',
+      value: 5,
+      noSuffix: true,
+      key: 'ss',
+      future: false,
+      expected: '5 másodperc',
+    },
+    {
+      token: 'ss',
+      value: 6,
+      noSuffix: true,
+      key: 'ss',
+      future: true,
+      expected: '6 másodperc',
+    },
+    {
+      token: 'm',
+      value: 1,
+      noSuffix: false,
+      key: 'm',
+      future: false,
+      expected: 'egy perce',
+    },
+    {
+      token: 'm',
+      value: 2,
+      noSuffix: false,
+      key: 'm',
+      future: true,
+      expected: 'egy perc',
+    },
+    {
+      token: 'm',
+      value: 2,
+      noSuffix: true,
+      key: 'm',
+      future: false,
+      expected: 'egy perc',
+    },
+    {
+      token: 'm',
+      value: 2,
+      noSuffix: true,
+      key: 'm',
+      future: true,
+      expected: 'egy perc',
+    },
+    {
+      token: 'mm',
+      value: 1,
+      noSuffix: false,
+      key: 'mm',
+      future: false,
+      expected: '1 perce',
+    },
+    {
+      token: 'mm',
+      value: 2,
+      noSuffix: false,
+      key: 'mm',
+      future: true,
+      expected: '2 perc',
+    },
+    {
+      token: 'mm',
+      value: 3,
+      noSuffix: true,
+      key: 'mm',
+      future: false,
+      expected: '3 perc',
+    },
+    {
+      token: 'mm',
+      value: 4,
+      noSuffix: true,
+      key: 'mm',
+      future: true,
+      expected: '4 perc',
+    },
+    {
+      token: 'h',
+      value: 1,
+      noSuffix: false,
+      key: 'h',
+      future: false,
+      expected: 'egy órája',
+    },
+    {
+      token: 'h',
+      value: 2,
+      noSuffix: false,
+      key: 'h',
+      future: true,
+      expected: 'egy óra',
+    },
+    {
+      token: 'h',
+      value: 2,
+      noSuffix: true,
+      key: 'h',
+      future: false,
+      expected: 'egy óra',
+    },
+    {
+      token: 'h',
+      value: 3,
+      noSuffix: true,
+      key: 'h',
+      future: true,
+      expected: 'egy óra',
+    },
+    {
+      token: 'hh',
+      value: 1,
+      noSuffix: false,
+      key: 'hh',
+      future: false,
+      expected: '1 órája',
+    },
+    {
+      token: 'hh',
+      value: 2,
+      noSuffix: false,
+      key: 'hh',
+      future: true,
+      expected: '2 óra',
+    },
+    {
+      token: 'hh',
+      value: 4,
+      noSuffix: true,
+      key: 'hh',
+      future: false,
+      expected: '4 óra',
+    },
+    {
+      token: 'hh',
+      value: 5,
+      noSuffix: true,
+      key: 'hh',
+      future: true,
+      expected: '5 óra',
+    },
+    {
+      token: 'd',
+      value: 1,
+      noSuffix: false,
+      key: 'd',
+      future: false,
+      expected: 'egy napja',
+    },
+    {
+      token: 'd',
+      value: 2,
+      noSuffix: false,
+      key: 'd',
+      future: true,
+      expected: 'egy nap',
+    },
+    {
+      token: 'd',
+      value: 3,
+      noSuffix: true,
+      key: 'd',
+      future: false,
+      expected: 'egy nap',
+    },
+    {
+      token: 'd',
+      value: 4,
+      noSuffix: true,
+      key: 'd',
+      future: true,
+      expected: 'egy nap',
+    },
+    {
+      token: 'dd',
+      value: 1,
+      noSuffix: false,
+      key: 'dd',
+      future: false,
+      expected: '1 napja',
+    },
+    {
+      token: 'dd',
+      value: 2,
+      noSuffix: false,
+      key: 'dd',
+      future: true,
+      expected: '2 nap',
+    },
+    {
+      token: 'dd',
+      value: 3,
+      noSuffix: true,
+      key: 'dd',
+      future: false,
+      expected: '3 nap',
+    },
+    {
+      token: 'dd',
+      value: 4,
+      noSuffix: true,
+      key: 'dd',
+      future: true,
+      expected: '4 nap',
+    },
+    {
+      token: 'w',
+      value: 1,
+      noSuffix: false,
+      key: 'w',
+      future: false,
+      expected: 'egy múlva',
+    },
+    {
+      token: 'w',
+      value: 2,
+      noSuffix: false,
+      key: 'w',
+      future: true,
+      expected: 'egy hét',
+    },
+    {
+      token: 'w',
+      value: 3,
+      noSuffix: true,
+      key: 'w',
+      future: false,
+      expected: 'egy hét',
+    },
+    {
+      token: 'w',
+      value: 4,
+      noSuffix: true,
+      key: 'w',
+      future: true,
+      expected: 'egy hét',
+    },
+    {
+      token: 'ww',
+      value: 1,
+      noSuffix: false,
+      key: 'ww',
+      future: false,
+      expected: '1 múlva',
+    },
+    {
+      token: 'ww',
+      value: 2,
+      noSuffix: false,
+      key: 'ww',
+      future: true,
+      expected: '2 hét',
+    },
+    {
+      token: 'ww',
+      value: 3,
+      noSuffix: true,
+      key: 'ww',
+      future: false,
+      expected: '3 hét',
+    },
+    {
+      token: 'ww',
+      value: 4,
+      noSuffix: true,
+      key: 'ww',
+      future: true,
+      expected: '4 hét',
+    },
+    {
+      token: 'M',
+      value: 1,
+      noSuffix: false,
+      key: 'M',
+      future: false,
+      expected: 'egy hónapja',
+    },
+    {
+      token: 'M',
+      value: 2,
+      noSuffix: false,
+      key: 'M',
+      future: true,
+      expected: 'egy hónap',
+    },
+    {
+      token: 'M',
+      value: 4,
+      noSuffix: true,
+      key: 'M',
+      future: false,
+      expected: 'egy hónap',
+    },
+    {
+      token: 'M',
+      value: 5,
+      noSuffix: true,
+      key: 'M',
+      future: true,
+      expected: 'egy hónap',
+    },
+    {
+      token: 'MM',
+      value: 1,
+      noSuffix: false,
+      key: 'MM',
+      future: false,
+      expected: '1 hónapja',
+    },
+    {
+      token: 'MM',
+      value: 2,
+      noSuffix: false,
+      key: 'MM',
+      future: true,
+      expected: '2 hónap',
+    },
+    {
+      token: 'MM',
+      value: 4,
+      noSuffix: true,
+      key: 'MM',
+      future: false,
+      expected: '4 hónap',
+    },
+    {
+      token: 'MM',
+      value: 5,
+      noSuffix: true,
+      key: 'MM',
+      future: true,
+      expected: '5 hónap',
+    },
+    {
+      token: 'y',
+      value: 1,
+      noSuffix: false,
+      key: 'y',
+      future: false,
+      expected: 'egy éve',
+    },
+    {
+      token: 'y',
+      value: 2,
+      noSuffix: false,
+      key: 'y',
+      future: true,
+      expected: 'egy év',
+    },
+    {
+      token: 'y',
+      value: 3,
+      noSuffix: true,
+      key: 'y',
+      future: false,
+      expected: 'egy év',
+    },
+    {
+      token: 'y',
+      value: 5,
+      noSuffix: true,
+      key: 'y',
+      future: true,
+      expected: 'egy év',
+    },
+    {
+      token: 'yy',
+      value: 1,
+      noSuffix: false,
+      key: 'yy',
+      future: false,
+      expected: '1 éve',
+    },
+    {
+      token: 'yy',
+      value: 2,
+      noSuffix: false,
+      key: 'yy',
+      future: true,
+      expected: '2 év',
+    },
+    {
+      token: 'yy',
+      value: 3,
+      noSuffix: true,
+      key: 'yy',
+      future: false,
+      expected: '3 év',
+    },
+    {
+      token: 'yy',
+      value: 5,
+      noSuffix: true,
+      key: 'yy',
+      future: true,
+      expected: '5 év',
+    },
+    {
+      token: 's',
+      value: 5,
+      noSuffix: true,
+      key: 'ab',
+      future: true,
+      expected: '',
+    }, // unknown token
+  ])(
+    'should format relativeTime for "$token" with "$value", "$key", "$noSuffix", "$future"',
+    ({ token, value, noSuffix, key, future, expected }) => {
+      const tokenKey = token as keyof RelativeTimeElementFunction
+      const rtFunction: RelativeTimeElementFunction = locale.relativeTime[tokenKey]
+
+      expect(rtFunction(value, noSuffix, key as RelativeTimeKeys, future)).toBe(expected)
+    },
+  )
 
   it('should have a method named "meridiem"', () => {
     expect(locale.meridiem).toBeDefined()

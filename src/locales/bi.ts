@@ -58,6 +58,8 @@ const localeBi: Readonly<Locale> = {
     hh: '%d haoa',
     d: 'wan dei',
     dd: '%d dei',
+    w: 'wan wik',
+    ww: '%d wik',
     M: 'wan manis',
     MM: '%d manis',
     y: 'wan yia',

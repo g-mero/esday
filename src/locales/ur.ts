@@ -71,6 +71,8 @@ const localeUr: Readonly<Locale> = {
     hh: '%d گھنٹے',
     d: 'ایک دن',
     dd: '%d دن',
+    w: 'ایک ہفتہ',
+    ww: '%d ہفتے',
     M: 'ایک ماہ',
     MM: '%d ماہ',
     y: 'ایک سال',

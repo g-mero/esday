@@ -58,6 +58,8 @@ const localeNn: Readonly<Locale> = {
     hh: '%d timar',
     d: 'ein dag',
     dd: '%d dagar',
+    w: 'ei veke',
+    ww: '%d veker',
     M: 'ein månad',
     MM: '%d månadar',
     y: 'eitt år',

@@ -72,6 +72,8 @@ const localeMk: Readonly<Locale> = {
     hh: '%d часа',
     d: 'ден',
     dd: '%d дена',
+    w: 'недела',
+    ww: '%d недели',
     M: 'месец',
     MM: '%d месеци',
     y: 'година',

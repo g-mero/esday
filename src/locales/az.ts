@@ -66,6 +66,8 @@ const localeAz: Readonly<Locale> = {
     hh: '%d saat',
     d: 'bir gün',
     dd: '%d gün',
+    w: 'bir həftə',
+    ww: '%d gün',
     M: 'bir ay',
     MM: '%d ay',
     y: 'bir il',

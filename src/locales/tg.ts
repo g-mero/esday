@@ -78,6 +78,8 @@ const localeTg: Readonly<Locale> = {
     hh: '%d соат',
     d: 'як рӯз',
     dd: '%d рӯз',
+    w: 'як ҳафта',
+    ww: '%d ҳафта',
     M: 'як моҳ',
     MM: '%d моҳ',
     y: 'як сол',

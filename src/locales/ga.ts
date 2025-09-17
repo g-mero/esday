@@ -79,6 +79,8 @@ const localeGa: Readonly<Locale> = {
     hh: '%d uair an chloig',
     d: 'lá',
     dd: '%d lá',
+    w: 'seachtain ',
+    ww: '%d seachtainí',
     M: 'mí',
     MM: '%d mí',
     y: 'bliain',

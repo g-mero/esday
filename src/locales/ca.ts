@@ -112,6 +112,8 @@ const localeCa: Readonly<Locale> = {
     hh: '%d hores',
     d: 'un dia',
     dd: '%d dies',
+    w: 'una setmana',
+    ww: '%d setmanes',
     M: 'un mes',
     MM: '%d mesos',
     y: 'un any',

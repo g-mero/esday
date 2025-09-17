@@ -66,6 +66,8 @@ const localeSs: Readonly<Locale> = {
     hh: '%d emahora',
     d: 'lilanga',
     dd: '%d emalanga',
+    w: 'linye',
+    ww: '%d emaviki',
     M: 'inyanga',
     MM: '%d tinyanga',
     y: 'umnyaka',

@@ -71,6 +71,8 @@ const localeDa: Readonly<Locale> = {
     hh: '%d timer',
     d: 'en dag',
     dd: '%d dage',
+    w: 'en uge',
+    ww: '%d uger',
     M: 'en måned',
     MM: '%d måneder',
     y: 'et år',

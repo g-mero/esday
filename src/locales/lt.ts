@@ -1,3 +1,7 @@
+/**
+ * Lithuanian [lt]
+ */
+
 import type { Locale } from '~/plugins/locale'
 
 const localeLt: Locale = {
@@ -62,6 +66,8 @@ const localeLt: Locale = {
     hh: '%d valandas',
     d: 'dieną',
     dd: '%d dienas',
+    w: 'savaitę',
+    ww: '%d savaites',
     M: 'mėnesį',
     MM: '%d mėnesius',
     y: 'metus',

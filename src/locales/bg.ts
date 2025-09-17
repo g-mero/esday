@@ -90,6 +90,8 @@ const localeBg: Readonly<Locale> = {
     hh: '%d часа',
     d: 'ден',
     dd: '%d дена',
+    w: 'седмица',
+    ww: '%d седмици',
     M: 'месец',
     MM: '%d месеца',
     y: 'година',

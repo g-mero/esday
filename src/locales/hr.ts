@@ -138,6 +138,15 @@ const relativeTimeFormatter: RelativeTimeElementFunction = (
         result += 'dana'
       }
       return result
+    case 'ww':
+      if (timeValueAsNumber === 1) {
+        result += 'tjedan'
+      } else if (timeValueAsNumber === 2 || timeValueAsNumber === 3 || timeValueAsNumber === 4) {
+        result += 'tjedna'
+      } else {
+        result += 'tjedana'
+      }
+      return result
     case 'MM':
       if (timeValueAsNumber === 1) {
         result += 'mjesec'
@@ -208,6 +217,8 @@ const localeHr: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: 'dan',
     dd: relativeTimeFormatter,
+    w: 'jednog tjedna',
+    ww: relativeTimeFormatter,
     M: 'mjesec',
     MM: relativeTimeFormatter,
     y: 'godina',

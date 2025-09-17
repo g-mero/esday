@@ -71,6 +71,8 @@ const localeRo: Readonly<Locale> = {
     hh: '%d ore',
     d: 'o zi',
     dd: '%d zile',
+    w: 'o săptămână',
+    ww: '%d săptămâni',
     M: 'o lună',
     MM: '%d luni',
     y: 'un an',

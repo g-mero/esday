@@ -58,6 +58,8 @@ const localeYo: Readonly<Locale> = {
     hh: 'wákati %d',
     d: 'ọjọ́ kan',
     dd: 'ọjọ́ %d',
+    w: 'ọsẹ kan',
+    ww: 'ọsẹ %d',
     M: 'osù kan',
     MM: 'osù %d',
     y: 'ọdún kan',

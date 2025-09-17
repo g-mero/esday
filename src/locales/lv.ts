@@ -66,6 +66,8 @@ const localeLv: Locale = {
     hh: '%d stundām',
     d: 'dienas',
     dd: '%d dienām',
+    w: 'nedēļas',
+    ww: '%d nedēļām',
     M: 'mēneša',
     MM: '%d mēnešiem',
     y: 'gada',

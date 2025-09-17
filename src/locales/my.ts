@@ -86,6 +86,8 @@ const localeMy: Readonly<Locale> = {
     hh: '%d နာရီ',
     d: 'တစ်ရက်',
     dd: '%d ရက်',
+    w: 'တစ်ပတ်',
+    ww: '%d ပတ်',
     M: 'တစ်လ',
     MM: '%d လ',
     y: 'တစ်နှစ်',

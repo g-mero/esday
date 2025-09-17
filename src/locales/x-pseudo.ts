@@ -93,6 +93,8 @@ const localeXpseudo: Readonly<Locale> = {
     hh: '%d h~óúrs',
     d: 'á ~dáý',
     dd: '%d d~áýs',
+    w: 'á ~wéék',
+    ww: '%d w~ééks',
     M: 'á ~móñ~th',
     MM: '%d m~óñt~hs',
     y: 'á ~ýéár',

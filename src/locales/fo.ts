@@ -66,6 +66,8 @@ const localeFo: Readonly<Locale> = {
     hh: '%d tímar',
     d: 'ein dagur',
     dd: '%d dagar',
+    w: 'eina viku',
+    ww: '%d vikum',
     M: 'ein mánaður',
     MM: '%d mánaðir',
     y: 'eitt ár',

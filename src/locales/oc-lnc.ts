@@ -92,6 +92,8 @@ const localeOcLnc: Readonly<Locale> = {
     hh: '%d oras',
     d: 'un jorn',
     dd: '%d jorns',
+    w: 'un setmana',
+    ww: '%d setmanas',
     M: 'un mes',
     MM: '%d meses',
     y: 'un an',

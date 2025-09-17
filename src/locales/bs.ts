@@ -103,6 +103,8 @@ const localeBs: Readonly<Locale> = {
     hh: '%d sati',
     d: 'dan',
     dd: '%d dana',
+    w: 'sedmica',
+    ww: '%d sedmice',
     M: 'mjesec',
     MM: '%d mjeseci',
     y: 'godina',

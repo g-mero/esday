@@ -58,6 +58,8 @@ const localeUz: Readonly<Locale> = {
     hh: '%d соат',
     d: 'бир кун',
     dd: '%d кун',
+    w: 'бир хафта',
+    ww: '%d хафта',
     M: 'бир ой',
     MM: '%d ой',
     y: 'бир йил',

@@ -71,6 +71,8 @@ const localeKy: Readonly<Locale> = {
     hh: '%d саат',
     d: 'бир күн',
     dd: '%d күн',
+    w: 'бир жумада',
+    ww: '%d аптада',
     M: 'бир ай',
     MM: '%d ай',
     y: 'бир жыл',

@@ -58,6 +58,8 @@ const localeMs: Readonly<Locale> = {
     hh: '%d jam',
     d: 'sehari',
     dd: '%d hari',
+    w: 'seminggu',
+    ww: '%d minggu',
     M: 'sebulan',
     MM: '%d bulan',
     y: 'setahun',

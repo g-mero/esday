@@ -9,7 +9,7 @@ export default defineConfig({
       esday: `${path.resolve(__dirname, 'src')}`,
     },
     coverage: {
-      exclude: [...configDefaults.exclude, 'dev/**', 'scripts/**'],
+      exclude: [...configDefaults.exclude, 'dev/**', 'scripts/**', 'tsdown.config.ts'],
       reporter: ['text', 'json', 'json-summary', 'html'],
       reportOnFailure: true,
       thresholds: {

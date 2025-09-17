@@ -58,6 +58,8 @@ const localeTlPh: Readonly<Locale> = {
     hh: '%d oras',
     d: 'isang araw',
     dd: '%d araw',
+    w: 'isang linggo',
+    ww: '%d linggo',
     M: 'isang buwan',
     MM: '%d buwan',
     y: 'isang taon',

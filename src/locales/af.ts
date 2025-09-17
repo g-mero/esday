@@ -58,6 +58,8 @@ const localeAf: Readonly<Locale> = {
     hh: '%d ure',
     d: 'n dag',
     dd: '%d dae',
+    w: 'n week',
+    ww: '%d weke',
     M: 'n maand',
     MM: '%d maande',
     y: 'n jaar',

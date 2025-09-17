@@ -66,6 +66,8 @@ const relativeTimeFormatter: RelativeTimeElementFunction = (
       return `${numberNoun} rep`
     case 'dd':
       return `${numberNoun} jaj`
+    case 'ww':
+      return `${numberNoun} puj`
     case 'MM':
       return `${numberNoun} jar`
     case 'yy':
@@ -142,6 +144,8 @@ const localeTlh: Readonly<Locale> = {
     hh: relativeTimeFormatter,
     d: 'wa’ jaj',
     dd: relativeTimeFormatter,
+    w: 'wa’ hogh',
+    ww: relativeTimeFormatter,
     M: 'wa’ jar',
     MM: relativeTimeFormatter,
     y: 'wa’ DIS',

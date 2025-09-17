@@ -81,7 +81,7 @@ describe('locale fi', () => {
   it('should have an object named "relativeTime"', () => {
     expect(locale.relativeTime).toBeDefined()
     expect(locale.relativeTime).toBeTypeOf('object')
-    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(14)
+    expect(Object.keys(locale.relativeTime ?? {}).length).toBe(16)
 
     const rtFunctionSeconds = locale.relativeTime.ss as RelativeTimeElementFunction
     expect(rtFunctionSeconds(4, false, 'ss', false)).toBe('neljä sekuntia')

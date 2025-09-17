@@ -58,6 +58,8 @@ const localeAm: Readonly<Locale> = {
     hh: '%d ሰዓታት',
     d: 'አንድ ቀን',
     dd: '%d ቀናት',
+    w: 'አንድ ሳምንት',
+    ww: '%d ሳምንታት',
     M: 'አንድ ወር',
     MM: '%d ወራት',
     y: 'አንድ ዓመት',

@@ -58,6 +58,8 @@ const localeJv: Locale = {
     hh: '%d jam',
     d: 'sedinten',
     dd: '%d dinten',
+    w: 'seminggu',
+    ww: '%d minggu',
     M: 'sewulan',
     MM: '%d wulan',
     y: 'setaun',

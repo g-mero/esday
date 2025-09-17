@@ -79,6 +79,8 @@ const localeRn: Readonly<Locale> = {
     hh: '%d amasaha',
     d: 'Umunsi',
     dd: '%d iminsi',
+    w: 'icyumweru',
+    ww: 'Ibyumweru %d',
     M: 'ukwezi',
     MM: '%d amezi',
     y: 'umwaka',

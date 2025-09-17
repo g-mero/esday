@@ -79,6 +79,8 @@ const localeJa: Readonly<Locale> = {
     hh: '%d時間',
     d: '1日',
     dd: '%d日',
+    w: '1週間後',
+    ww: '%d週間後',
     M: '1ヶ月',
     MM: '%dヶ月',
     y: '1年',

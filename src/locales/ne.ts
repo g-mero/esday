@@ -71,6 +71,8 @@ const localeNe: Readonly<Locale> = {
     hh: '%d घन्टा',
     d: 'एक दिन',
     dd: '%d दिन',
+    w: 'ia हप्ता',
+    ww: '%d हप्ता',
     M: 'एक महिना',
     MM: '%d महिना',
     y: 'एक वर्ष',
