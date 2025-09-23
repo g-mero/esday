@@ -92,9 +92,67 @@ const transformMdToHtml = async (fullSourcePath, baseDirectory, templateHtml, md
   return html
 }
 
+/**
+ * Set id of tags that act as target of page-internal links
+ * @param {string} content - content of html page to transform
+ * @param {object[]} localLinks - list of internal links (array of {content, target})
+ * @returns updated web page
+ */
+const setInternalLinkTargets = (content, localLinks) => {
+  localLinks.forEach((localLinkParams) => {
+    const headerTag = new RegExp(`<h(\\d)>${localLinkParams.content}<\/h(\\d)>`, 'g')
+    content = content.replace(
+      headerTag,
+      `<h$1 id="${localLinkParams.target}">${localLinkParams.content}</h$2>`,
+    )
+  })
+
+  return content
+}
+
+/**
+ * Add relative address of page to page-internal links in TOC.
+ * This is required as github pages use html base tag.
+ * @param {string} content - content of html page to transform
+ * @param {object[]} localLinks - list of internal links (array of {content, target})
+ * @param {string} pageAddress - relative address of this html page
+ * @returns updated web page
+ */
+const updateTocLinkTargets = (content, localLinks, pageAddress) => {
+  localLinks.forEach((localLinkParams) => {
+    content = content.replaceAll(
+      `<a href="#${localLinkParams.target}">`,
+      `<a href="${pageAddress}#${localLinkParams.target}">`,
+    )
+  })
+  return content
+}
+
+/**
+ * Add the first h1 tag to the list of local link targets to be handled.
+ * @param {string} content - content of html page to transform
+ * @param {object[]} localLinks - list of internal links (array of {content, target})
+ */
+const addLinkTargetOfPageTitle = (content, localLinks) => {
+  // get the content of the first h1 tag
+  const startOfTitle = content.indexOf('<h1>') + 4
+  const endOfTitle = content.indexOf('</h1>', startOfTitle)
+  const title = content.substring(startOfTitle, endOfTitle)
+
+  // create id from title
+  const idOfTitle = title.trim().toLowerCase().replace(' ', '-')
+
+  // add reference for first h1 tag
+  localLinks.push({ content: title, target: idOfTitle })
+}
+
 const marked = new Marked()
 const originalRenderer = new Renderer()
 originalRenderer.parser = new Parser()
+
+// list of anchor tags that target elements within the current page
+// Format {content, target}
+let localLinks = []
 
 /**
  * make anchor tags that reference files in the docs directory (*.md)
@@ -119,6 +177,9 @@ marked.use({
         }
 
         hrefAsHtml = `${hrefAsHtml.slice(0, -3)}.html`
+      } else if (hrefAsHtml.startsWith('#') && text !== '&#8593; Goto top') {
+        // 'Goto top' (by design) is not the content of the topmost header
+        localLinks.push({ content: text, target: hrefAsHtml.slice(1) })
       }
       return `<a href="${hrefAsHtml}">${text}</a>`
     },
@@ -147,14 +208,24 @@ const entries = await readdir(sourcePath, {
 })
 for (const entry of entries) {
   if (entry.isFile()) {
+    localLinks = []
     let content = ''
     const targetFilePath = entry.parentPath.replace(new RegExp(`^${sourcePath}`), targetPath)
     const fullSourcePath = path.join(entry.parentPath, entry.name)
     let targetFileName = entry.name
 
     if (targetFileName.endsWith('.md')) {
-      content = await transformMdToHtml(fullSourcePath, sourcePath, templateHtml, marked)
+      // convert markdown to html
       targetFileName = `${targetFileName.slice(0, -3)}.html`
+      content = await transformMdToHtml(fullSourcePath, sourcePath, templateHtml, marked)
+      if (localLinks.length > 0) {
+        // make page internal links to work with html
+        addLinkTargetOfPageTitle(content, localLinks)
+        content = setInternalLinkTargets(content, localLinks)
+        const relativePath =
+          currentPath.length > 0 ? `${currentPath}/${targetFileName}` : targetFileName
+        content = updateTocLinkTargets(content, localLinks, relativePath)
+      }
     } else {
       content = await readFile(fullSourcePath, { encoding: 'utf8' })
     }

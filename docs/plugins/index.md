@@ -3,6 +3,7 @@ Currently the following plugins are available:
 - [AdvancedFormat](./advancedFormat.md) (for formatting using a custom template)
 - [Calendar](./calendar.md) (Calendar adds .calendar() API - for formatting time relative to a given reference day)
 - [DayOfYear](./dayOfYear.md) (DayOfYear adds .dayOfYear() API - number indicating the day of the year)
+- [Duration](./duration.md) (Duration implements duration objects)
 - [IsBetween](./isBetween.md) (IsBetween adds .isBetween() API - is date between two other dates)
 - [IsLeapYear](./isLeapYear.md) (IsLeapYear adds .isLeapYear() API - is year a leap year)
 - [IsoWeek](./isoWeek.md) (IsoWeek adds .isoWeek API and formatting and parsing tokens)
