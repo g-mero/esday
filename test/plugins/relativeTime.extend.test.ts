@@ -25,7 +25,7 @@ const options = {
 }
 esday.extend(relativeTimePlugin, options)
 
-describe('relativeTime plugin - custom thresholds', () => {
+describe('relativeTime plugin - extend with custom thresholds', () => {
   const fakeTimeAsString = '2023-12-17T03:24:46.234'
 
   beforeEach(() => {
