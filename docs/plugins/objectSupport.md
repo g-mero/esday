@@ -46,7 +46,7 @@ type ParsingObjectLong = {
   day?: number | string // day-of-month
   date?: number | string // day-of-month
   hour?: number | string
-  min?: number | string
+  minute?: number | string
   second?: number | string
   millisecond?: number | string
 }
