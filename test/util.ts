@@ -23,7 +23,7 @@ export function expectSame(fn: (instance: EsDayFactory) => any) {
 
 /**
  * Call a given function with esday and moment and
- * check, if the resulting objects are the same.
+ * check, if the resulting date objects are the same.
  * To be used in a vitest test file.
  * Example:
  * expectSameResult((esday) => esday().utc().utcOffset(100, true))
