@@ -71,7 +71,7 @@ type UnitsObjectTypeSet = {
   day?: number // day-of-week
   date?: number // day-of-month
   hour?: number
-  min?: number
+  minute?: number
   second?: number
   millisecond?: number
 }
@@ -87,7 +87,7 @@ type UnitsObjectTypeAddSub = {
   weeks?: number
   days?: number
   hours?: number
-  mins?: number
+  minutes?: number
   seconds?: number
   milliseconds?: number
 }

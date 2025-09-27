@@ -24,23 +24,45 @@ declare module 'esday' {
     toNow: (withoutSuffix?: boolean) => string
     fromNow: (withoutSuffix?: boolean) => string
   }
+
+  interface EsDayFactory {
+    formatDifference: (
+      diffAsUnits: DiffAsUnit,
+      withoutSuffix: boolean,
+      locale: Locale,
+      thresholds?: ThresholdRelativeTime,
+    ) => string
+    defaultThresholds: () => ThresholdRelativeTime
+    globalThresholds: () => ThresholdRelativeTime
+  }
 }
 
 export type ThresholdRelativeTime = {
-  ss: number
+  ss?: number
+  s?: number
+  m?: number
+  h?: number
+  d?: number
+  w?: number | null
+  M?: number
+}
+
+export type DiffAsUnit = {
   s: number
   m: number
   h: number
   d: number
-  w: number | null
+  w: number
   M: number
+  y: number
 }
 
 const relativeTimePlugin: EsDayPlugin<{
   thresholds?: ThresholdRelativeTime
   rounding?: (valueToRound: number) => number
 }> = (options, dayClass, dayFactory) => {
-  const proto = dayClass.prototype
+  const rounding = options.rounding ?? Math.round
+  const abs = Math.abs
 
   // Use relativeTime definition from locales/en.ts as default
   const defaultRelativeTimeDef: Locale['relativeTime'] = {
@@ -71,11 +93,105 @@ const relativeTimePlugin: EsDayPlugin<{
     w: null,
     M: 11,
   }
+  dayFactory.defaultThresholds = () => structuredClone(defaultThresholds)
 
   const thresholds: ThresholdRelativeTime = options.thresholds ?? defaultThresholds
+  dayFactory.globalThresholds = () => structuredClone(thresholds)
 
-  const rounding = options.rounding ?? Math.round
-  const abs = Math.abs
+  /**
+   * Format object containing a time difference as human readable length of time.
+   * @param diffAsUnits - object containing the time difference calculated for different units
+   * @param withoutSuffix - format without 'in ---' or '... ago'
+   * @param locale - locale to use to get format definitions for relativeTime
+   * @param thresholds - thresholds, which define when a unit is considered a minute, an hour and so on
+   * @returns difference formatted as human string (e.g. 5 days ago)
+   */
+  function formatDifference(
+    diffAsUnits: DiffAsUnit,
+    withoutSuffix: boolean,
+    locale: Locale,
+    thresholds: ThresholdRelativeTime = defaultThresholds,
+  ): string {
+    const isFuture = diffAsUnits.s > 0
+    const relativeTimeDef = locale?.relativeTime ?? defaultRelativeTimeDef
+    let out = ''
+    let selectedKeyAndValue: { key: string; value: number | undefined }
+
+    // test all thresholds until we find the first threshold matching the
+    // difference between the instance and the reference date
+    selectedKeyAndValue = { key: '', value: 0 }
+    if (rounding(abs(diffAsUnits.s)) <= (thresholds.ss ?? 0)) {
+      selectedKeyAndValue.key = 's'
+      selectedKeyAndValue.value = rounding(abs(diffAsUnits.s))
+    } else if (rounding(abs(diffAsUnits.s)) < (thresholds.s ?? 0)) {
+      selectedKeyAndValue.key = 'ss'
+      selectedKeyAndValue.value = rounding(abs(diffAsUnits.s))
+    } else if (rounding(abs(diffAsUnits.m)) <= 1) {
+      selectedKeyAndValue.key = 'm'
+      selectedKeyAndValue.value = undefined
+    } else if (rounding(abs(diffAsUnits.m)) < (thresholds.m ?? 0)) {
+      selectedKeyAndValue.key = 'mm'
+      selectedKeyAndValue.value = rounding(abs(diffAsUnits.m))
+    } else if (rounding(abs(diffAsUnits.h)) <= 1) {
+      selectedKeyAndValue.key = 'h'
+      selectedKeyAndValue.value = undefined
+    } else if (rounding(abs(diffAsUnits.h)) < (thresholds.h ?? 0)) {
+      selectedKeyAndValue.key = 'hh'
+      selectedKeyAndValue.value = rounding(abs(diffAsUnits.h))
+    } else if (rounding(abs(diffAsUnits.d)) <= 1) {
+      selectedKeyAndValue.key = 'd'
+      selectedKeyAndValue.value = undefined
+    } else if (rounding(abs(diffAsUnits.d)) < (thresholds.d ?? 0)) {
+      selectedKeyAndValue.key = 'dd'
+      selectedKeyAndValue.value = rounding(abs(diffAsUnits.d))
+    } else if (thresholds.w !== null && rounding(abs(diffAsUnits.w)) <= 1) {
+      selectedKeyAndValue.key = 'w'
+      selectedKeyAndValue.value = undefined
+    } else if (thresholds.w !== null && rounding(abs(diffAsUnits.w)) < (thresholds.w ?? 0)) {
+      selectedKeyAndValue.key = 'ww'
+      selectedKeyAndValue.value = rounding(abs(diffAsUnits.w))
+    } else if (rounding(abs(diffAsUnits.M)) <= 1) {
+      selectedKeyAndValue.key = 'M'
+      selectedKeyAndValue.value = undefined
+    } else if (rounding(abs(diffAsUnits.M)) < (thresholds.M ?? 0)) {
+      selectedKeyAndValue.key = 'MM'
+      selectedKeyAndValue.value = rounding(abs(diffAsUnits.M))
+    } else if (rounding(abs(diffAsUnits.y)) <= 1) {
+      selectedKeyAndValue.key = 'y'
+      selectedKeyAndValue.value = undefined
+    } else {
+      selectedKeyAndValue.key = 'yy'
+      selectedKeyAndValue.value = rounding(abs(diffAsUnits.y))
+    }
+
+    const format = relativeTimeDef[selectedKeyAndValue.key as RelativeTimeKeys]
+    const outputDiffAbs = rounding(abs(selectedKeyAndValue.value ?? 1))
+    out =
+      typeof format === 'string'
+        ? format.replace('%d', `${outputDiffAbs}`)
+        : format(
+            outputDiffAbs,
+            withoutSuffix,
+            selectedKeyAndValue.key as RelativeTimeKeys,
+            isFuture,
+          )
+
+    // transform the result to locale form
+    const postFormat = locale?.postFormat
+    if (postFormat) {
+      out = postFormat(out)
+    }
+
+    if (withoutSuffix) return out
+
+    const suffix = isFuture ? relativeTimeDef.future : relativeTimeDef.past
+    return typeof suffix === 'function'
+      ? suffix(out, withoutSuffix, isFuture ? 'future' : 'past', isFuture)
+      : suffix.replace('%s', out)
+  }
+  dayFactory.formatDifference = formatDifference
+
+  const proto = dayClass.prototype
 
   /**
    * Calculate the difference between instance and referenceDate in given units
@@ -117,7 +233,8 @@ const relativeTimePlugin: EsDayPlugin<{
       return C.INVALID_DATE_STRING
     }
 
-    const diffsAsUnit = {
+    const locale = this.localeObject?.()
+    const diffAsUnits: DiffAsUnit = {
       s: differenceInUnits(this, referenceDate, 's', isFrom),
       m: differenceInUnits(this, referenceDate, 'm', isFrom),
       h: differenceInUnits(this, referenceDate, 'h', isFrom),
@@ -127,83 +244,7 @@ const relativeTimePlugin: EsDayPlugin<{
       y: differenceInUnits(this, referenceDate, 'y', isFrom),
     }
 
-    const locale = this.localeObject?.()
-    const relativeTimeDef = locale?.relativeTime ?? defaultRelativeTimeDef
-    const isFuture = diffsAsUnit.s > 0
-    let out = ''
-    let selectedKeyAndValue: { key: string; value: number | undefined }
-
-    // test all thresholds until we find the first threshold matching the
-    // difference between the instance and the reference date
-    selectedKeyAndValue = { key: '', value: 0 }
-    if (rounding(abs(diffsAsUnit.s)) <= thresholds.ss) {
-      selectedKeyAndValue.key = 's'
-      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.s))
-    } else if (rounding(abs(diffsAsUnit.s)) < thresholds.s) {
-      selectedKeyAndValue.key = 'ss'
-      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.s))
-    } else if (rounding(abs(diffsAsUnit.m)) <= 1) {
-      selectedKeyAndValue.key = 'm'
-      selectedKeyAndValue.value = undefined
-    } else if (rounding(abs(diffsAsUnit.m)) < thresholds.m) {
-      selectedKeyAndValue.key = 'mm'
-      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.m))
-    } else if (rounding(abs(diffsAsUnit.h)) <= 1) {
-      selectedKeyAndValue.key = 'h'
-      selectedKeyAndValue.value = undefined
-    } else if (rounding(abs(diffsAsUnit.h)) < thresholds.h) {
-      selectedKeyAndValue.key = 'hh'
-      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.h))
-    } else if (rounding(abs(diffsAsUnit.d)) <= 1) {
-      selectedKeyAndValue.key = 'd'
-      selectedKeyAndValue.value = undefined
-    } else if (rounding(abs(diffsAsUnit.d)) < thresholds.d) {
-      selectedKeyAndValue.key = 'dd'
-      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.d))
-    } else if (thresholds.w !== null && rounding(abs(diffsAsUnit.w)) <= 1) {
-      selectedKeyAndValue.key = 'w'
-      selectedKeyAndValue.value = undefined
-    } else if (thresholds.w !== null && rounding(abs(diffsAsUnit.w)) < thresholds.w) {
-      selectedKeyAndValue.key = 'ww'
-      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.w))
-    } else if (rounding(abs(diffsAsUnit.M)) <= 1) {
-      selectedKeyAndValue.key = 'M'
-      selectedKeyAndValue.value = undefined
-    } else if (rounding(abs(diffsAsUnit.M)) < thresholds.M) {
-      selectedKeyAndValue.key = 'MM'
-      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.M))
-    } else if (rounding(abs(diffsAsUnit.y)) <= 1) {
-      selectedKeyAndValue.key = 'y'
-      selectedKeyAndValue.value = undefined
-    } else {
-      selectedKeyAndValue.key = 'yy'
-      selectedKeyAndValue.value = rounding(abs(diffsAsUnit.y))
-    }
-
-    const format = relativeTimeDef[selectedKeyAndValue.key as RelativeTimeKeys]
-    const outputDiffAbs = rounding(abs(selectedKeyAndValue.value ?? 1))
-    out =
-      typeof format === 'string'
-        ? format.replace('%d', `${outputDiffAbs}`)
-        : format(
-            outputDiffAbs,
-            withoutSuffix,
-            selectedKeyAndValue.key as RelativeTimeKeys,
-            isFuture,
-          )
-
-    // transform the result to locale form
-    const postFormat = locale?.postFormat
-    if (postFormat) {
-      out = postFormat(out)
-    }
-
-    if (withoutSuffix) return out
-
-    const suffix = isFuture ? relativeTimeDef.future : relativeTimeDef.past
-    return typeof suffix === 'function'
-      ? suffix(out, withoutSuffix, isFuture ? 'future' : 'past', isFuture)
-      : suffix.replace('%s', out)
+    return formatDifference(diffAsUnits, withoutSuffix, locale, thresholds)
   }
 
   proto.to = function (this: EsDay, referenceDate: DateType, withoutSuffix?: boolean) {

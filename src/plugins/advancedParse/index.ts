@@ -364,7 +364,6 @@ function parseFormattedInput(
 function addParseTokenDefinitions(newTokens: TokenDefinitions) {
   // add all entries from newTokens into parseTokensDefinitions (without duplicates!)
   for (const key in newTokens) {
-    // biome-ignore lint/suspicious/noPrototypeBuiltins: hasOwn requires 'lib' in compiler option to be 'es2022' or later
     if (!Object.prototype.hasOwnProperty.call(parseTokensDefinitions, key)) {
       parseTokensDefinitions[key] = newTokens[key]
     }

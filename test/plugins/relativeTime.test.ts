@@ -7,7 +7,10 @@ import localeDe from '~/locales/de'
 import localeEn from '~/locales/en'
 import localeFr from '~/locales/fr'
 import localePlugin, { type Locale, type RelativeTimeElementFunction } from '~/plugins/locale'
-import relativeTimePlugin from '~/plugins/relativeTime'
+import relativeTimePlugin, {
+  type DiffAsUnit,
+  type ThresholdRelativeTime,
+} from '~/plugins/relativeTime'
 import utcPlugin from '~/plugins/utc'
 import { expectSame } from '../util'
 
@@ -31,7 +34,185 @@ describe('relativeTime plugin - without locale', () => {
     vi.useRealTimers()
   })
 
-  it('basic usage', () => {
+  // Only some test implemented as all formats are tested by .from tests
+  it.each([
+    {
+      source: {
+        s: 43,
+        m: -1,
+        h: -1,
+        d: -1,
+        w: -1,
+        M: -1,
+        y: -1,
+      },
+      expected: '43 seconds',
+    },
+    {
+      source: {
+        s: 2640,
+        m: 44,
+        h: 0.7333333333333333,
+        d: 0.030555555555555555,
+        w: 0.004365079365079365,
+        M: 0.0010038992358957861,
+        y: 0.00008365826965798217,
+      },
+      expected: '44 minutes',
+    },
+    {
+      source: {
+        s: 1000,
+        m: 1000,
+        h: 21,
+        d: -1,
+        w: -1,
+        M: -1,
+        y: -1,
+      },
+      expected: '21 hours',
+    },
+    {
+      source: {
+        s: 1000,
+        m: 1000,
+        h: 1000,
+        d: 25,
+        w: -1,
+        M: -1,
+        y: -1,
+      },
+      expected: '25 days',
+    },
+    {
+      source: {
+        s: 1000,
+        m: 1000,
+        h: 1000,
+        d: 1000,
+        w: 2,
+        M: -1,
+        y: -1,
+      },
+      expected: '2 weeks',
+    },
+    {
+      source: {
+        s: 1000,
+        m: 1000,
+        h: 1000,
+        d: 1000,
+        w: 1000,
+        M: 10,
+        y: -1,
+      },
+      expected: '10 months',
+    },
+    {
+      source: {
+        s: 1000,
+        m: 1000,
+        h: 1000,
+        d: 1000,
+        w: 1000,
+        M: 1000,
+        y: 5,
+      },
+      expected: '5 years',
+    },
+  ])('should format difference "$expected" without suffix', ({ source, expected }) => {
+    const withoutSuffix = true
+    const locale = esday.getLocale(esday.locale())
+    const thresholdSomeUnits: ThresholdRelativeTime = {
+      ss: 10,
+      s: 45,
+      m: 45,
+      h: 22,
+      d: 26,
+      w: 3,
+      M: 11,
+    }
+
+    expect(esday.formatDifference(source, withoutSuffix, locale, thresholdSomeUnits)).toBe(expected)
+  })
+
+  it('should format a difference without suffix with year only threshold', () => {
+    const diffs: DiffAsUnit = {
+      s: 1000,
+      m: 1000,
+      h: 1000,
+      d: 1000,
+      w: 1000,
+      M: 1000,
+      y: 5,
+    }
+    const withoutSuffix = true
+    const locale = esday.getLocale(esday.locale())
+    // use default thresholds for all units
+    const thresholdSomeUnits: ThresholdRelativeTime = {}
+    const expected = '5 years'
+
+    expect(esday.formatDifference(diffs, withoutSuffix, locale, thresholdSomeUnits)).toBe(expected)
+  })
+
+  it('should format a difference with suffix', () => {
+    // difference of 44min
+    const diffs: DiffAsUnit = {
+      s: 2640,
+      m: 44,
+      h: 0.7333333333333333,
+      d: 0.030555555555555555,
+      w: 0.004365079365079365,
+      M: 0.0010038992358957861,
+      y: 0.00008365826965798217,
+    }
+    const withoutSuffix = false
+    const locale = esday.getLocale(esday.locale())
+    const expected = 'in 44 minutes'
+
+    expect(esday.formatDifference(diffs, withoutSuffix, locale)).toBe(expected)
+  })
+
+  it('should format a difference with different locale', () => {
+    // difference of 44min
+    const diffs: DiffAsUnit = {
+      s: 2640,
+      m: 44,
+      h: 0.7333333333333333,
+      d: 0.030555555555555555,
+      w: 0.004365079365079365,
+      M: 0.0010038992358957861,
+      y: 0.00008365826965798217,
+    }
+    const withoutSuffix = false
+    const locale = esday.getLocale('fr')
+    const expected = 'dans 44 minutes'
+
+    expect(esday.formatDifference(diffs, withoutSuffix, locale)).toBe(expected)
+  })
+
+  it('should format a difference with custom threshold', () => {
+    // difference of 44min
+    const diffs: DiffAsUnit = {
+      s: 2640,
+      m: 44,
+      h: 0.7333333333333333,
+      d: 0.030555555555555555,
+      w: 0.004365079365079365,
+      M: 0.0010038992358957861,
+      y: 0.00008365826965798217,
+    }
+    const thresholdSomeUnits: ThresholdRelativeTime = {
+      m: 44,
+    }
+    const withoutSuffix = true
+    const locale = esday.getLocale(esday.locale())
+    const expected = 'an hour'
+
+    expect(esday.formatDifference(diffs, withoutSuffix, locale, thresholdSomeUnits)).toBe(expected)
+  })
+
+  it('should handle basic usage', () => {
     const nowDate = '2023-11-17T03:24:46.234'
 
     expectSame((esday) => esday(nowDate).fromNow())
@@ -44,7 +225,7 @@ describe('relativeTime plugin - without locale', () => {
     expectSame((esday) => esday(nowDate).to(targeTimeAsString, true))
   })
 
-  it('invalid input', () => {
+  it('should handle invalid input', () => {
     expectSame((esday) => esday(C.INVALID_DATE).fromNow().toLowerCase())
     expectSame((esday) => esday(C.INVALID_DATE).toNow().toLowerCase())
     expectSame((esday) => esday(C.INVALID_DATE).from(targeTimeAsString).toLowerCase())
@@ -281,6 +462,42 @@ describe('relativeTime plugin - without locale', () => {
 
   it('should accept fractional difference', () => {
     expectSame((esday) => esday().from(esday().add(36.1, C.HOUR)))
+  })
+
+  it('should return default thresholds', () => {
+    const thresholds: ThresholdRelativeTime = {
+      ss: 44,
+      s: 45,
+      m: 45,
+      h: 22,
+      d: 26,
+      w: null,
+      M: 11,
+    }
+    expect(esday.defaultThresholds()).toEqual(thresholds)
+
+    // test immutability
+    const originalH = thresholds.h
+    thresholds.h = 99
+    expect(esday.defaultThresholds().h).toEqual(originalH)
+  })
+
+  it('should return default thresholds', () => {
+    const thresholds: ThresholdRelativeTime = {
+      ss: 44,
+      s: 45,
+      m: 45,
+      h: 22,
+      d: 26,
+      w: null,
+      M: 11,
+    }
+    expect(esday.globalThresholds()).toEqual(thresholds)
+
+    // test immutability
+    const originalH = thresholds.h
+    thresholds.h = 99
+    expect(esday.globalThresholds().h).toEqual(originalH)
   })
 })
 
