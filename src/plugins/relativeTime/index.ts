@@ -1,5 +1,6 @@
 /**
  * RelativeTime adds .from .to .fromNow .toNow APIs to formats date to relative time strings (e.g. 3 hours ago).
+ * RelativeTime adds also relativeTimeThreshold and relativeTimeRounding getter / setter
  *
  * Time from now .fromNow(withoutSuffix?: boolean)
  * Returns the string of relative time from now.
@@ -26,6 +27,10 @@ declare module 'esday' {
   }
 
   interface EsDayFactory {
+    relativeTimeThreshold(unit: ThresholdRelativeTimeKeys): boolean | number | null
+    relativeTimeThreshold(unit: ThresholdRelativeTimeKeys, limit: number | null): boolean
+    relativeTimeRounding(): RelativeTimeRound
+    relativeTimeRounding(roundingFunction: RelativeTimeRound): boolean
     formatDifference: (
       diffAsUnits: DiffAsUnit,
       withoutSuffix: boolean,
@@ -38,13 +43,13 @@ declare module 'esday' {
 }
 
 export type ThresholdRelativeTime = {
-  ss?: number
-  s?: number
-  m?: number
-  h?: number
-  d?: number
+  ss?: number | null
+  s?: number | null
+  m?: number | null
+  h?: number | null
+  d?: number | null
   w?: number | null
-  M?: number
+  M?: number | null
 }
 
 export type DiffAsUnit = {
@@ -56,14 +61,14 @@ export type DiffAsUnit = {
   M: number
   y: number
 }
+export type ThresholdRelativeTimeKeys = keyof ThresholdRelativeTime
+
+export type RelativeTimeRound = (value: number) => number
 
 const relativeTimePlugin: EsDayPlugin<{
   thresholds?: ThresholdRelativeTime
   rounding?: (valueToRound: number) => number
 }> = (options, dayClass, dayFactory) => {
-  const rounding = options.rounding ?? Math.round
-  const abs = Math.abs
-
   // Use relativeTime definition from locales/en.ts as default
   const defaultRelativeTimeDef: Locale['relativeTime'] = {
     future: 'in %s',
@@ -123,37 +128,37 @@ const relativeTimePlugin: EsDayPlugin<{
     if (rounding(abs(diffAsUnits.s)) <= (thresholds.ss ?? 0)) {
       selectedKeyAndValue.key = 's'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.s))
-    } else if (rounding(abs(diffAsUnits.s)) < (thresholds.s ?? 0)) {
+    } else if (rounding(abs(diffAsUnits.s)) < (thresholds.s ?? -1)) {
       selectedKeyAndValue.key = 'ss'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.s))
     } else if (rounding(abs(diffAsUnits.m)) <= 1) {
       selectedKeyAndValue.key = 'm'
       selectedKeyAndValue.value = undefined
-    } else if (rounding(abs(diffAsUnits.m)) < (thresholds.m ?? 0)) {
+    } else if (rounding(abs(diffAsUnits.m)) < (thresholds.m ?? -1)) {
       selectedKeyAndValue.key = 'mm'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.m))
     } else if (rounding(abs(diffAsUnits.h)) <= 1) {
       selectedKeyAndValue.key = 'h'
       selectedKeyAndValue.value = undefined
-    } else if (rounding(abs(diffAsUnits.h)) < (thresholds.h ?? 0)) {
+    } else if (rounding(abs(diffAsUnits.h)) < (thresholds.h ?? -1)) {
       selectedKeyAndValue.key = 'hh'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.h))
     } else if (rounding(abs(diffAsUnits.d)) <= 1) {
       selectedKeyAndValue.key = 'd'
       selectedKeyAndValue.value = undefined
-    } else if (rounding(abs(diffAsUnits.d)) < (thresholds.d ?? 0)) {
+    } else if (rounding(abs(diffAsUnits.d)) < (thresholds.d ?? -1)) {
       selectedKeyAndValue.key = 'dd'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.d))
     } else if (thresholds.w !== null && rounding(abs(diffAsUnits.w)) <= 1) {
       selectedKeyAndValue.key = 'w'
       selectedKeyAndValue.value = undefined
-    } else if (thresholds.w !== null && rounding(abs(diffAsUnits.w)) < (thresholds.w ?? 0)) {
+    } else if (thresholds.w !== null && rounding(abs(diffAsUnits.w)) < (thresholds.w ?? -1)) {
       selectedKeyAndValue.key = 'ww'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.w))
     } else if (rounding(abs(diffAsUnits.M)) <= 1) {
       selectedKeyAndValue.key = 'M'
       selectedKeyAndValue.value = undefined
-    } else if (rounding(abs(diffAsUnits.M)) < (thresholds.M ?? 0)) {
+    } else if (rounding(abs(diffAsUnits.M)) < (thresholds.M ?? -1)) {
       selectedKeyAndValue.key = 'MM'
       selectedKeyAndValue.value = rounding(abs(diffAsUnits.M))
     } else if (rounding(abs(diffAsUnits.y)) <= 1) {
@@ -192,6 +197,58 @@ const relativeTimePlugin: EsDayPlugin<{
   dayFactory.formatDifference = formatDifference
 
   const proto = dayClass.prototype
+  const abs = Math.abs
+  let rounding: RelativeTimeRound = options.rounding ?? Math.round
+
+  /**
+   * Set a threshold for relative time strings
+   * @param unit - unit of threshold to get / set (ss,s,m,h,d,w,M)
+   * @param limit - new threshold value
+   * @returns false=unknown unit; true=threshold successfully set; current threshold (number | null)
+   */
+  // @ts-expect-error function is compatible with its overload
+  dayFactory.relativeTimeThreshold = (unit: keyof ThresholdRelativeTime, limit?: number | null) => {
+    // Is unit valid?
+    if (thresholds[unit] === undefined) {
+      return false
+    }
+
+    // Getter
+    if (limit === undefined) {
+      return thresholds[unit]
+    }
+
+    // Setter
+    thresholds[unit] = limit
+    if (unit === 's') {
+      if (limit !== null) {
+        thresholds.ss = limit - 1
+      } else {
+        thresholds.ss = null
+      }
+    }
+
+    return true
+  }
+
+  /**
+   * Gets or sets the rounding function for relative time strings
+   * @param roundingFunction - rounding function
+   * @returns - the rounding function (getter) or true=rounding function successfully set
+   */
+  // @ts-expect-error function is compatible with its overload
+  dayFactory.relativeTimeRounding = (roundingFunction?: RelativeTimeRound) => {
+    if (roundingFunction === undefined) {
+      return rounding
+    }
+
+    if (typeof roundingFunction === 'function') {
+      rounding = roundingFunction
+      return true
+    }
+
+    return false
+  }
 
   /**
    * Calculate the difference between instance and referenceDate in given units
