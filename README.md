@@ -1,6 +1,7 @@
 ## esday
 
-![npm](https://img.shields.io/npm/v/esday) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
+[![npm](https://img.shields.io/npm/v/esday)](https://www.npmjs.com/package/esday)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 
 > 🚧 working in progress
 
