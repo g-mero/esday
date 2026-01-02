@@ -70,6 +70,7 @@ Properties of the `Locale` object:
 | weekdaysMin   | DayNames | Array of the short day names (e.g. `['Su', 'Mo', ... ]`)                                                                   |
 | months        | MonthNames \| MonthNamesStandaloneFormat \| MonthNamesFunction | Array of the full month names (e.g. `['January', 'February', ... ]`) |
 | monthsShort   | MonthNames \| MonthNamesStandaloneFormat \| MonthNamesFunction | Array of the short month names (e.g. `['Jan', 'Feb', ... ]`)         |
+| dayOfMonthOrdinalParse | RegExp | Regular expression for parsing the day-of-month as an ordinal number                                                      |
 | ordinal       | function | Get the ordinal form of a number (e.g. `ordinal(1) // returns '1st'`)                                                      |
 | weekStart     | number   | Which is the 1st day of the week - 0=Sunday, 1=Monday etc. (e.g. `1` for Monday)                                           |
 | yearStart     | number   | Which date **must** be part of the 1st week of the year (e.g. `4` for Jan 4th)                                             |
