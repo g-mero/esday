@@ -6,7 +6,7 @@
  * 'updateLocale' method to the esday factory.
  *
  * esday parameters in '$conf' defined in Locale plugin:
- *   $locale_name  the name of the current locale of an EsDay instance
+ *   localeName  the name of the current locale of an EsDay instance
  */
 
 import type { DateType, EsDay, EsDayPlugin, UnitType } from 'esday'
@@ -106,10 +106,10 @@ export function cloneLocale(source: Locale): Locale {
 
 function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
   if (newLocaleName) {
-    inst['$conf']['$locale_name'] = newLocaleName
+    inst['$conf']['localeName'] = newLocaleName
   }
 
-  return (inst['$conf']['$locale_name'] as string) || $localeGlobal
+  return (inst['$conf']['localeName'] as string) || $localeGlobal
 }
 
 const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
