@@ -3,6 +3,7 @@ import moment from 'moment/min/moment-with-locales'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import localeDe from '~/locales/de'
 import localeEn from '~/locales/en'
+import localeFr from '~/locales/fr'
 import localeHr from '~/locales/hr'
 import localeKa from '~/locales/ka'
 import localeKu from '~/locales/ku'
@@ -18,8 +19,9 @@ esday
   .extend(weekPlugin)
   .extend(localizedParsePlugin)
   .extend(localePlugin)
-esday.registerLocale(localeEn)
 esday.registerLocale(localeDe)
+esday.registerLocale(localeEn)
+esday.registerLocale(localeFr)
 esday.registerLocale(localeHr)
 esday.registerLocale(localeKa)
 esday.registerLocale(localeKu)
@@ -506,14 +508,19 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
 
   it.each([
     {
-      sourceString: '2024 pro. 24. 8:10:21 PM',
+      sourceString: '2024 pro. 24. 8:10:21 PM utorak',
       formatString: 'YYYY MMM Do h:mm:ss A',
       locale: 'hr',
     },
     {
-      sourceString: '2024 Dez. 24. 8:10:21 PM',
+      sourceString: '2024 Dez. 24. 8:10:21 PM Dienstag',
       formatString: 'YYYY MMM Do h:mm:ss A',
       locale: 'de',
+    },
+    {
+      sourceString: '2024 déc. 1er 8:10:21 AM mardi',
+      formatString: 'YYYY MMM Do h:mm:ss A',
+      locale: 'fr',
     },
   ])(
     'parse in "en" with "$locale" as locale parameter',
@@ -534,6 +541,11 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
       formatString: 'YYYY MMM Do h:mm:ss A',
       locale: 'de',
     },
+    {
+      sourceString: '2024 déc. 1er 8:10:21 AM',
+      formatString: 'YYYY MMM Do h:mm:ss A',
+      locale: 'fr',
+    },
   ])(
     'parse in strict mode in "en" with "$locale" as locale parameter',
     ({ sourceString, formatString, locale }) => {
@@ -541,6 +553,18 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
       expectSameResult((esday) => esday(sourceString, formatString, locale, true))
     },
   )
+
+  it('parse in strict mode with non-matching format with locale as parameter', () => {
+    // Day should not have a trailing decimal point
+    const timestamp = '2024 déc. 24. 8:10:21 AM'
+    const formatString = 'YYYY MMM Do h:mm:ss A'
+    const locale = 'fr'
+    const d = esday(timestamp, formatString, locale, true)
+    const m = moment(timestamp, formatString, locale, true)
+
+    expect(d.isValid()).toBeFalsy()
+    expect(m.isValid()).toBeFalsy()
+  })
 })
 
 describe('localizedParse plugin - locale without meridiem', () => {

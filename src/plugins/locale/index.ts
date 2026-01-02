@@ -82,6 +82,8 @@ function cloneObject(sourceObject: object): object {
       setObjectProperty(result, key, sourceValue)
     } else if (Array.isArray(sourceValue)) {
       setObjectProperty(result, key, structuredClone(sourceValue))
+    } else if (sourceValue instanceof RegExp) {
+      setObjectProperty(result, key, new RegExp(sourceValue.source, sourceValue.flags))
     } else if (typeof sourceValue === 'object') {
       setObjectProperty(result, key, cloneObject(sourceValue))
     }
