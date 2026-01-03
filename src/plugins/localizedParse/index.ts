@@ -291,6 +291,17 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     }
 
     oldParse.call(this, newDate)
+
+    // remove properties required for parsing only from $conf
+    if (this['$conf'].parseOptions !== undefined) {
+      if (this['$conf'].parseOptions?.locale !== undefined) {
+        delete this['$conf'].parseOptions.locale
+      }
+
+      if (Object.keys(this['$conf'].parseOptions).length > 0) {
+        delete this['$conf'].parseOptions
+      }
+    }
   }
 }
 

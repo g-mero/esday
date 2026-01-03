@@ -553,9 +553,19 @@ const advancedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
           }
         }
         this['$d'] = bestDate
+
+        // remove properties required for parsing only from $conf
+        if (Object.keys(this['$conf'].parseOptions).length) {
+          delete this['$conf'].parseOptions
+        }
       }
     } else {
       oldParse.call(this, d)
+
+      // remove properties required for parsing only from $conf
+      if (Object.keys(this['$conf'].parseOptions).length) {
+        delete this['$conf'].parseOptions
+      }
     }
   }
 
