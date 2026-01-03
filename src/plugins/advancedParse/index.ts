@@ -11,6 +11,11 @@
  * new esday parameters in '$conf':
  *   parseOptions     ParseOptions object containing parsing options
  *                    used by parser and postParser
+ *
+ * The plugin advancedParse must be activated before the plugin locale and before
+ * the plugin localizedParse, as it terminates the parsing chain, when there is a
+ * format property. Activation example:
+ * esday.extend(advancedParsePlugin).extend(localizedParsePlugin).extend(localePlugin)
  */
 
 import type { DateFromDateComponents, DateType, EsDay, EsDayPlugin } from 'esday'

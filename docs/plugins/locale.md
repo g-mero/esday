@@ -6,6 +6,8 @@ Locale extends `esday` to support locales by adding the `locale`, the `registerL
 
 The locale to use can be loaded from the corresponding locale file ([list of supported locales](../locales/locales.md)).
 
+If used together with the plugin AdvancedParse, then Locale must be activated after AdvancedParse, as AdvancedParse "terminates" the parsing chain, if we have a parsing format.
+
 **Note**: the name of the locale (e.g. used for setting the locale) is case sensitive.
 
 ## Usage
