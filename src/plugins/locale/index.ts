@@ -7,6 +7,9 @@
  *
  * esday parameters in '$conf' defined in Locale plugin:
  *   localeName  the name of the current locale of an EsDay instance
+ *
+ * The plugin locale must be activated after the plugin advancedParse
+ * esday.extend(advancedParsePlugin).extend(localizedParsePlugin).extend(localePlugin)
  */
 
 import type { DateType, EsDay, EsDayPlugin, UnitType } from 'esday'
@@ -109,7 +112,7 @@ function getSetPrivateLocaleName(inst: EsDay, newLocaleName?: string): string {
     inst['$conf']['localeName'] = newLocaleName
   }
 
-  return (inst['$conf']['localeName'] as string) || $localeGlobal
+  return (inst['$conf']['localeName'] as string) || ''
 }
 
 const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
@@ -141,10 +144,10 @@ const localePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
 
   const oldParse = dayClass.prototype['$parse']
   dayClass.prototype['$parse'] = function (d: Exclude<DateType, EsDay>) {
+    if (getSetPrivateLocaleName(this).length === 0) {
+      getSetPrivateLocaleName(this, $localeGlobal)
+    }
     oldParse.call(this, d)
-
-    // set locale name
-    getSetPrivateLocaleName(this, $localeGlobal)
   }
 
   // change startOf/endOf method
