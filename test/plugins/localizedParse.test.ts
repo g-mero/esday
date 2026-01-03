@@ -410,6 +410,7 @@ describe('localizedParse plugin - local mode for "hr"', () => {
     'parse date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
       expectSameResult((esday) => esday(sourceString, formatString))
+      expectSame((esday) => esday(sourceString, formatString).locale())
     },
   )
 
@@ -431,6 +432,7 @@ describe('localizedParse plugin - local mode for "hr"', () => {
 
     expect(esday(sourceString, formatString, true).isValid()).toBeTruthy()
     expectSameResult((esday) => esday(sourceString, formatString, true))
+    expectSame((esday) => esday(sourceString, formatString, true).locale())
   })
 
   it('does not parse in strict mode - bad format', () => {
@@ -466,6 +468,7 @@ describe('localizedParse plugin - local mode for "ku"', () => {
     'parse date string "$sourceString" with arabic numbers with format "$formatString"',
     ({ sourceString, formatString }) => {
       expectSameResult((esday) => esday(sourceString, formatString))
+      expectSame((esday) => esday(sourceString, formatString).locale())
     },
   )
 })
@@ -495,6 +498,7 @@ describe('localizedParse plugin - local mode for "ka"', () => {
     'parse date string "$sourceString" with format "$formatString"',
     ({ sourceString, formatString }) => {
       expectSameResult((esday) => esday(sourceString, formatString))
+      expectSame((esday) => esday(sourceString, formatString).locale())
     },
   )
 })
@@ -527,6 +531,7 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
     ({ sourceString, formatString, locale }) => {
       expect(esday(sourceString, formatString, locale).isValid()).toBeTruthy()
       expectSameResult((esday) => esday(sourceString, formatString, locale))
+      expectSame((esday) => esday(sourceString, formatString, locale).locale())
     },
   )
 
@@ -551,19 +556,21 @@ describe('localizedParse plugin - local mode using locale given as parameter', (
     ({ sourceString, formatString, locale }) => {
       expect(esday(sourceString, formatString, locale, true).isValid()).toBeTruthy()
       expectSameResult((esday) => esday(sourceString, formatString, locale, true))
+      expectSame((esday) => esday(sourceString, formatString, locale, true).locale())
     },
   )
 
   it('parse in strict mode with non-matching format with locale as parameter', () => {
     // Day should not have a trailing decimal point
-    const timestamp = '2024 déc. 24. 8:10:21 AM'
+    const sourceString = '2024 déc. 24. 8:10:21 AM'
     const formatString = 'YYYY MMM Do h:mm:ss A'
     const locale = 'fr'
-    const d = esday(timestamp, formatString, locale, true)
-    const m = moment(timestamp, formatString, locale, true)
+    const d = esday(sourceString, formatString, locale, true)
+    const m = moment(sourceString, formatString, locale, true)
 
     expect(d.isValid()).toBeFalsy()
     expect(m.isValid()).toBeFalsy()
+    expectSame((esday) => esday(sourceString, formatString, locale, true).locale())
   })
 })
 
