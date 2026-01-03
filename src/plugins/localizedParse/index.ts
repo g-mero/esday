@@ -10,12 +10,18 @@
  * esday parameters in '$conf' defined in advancedParse plugin:
  *   parseOptions     ParseOptions object containing parsing options
  *
+ * esday parameters in '$conf' defined in Locale plugin:
+ *   localeName  the name of the current locale of an EsDay instance
+ *
  * new esday parameters in '$conf.parseOptions':
  *   locale           name of the locale to use when parsing
  *
  * This plugin requires the 'advancedParse' plugin, the 'locale' plugin
  * and at least 1 registered locale.
  * When using the locale as a parsing parameter, this locale must be registered too.
+ *
+ * The plugin localizedParse must be activated after the plugin advancedParse; e.g.
+ * esday.extend(advancedParsePlugin).extend(localizedParsePlugin).extend(localePlugin)
  */
 
 import type { DateType, EsDay, EsDayFactory, EsDayPlugin } from 'esday'
@@ -254,6 +260,7 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
     const arg2 = this['$conf'].args_2
     if (!isUndefined(arg2) && typeof arg2 === 'string') {
       currentLocale = dayFactory.getLocale(arg2)
+      this['$conf'].localeName = arg2
     }
 
     // get parsing patterns from locale
