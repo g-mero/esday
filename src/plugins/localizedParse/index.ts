@@ -42,13 +42,8 @@ const matchDayOfMonthOrdinalDefault = /\d{1,2}/
  */
 const updateParsingPatternsFromLocale = (patterns: TokenDefinitions, locale: Locale) => {
   const dayOfMonthOrdinalPattern = locale.dayOfMonthOrdinalParse
-  if (Array.isArray(dayOfMonthOrdinalPattern)) {
-    patterns.Do[0] = dayOfMonthOrdinalPattern[0]
-    patterns.Do[1] = dayOfMonthOrdinalPattern[1]
-  } else {
-    patterns.Do[0] = dayOfMonthOrdinalPattern
-    patterns.Do[1] = dayOfMonthOrdinalPattern
-  }
+  patterns.Do[0] = dayOfMonthOrdinalPattern
+  patterns.Do[1] = dayOfMonthOrdinalPattern
 }
 
 /**
@@ -298,7 +293,7 @@ const localizedParsePlugin: EsDayPlugin<{}> = (_, dayClass, dayFactory) => {
         delete this['$conf'].parseOptions.locale
       }
 
-      if (Object.keys(this['$conf'].parseOptions).length > 0) {
+      if (Object.keys(this['$conf'].parseOptions).length === 0) {
         delete this['$conf'].parseOptions
       }
     }
